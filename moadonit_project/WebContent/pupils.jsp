@@ -19,15 +19,16 @@
 <!--  css -->
 
 <link rel="stylesheet" href="resources/bootstrap/css/bootstrap.css" />
-<link rel="stylesheet" href="resources/jquery-ui-1.11.4.custom/jquery-ui.css" />
+<link rel="stylesheet"
+	href="resources/jquery-ui-1.11.4.custom/jquery-ui.css" />
 <link rel="stylesheet" href="resources/bootstrap/css/dashboard.css" />
 <link rel="stylesheet" href="resources/bootstrap/css/sticky-footer.css" />
 <link rel="stylesheet" href="resources/bootstrap/css/login-css.css" />
+<link rel="stylesheet" href="resources/bootstrap/css/simple-sidebar.css" />
 <!-- <link rel="stylesheet" href="resources/css/login.css" /> -->
 
 <script type="text/javascript">
-		var currentUserId =	 '<%=session.getAttribute("userid")%>';	
-		
+		var currentUserId =	 '<%=session.getAttribute("userid")%>';
 </script>
 
 <%
@@ -51,17 +52,17 @@
 		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 			<div class="container-fluid">
 				<div class="navbar-header">
-				
-					<div class="navbar-collapse collapse" style="margin-top:15px" >
-						<a id="logout" href="login.jsp?action=logout"><span style=" color: white; font-size: large;	" >יציאה</span><img
-							src="resources/images/exit.png" id="logout">
-						</a>
+
+					<div class="navbar-collapse collapse" style="margin-top: 15px">
+						<a id="logout" href="login.jsp?action=logout"><span
+							style="color: white; font-size: large;">יציאה</span><img
+							src="resources/images/exit.png" id="logout"> </a>
 
 					</div>
 				</div>
 
 				<div class="col-md-6 .col-md-offset-3">
-					<DIV style="padding: 10px; color: white; font-size: x-large;;">
+					<DIV style="padding: 10px; color: white; font-size: x-large;">
 						מועדונית</DIV>
 
 
@@ -70,24 +71,13 @@
 			</div>
 		</div>
 	</div>
-	<div id="content">
-		<div class="container" style="padding-top: 15px;">
-		
-			<DIV style="margin-top: 50px; border-left-style: solid;">
+	<div id="content"></div>
 
-				
-			</DIV>
-
-		
-		</div>
-
-	</div>
 	<div class="footer">
 		<div class="container-fluid text-center">
 			<p class="text-muted">תחתית....תחתית....תחתית....</p>
 		</div>
 	</div>
-
 
 </body>
 </html>

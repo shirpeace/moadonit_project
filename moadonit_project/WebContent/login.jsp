@@ -20,11 +20,10 @@
 <!--  css -->
 
 <link rel="stylesheet" href="resources/bootstrap/css/bootstrap.css" />
-<link rel="stylesheet"
-	href="resources/jquery-ui-1.11.4.custom/jquery-ui.css" />
-<link rel="stylesheet" href="resources/css/dashboard.css" />
-<link rel="stylesheet" href="resources/css/sticky-footer.css" />
-<link rel="stylesheet" href="resources/css/login-css.css" />
+<link rel="stylesheet" href="resources/jquery-ui-1.11.4.custom/jquery-ui.css" />
+<link rel="stylesheet" href="resources/bootstrap/css/dashboard.css" />
+<link rel="stylesheet" href="resources/bootstrap/css/sticky-footer.css" />
+<link rel="stylesheet" href="resources/bootstrap/css/login-css.css" />
 <!-- <link rel="stylesheet" href="resources/css/login.css" /> -->
 
 <title>מועדונית</title>
@@ -98,21 +97,20 @@
 		  		
 		  	var dataString = 'user='+ user + '&pass=' + pass + '&action=' + "login";
 		      
-		  	alert(dataString);
+		  
 		  	 $.ajax({
 		  		async: false,
 				type: 'POST',
-				datatype: 'json',
+				datatype: 'jsonp',
 		        url: "loginController",
 		        data: dataString,
 		        success: function(data) {
-		        	if (data.redirect) {
-		                // data.redirect contains the string URL to redirect to
-		                window.location.href = data.redirect;
-		            }else {
-		                // data.form contains the HTML for the replacement form
-		                alert(data.form);
-		            }
+		        	if(data != undefined){
+		        		window.location.href = "dashboard.jsp";
+		        		//window.location.assign(data);
+		        	
+		        	
+		        	}
 		        },
 		        error: function(e) {
 		        	console.log("error");
@@ -136,7 +134,7 @@
 
 
 				<div class="col-md-6 .col-md-offset-3">
-					<DIV style="padding: 10px; font-size: x-large; color: gray;">
+					<DIV style="padding: 10px; color: white; font-size: x-large;;">
 						מועדונית</DIV>
 
 				</div>

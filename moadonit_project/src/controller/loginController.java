@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import java.sql.PreparedStatement;
 
 import dao.LoginDAO;
@@ -50,6 +53,8 @@ public class loginController extends HttpServlet implements Serializable {
 		// TODO Auto-generated method stub
 		try {
 
+			JSONArray users = new JSONArray();
+
 			MyConnection con = null;
 			HttpSession session = request.getSession();
 			if (session.getAttribute("connection") != null) {
@@ -75,20 +80,28 @@ public class loginController extends HttpServlet implements Serializable {
 				rs = ps.executeQuery();
 
 				if (rs.next()) {
+					JSONObject u = new JSONObject();
+					
+					u.put("username",rs.getString("userName"));
+					u.put("password",rs.getString("password"));
+					
+
+					users.add(u);
+					
 					this.loggedIn = true;
 					this.msg = "OK";
 					session.setAttribute("userid", user);
 					response.setContentType("application/json");
 					response.setCharacterEncoding("UTF-8");
-					response.getWriter().print(this.msg);
+					response.getWriter().print(users);
+					
 				} else {
 					response.setContentType("application/json");
 					response.setCharacterEncoding("UTF-8");
-					response.getWriter().print(this.msg);
+					response.getWriter().print(users);
 				}
-			}
-			else if(action.equals("logout")){
-				
+			} else if (action.equals("logout")) {
+
 			}
 
 		} catch (Exception e) {

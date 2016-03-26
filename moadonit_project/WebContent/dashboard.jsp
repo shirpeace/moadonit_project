@@ -19,12 +19,30 @@
 <!--  css -->
 
 <link rel="stylesheet" href="resources/bootstrap/css/bootstrap.css" />
-<link rel="stylesheet"
-	href="resources/jquery-ui-1.11.4.custom/jquery-ui.css" />
-<link rel="stylesheet" href="resources/css/dashboard.css" />
-<link rel="stylesheet" href="resources/css/sticky-footer.css" />
-<link rel="stylesheet" href="resources/css/login-css.css" />
+<link rel="stylesheet" href="resources/jquery-ui-1.11.4.custom/jquery-ui.css" />
+<link rel="stylesheet" href="resources/bootstrap/css/dashboard.css" />
+<link rel="stylesheet" href="resources/bootstrap/css/sticky-footer.css" />
+<link rel="stylesheet" href="resources/bootstrap/css/login-css.css" />
 <!-- <link rel="stylesheet" href="resources/css/login.css" /> -->
+
+<script type="text/javascript">
+		var currentUserId =	 '<%=session.getAttribute("userid")%>';	
+		
+</script>
+
+<%
+	response.setHeader("Cache-Control", "no-cache");
+	response.setHeader("Cache-Control", "no-store");
+	response.setHeader("Pragma", "no-cache");
+	response.setDateHeader("Expires", 0);
+%>
+
+<%
+	if (session.getAttribute("userid") == null) {
+		response.sendRedirect("login.jsp");
+		return;
+	}
+%>
 
 <title>מועדונית</title>
 </head>
