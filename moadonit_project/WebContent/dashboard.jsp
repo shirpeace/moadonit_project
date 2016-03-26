@@ -70,13 +70,12 @@
         <!-- Navigation -->
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" >
             <div class="nav navbar-right top-nav" style="padding-top: 15px; ">
-            	<a  href="index.html">
-	            	<img alt="" src="resources/images/exit.png">
-	            	<span style="color: gray;">יציאה</span>
-            	</a>
+            	<a href="index.html">
+	            	<i class="fa fa-fw fa-power-off"></i>&nbsp;יציאה</a>
             </div>
             <div class="navbar-header" >
-            	<a class="navbar-brand" href="index.html">מועדונית ריאלי אחוזה</a>
+            	<a class="navbar-brand" href="index.html">
+            	<i class="fa fa-home fa-fw"></i>&nbsp;מועדונית</a>
                 
             </div>
             
