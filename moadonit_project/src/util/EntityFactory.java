@@ -75,6 +75,6 @@ public class EntityFactory {
         return resultsMap;
     }
     
-    private final String queryString;
+    private String queryString;
     protected Connection connection;
 }
