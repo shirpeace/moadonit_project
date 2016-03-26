@@ -51,27 +51,52 @@
         <!-- Navigation -->
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="nav navbar-right top-nav" style="padding-top: 15px; ">
-            	<a  href="index.html">
-	            	<img alt="" src="resources/images/exit.png">
-	            	<span style="color: gray;">יציאה</span>
-            	</a>
+            	<a href="index.html">
+	            	<i class="fa fa-fw fa-dashboard"></i>&nbsp;יציאה</a>
             </div>
             <div class="navbar-header" >
-            	<a class="navbar-brand" href="index.html">מועדונית</a>
+            	<a class="navbar-brand" href="index.html">
+            	<i class="fa fa-home fa-fw"></i>&nbsp;מועדונית</a>
                 
             </div>
             
              <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
+                    <li>
+                        <a href="index.html"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="charts.html"><i class="fa fa-fw fa-bar-chart-o"></i> Charts</a>
+                    </li>
+                    <li>
+                        <a href="tables.html"><i class="fa fa-fw fa-table"></i> Tables</a>
+                    </li>
+                    <li>
+                        <a href="forms.html"><i class="fa fa-fw fa-edit"></i> Forms</a>
+                    </li>
+                    <li>
+                        <a href="bootstrap-elements.html"><i class="fa fa-fw fa-desktop"></i> Bootstrap Elements</a>
+                    </li>
+                    <li>
+                        <a href="bootstrap-grid.html"><i class="fa fa-fw fa-wrench"></i> Bootstrap Grid</a>
+                    </li>
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Dropdown <i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="demo" class="collapse">
+                            <li>
+                                <a href="#">Dropdown Item</a>
+                            </li>
+                            <li>
+                                <a href="#">Dropdown Item</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="blank-page.html"><i class="fa fa-fw fa-file"></i> Blank Page</a>
+                    </li>
                     <li class="active">
-                        <a href="index.html"><i class="fa fa-fw fa-search"></i> חיפוש</a>
-                    </li>
-                    <li>
-                        <a href="charts.html"><i class="fa fa-pencil fa-fw"></i> תלמיד חדש</a>
-                    </li>
-                    <li>
-                        <a href="tables.html"><i class="fa fa-fw fa-file"></i> רשימת קשר</a>
+                        <a href="index-rtl.html"><i class="fa fa-fw fa-dashboard"></i> RTL Dashboard</a>
                     </li>
                 </ul>
             </div>

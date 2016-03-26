@@ -5,134 +5,183 @@
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta http-equiv="Content-Type"
-	content="text/html; charset=windows-1255">
-<!--  java script -->
-<script src="resources/js/jquery-1.12.2.js"></script>
-<script src="resources/bootstrap/js/bootstrap.js"></script>
-<script src="resources/js/template_logic.js"></script>
-<script src="resources/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
-<!--  css -->
 
-<link rel="stylesheet" href="resources/bootstrap/css/bootstrap.css" />
-<link rel="stylesheet" href="resources/jquery-ui-1.11.4.custom/jquery-ui.css" />
-<link rel="stylesheet" href="resources/bootstrap/css/dashboard.css" />
-<link rel="stylesheet" href="resources/bootstrap/css/sticky-footer.css" />
-<link rel="stylesheet" href="resources/bootstrap/css/login-css.css" />
-<!-- <link rel="stylesheet" href="resources/css/login.css" /> -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-<script type="text/javascript">
+	<script type="text/javascript">
 		var currentUserId =	 '<%=session.getAttribute("userid")%>';	
 		
-</script>
+	</script>
+	
+	<%
+		response.setHeader("Cache-Control", "no-cache");
+		response.setHeader("Cache-Control", "no-store");
+		response.setHeader("Pragma", "no-cache");
+		response.setDateHeader("Expires", 0);
+	%>
+	
+<%-- 	<%
+		if (session.getAttribute("userid") == null) {
+			response.sendRedirect("login.jsp");
+			return;
+		}
+	%> --%>
 
-<%
-	response.setHeader("Cache-Control", "no-cache");
-	response.setHeader("Cache-Control", "no-store");
-	response.setHeader("Pragma", "no-cache");
-	response.setDateHeader("Expires", 0);
-%>
+    <title>מועדונית</title>
 
-<%
-	if (session.getAttribute("userid") == null) {
-		response.sendRedirect("login.jsp");
-		return;
-	}
-%>
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 
-<title>מועדונית</title>
+    <!-- Bootstrap Core CSS RTL-->
+    <link href="css/bootstrap-rtl.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/sb-admin.css" rel="stylesheet">
+    <link href="css/sb-admin-rtl.css" rel="stylesheet">
+
+    <!-- Morris Charts CSS -->
+    <link href="css/plugins/morris.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
 </head>
-<body dir="rtl">
-	<div id="header">
-		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-			<div class="container-fluid">
-				<div class="navbar-header">
-				
-					<div class="navbar-collapse collapse" style="margin-top:15px" >
-						<a id="logout" href="login.jsp?action=logout"><span style=" color: white; font-size: large;	" >יציאה</span><img
-							src="resources/images/exit.png" id="logout">
-						</a>
 
-					</div>
-				</div>
+<body>
 
-				<div class="col-md-6 .col-md-offset-3">
-					<DIV style="padding: 10px; color: white; font-size: x-large;;">
-						מועדונית</DIV>
+    <div id="wrapper" style="margin-left: 250px">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" >
+            <div class="nav navbar-right top-nav" style="padding-top: 15px; ">
+            	<a  href="index.html">
+	            	<img alt="" src="resources/images/exit.png">
+	            	<span style="color: gray;">יציאה</span>
+            	</a>
+            </div>
+            <div class="navbar-header" >
+            	<a class="navbar-brand" href="index.html">מועדונית ריאלי אחוזה</a>
+                
+            </div>
+            
+            
+        </nav>
+
+        <div id="page-wrapper" style="height: 500px">
+
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                            <small></small>
+                        </h1>
+                        <ol class="breadcrumb">
+                            <li class="active">
+                                <i class="fa fa-dashboard"></i> Dashboard
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+                <!-- /.row -->
+
+            
+
+                <div class="row"> <!-- first button row -->
+                    <div class="col-lg-3 col-md-6">
+                        <div class="panel panel-primary">
+                            <a href="#">
+                            	<div class="panel-footer">
+                                    <span class="pull-left">תלמידים</span>
+                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="panel panel-green">
+                           
+                            <a href="#">
+                                <div class="panel-footer">
+                                    <span class="pull-left">רישום</span>
+                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                  
+                    
+                </div>
+                <!-- /.row -->
+
+                <div class="row"> <!-- second button row -->
+                   
+                      <div class="col-lg-3 col-md-6">
+                        <div class="panel panel-yellow">
+                           <a href="#">
+                                <div class="panel-footer">
+                                    <span class="pull-left">נוכחות</span>
+                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                        <div class="col-lg-3 col-md-6">
+                        <div class="panel panel-red">
+                            <a href="#">
+                                <div class="panel-footer">
+                                    <span class="pull-left">ניהול</span>
+                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    
+                </div>
+                <!-- /.row -->
 
 
-				</div>
+            </div>
+            <!-- /.container-fluid -->
 
-			</div>
-		</div>
-	</div>
-	<div id="content">
-		<div class="container" style="padding-top: 15px;">
-		
-			<DIV style="margin-top: 50px;">
+        </div>
+        <!-- /#page-wrapper -->
 
-				<div class="col-sm-4" style="text-align: center;">
+    </div>
+    <!-- /#wrapper -->
 
-					<div class="panel panel-primary"
-						style="width: 200px; height: 172px; margin: 0px">
-						<div class="panel-cust-heading">חוגים</div>
-						<div class="panel-body" style="text-align: center;">
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
 
-							<img src="resources/images/courses.png" style="width: 90px;"
-								alt="Image" />
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
 
-						</div>
-						<div class="panel-cust-footer"></div>
-					</div>
-
-				</div>
-
-				<div class="col-sm-4" style="text-align: center;">
-
-					<div class="panel panel-primary"
-						style="width: 200px; height: 172px; margin: 0px">
-						<div class="panel-cust-heading">רישום</div>
-						<div class="panel-body" style="text-align: center;">
-
-							<img src="resources/images/register.png" style="width: 90px;"
-								alt="Image" />
-
-						</div>
-						<div class="panel-cust-footer"></div>
-					</div>
-
-				</div>
-
-				<div class="col-sm-4" style="text-align: center;">
-
-					<div class="panel panel-primary"
-						style="width: 200px; height: 172px; margin: 0px">
-						<div class="panel-cust-heading">תלמידים</div>
-						<div class="panel-body" style="text-align: center;">
-
-							<img src="resources/images/kids.png" style="width: 90px;"
-								alt="Image" />
-
-						</div>
-						<div class="panel-cust-footer"></div>
-					</div>
-
-				</div>
-			</DIV>
-
-		
-		</div>
-	</div>
-	<div class="footer">
-		<div class="container-fluid text-center">
-			<p class="text-muted">תחתית....תחתית....תחתית....</p>
-		</div>
-	</div>
-
+    <!-- Morris Charts JavaScript -->
+    <script src="js/plugins/morris/raphael.min.js"></script>
+    <script src="js/plugins/morris/morris.min.js"></script>
+    <script src="js/plugins/morris/morris-data.js"></script>
 
 </body>
+
 </html>
