@@ -55,7 +55,7 @@
 	            	<i class="fa fa-fw fa-power-off"></i>&nbsp;יציאה</a>
             </div>
             <div class="navbar-header" >
-            	<a class="navbar-brand" href="index.html">
+            	<a class="navbar-brand" href="dashboard.jsp">
             	<i class="fa fa-home fa-fw"></i>&nbsp;מועדונית</a>
                 
             </div>
@@ -63,38 +63,19 @@
              <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
-                     <li class="active">
-                        <a href="javascript:;" data-toggle="collapse" data-target="#droppupil"><i class="fa fa-fw fa-users"></i> תלמידים <i class="fa fa-fw fa-chevron-down pull-left"></i></a>
-                        <ul id="droppupil" class="collapse">
-                           <li>
-                                <a href="#"><i class="fa fa-search"></i>   חיפוש</a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fa fa-edit"></i> הוספת חדש</a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fa fa-list-alt"></i> פרטים אישיים</a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fa fa-th"></i> תכנית שבועית</a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fa fa-phone"></i> דפי קשר</a>
-                            </li>
-                        </ul>
-                    </li>
                     <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#dropreg"><i class="fa fa-fw fa-pencil-square-o"></i> רישום <i class="fa fa-fw fa-chevron-down pull-left"></i></a>
-                        <ul id="dropreg" class="collapse">
-                            <li>
-                                <a href="#"><i class="fa fa-th"></i> צפיה בתכנית שבועית</a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fa fa-pencil"></i>  חוגים</a>
-                            </li>
-                        </ul>
-                    </li>
-                    
+                        <a href="" style="font-size: 120%; pointer-events: none;"> <i class="fa fa-fw fa-users"></i> כרטיס תלמיד</a>
+                        <br>
+                     </li> 
+                     <li>
+                        <a href= "pupil_card_view.jsp"><i class="fa fa-fw fa-list-alt"></i> פרטים אישיים</a>
+                     </li> 
+                     <li class="active">
+                        <a href= "pupil_week_view.jsp"><i class="fa fa-fw fa-th"></i> תכנית שבועית</a>
+                     </li>
+                     <li>
+                        <a href= "pupil_week_view.jsp"><i class="fa fa-fw fa-edit"></i> עריכת רישום</a>
+                     </li>  
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -103,6 +84,7 @@
         
         <!-- Main content -->
         <div id="page-wrapper">
+			
 
             <div class="container-fluid">
 
@@ -110,14 +92,14 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            חיפוש תלמידים <small></small>
+                            יוסי משה
                         </h1>
                         <ol class="breadcrumb">
-                            <li class="active">
-                                <i class="fa fa-home"></i> עמוד ראשי
+                            <li>
+                                <i class="fa fa-home"></i>  <a href="dashboard.jsp">עמוד ראשי</a>
                             </li>
                             <li class="active">
-                                <i class="fa fa-search"></i> חיפוש תלמיד
+                                <i class="fa fa-th"></i> תכנית שבועית לתלמיד
                             </li>
                         </ol>
                     </div>
@@ -133,86 +115,87 @@
                     </div>
                 </div>
                 <!-- /.row -->
-
+				
+				<div class="col-lg-2">
+				</div>
                 <div class="col-lg-8">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h3 class="panel-title"><i class="fa fa-search fa-fw"></i> חיפוש תלמידים</h3>
+                                <h3 class="panel-title"><i class="fa fa-search fa-fw"></i> תכנית שבועית</h3>
                             </div>
                             <div class="panel-body">
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-hover table-striped">
                                         <thead>
                                             <tr>
-                                                <th>שם פרטי</th>
-                                                <th>שם משפחה</th>
-                                                <th>מגדר</th>
-                                                <th>כיתה</th>
-                                                <th>רשום?</th>
+                                                <td></td>
+                                                <th>ראשון</th>
+                                                <th>שני</th>
+                                                <th>שלישי</th>
+                                                <th>רביעי</th>
+                                                <th>חמישי</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>3326</td>
-                                                <td>10/21/2013</td>
-                                                <td>3:29 PM</td>
-                                                <td>$321.33</td>
+                                                <td>אוכל בלבד</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             <tr>
-                                                <td>3325</td>
-                                                <td>10/21/2013</td>
-                                                <td>3:20 PM</td>
-                                                <td>$234.34</td>
+                                                <td>חוג 1</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             <tr>
-                                                <td>3324</td>
-                                                <td>10/21/2013</td>
-                                                <td>3:03 PM</td>
-                                                <td>$724.17</td>
+                                                <td>חוג 2</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             <tr>
-                                                <td>3323</td>
-                                                <td>10/21/2013</td>
-                                                <td>3:00 PM</td>
-                                                <td>$23.71</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             <tr>
-                                                <td>3322</td>
-                                                <td>10/21/2013</td>
-                                                <td>2:49 PM</td>
-                                                <td>$8345.23</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3321</td>
-                                                <td>10/21/2013</td>
-                                                <td>2:23 PM</td>
-                                                <td>$245.12</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3320</td>
-                                                <td>10/21/2013</td>
-                                                <td>2:15 PM</td>
-                                                <td>$5663.54</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3319</td>
-                                                <td>10/21/2013</td>
-                                                <td>2:13 PM</td>
-                                                <td>$943.45</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
                                 <div class="text-right">
-                                    <a href="#">View All Transactions <i class="fa fa-arrow-circle-right"></i></a>
-                                </div>
+                                    <a href="javascript:;" data-toggle="collapse" data-target="#editReg">עריכת הרישום <i class="fa fa-arrow-circle-down"></i></a>
+
+								<div id="editReg" class="collapse">
+									להכניס טבלה עם חמש עמודות, בכל אחת קומבו בוקס לסוג הרישום
+									<br>
+									בחירת תאריך התחלה וקומבו לבחירת סיבת הרישום וכפתורי שמירה ומחיקה
+								</div>
+
+
+								</div>
                             </div>
                         </div>
                     </div>
             </div>
-            <!-- /.container-fluid -->
 
-        </div>
         <!-- /#page-wrapper -->
 
     </div>

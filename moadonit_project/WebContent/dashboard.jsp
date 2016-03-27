@@ -74,7 +74,7 @@
 	            	<i class="fa fa-fw fa-power-off"></i>&nbsp;יציאה</a>
             </div>
             <div class="navbar-header" >
-            	<a class="navbar-brand" href="index.html">
+            	<a class="navbar-brand" href="dashboard.jsp">
             	<i class="fa fa-home fa-fw"></i>&nbsp;מועדונית</a>
                 
             </div>
@@ -94,7 +94,7 @@
                         </h1>
                         <ol class="breadcrumb">
                             <li class="active">
-                                <i class="fa fa-home"></i> עמוד ראשי
+                                <i class="fa fa-home"></i> <a href="dashboard.jsp">עמוד ראשי</a>
                             </li>
                         </ol>
                     </div>
@@ -106,7 +106,7 @@
                 <div class="row"> <!-- first button row -->
                     <div class="col-lg-3 col-md-6">
                         <div class="panel panel-primary">
-                            <a href="#">
+                            <a href="pupils_search.jsp">
                             	<div class="panel-footer">
                                     <span class="pull-right">תלמידים</span>
                                     <span class="pull-left"><i class="fa fa-users fa-5x"></i></span>
