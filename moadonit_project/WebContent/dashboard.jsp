@@ -94,7 +94,7 @@
                         </h1>
                         <ol class="breadcrumb">
                             <li class="active">
-                                <i class="fa fa-dashboard"></i> Dashboard
+                                <i class="fa fa-home"></i> עמוד ראשי
                             </li>
                         </ol>
                     </div>
@@ -108,8 +108,8 @@
                         <div class="panel panel-primary">
                             <a href="#">
                             	<div class="panel-footer">
-                                    <span class="pull-left">תלמידים</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <span class="pull-right">תלמידים</span>
+                                    <span class="pull-left"><i class="fa fa-users fa-5x"></i></span>
                                     <div class="clearfix"></div>
                                 </div>
                             </a>
@@ -120,8 +120,8 @@
                            
                             <a href="#">
                                 <div class="panel-footer">
-                                    <span class="pull-left">רישום</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <span class="pull-right">רישום</span>
+                                    <span class="pull-left"><i class="fa  fa-pencil-square-o fa-5x"></i></span>
                                     <div class="clearfix"></div>
                                 </div>
                             </a>
@@ -138,8 +138,8 @@
                         <div class="panel panel-yellow">
                            <a href="#">
                                 <div class="panel-footer">
-                                    <span class="pull-left">נוכחות</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <span class="pull-right">נוכחות</span>
+                                    <span class="pull-left"><i class="fa  fa-check-square-o fa-5x"></i></span>
                                     <div class="clearfix"></div>
                                 </div>
                             </a>
@@ -149,8 +149,8 @@
                         <div class="panel panel-red">
                             <a href="#">
                                 <div class="panel-footer">
-                                    <span class="pull-left">ניהול</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                   <span class="pull-right">ניהול מערכת</span>
+                                    <span class="pull-left"><i class="fa  fa-folder-open fa-5x"></i></span>
                                     <div class="clearfix"></div>
                                 </div>
                             </a>
