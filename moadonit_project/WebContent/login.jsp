@@ -38,6 +38,12 @@
 
     <title>מועדונית</title>
 
+	<!--  java script -->
+	<script src="resources/js/jquery-1.12.2.js"></script>
+	<script src="resources/bootstrap/js/bootstrap.js"></script>
+	<script src="resources/js/template_logic.js"></script>
+	<script src="resources/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
+
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
@@ -212,12 +218,12 @@
 								style="display: none;"></div>
 							<form name="ajaxform" id="ajaxform" method="post"
 								action="loginController">
-								<input type="text" id="user" name="user" placeholder="שם משתמש">
+								<input type="text" id="user" name="user" placeholder="שם משתמש" class="form-control">
 								<br><br>
-								<input type="password" id="pass" name="pass" placeholder="סיסמא">
+								<input type="password" id="pass" name="pass" placeholder="סיסמא" class="form-control">
 								<br><br>
 								<input type="submit" id="loginBtn" name="login"
-									class="login login-submit" value="כניסה">
+									class="btn btn-default" value="כניסה">
 							</form>
 						</div>
 					</div>

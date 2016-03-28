@@ -4,10 +4,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import controller.MyConnection;
  
-public class LoginDAO {
+public class LoginDAO extends AbstractDAO {
  
-    public static boolean validate(String user, String password) {
+    public LoginDAO(MyConnection con) {
+		super(con);
+		// TODO Auto-generated constructor stub
+	}
+
+	public static boolean validate(String user, String password) {
         Connection con = null;
         PreparedStatement ps = null;
  
