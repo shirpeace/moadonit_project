@@ -96,7 +96,13 @@
                         </h1>
                         <ol class="breadcrumb">
                             <li>
-                                <i class="fa fa-home"></i>  <a href="dashboard.jsp">עמוד ראשי</a>
+                                 <a href="dashboard.jsp"><i class="fa fa-home"></i> ראשי</a>
+                            </li>
+                            <li>
+                                 <a href="dashboard.jsp"><i class="fa fa-users"></i> תלמידים</a>
+                            </li>
+                            <li>
+                                 <a href="dashboard.jsp"><i class="fa fa-list-alt"></i> כרטיס תלמיד</a>
                             </li>
                             <li class="active">
                                 <i class="fa fa-th"></i> תכנית שבועית לתלמיד

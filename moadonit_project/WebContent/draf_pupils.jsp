@@ -39,10 +39,10 @@
 %>
 
 <%
-	if (session.getAttribute("userid") == null) {
+	/* if (session.getAttribute("userid") == null) {
 		response.sendRedirect("login.jsp");
 		return;
-	}
+	} */
 %>
 <script type="text/javascript">
 
@@ -89,41 +89,37 @@ $( document ).ready(function() {
 
 	<form id="registerForm" name="myForm" action="RegisterHandler.jsp"
 		onsubmit="return onBtnClick()" method="post">
+
+		<input type="text" name="fn" id="fn" onblur="OnlyLetters(this, fnErr)" placeholder="First Name" class="regInput" /> 
+		<span id="fnErr" class="error" style="display: none;"></span> 
+		<label id="icon" for="name"><i class="icon-user"></i></label> 
+		<input type="text" name="ln" id="ln" onblur="OnlyLetters(this, lnErr)" placeholder="Last Name" class="regInput" /> 
+		<span id="lnErr" class="error" style="display: none;"> </span> 
+		<input type="text" name="phone" id="phone" onblur="OnlyLetters(this, lnErr)" placeholder="phone" class="regInput" /> 
+		<span id="phoneErr" class="error" style="display: none;"> </span> 
+		<input type="text" name="bdate" id="bdate" onblur="OnlyLetters(this, lnErr)" placeholder="date" class="regInput" /> 
+		<span id="bdateErr" class="error" style="display: none;"> </span>
 		
- <input
-			type="text" name="fn" id="fn" onblur="OnlyLetters(this, fnErr)"
-			placeholder="First Name" class="regInput" /> <span id="fnErr"
-			class="error" style="display: none;"></span> <label id="icon"
-			for="name"><i class="icon-user"></i></label> <input type="text"
-			name="ln" id="ln" onblur="OnlyLetters(this, lnErr)"
-			placeholder="Last Name" class="regInput" /> <span id="lnErr"
-			class="error" style="display: none;"> </span> <input type="text"
-			name="phone" id="phone" onblur="OnlyLetters(this, lnErr)"
-			placeholder="phone" class="regInput" /> <span id="phoneErr"
-			class="error" style="display: none;"> </span> <input type="text"
-			name="bdate" id="bdate" onblur="OnlyLetters(this, lnErr)"
-			placeholder="date" class="regInput" /> <span id="bdateErr"
-			class="error" style="display: none;"> </span> 
-			כיתה
-			<select>
-			<option value="11">א-א</option>
-			<option value="12">א-ב</option>
-			<option value="13">א-ג</option>
-			<option value="21">ב-א</option>
-			<option value="22">ב-ב</option>
-			<option value="23">ב-ג</option>
-			<option value="31">ג-א</option>
-			<option value="32">ג-ב</option>
-			<option value="33">ג-ג</option>
-			<option value="41">ד-א</option>
-			<option value="42">ד-ב</option>
-			<option value="43">ד-ג</option>
-			<option value="51">ה-א</option>
-			<option value="52">ה-ב</option>
-			<option value="53">ב-ג</option>
-			<option value="61">ו-א</option>
-			<option value="62">ו-ב</option>
-			<option value="63">ו-ג</option>
+		כיתה
+		<select>
+		<option value="11">א-א</option>
+		<option value="12">א-ב</option>
+		<option value="13">א-ג</option>
+		<option value="21">ב-א</option>
+		<option value="22">ב-ב</option>
+		<option value="23">ב-ג</option>
+		<option value="31">ג-א</option>
+		<option value="32">ג-ב</option>
+		<option value="33">ג-ג</option>
+		<option value="41">ד-א</option>
+		<option value="42">ד-ב</option>
+		<option value="43">ד-ג</option>
+		<option value="51">ה-א</option>
+		<option value="52">ה-ב</option>
+		<option value="53">ב-ג</option>
+		<option value="61">ו-א</option>
+		<option value="62">ו-ב</option>
+		<option value="63">ו-ג</option>
 		</select>
 		מין
 		<select>

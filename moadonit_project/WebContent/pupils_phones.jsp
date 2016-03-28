@@ -94,8 +94,11 @@
                             דפי קשר <small></small>
                         </h1>
                         <ol class="breadcrumb">
-                            <li class="active">
-                                <i class="fa fa-home"></i> <a href="dashboard.jsp">עמוד ראשי</a>
+                            <li>
+                                 <a href="dashboard.jsp"><i class="fa fa-home"></i> ראשי</a>
+                            </li>
+                            <li>
+                                 <a href="dashboard.jsp"><i class="fa fa-users"></i> תלמידים</a>
                             </li>
                             <li class="active">
                                 <i class="fa fa-phone"></i> דפי קשר
@@ -118,7 +121,7 @@
                 <div class="col-lg-8">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h3 class="panel-title"><i class="fa fa-phone fa-fw"></i> דף קשר</h3>
+                                <h3 class="panel-title"><i class="fa fa-info fa-fw"></i> הוראות למשתמש</h3>
                             </div>
                             <div class="panel-body">
                                 <div class="table-responsive">

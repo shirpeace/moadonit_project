@@ -64,7 +64,7 @@
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                    <li>
-                        <a href="" style="font-size: 120%; pointer-events: none;"> <i class="fa fa-fw fa-users"></i> כרטיס תלמיד</a>
+                        <a href="" style="font-size: 120%; pointer-events: none;"> <i class="fa fa-fw fa-user"></i> כרטיס תלמיד</a>
                         <br>
                      </li> 
                      <li class="active">
@@ -96,7 +96,13 @@
                         </h1>
                         <ol class="breadcrumb">
                             <li>
-                                <i class="fa fa-home"></i>  <a href="dashboard.jsp">עמוד ראשי</a>
+                                 <a href="dashboard.jsp"><i class="fa fa-home"></i> ראשי</a>
+                            </li>
+                            <li>
+                                 <a href="dashboard.jsp"><i class="fa fa-users"></i> תלמידים</a>
+                            </li>
+                            <li>
+                                 <a href="dashboard.jsp"><i class="fa fa-user"></i> כרטיס תלמיד</a>
                             </li>
                             <li class="active">
                                 <i class="fa fa-list-alt"></i> פרטים אישיים

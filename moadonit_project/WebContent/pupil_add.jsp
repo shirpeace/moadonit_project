@@ -28,6 +28,7 @@
     <!-- Custom CSS -->
     <link href="css/sb-admin.css" rel="stylesheet">
     <link href="css/sb-admin-rtl.css" rel="stylesheet">
+    <link href="css/mycss.css" rel="stylesheet">
 
     <!-- Morris Charts CSS -->
     <link href="css/plugins/morris.css" rel="stylesheet">
@@ -96,7 +97,10 @@
                         </h1>
                         <ol class="breadcrumb">
                             <li>
-                                <i class="fa fa-home"></i>  <a href="dashboard.jsp">עמוד ראשי</a>
+                                 <a href="dashboard.jsp"><i class="fa fa-home"></i> ראשי</a>
+                            </li>
+                            <li>
+                                 <a href="pupils_search.jsp"><i class="fa fa-users"></i> תלמידים</a>
                             </li>
                             <li class="active">
                                 <i class="fa fa-edit"></i> הוספת תלמיד
@@ -106,223 +110,190 @@
                 </div>
                 <!-- /.row -->
 
-                <div class="row">
-                    <div class="col-lg-6">
+				<form role="form">
+		<!-- row 1 col 1 -->
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label for="fName">שם פרטי</label> <input type="text"
+										class="form-control" id="fName" placeholder="שם">
+								</div>
+								<div class="form-group">
+									<label for="lName">שם משפחה</label> <input type="text"
+										class="form-control" id="lName" placeholder="משפחה">
+								</div>
+								<div class="form-group">
+									<label for="cell">טלפון נייד תלמיד</label> <input type="text"
+										class="form-control" id="cell" placeholder="טלפון">
+								</div>
+							</div>
+		<!-- row 1 col 2 -->
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label for="fName">תאריך לידה</label> <input type="text"
+										class="form-control" id="fName" placeholder="שם">
+								</div>
+								<div class="form-group">
+									<label for="class">כיתה</label> <select class="form-control"
+										id="class">
+										<option value="11">א-א</option>
+										<option value="12">א-ב</option>
+										<option value="13">א-ג</option>
+										<option value="21">ב-א</option>
+										<option value="22">ב-ב</option>
+										<option value="23">ב-ג</option>
+										<option value="31">ג-א</option>
+										<option value="32">ג-ב</option>
+										<option value="33">ג-ג</option>
+										<option value="41">ד-א</option>
+										<option value="42">ד-ב</option>
+										<option value="43">ד-ג</option>
+										<option value="51">ה-א</option>
+										<option value="52">ה-ב</option>
+										<option value="53">ב-ג</option>
+										<option value="61">ו-א</option>
+										<option value="62">ו-ב</option>
+										<option value="63">ו-ג</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="cell" class="col-lg-1">מגדר</label>
+									<label class="radio-inline col-lg-2"> 
+									<input type="radio" name="inlineRadioOptions" id="male" value="1"> בן </label>
+									<label class="radio-inline col-lg-2">
+									<input type="radio" name="inlineRadioOptions" id="female" value="2">בת</label>
+								</div>
+							</div>
+		<!-- row 1 col 3 -->
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label for="food">סוג מנה</label> <select class="form-control"
+										id="food">
+										<option value="1">רגילה</option>
+										<option value="2">אפויה</option>
+										<option value="3">צמחונית</option>
+										<option value="4">ללא-גלוטן</option>
+									</select>
+								</div>
+								<div class="checkbox ">
+									<label for="ethi">אתיופי</label> <input type="checkbox"
+										id="ethi">
+								</div>
+								<div class="checkbox">
+									<label for="staff">ילד סגל</label> <input type="checkbox"
+										id="staff">
+								</div>
+							</div>
+							
+		<!-- row 1 col 4 -->							
+							<div class="col-lg-3">
+								<div class="form-group">
+									<label for="health">בעיות בריאות</label> <input type="text"
+										class="form-control" id="health" placeholder="">
+								</div>
+								<div class="form-group">
+									<label for="foodsens">רגישות למזון</label> <input type="text"
+										class="form-control" id="foodsens" placeholder="">
+								</div>
+								<div class="form-group">
+									<label for="comnt">הערות כלליות</label> <input type="text"
+										class="form-control" id="comnt" placeholder="">
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					
+					<!-- row 2 col 1 -->
+					<div class="row">
+						<div class="col-lg-12">
+						<h2>פרטי התקשרות</h2>
+							<div class="col-lg-3">
+								
+								<div class="form-group">
+									<label for="p1fName">שם ההורה</label> <input type="text"
+										class="form-control" id="p1fName" placeholder="שם">
+								</div>
+								<div class="form-group">
+									<label for="p1lName">שם משפחה</label> <input type="text"
+										class="form-control" id="p1lName" placeholder="משפחה">
+								</div>
+								<div class="form-group">
+									<label for="p1cell">טלפון נייד</label> <input type="text"
+										class="form-control" id="p1cell" placeholder="טלפון">
+								</div>
+								<div class="form-group">
+									<label for="p1relat">קרבה</label>
+									<select class="form-control"
+										id="p1relat">
+										<option value="1">אמא</option>
+										<option value="2">אבא</option>
+										<option value="3">אח</option>
+										<option value="4">אחות</option>
+										<option value="5">אחר</option>
+									</select>
+								</div>
+							</div>
+			<!-- row 2 col 2 -->
+							<div class="col-lg-3">
+								
+								<div class="form-group">
+									<label for="p2fName">שם ההורה</label> <input type="text"
+										class="form-control" id="p2fName" placeholder="שם">
+								</div>
+								<div class="form-group">
+									<label for="p2lName">שם משפחה</label> <input type="text"
+										class="form-control" id="p2lName" placeholder="משפחה">
+								</div>
+								<div class="form-group">
+									<label for="p2cell">טלפון נייד</label> <input type="text"
+										class="form-control" id="p2cell" placeholder="טלפון">
+								</div>
+								<div class="form-group">
+									<label for="p2relat">קרבה</label>
+									<select class="form-control"
+										id="p2relat">
+										<option value="1">אמא</option>
+										<option value="2">אבא</option>
+										<option value="3">אח</option>
+										<option value="4">אחות</option>
+										<option value="5">אחר</option>
+									</select>
+								</div>
+							</div>
 
-                        <form role="form">
-
-                            <div class="form-group">
-                                <label>Text Input</label>
-                                <input class="form-control">
-                                <p class="help-block">Example block-level help text here.</p>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Text Input with Placeholder</label>
-                                <input class="form-control" placeholder="Enter text">
-                            </div>
-
-                            <div class="form-group">
-                                <label>Static Control</label>
-                                <p class="form-control-static">email@example.com</p>
-                            </div>
-
-                            <div class="form-group">
-                                <label>File input</label>
-                                <input type="file">
-                            </div>
-
-                            <div class="form-group">
-                                <label>Text area</label>
-                                <textarea class="form-control" rows="3"></textarea>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Checkboxes</label>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" value="">Checkbox 1
-                                    </label>
-                                </div>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" value="">Checkbox 2
-                                    </label>
-                                </div>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" value="">Checkbox 3
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Inline Checkboxes</label>
-                                <label class="checkbox-inline">
-                                    <input type="checkbox">1
-                                </label>
-                                <label class="checkbox-inline">
-                                    <input type="checkbox">2
-                                </label>
-                                <label class="checkbox-inline">
-                                    <input type="checkbox">3
-                                </label>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Radio Buttons</label>
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>Radio 1
-                                    </label>
-                                </div>
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">Radio 2
-                                    </label>
-                                </div>
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3">Radio 3
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Inline Radio Buttons</label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline1" value="option1" checked>1
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline2" value="option2">2
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline3" value="option3">3
-                                </label>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Selects</label>
-                                <select class="form-control">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Multiple Selects</label>
-                                <select multiple class="form-control">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
-                            </div>
-
-                            <button type="submit" class="btn btn-default">Submit Button</button>
-                            <button type="reset" class="btn btn-default">Reset Button</button>
-
-                        </form>
-
-                    </div>
-                    <div class="col-lg-6">
-                        <!-- <h1>Disabled Form States</h1>
-
-                        <form role="form">
-
-                            <fieldset disabled>
-
-                                <div class="form-group">
-                                    <label for="disabledSelect">Disabled input</label>
-                                    <input class="form-control" id="disabledInput" type="text" placeholder="Disabled input" disabled>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="disabledSelect">Disabled select menu</label>
-                                    <select id="disabledSelect" class="form-control">
-                                        <option>Disabled select</option>
-                                    </select>
-                                </div>
-
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox">Disabled Checkbox
-                                    </label>
-                                </div>
-
-                                <button type="submit" class="btn btn-primary">Disabled Button</button>
-
-                            </fieldset>
-
-                        </form> -->
-
-                        <h1>Form Validation</h1>
-
-                        <form role="form">
-
-                            <div class="form-group has-success">
-                                <label class="control-label" for="inputSuccess">Input with success</label>
-                                <input type="text" class="form-control" id="inputSuccess">
-                            </div>
-
-                            <div class="form-group has-warning">
-                                <label class="control-label" for="inputWarning">Input with warning</label>
-                                <input type="text" class="form-control" id="inputWarning">
-                            </div>
-
-                            <div class="form-group has-error">
-                                <label class="control-label" for="inputError">Input with error</label>
-                                <input type="text" class="form-control" id="inputError">
-                            </div>
-
-                        </form>
-
-                        <h1>Input Groups</h1>
-
-                        <form role="form">
-
-                            <div class="form-group input-group">
-                                <span class="input-group-addon">@</span>
-                                <input type="text" class="form-control" placeholder="Username">
-                            </div>
-
-                            <div class="form-group input-group">
-                                <input type="text" class="form-control">
-                                <span class="input-group-addon">.00</span>
-                            </div>
-
-                            <div class="form-group input-group">
-                                <span class="input-group-addon"><i class="fa fa-eur"></i></span>
-                                <input type="text" class="form-control" placeholder="Font Awesome Icon">
-                            </div>
-
-                            <div class="form-group input-group">
-                                <span class="input-group-addon">$</span>
-                                <input type="text" class="form-control">
-                                <span class="input-group-addon">.00</span>
-                            </div>
-
-                            <div class="form-group input-group">
-                                <input type="text" class="form-control">
-                                <span class="input-group-btn"><button class="btn btn-default" type="button"><i class="fa fa-search"></i></button></span>
-                            </div>
-
-                        </form>
-
-                        <p>For complete documentation, please visit <a href="http://getbootstrap.com/css/#forms">Bootstrap's Form Documentation</a>.</p>
-
-                    </div>
-                </div>
-                <!-- /.row -->
-
-            </div>
-           
-
-        </div>
+			<!-- row 2 col 3 -->
+							<div class="col-lg-3">
+								
+								<div class="form-group">
+									<label for="address">כתובת מגורים</label> <input type="text"
+										class="form-control" id="address" placeholder="כתובת">
+								</div>
+								<div class="form-group">
+									<label for="phone">טלפון בבית</label> <input type="text"
+										class="form-control" id="phone" placeholder="טלפון">
+								</div>
+							</div>
+							
+			<!-- row 2 col 4 -->				
+							<div class="col-lg-3">
+								
+								<div class="form-group">
+									<button>שמור</button>
+								</div>
+								<div class="form-group">
+									<button>שמור ונקה</button>
+								</div>
+								<div class="form-group">
+									<button>נקה</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+       </div>
         <!-- /#page-wrapper -->
 
     </div>

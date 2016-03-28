@@ -105,10 +105,12 @@
 
                 <div class="row"> <!-- first button row -->
                     <div class="col-lg-3 col-md-6">
+                    </div>
+                    <div class="col-lg-3 col-md-6">
                         <div class="panel panel-primary">
                             <a href="pupils_search.jsp">
                             	<div class="panel-footer">
-                                    <span class="pull-right">תלמידים</span>
+                                    <span class="pull-right">תלמידים <br>במועדונית</span>
                                     <span class="pull-left"><i class="fa fa-users fa-5x"></i></span>
                                     <div class="clearfix"></div>
                                 </div>
@@ -120,7 +122,7 @@
                            
                             <a href="#">
                                 <div class="panel-footer">
-                                    <span class="pull-right">רישום</span>
+                                    <span class="pull-right">רישום לחוגים </span>
                                     <span class="pull-left"><i class="fa  fa-pencil-square-o fa-5x"></i></span>
                                     <div class="clearfix"></div>
                                 </div>
@@ -133,10 +135,11 @@
                 <!-- /.row -->
 
                 <div class="row"> <!-- second button row -->
-                   
-                      <div class="col-lg-3 col-md-6">
+                   	<div class="col-lg-3 col-md-6">
+                    </div>
+                    <div class="col-lg-3 col-md-6">
                         <div class="panel panel-yellow">
-                           <a href="#">
+                           <a href="attends_page.jsp">
                                 <div class="panel-footer">
                                     <span class="pull-right">נוכחות</span>
                                     <span class="pull-left"><i class="fa  fa-check-square-o fa-5x"></i></span>
@@ -147,7 +150,7 @@
                     </div>
                         <div class="col-lg-3 col-md-6">
                         <div class="panel panel-red">
-                            <a href="#">
+                            <a href="settings_main.jsp">
                                 <div class="panel-footer">
                                    <span class="pull-right">ניהול מערכת</span>
                                     <span class="pull-left"><i class="fa  fa-folder-open fa-5x"></i></span>
