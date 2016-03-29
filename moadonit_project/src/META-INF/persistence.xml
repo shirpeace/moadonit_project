@@ -2,6 +2,21 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 	<persistence-unit name="moadonit_project">
 		<mapping-file>META-INF/eclipselink-orm.xml</mapping-file>
+		<class>model.GenderRef</class>
+		<class>model.Attendance</class>
+		<class>model.AttendancePK</class>
+		<class>model.Family</class>
+		<class>model.FamilyRelation</class>
+		<class>model.FoodType</class>
+		<class>model.Grade</class>
+		<class>model.Parent</class>
+		<class>model.Pupil</class>
+		<class>model.RegSource</class>
+		<class>model.RegToMoadonit</class>
+		<class>model.RegToMoadonitPK</class>
+		<class>model.RegType</class>
+		<class>model.Room</class>
+		<class>model.User</class>
 	</persistence-unit>
 	
 </persistence>
