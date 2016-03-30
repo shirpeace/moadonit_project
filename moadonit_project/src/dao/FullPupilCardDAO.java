@@ -59,7 +59,7 @@ public class FullPupilCardDAO extends AbstractDAO {
 		p.setStaffChild(resultSet.getString("staffChild"));
 		p.setFoodSensitivity(resultSet.getString("foodSensitivity"));
 		p.setOtherComments(resultSet.getString("otherComments"));
-		p.setFoodType(resultSet.getString("foodType"));
+		p.setFoodType(resultSet.getInt("foodType"));
 		p.setHomeAddress(resultSet.getString("homeAddress"));
 		p.setHomePhoneNum(resultSet.getString("homePhoneNum"));
 		p.setP1fname(resultSet.getString("p1fname"));

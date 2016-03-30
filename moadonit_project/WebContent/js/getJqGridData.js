@@ -3,7 +3,7 @@ jQuery(document).ready(function() {
                 url : "GridServlet",
                 datatype : "json",
                 mtype : 'POST',
-                colNames : [ 'Id', 'FirstName', 'LastName', 'Grade', 'Grade' ],
+                colNames : ['שם פרטי' , 'שם משפחה' , 'מגדר', 'כיתה', 'רשום?'],
                 colModel : [ {
                         name : 'id',
                         index : 'id',
@@ -34,6 +34,7 @@ jQuery(document).ready(function() {
                 rowList : [ 10, 20, 30 ],
                 sortname : 'invid',
                 sortorder : 'desc',
+                direction:"rtl",
                 viewrecords : true,
                 gridview : true,
                 caption : 'Data Report',

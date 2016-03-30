@@ -7,7 +7,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="he">
 
 <head>
 
@@ -43,8 +43,8 @@
 	<script src="resources/js/jquery-1.12.2.js"></script>
 	<script src="resources/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
 	<script src="js/jquery.jqGrid.min.js"></script> 
-	<script src="js/i18n/grid.locale-en.js"></script>
-<!-- 	<script src="js/i18n/grid.locale-he.js"></script> -->
+	<!-- <script src="js/i18n/grid.locale-en.js"></script> -->
+	<script src="js/i18n/grid.locale-he.js"></script>
  	
 	
 

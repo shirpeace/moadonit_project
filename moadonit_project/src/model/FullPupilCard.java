@@ -27,7 +27,7 @@ public class FullPupilCard implements Serializable {
 
 	private String foodSensitivity;
 
-	private String foodType;
+	private int foodType;
 
 	private int gender;
 
@@ -126,11 +126,11 @@ public class FullPupilCard implements Serializable {
 		this.foodSensitivity = foodSensitivity;
 	}
 
-	public String getFoodType() {
+	public int getFoodType() {
 		return this.foodType;
 	}
 
-	public void setFoodType(String foodType) {
+	public void setFoodType(int foodType) {
 		this.foodType = foodType;
 	}
 
