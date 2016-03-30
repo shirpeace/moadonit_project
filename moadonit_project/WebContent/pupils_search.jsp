@@ -42,12 +42,13 @@
 	
 	<script src="resources/js/jquery-1.12.2.js"></script>
 	<script src="resources/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
-	<script src="js/jquery.jqGrid.min.js"></script> 
-	<!-- <script src="js/i18n/grid.locale-en.js"></script> -->
+	
 	<script src="js/i18n/grid.locale-he.js"></script>
+  <!--  <script src="js/i18n/grid.locale-en.js"></script>  -->
+	
  	
 	
-
+    <script src="js/jquery.jqGrid.min.js"></script> 
 	<script src="js/getJqGridData.js"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->

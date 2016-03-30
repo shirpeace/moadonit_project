@@ -3,7 +3,7 @@ jQuery(document).ready(function() {
                 url : "GridServlet",
                 datatype : "json",
                 mtype : 'POST',
-                colNames : ['שם פרטי' , 'שם משפחה' , 'מגדר', 'כיתה', 'רשום?'],
+                colNames : ['שם פרטי' , 'שם משפחה' , 'מגדר', 'כיתה', 'רשום'],
                 colModel : [ {
                         name : 'id',
                         index : 'id',
@@ -37,7 +37,7 @@ jQuery(document).ready(function() {
                 direction:"rtl",
                 viewrecords : true,
                 gridview : true,
-                caption : 'Data Report',
+                caption: 'הגריד הראשון שלי',
                 jsonReader : {
                         repeatitems : false,
                 },
