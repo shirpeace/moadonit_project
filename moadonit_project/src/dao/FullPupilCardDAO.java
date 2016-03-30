@@ -66,12 +66,12 @@ public class FullPupilCardDAO extends AbstractDAO {
 		p. setP1lname (resultSet.getString("p1lname"));
 		p.setP1cell(resultSet.getString("p1cell"));
 		p.setP1mail(resultSet.getString("p1mail"));
-		p.setP1relation(resultSet.getString("p1relation"));
+		p.setP1relation(resultSet.getInt("p1relation"));
 		p.setP2fname(resultSet.getString("p2fname"));
 		p.setP2lname(resultSet.getString("p2lname"));
 		p.setP2cell(resultSet.getString("p2cell"));
 		p.setP2mail(resultSet.getString("p2mail"));
-		p.setP2relation(resultSet.getString("p2relation"));		
+		p.setP2relation(resultSet.getInt("p2relation"));		
 		return p;
 	}
 
