@@ -6,7 +6,6 @@ import java.sql.SQLException;
 
 import model.GenderRef;
 import model.Grade;
-import model.Room;
 import util.DAOUtil;
 import controller.MyConnection;
 

@@ -9,7 +9,12 @@ import controller.MyConnection;
  
 public class LoginDAO extends AbstractDAO {
  
-    public LoginDAO(MyConnection con) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public LoginDAO(MyConnection con) {
 		super(con);
 		// TODO Auto-generated constructor stub
 	}

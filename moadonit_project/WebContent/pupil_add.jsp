@@ -170,7 +170,7 @@
 								<div class="form-group">
 									<label for="cell">טלפון נייד תלמיד</label> <input type="text"
 										class="form-control" id="cell" placeholder="טלפון">
-								</div>
+								</div> 
 							</div>
 		<!-- row 1 col 2 -->
 							<div class="col-lg-3">
