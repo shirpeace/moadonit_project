@@ -30,15 +30,15 @@ public class Pupil implements Serializable {
 
 	private String photoPath;
 
-	//bi-directional many-to-one association to GenderRef
-	@ManyToOne
-	@JoinColumn(name="gender")
-	private GenderRef genderRef;
-
 	//bi-directional many-to-one association to Family
 	@ManyToOne
 	@JoinColumn(name="familyID")
 	private Family tblFamily;
+
+	//bi-directional many-to-one association to GenderRef
+	@ManyToOne
+	@JoinColumn(name="gender")
+	private GenderRef tblGenderRef;
 
 	//bi-directional many-to-one association to Grade
 	@ManyToOne
@@ -100,20 +100,20 @@ public class Pupil implements Serializable {
 		this.photoPath = photoPath;
 	}
 
-	public GenderRef getGenderRef() {
-		return this.genderRef;
-	}
-
-	public void setGenderRef(GenderRef genderRef) {
-		this.genderRef = genderRef;
-	}
-
 	public Family getTblFamily() {
 		return this.tblFamily;
 	}
 
 	public void setTblFamily(Family tblFamily) {
 		this.tblFamily = tblFamily;
+	}
+
+	public GenderRef getTblGenderRef() {
+		return this.tblGenderRef;
+	}
+
+	public void setTblGenderRef(GenderRef tblGenderRef) {
+		this.tblGenderRef = tblGenderRef;
 	}
 
 	public Grade getTblGrade() {

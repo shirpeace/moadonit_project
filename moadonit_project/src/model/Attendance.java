@@ -20,7 +20,7 @@ public class Attendance implements Serializable {
 	private int activityNum;
 
 	@Column(name="`attended?`")
-	private byte[] attended_;
+	private int attended_;
 
 	@Column(name="rec_type")
 	private int recType;
@@ -44,11 +44,11 @@ public class Attendance implements Serializable {
 		this.activityNum = activityNum;
 	}
 
-	public byte[] getAttended_() {
+	public int getAttended_() {
 		return this.attended_;
 	}
 
-	public void setAttended_(byte[] attended_) {
+	public void setAttended_(int attended_) {
 		this.attended_ = attended_;
 	}
 

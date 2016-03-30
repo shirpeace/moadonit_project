@@ -19,6 +19,12 @@
 
     <title>מועדונית</title>
 
+<!--  java script -->
+	<script src="resources/js/jquery-1.12.2.js"></script>
+	<script src="resources/bootstrap/js/bootstrap.js"></script>
+	<script src="resources/js/template_logic.js"></script>
+	<script src="resources/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
+	
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
@@ -43,6 +49,44 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+<script type="text/javascript">
+		var currentUserId =	 '${p.pupilNum}'
+		var pupilID ;
+		 $(function() {
+			    /* $('#form').hide(); */
+			    $("#testBtn").click(function() {
+			      // validate and process form here
+			      
+			  		
+			  	var dataString = 'id='+ 1 + '&action=' + "get";
+			      
+			  
+			  	 $.ajax({
+			  		async: false,
+					type: 'GET',
+					datatype: 'jsonp',
+			        url: "FullPupilCardController",
+			        data: dataString,
+			        success: function(data) {
+			        	if(data != undefined){
+			        		pupilID = data.id;
+			        		alert(data);
+			        	
+			        	}
+			        },
+			        error: function(e) {
+			        	console.log("error");
+						
+			        }
+			        
+			      }); 
+			      return false;
+			      
+			    });
+			  });
+		 
+		
+</script>
 </head>
 
 <body>
@@ -110,7 +154,7 @@
                 </div>
                 <!-- /.row -->
 
-				<form role="form">
+				<form role="form" id="ajaxform">
 		<!-- row 1 col 1 -->
 					<div class="row">
 						<div class="col-lg-12">
@@ -130,12 +174,82 @@
 							</div>
 		<!-- row 1 col 2 -->
 							<div class="col-lg-3">
-								<div class="form-group">
+								<!-- <div class="form-group">
 									<label for="fName">תאריך לידה</label> <input type="text"
 										class="form-control" id="fName" placeholder="שם">
+								</div> -->
+								<div class="form-group">
+									<div><label for="bdate">תאריך לידה</label></div>
+									<div class="form-group">
+										<select class="form-control col-lg-4"
+											id="bdate">
+											<option value="11">א-א</option>
+											<option value="12">א-ב</option>
+											<option value="13">א-ג</option>
+											<option value="21">ב-א</option>
+											<option value="22">ב-ב</option>
+											<option value="23">ב-ג</option>
+											<option value="31">ג-א</option>
+											<option value="32">ג-ב</option>
+											<option value="33">ג-ג</option>
+											<option value="41">ד-א</option>
+											<option value="42">ד-ב</option>
+											<option value="43">ד-ג</option>
+											<option value="51">ה-א</option>
+											<option value="52">ה-ב</option>
+											<option value="53">ב-ג</option>
+											<option value="61">ו-א</option>
+											<option value="62">ו-ב</option>
+											<option value="63">ו-ג</option>
+										</select>
+										<select class="form-control col-lg-4"
+											id="class">
+											<option value="11">א-א</option>
+											<option value="12">א-ב</option>
+											<option value="13">א-ג</option>
+											<option value="21">ב-א</option>
+											<option value="22">ב-ב</option>
+											<option value="23">ב-ג</option>
+											<option value="31">ג-א</option>
+											<option value="32">ג-ב</option>
+											<option value="33">ג-ג</option>
+											<option value="41">ד-א</option>
+											<option value="42">ד-ב</option>
+											<option value="43">ד-ג</option>
+											<option value="51">ה-א</option>
+											<option value="52">ה-ב</option>
+											<option value="53">ב-ג</option>
+											<option value="61">ו-א</option>
+											<option value="62">ו-ב</option>
+											<option value="63">ו-ג</option>
+										</select>
+										<select class="form-control col-lg-4"
+											id="class">
+											<option value="11">א-א</option>
+											<option value="12">א-ב</option>
+											<option value="13">א-ג</option>
+											<option value="21">ב-א</option>
+											<option value="22">ב-ב</option>
+											<option value="23">ב-ג</option>
+											<option value="31">ג-א</option>
+											<option value="32">ג-ב</option>
+											<option value="33">ג-ג</option>
+											<option value="41">ד-א</option>
+											<option value="42">ד-ב</option>
+											<option value="43">ד-ג</option>
+											<option value="51">ה-א</option>
+											<option value="52">ה-ב</option>
+											<option value="53">ב-ג</option>
+											<option value="61">ו-א</option>
+											<option value="62">ו-ב</option>
+											<option value="63">ו-ג</option>
+										</select>
+									</div>
 								</div>
 								<div class="form-group">
-									<label for="class">כיתה</label> <select class="form-control"
+									<br><br>
+									<label for="class">כיתה</label>
+									<select class="form-control"
 										id="class">
 										<option value="11">א-א</option>
 										<option value="12">א-ב</option>
@@ -281,12 +395,19 @@
 								
 								<div class="form-group">
 									<button>שמור</button>
+									<input type="submit" id="saveBtn" name="aveBtn"
+									class="btn btn-default" value="שמור">
 								</div>
 								<div class="form-group">
 									<button>שמור ונקה</button>
+									<input type="submit" id="saveClearBtn" name="saveClearBtn"
+									class="btn btn-default" value="שמור ונקה">
+									
 								</div>
 								<div class="form-group">
-									<button>נקה</button>
+								<input type="submit" id="clearBtn" name="clearBtn"
+									 class="btn btn-default" value="נקה">
+									<button id="testBtn">test</button>
 								</div>
 							</div>
 						</div>
@@ -306,9 +427,9 @@
     <script src="js/bootstrap.min.js"></script>
 
     <!-- Morris Charts JavaScript -->
-    <script src="js/plugins/morris/raphael.min.js"></script>
+   <!--  <script src="js/plugins/morris/raphael.min.js"></script>
     <script src="js/plugins/morris/morris.min.js"></script>
-    <script src="js/plugins/morris/morris-data.js"></script>
+    <script src="js/plugins/morris/morris-data.js"></script> -->
 
 </body>
 

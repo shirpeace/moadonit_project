@@ -28,10 +28,9 @@ public class RegisterPupil implements Serializable {
 		this.pupilNum = pupilNum;
 	}
 
-	/***
-	 * need to be changed to char 0 - 1
-	 */
-	private byte[] ethiopian;
+
+
+	private int ethiopian;
 
 	private String foodSensitivity;
 
@@ -54,11 +53,11 @@ public class RegisterPupil implements Serializable {
 	public RegisterPupil() {
 	}
 
-	public byte[] getEthiopian() {
+	public int getEthiopian() {
 		return this.ethiopian;
 	}
 
-	public void setEthiopian(byte[] ethiopian) {
+	public void setEthiopian(int ethiopian) {
 		this.ethiopian = ethiopian;
 	}
 

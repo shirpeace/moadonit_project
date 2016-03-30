@@ -1,11 +1,18 @@
 package util;
 
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Utility class for DAO's. This class contains commonly used DAO logic which is been refactored in
@@ -48,6 +55,41 @@ public final class DAOUtil {
         return statement;
     }
 
+    public static  String getJsonFromObject(Object o){
+    	String jsonInString = "";
+    	
+    	ObjectMapper mapper = new ObjectMapper();
+    	//Object to JSON in String
+    	 try {
+			jsonInString = mapper.writeValueAsString(o);
+    	 } catch (JsonGenerationException e) {
+ 			e.printStackTrace();
+ 		} catch (JsonMappingException e) {
+ 			e.printStackTrace();
+ 		} catch (IOException e) {
+ 			e.printStackTrace();
+ 		}
+    	 
+    	return jsonInString;
+    }
+    
+    public static Object getObjectFromJson(String o, Class<?> classType ){
+    	ObjectMapper mapper = new ObjectMapper();
+    	
+    	Object obj = null;
+		try {
+			obj = mapper.readValue(o, classType);
+			
+		} catch (JsonGenerationException e) {
+ 			e.printStackTrace();
+ 		} catch (JsonMappingException e) {
+ 			e.printStackTrace();
+ 		} catch (IOException e) {
+ 			e.printStackTrace();
+ 		}
+    	
+    	return obj;
+    }
     /**
      * Set the given parameter values in the given PreparedStatement.
      * @param connection The PreparedStatement to set the given parameter values in.

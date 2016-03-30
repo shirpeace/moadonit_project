@@ -6,32 +6,32 @@ import java.util.List;
 
 
 /**
- * The persistent class for the gender_ref database table.
+ * The persistent class for the tbl_gender_ref database table.
  * 
  */
 @Entity
-@Table(name="gender_ref")
+@Table(name="tbl_gender_ref")
 @NamedQuery(name="GenderRef.findAll", query="SELECT g FROM GenderRef g")
 public class GenderRef implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private byte gender;
+	private int gender;
 
 	private String genderName;
 
 	//bi-directional many-to-one association to Pupil
-	@OneToMany(mappedBy="genderRef")
+	@OneToMany(mappedBy="tblGenderRef")
 	private List<Pupil> tblPupils;
 
 	public GenderRef() {
 	}
 
-	public byte getGender() {
+	public int getGender() {
 		return this.gender;
 	}
 
-	public void setGender(byte gender) {
+	public void setGender(int gender) {
 		this.gender = gender;
 	}
 
@@ -53,14 +53,14 @@ public class GenderRef implements Serializable {
 
 	public Pupil addTblPupil(Pupil tblPupil) {
 		getTblPupils().add(tblPupil);
-		tblPupil.setGenderRef(this);
+		tblPupil.setTblGenderRef(this);
 
 		return tblPupil;
 	}
 
 	public Pupil removeTblPupil(Pupil tblPupil) {
 		getTblPupils().remove(tblPupil);
-		tblPupil.setGenderRef(null);
+		tblPupil.setTblGenderRef(null);
 
 		return tblPupil;
 	}

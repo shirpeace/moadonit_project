@@ -12,7 +12,7 @@ import controller.MyConnection;
 
 public class GenderDAO extends AbstractDAO {
 
-	private String select = "SELECT gender, genderName FROM gender_ref;";
+	private String select = "SELECT gender, genderName FROM tbl_gender_ref where gender = ?;";
 
 	private static final long serialVersionUID = -7282625935008626298L;
 
@@ -25,8 +25,9 @@ public class GenderDAO extends AbstractDAO {
 			DAOException {
 		GenderRef gender = new GenderRef();
 
-		try (PreparedStatement statement = DAOUtil.prepareStatement(
-				this.con.getConnection(), select, false, new Object[] { id });
+		try (
+				PreparedStatement statement = DAOUtil.prepareStatement(this.con.getConnection(), select, false, new Object[] { id });
+		
 				ResultSet resultSet = statement.executeQuery();) {
 
 			if (resultSet.next()) {

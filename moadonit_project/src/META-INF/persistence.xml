@@ -16,9 +16,10 @@
 		<class>model.RegToMoadonit</class>
 		<class>model.RegToMoadonitPK</class>
 		<class>model.RegType</class>
-		<class>model.RegisterPupil</class>
 		<class>model.Room</class>
 		<class>model.User</class>
+		<class>model.FullPupilCard</class>
+		<class>model.RegisterPupil</class>
 	</persistence-unit>
 	
 </persistence>

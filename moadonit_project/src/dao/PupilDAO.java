@@ -63,7 +63,7 @@ public class PupilDAO  extends AbstractDAO{
         		p.getFirstName(),
 				p.getLastName(),p.getCellphone(), p.getPhotoPath(),
 				p.getBirthDate(), p.getTblFamily().getFamilyID(),
-				p.getTblGrade().getGradeID(),p.getGenderRef().getGender(),p.getPupilNum()
+				p.getTblGrade().getGradeID(),p.getTblGenderRef().getGender(),p.getPupilNum()
 
 		};
 
@@ -100,8 +100,8 @@ public class PupilDAO  extends AbstractDAO{
 				if(p.getTblGrade() != null)
 				p.setTblGrade(new GradeDAO(con).selectById(p.getTblGrade().getGradeID()));
 				
-				if(p.getGenderRef() != null)
-				p.setGenderRef(new GenderDAO(con).selectById(p.getGenderRef().getGender()));
+				if(p.getTblGenderRef() != null)
+				p.setTblGenderRef(new GenderDAO(con).selectById(p.getTblGenderRef().getGender()));
 			
 			}
 			
@@ -134,8 +134,8 @@ public class PupilDAO  extends AbstractDAO{
 		
 		//set the  id for later fetch of gender data
 		GenderRef g = new GenderRef();
-		g.setGender(resultSet.getByte("gender"));
-		p.setGenderRef(g);
+		g.setGender(resultSet.getInt("gender"));
+		p.setTblGenderRef(g);
 		
 		p.setPupilNum(resultSet.getInt("pupilNum"));
 		
@@ -160,10 +160,10 @@ public class PupilDAO  extends AbstractDAO{
 				p.getLastName(),
 				p.getCellphone(), 
 				p.getPhotoPath(),
-				p.getBirthDate(), 
+				DAOUtil.toSqlDate(p.getBirthDate()), 
 				p.getTblFamily().getFamilyID(),
 				p.getTblGrade().getGradeID(),
-				p.getGenderRef().getGender()
+				p.getTblGenderRef().getGender()
 				,p.getPupilNum()
 
 		};

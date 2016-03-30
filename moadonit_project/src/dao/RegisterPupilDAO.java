@@ -145,7 +145,7 @@ public class RegisterPupilDAO extends AbstractDAO {
 		regP.setHealthProblems(resultSet.getString("healthProblems"));
 		regP.setFoodSensitivity(resultSet.getString("foodSensitivity"));
 		regP.setOtherComments(resultSet.getString("otherComments"));
-		regP.setEthiopian(resultSet.getBytes("ethiopian"));
+		regP.setEthiopian(resultSet.getInt("ethiopian"));
 		regP.setStaffChild(resultSet.getString("staffChild"));
 		FoodType ft = new FoodType();
 		ft.setFoodType(resultSet.getString("foodType"));
