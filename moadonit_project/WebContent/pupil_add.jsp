@@ -25,6 +25,8 @@
 	<script src="resources/js/template_logic.js"></script>
 	<script src="resources/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
 	
+	<script src="js/js_logic.js"></script>
+	
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
@@ -50,9 +52,21 @@
     <![endif]-->
 
 <script type="text/javascript">
+
+		
+
+
 		var currentUserId =	 '${p.pupilNum}'
 		var pupilID ;
 		 $(function() {
+			 	
+			 $('#date_of_birth').combodate({
+				    minYear: 1975,
+				    maxYear: 2016,
+				    minuteStep: 10
+				});  
+			 moment.locale();         // he
+			
 			    /* $('#form').hide(); */
 			    $("#testBtn").click(function() {
 			      // validate and process form here
@@ -70,7 +84,7 @@
 			        success: function(data) {
 			        	if(data != undefined){
 			        		pupilID = data.id;
-			        		alert(data);
+			        		setPupilCardData(data);
 			        	
 			        	}
 			        },
@@ -178,79 +192,18 @@
 									<label for="fName">תאריך לידה</label> <input type="text"
 										class="form-control" id="fName" placeholder="שם">
 								</div> -->
+								
 								<div class="form-group">
-									<div><label for="bdate">תאריך לידה</label></div>
-									<div class="form-group">
-										<select class="form-control col-lg-4"
-											id="bdate">
-											<option value="11">א-א</option>
-											<option value="12">א-ב</option>
-											<option value="13">א-ג</option>
-											<option value="21">ב-א</option>
-											<option value="22">ב-ב</option>
-											<option value="23">ב-ג</option>
-											<option value="31">ג-א</option>
-											<option value="32">ג-ב</option>
-											<option value="33">ג-ג</option>
-											<option value="41">ד-א</option>
-											<option value="42">ד-ב</option>
-											<option value="43">ד-ג</option>
-											<option value="51">ה-א</option>
-											<option value="52">ה-ב</option>
-											<option value="53">ב-ג</option>
-											<option value="61">ו-א</option>
-											<option value="62">ו-ב</option>
-											<option value="63">ו-ג</option>
-										</select>
-										<select class="form-control col-lg-4"
-											id="class">
-											<option value="11">א-א</option>
-											<option value="12">א-ב</option>
-											<option value="13">א-ג</option>
-											<option value="21">ב-א</option>
-											<option value="22">ב-ב</option>
-											<option value="23">ב-ג</option>
-											<option value="31">ג-א</option>
-											<option value="32">ג-ב</option>
-											<option value="33">ג-ג</option>
-											<option value="41">ד-א</option>
-											<option value="42">ד-ב</option>
-											<option value="43">ד-ג</option>
-											<option value="51">ה-א</option>
-											<option value="52">ה-ב</option>
-											<option value="53">ב-ג</option>
-											<option value="61">ו-א</option>
-											<option value="62">ו-ב</option>
-											<option value="63">ו-ג</option>
-										</select>
-										<select class="form-control col-lg-4"
-											id="class">
-											<option value="11">א-א</option>
-											<option value="12">א-ב</option>
-											<option value="13">א-ג</option>
-											<option value="21">ב-א</option>
-											<option value="22">ב-ב</option>
-											<option value="23">ב-ג</option>
-											<option value="31">ג-א</option>
-											<option value="32">ג-ב</option>
-											<option value="33">ג-ג</option>
-											<option value="41">ד-א</option>
-											<option value="42">ד-ב</option>
-											<option value="43">ד-ג</option>
-											<option value="51">ה-א</option>
-											<option value="52">ה-ב</option>
-											<option value="53">ב-ג</option>
-											<option value="61">ו-א</option>
-											<option value="62">ו-ב</option>
-											<option value="63">ו-ג</option>
-										</select>
-									</div>
+									<label for="date_of_birth">תאריך לידה</label>
+									<br>	
+									<input id="date_of_birth" value="01-01-2003"  data-smartDays="true" data-firstItem="name"
+										data-format="DD-MM-YYYY" data-template="D MMM YYYY"> 
 								</div>
 								<div class="form-group">
-									<br><br>
-									<label for="class">כיתה</label>
+									
+									<label for="grade">כיתה</label>
 									<select class="form-control"
-										id="class">
+										id="grade">
 										<option value="11">א-א</option>
 										<option value="12">א-ב</option>
 										<option value="13">א-ג</option>
@@ -274,9 +227,9 @@
 								<div class="form-group">
 									<label for="cell" class="col-lg-1">מגדר</label>
 									<label class="radio-inline col-lg-2"> 
-									<input type="radio" name="inlineRadioOptions" id="male" value="1"> בן </label>
+									<input type="radio" name="genderGruop" id="male" value="1"> בן </label>
 									<label class="radio-inline col-lg-2">
-									<input type="radio" name="inlineRadioOptions" id="female" value="2">בת</label>
+									<input type="radio" name="genderGruop" id="female" value="2">בת</label>
 								</div>
 							</div>
 		<!-- row 1 col 3 -->
@@ -338,6 +291,10 @@
 										class="form-control" id="p1cell" placeholder="טלפון">
 								</div>
 								<div class="form-group">
+									<label for="p1mail">אימייל</label> <input type="text"
+										class="form-control" id="p1mail" placeholder="אימייל">
+								</div>
+								<div class="form-group">
 									<label for="p1relat">קרבה</label>
 									<select class="form-control"
 										id="p1relat">
@@ -363,6 +320,10 @@
 								<div class="form-group">
 									<label for="p2cell">טלפון נייד</label> <input type="text"
 										class="form-control" id="p2cell" placeholder="טלפון">
+								</div>
+								<div class="form-group">
+									<label for="p2mail">אימייל</label> <input type="text"
+										class="form-control" id="p2mail" placeholder="אימייל">
 								</div>
 								<div class="form-group">
 									<label for="p2relat">קרבה</label>
@@ -425,6 +386,11 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
+    
+    
+    
+	<script src="js/moment-with-locales.js"></script> 
+	<script src="js/combodate.js"></script> 
 
     <!-- Morris Charts JavaScript -->
    <!--  <script src="js/plugins/morris/raphael.min.js"></script>

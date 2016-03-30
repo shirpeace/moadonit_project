@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import model.GenderRef;
-import model.Grade;
 import util.DAOUtil;
 import controller.MyConnection;
 
