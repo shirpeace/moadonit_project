@@ -68,8 +68,8 @@ public class FullPupilCard implements Serializable {
 	private String p2relation;
 
 	private String photoPath;
-@Id
-	private int pupilNum; 
+	@Id
+	private int pupilNum;
 
 	private int regPupilNum;
 

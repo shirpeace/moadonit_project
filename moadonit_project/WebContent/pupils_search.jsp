@@ -34,6 +34,21 @@
 
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    <!-- jqgrid style -->
+    <link rel="stylesheet" href="resources/jquery-ui-1.11.4.custom/jquery-ui.css">
+	<link rel="stylesheet" href="css/ui.jqgrid.css">
+	
+	
+	<script src="resources/js/jquery-1.12.2.js"></script>
+	<script src="resources/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
+	<script src="js/jquery.jqGrid.min.js"></script> 
+	<script src="js/i18n/grid.locale-en.js"></script>
+<!-- 	<script src="js/i18n/grid.locale-he.js"></script> -->
+ 	
+	
+
+	<script src="js/getJqGridData.js"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -192,6 +207,14 @@
                                 </div> -->
                             </div>
                         </div>
+
+					<table id="list">
+						<tr>
+						
+							<td >helolo</td>						</tr>
+					</table>
+					<div id="pager"></div>
+                        
                     </div>
             </div>
             <!-- /.container-fluid -->
@@ -203,8 +226,8 @@
     <!-- /#wrapper -->
 
     <!-- jQuery -->
-    <script src="js/jquery.js"></script>
-
+<!--     <script src="js/jquery.js"></script>
+ -->
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 
