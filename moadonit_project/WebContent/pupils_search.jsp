@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=windows-1255"
-	pageEncoding="windows-1255"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
@@ -17,7 +17,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>ξεςγεπιϊ</title>
+    <title>ΧΧ•ΧΆΧ“Χ•Χ Χ™Χª</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -68,11 +68,11 @@
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="nav navbar-right top-nav" style="padding-top: 15px; ">
             	<a href="index.html">
-	            	<i class="fa fa-fw fa-power-off"></i>&nbsp;ιφιΰδ</a>
+	            	<i class="fa fa-fw fa-power-off"></i>&nbsp;Χ™Χ¦Χ™ΧΧ”</a>
             </div>
             <div class="navbar-header" >
             	<a class="navbar-brand" href="dashboard.jsp">
-            	<i class="fa fa-home fa-fw"></i>&nbsp;ξεςγεπιϊ</a>
+            	<i class="fa fa-home fa-fw"></i>&nbsp;ΧΧ•ΧΆΧ“Χ•Χ Χ™Χª</a>
                 
             </div>
             
@@ -80,17 +80,17 @@
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                      <li>
-                        <a href="" style="font-size: 120%; pointer-events: none;"> <i class="fa fa-fw fa-users"></i> ϊμξιγιν</a>
+                        <a href="" style="font-size: 120%; pointer-events: none;"> <i class="fa fa-fw fa-users"></i> ΧªΧΧΧ™Χ“Χ™Χ</a>
                         <br>
                      </li> 
                      <li class="active">
-                        <a href="pupils_search.jsp" ><i class="fa fa-fw fa-search"></i> ηιτεω</a>
+                        <a href="pupils_search.jsp" ><i class="fa fa-fw fa-search"></i> Χ—Χ™Χ¤Χ•Χ©</a>
                      </li> 
                      <li>
-                        <a href="pupils_phones.jsp" ><i class="fa fa-fw fa-phone"></i> γτι χωψ</a>
+                        <a href="pupils_phones.jsp" ><i class="fa fa-fw fa-phone"></i> Χ“Χ¤Χ™ Χ§Χ©Χ¨</a>
                      </li>
                      <li>
-                        <a href= "pupil_add.jsp"><i class="fa fa-fw fa-edit"></i> δερτϊ ηγω</a>
+                        <a href= "pupil_add.jsp"><i class="fa fa-fw fa-edit"></i> Χ”Χ•Χ΅Χ¤Χª Χ—Χ“Χ©</a>
                      </li>  
                 </ul>
             </div>
@@ -107,17 +107,17 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            ηιτεω ϊμξιγιν <small></small>
+                            Χ—Χ™Χ¤Χ•Χ© ΧªΧΧΧ™Χ“Χ™Χ <small></small>
                         </h1>
                         <ol class="breadcrumb">
                             <li>
-                                 <a href="dashboard.jsp"><i class="fa fa-home"></i> ψΰωι</a>
+                                 <a href="dashboard.jsp"><i class="fa fa-home"></i> Χ¨ΧΧ©Χ™</a>
                             </li>
                             <li>
-                                 <a href="dashboard.jsp"><i class="fa fa-users"></i> ϊμξιγιν</a>
+                                 <a href="dashboard.jsp"><i class="fa fa-users"></i> ΧªΧΧΧ™Χ“Χ™Χ</a>
                             </li>
                             <li class="active">
-                                <i class="fa fa-search"></i> ηιτεω ϊμξιγ
+                                <i class="fa fa-search"></i> Χ—Χ™Χ¤Χ•Χ© ΧªΧΧΧ™Χ“
                             </li>
                         </ol>
                     </div>
@@ -137,18 +137,18 @@
                 <div class="col-lg-8">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h3 class="panel-title"><i class="fa fa-info fa-fw"></i> δεψΰεϊ μξωϊξω</h3>
+                                <h3 class="panel-title"><i class="fa fa-info fa-fw"></i> Χ”Χ•Χ¨ΧΧ•Χª ΧΧΧ©ΧªΧΧ©</h3>
                             </div>
                             <div class="panel-body">
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-hover table-striped">
                                         <thead>
                                             <tr>
-                                                <th>ων τψθι</th>
-                                                <th>ων ξωτηδ</th>
-                                                <th>ξβγψ</th>
-                                                <th>λιϊδ</th>
-                                                <th>ψωεν?</th>
+                                                <th>Χ©Χ Χ¤Χ¨ΧΧ™</th>
+                                                <th>Χ©Χ ΧΧ©Χ¤Χ—Χ”</th>
+                                                <th>ΧΧ’Χ“Χ¨</th>
+                                                <th>Χ›Χ™ΧªΧ”</th>
+                                                <th>Χ¨Χ©Χ•Χ?</th>
                                             </tr>
                                         </thead>
                                         <tbody>
