@@ -52,105 +52,15 @@ function setPupilCardData(pupil){
 			}
 		}
 
-function savePupilCardData(){
-	
-	 	var pupil = new Object();
-	 	var family  = new Object();
-	 	var regPupil  = new Object();
-	 	var parent1  = new Object();
-	 	var parent2  = new Object();
-	 	
-	    pupil.pupilNum = pupil.pupilNum == 0 ? 0 : pupil.pupilNum;	    
-	    pupil.firstName = $('#fName').val();
-	    pupil.lastName = $('#lName').val();
-	    pupil.cellphone = $('#cell').val();
-	    pupil.photoPath = '';
-	    pupil.birthDate = $('#date_of_birth').combodate('getValue', null);
-	    pupil.familyID = null;
-	    pupil.gradeID = $('#grade').val();
-	    pupil.gender = $("input[name=genderGruop]:checked").val();
-	    
-	    /* family data */	    
-	    family.familyID = null;
-	    family.homeAddress = $('#address').val();
-	    family.homePhoneNum = $('#phone').val();
-	    family.parentID1 = null;
-	    family.parentID2 = null;
-	    	    
-	    regPupil.pupilNum = $('#lName').val();
-	    regPupil.healthProblems = $('#lName').val();
-	    regPupil.ethiopian = $('#ethi').is(":checked");
-	    if($('#staff').is(":checked")){
-	    	regPupil.staffChild = $('#staffJob').val();
-	    }else{
-	    	regPupil.staffChild = null;
-	    }	    	   
-	    regPupil.foodSensitivity = $('#foodsens').val();
-	    regPupil.otherComments = $('#comnt').val();
-	    regPupil.foodType = $('#food').find('option:selected').val();
-	    
-	    /* parents data  */
-	    parent1.parentID = null;
-	    parent1.firstName = $('#p1fName').val();
-	    parent1.lastName = $('#p1lName').val();
-	    parent1.cellphone = $('#p1cell').val();
-	    parent1.parentEmail = $('#p1mail').val();
-	    parent1.relationToPupil = $('p1relat').val();	
-		
-	    parent2.parentID = null;
-	    parent2.firstName = $('#p2fName').val();
-	    parent2.lastName = $('#p2lName').val();
-	    parent2.cellphone = $('#p2cell').val();
-	    parent2.parentEmail = $('#p2mail').val();
-	    parent2.relationToPupil = $('#p2relat').val();
-	    
-	    alert(pupil);
-	    
-	  	var dataString = 'id='+ 1 + '&action=' + "get";
-		   
-	  	/*
-	  	  $.ajax({
-	  		async: false,
-			type: 'POST',
-			datatype: 'jsonp',
-	        url: "FullPupilCardController",
-	        data: dataString,
-	        success: function(data) {
-	        	if(data != undefined){
-	        		pupilID = data.id;
-	        		
-	        	
-	        	}
-	        },
-	        error: function(e) {
-	        	console.log("error");
-				
-	        }
-	        
-	      }); 
-	  	 * */
-	  	 
-	    
-	
-}
-
 function loadPupilCard(dataString){
+	setPageBtns();
 	
-/*	$("fieldset input").prop("disabled", false);
+	$("fieldset :input").prop("disabled", true);
+	$("fieldset input").prop("disabled", false);
 	$("fieldset :input").attr('readonly', 'readonly');
-	$("#date_of_birth").attr("disabled", true);
 	$("fieldset :checkbox").prop("disabled", true);
 	$("fieldset :radio").prop("disabled", true);
-	$("#editModeBtn").hide();*/
-	 setPageBtns();
-	
-	 $("fieldset :input").prop("disabled", true);
-	 $("fieldset input").prop("disabled", false);
-	 $("fieldset :input").attr('readonly', 'readonly');
-	 $("fieldset :checkbox").prop("disabled", true);
-	 $("fieldset :radio").prop("disabled", true);
-/*	 $("#date_of_birth").selectmenu( "disable" );
-*/	 $("#editModeBtn").hide();
+	$("#editModeBtn").hide();
 	 
 	$.ajax({
 	  		async: false,
@@ -208,7 +118,7 @@ function setPageBtns(){
 	$("#saveBtn").click(function() {
 		var newData = pupilData; newData.firstName = "שירה"; //false edit - delete!!!
 		//try saving to DB
-		var result = false; //false value - delete!!!
+		var result = true; //false value - delete!!!
 		//if success
 		if(result === true){
 			bootbox.alert("השינויים נשמרו.", function() {});
@@ -248,9 +158,4 @@ function formDisable(){
 	$("#editModeBtn").hide();
 	$("#viewModeBtn").show();
 	
-}	/* $("fieldset :input").prop("disabled", true);
-$("fieldset input").prop("disabled", false);
-$("fieldset :input").attr('readonly', 'readonly');
-$("fieldset :checkbox").prop("disabled", true);
-$("fieldset :radio").prop("disabled", true);
-$("#editModeBtn").hide();*/
+}	
