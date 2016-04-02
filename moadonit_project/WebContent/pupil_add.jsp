@@ -20,11 +20,18 @@
     <title>מועדונית</title>
 
 <!--  java script -->
-	<script src="resources/js/jquery-1.12.2.js"></script>
+	<!-- <script src="resources/js/jquery-1.12.2.js"></script>
 	<script src="resources/bootstrap/js/bootstrap.js"></script>
 	<script src="resources/js/template_logic.js"></script>
-	<script src="resources/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
+	<script src="resources/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script> -->
+	  
+	  <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
 	
+	<script src="js/jquery-ui.js"></script>
 	<script src="js/js_logic.js"></script>
 	
     <!-- Bootstrap Core CSS -->
@@ -39,10 +46,18 @@
     <link href="css/mycss.css" rel="stylesheet">
 
     <!-- Morris Charts CSS -->
-    <link href="css/plugins/morris.css" rel="stylesheet">
+   <!--  <link href="css/plugins/morris.css" rel="stylesheet"> -->
 
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+   
+    
+    
+    
+	<script src="js/moment-with-locales.js"></script> 
+	<script src="js/combodate.js"></script> 
+	
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -51,56 +66,7 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-<script type="text/javascript">
 
-		
-
-
-		var currentUserId =	 '${p.pupilNum}'
-		var pupilID ;
-		 $(function() {
-			 	
-			 $('#date_of_birth').combodate({
-				    minYear: 1975,
-				    maxYear: 2016,
-				    minuteStep: 10
-				});  
-			 moment.locale();         // he
-			
-			    /* $('#form').hide(); */
-			    $("#testBtn").click(function() {
-			      // validate and process form here
-			      
-			  		
-			  	var dataString = 'id='+ 1 + '&action=' + "get";
-			      
-			  
-			  	 $.ajax({
-			  		async: false,
-					type: 'GET',
-					datatype: 'jsonp',
-			        url: "FullPupilCardController",
-			        data: dataString,
-			        success: function(data) {
-			        	if(data != undefined){
-			        		pupilID = data.id;
-			        		setPupilCardData(data);
-			        	
-			        	}
-			        },
-			        error: function(e) {
-			        	console.log("error");
-						
-			        }
-			        
-			      }); 
-			      return false;
-			      
-			    });
-			  });
-		 
-		
-</script>
 </head>
 
 <body>
@@ -381,16 +347,57 @@
     </div>
     <!-- /#wrapper -->
 
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
+   
+	<script type="text/javascript">
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
-    
-    
-    
-	<script src="js/moment-with-locales.js"></script> 
-	<script src="js/combodate.js"></script> 
+		
+
+
+		var currentUserId =	 '${p.pupilNum}'
+		var pupilID ;
+		 $(function() {
+			 	
+			 $('#date_of_birth').combodate({
+				    minYear: 1975,
+				    maxYear: 2016,
+				    minuteStep: 10
+				});  
+			 moment.locale();         // he
+			
+			    /* $('#form').hide(); */
+			    $("#testBtn").click(function() {
+			      // validate and process form here
+			      
+			  		
+			  	var dataString = 'id='+ 1 + '&action=' + "get";
+			      
+			  
+			  	 $.ajax({
+			  		async: false,
+					type: 'GET',
+					datatype: 'jsonp',
+			        url: "FullPupilCardController",
+			        data: dataString,
+			        success: function(data) {
+			        	if(data != undefined){
+			        		pupilID = data.id;
+			        		setPupilCardData(data);
+			        	
+			        	}
+			        },
+			        error: function(e) {
+			        	console.log("error");
+						
+			        }
+			        
+			      }); 
+			      return false;
+			      
+			    });
+			  });
+		 
+		
+</script>
 
     <!-- Morris Charts JavaScript -->
    <!--  <script src="js/plugins/morris/raphael.min.js"></script>

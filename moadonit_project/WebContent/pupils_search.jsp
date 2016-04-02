@@ -30,7 +30,7 @@
     <link href="css/sb-admin-rtl.css" rel="stylesheet">
 
     <!-- Morris Charts CSS -->
-    <link href="css/plugins/morris.css" rel="stylesheet">
+  <!--   <link href="css/plugins/morris.css" rel="stylesheet"> -->
 
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -50,6 +50,48 @@
 	
     <script src="js/jquery.jqGrid.min.js"></script> 
 	<script src="js/getJqGridData.js"></script>
+<script type="text/javascript">
+
+var currentUserId =	 '${p.pupilNum}'
+
+var pupilID ;
+ $(function() {
+	 	$("#testBtn").click(function() {
+	    var dataString = 'id='+ 1 + '&action=' + "get";
+	    $.ajax({
+	  		async: false,
+			type: 'GET',
+			datatype: 'jsonp',
+	        url: "FullPupilCardController",
+	        data: dataString,
+	        success: function(data) {
+	        	if(data != undefined){
+	        		pupilID = data.pupilNum;
+	        		
+	        		alert(pupilID); 
+	        		/* setPupilCardData(data); */
+	        		
+	        	}
+	        	else
+        			alert("no data");
+	        },
+	        error: function(e) {
+	        	console.log("error");
+				
+	        }
+	        
+	      }); 
+	      
+	  	 return false;
+	     
+	    });
+	 	
+	 	$("#testJSP").click(function() {
+	 		window.location.href = "pupil_card_view.jsp?pupil="+pupilID+"";
+	 	});
+	  });	
+</script>	
+	
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -140,7 +182,14 @@
                                 <h3 class="panel-title"><i class="fa fa-info fa-fw"></i> הוראות למשתמש</h3>
                             </div>
                             <div class="panel-body">
+                            
+                            
+							<button id="testBtn">test get data</button>
+							<button id="testJSP">test JSP</button>
+                            <a href="pupil_card_view.jsp ">test call jsp</a>
+                            
                                 <div class="table-responsive">
+                                
                                     <table class="table table-bordered table-hover table-striped">
                                         <thead>
                                             <tr>
@@ -206,15 +255,19 @@
                                <!--  <div class="text-right">
                                     <a href="#">View All Transactions <i class="fa fa-arrow-circle-right"></i></a>
                                 </div> -->
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover table-striped" id="list">
+                                
+										<tr>
+											<td >helolo</td>
+										</tr>
+									</table>
+								<div id="pager"></div>
+                                
                             </div>
                         </div>
 
-					<table id="list">
-						<tr>
-						
-							<td >helolo</td>						</tr>
-					</table>
-					<div id="pager"></div>
+					
                         
                     </div>
             </div>
@@ -225,7 +278,7 @@
 
     </div>
     <!-- /#wrapper -->
-
+</div>
     <!-- jQuery -->
 <!--     <script src="js/jquery.js"></script>
  -->
@@ -233,9 +286,9 @@
     <script src="js/bootstrap.min.js"></script>
 
     <!-- Morris Charts JavaScript -->
-    <script src="js/plugins/morris/raphael.min.js"></script>
+ <!--    <script src="js/plugins/morris/raphael.min.js"></script>
     <script src="js/plugins/morris/morris.min.js"></script>
-    <script src="js/plugins/morris/morris-data.js"></script>
+    <script src="js/plugins/morris/morris-data.js"></script> -->
 
 </body>
 
