@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=windows-1255"
+<%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="windows-1255"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -26,7 +26,7 @@
     <script src="js/bootstrap.min.js"></script>
 	
 	<script src="js/jquery-ui.js"></script>
-	<script src="js/js_logic.js"></script>
+	<script src="js/js_pupil_card_view.js"></script>
 	
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -45,8 +45,8 @@
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     
-   
-    
+   <!-- bootbox code -->
+    <script src="js/bootbox.js"></script> 
     
     
 	<script src="js/moment-with-locales.js"></script> 
@@ -313,16 +313,25 @@
 			<!-- row 2 col 4 -->				
 							<div class="col-lg-3 ">
 								
-								<div class="form-group ">
-									<input type="submit" id="saveBtn" name="saveBtn"
+								<div class="form-group pull-left" id="viewModeBtn">
+									<input type="button" id="editBtn" name="editBtn"
 									class="btn btn-primary" value="עריכה">
-							
-									<input type="submit" id="saveClearBtn" name="saveClearBtn"
+								
+									<input type="submit" id="deleteBtn" name="deleteBtn"
 									class="btn btn-primary" value="מחיקה">
-							
-									<input type="submit" id="clearBtn" name="clearBtn"
+								
+									
+									<input type="submit" id="addPupil" name="clearBtn"
 									 class="btn btn-primary" value="הוסף חדש">
 									<!-- <button id="testBtn">test</button> -->
+								</div>
+								
+								<div class="form-group pull-left" id="editModeBtn" style="display: none">
+									<input type="submit" id="saveBtn" name="editBtn"
+									class="btn btn-primary" value="שמור שינויים">
+								
+									<input type="submit" id="cancelBtn" name="deleteBtn"
+									class="btn btn-primary" value="בטל שינויים">
 								</div>
 							</div>
 						</div>
@@ -343,14 +352,27 @@
 	<script type="text/javascript">
 		var pupilID = "<%=pupil%>";
 	</script>
+	<%} 
+	else{%>
+	
+	<script type="text/javascript">
+		var pupilID = "1";
+	</script>
+	
 	<%} %>
 	
 	<script type="text/javascript">
 	var pupilData;	
 	$(function(){
+		 $('#date_of_birth').combodate({
+			    minYear: 1975,
+			    maxYear: 2016,
+			    minuteStep: 10
+			});  
+		 moment.locale();         // he
 		    var dataString = 'id='+ pupilID + '&action=' + "get";
 		    loadPupilCard(dataString);		   
-		   
+		  /*   setPageBtns(); */
 		});
 	</script>
 
