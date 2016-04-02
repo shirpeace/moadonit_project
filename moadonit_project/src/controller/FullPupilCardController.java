@@ -19,7 +19,10 @@ import dao.PupilDAO;
 import dao.RegisterPupilDAO;
 import util.DAOUtil;
 import model.Family;
+import model.FamilyRelation;
 import model.FullPupilCard;
+import model.GenderRef;
+import model.Grade;
 import model.Parent;
 import model.Pupil;
 import model.RegisterPupil;
@@ -104,21 +107,90 @@ public class FullPupilCardController extends HttpServlet implements
 		checkConnection(req,resp);
 		
 		
-		String pupilStr, pupilRegStr, familyStr, parentStr;
-		
+		String pupilStr, pupilRegStr, familyStr, parentStr1,parentStr2;
+		int gradeID , gender; 
 		Pupil p = new Pupil();
 		RegisterPupil rp = new RegisterPupil();
 		Family fam = new Family();
-		Parent prent = new Parent();
-		
-		action = req.getParameter("action");
+		Parent parent1 = new Parent();
+		Parent parent2 = new Parent();
 		
 		this.familyDao = new FamilyDAO(con);
 		this.parentDao = new ParentDAO(con);
 		this.pupilDao = new PupilDAO(con);
 		this.regPupilDao = new RegisterPupilDAO(con);
 		
+		action = req.getParameter("action");
+		
 		if (action.equals("update")){
+			
+			pupilStr = req.getParameter("pupilParam");
+			pupilRegStr = req.getParameter("regPupilParam");
+			familyStr = req.getParameter("familyParam");
+			parentStr1 = req.getParameter("parent1Param");
+			parentStr2 = req.getParameter("parent2Param");
+			gender = Integer.parseInt(req.getParameter("gender"));
+			gradeID = Integer.parseInt(req.getParameter("gradeID"));
+			
+			try {
+				
+				
+				p = (Pupil) DAOUtil.getObjectFromJson(pupilStr, Pupil.class);
+				rp = (RegisterPupil) DAOUtil.getObjectFromJson(pupilRegStr, RegisterPupil.class);
+				fam = (Family) DAOUtil.getObjectFromJson(familyStr, Family.class);
+				parent1 = (Parent) DAOUtil.getObjectFromJson(parentStr1, Parent.class);
+				parent2 = (Parent) DAOUtil.getObjectFromJson(parentStr2, Parent.class);
+				
+				//* transaction block start *//
+			    this.con.getConnection().setAutoCommit(false);
+				
+				if (!parent1.getFirstName().trim().equals("")) {
+					//save parent 1
+					FamilyRelation fr = new FamilyRelation();
+					
+					this.parentDao.insert(parent1);
+					
+				}
+				
+				else if(!parent2.getFirstName().trim().equals("")){
+					//save parent 2
+					this.parentDao.insert(parent2);
+				}
+				
+				if (parent1.getParentID() > 0) {
+					fam.setTblParent1(parent1);					
+				}
+				
+				if (parent2.getParentID() > 0) {
+					fam.setTblParent2(parent2);					
+				}
+				
+				//save family
+				this.familyDao.insert(fam);
+				//save pupil
+				p.setTblFamily(fam);
+				
+				GenderRef g = new GenderRef();
+				g.setGender(gender);				
+				p.setTblGenderRef(g);
+				
+				Grade grade = new Grade();
+				grade.setGradeID(gradeID);
+				p.setTblGrade(grade);
+				
+				this.pupilDao.insert(p);
+				
+				//save regPupil
+				rp.setPupilNum(p.getPupilNum());
+				this.regPupilDao.insert(rp);
+				
+				this.con.getConnection().commit();
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			
 		}
 		

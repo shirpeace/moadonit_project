@@ -65,7 +65,8 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
+    
+	<script type="text/javascript">
 		
 		var pupilID ;
 		 $(function() {
@@ -114,7 +115,7 @@
 			        data: dataString,
 			        success: function(data) {
 			        	if(data != undefined){
-			        		pupilID = data.id;
+			        		pupilID = data.pupilNum;
 			        		setPupilCardData(data);
 			        	
 			        	}
@@ -416,58 +417,6 @@
 
     </div>
     <!-- /#wrapper -->
-
-   
-	<script type="text/javascript">
-
-		
-
-
-		var currentUserId =	 '${p.pupilNum}'
-		var pupilID ;
-		 $(function() {
-			 	
-			 $('#date_of_birth').combodate({
-				    minYear: 1975,
-				    maxYear: 2016,
-				    minuteStep: 10
-				});  
-			 moment.locale();         // he
-			
-			    /* $('#form').hide(); */
-			    $("#testBtn").click(function() {
-			      // validate and process form here
-			      
-			  		
-			  	var dataString = 'id='+ 1 + '&action=' + "get";
-			      
-			  
-			  	 $.ajax({
-			  		async: false,
-					type: 'GET',
-					datatype: 'jsonp',
-			        url: "FullPupilCardController",
-			        data: dataString,
-			        success: function(data) {
-			        	if(data != undefined){
-			        		pupilID = data.id;
-			        		setPupilCardData(data);
-			        	
-			        	}
-			        },
-			        error: function(e) {
-			        	console.log("error");
-						
-			        }
-			        
-			      }); 
-			      return false;
-			      
-			    });
-			  });
-		 
-		
-</script>
 
     <!-- Morris Charts JavaScript -->
    <!--  <script src="js/plugins/morris/raphael.min.js"></script>

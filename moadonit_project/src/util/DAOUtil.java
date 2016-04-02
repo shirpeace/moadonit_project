@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -73,6 +74,7 @@ public final class DAOUtil {
     
     public static Object getObjectFromJson(String o, Class<?> classType ){
     	ObjectMapper mapper = new ObjectMapper();
+    	mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     	
     	Object obj = null;
 		try {

@@ -59,6 +59,8 @@ function savePupilCardData(){
 	 	var regPupil  = new Object();
 	 	var parent1  = new Object();
 	 	var parent2  = new Object();
+	 	var relation1 = new  Object();
+	 	var relation2 = new  Object();
 	 	
 	    pupil.pupilNum = pupil.pupilNum == 0 ? 0 : pupil.pupilNum;	    
 	    pupil.firstName = $('#fName').val();
@@ -77,9 +79,9 @@ function savePupilCardData(){
 	    family.parentID1 = null;
 	    family.parentID2 = null;
 	    	    
-	    regPupil.pupilNum = $('#lName').val();
-	    regPupil.healthProblems = $('#lName').val();
-	    regPupil.ethiopian = $('#ethi').is(":checked");
+	    regPupil.pupilNum = pupil.pupilNum == 0 ? 0 : pupil.pupilNum;	
+	    regPupil.healthProblems = $('#health').val();
+	    regPupil.ethiopian = $('#ethi').is(":checked") ? 1 : 0;
 	    if($('#staff').is(":checked")){
 	    	regPupil.staffChild = $('#staffJob').val();
 	    }else{
@@ -95,29 +97,37 @@ function savePupilCardData(){
 	    parent1.lastName = $('#p1lName').val();
 	    parent1.cellphone = $('#p1cell').val();
 	    parent1.parentEmail = $('#p1mail').val();
-	    parent1.relationToPupil = $('p1relat').val();	
-		
+	    parent1.relationToPupil = $('#p1relat').val();	
+	    parent1.tblFamilyRelation = {idFamilyRelation: $('#p1relat').val() };
+	    
 	    parent2.parentID = null;
 	    parent2.firstName = $('#p2fName').val();
 	    parent2.lastName = $('#p2lName').val();
 	    parent2.cellphone = $('#p2cell').val();
 	    parent2.parentEmail = $('#p2mail').val();
 	    parent2.relationToPupil = $('#p2relat').val();
+	    parent2.tblFamilyRelation = { 'idFamilyRelation': $('#p2relat').val() };
 	    
-	    alert(pupil);
-	    
-	  	var dataString = 'id='+ 1 + '&action=' + "get";
+	    alert(pupil);	    	  
 		   
-	  	/*
+	  	
 	  	  $.ajax({
 	  		async: false,
 			type: 'POST',
 			datatype: 'jsonp',
 	        url: "FullPupilCardController",
-	        data: dataString,
+	        data: { action:"update", pupilParam : JSON.stringify(pupil), 
+		        	familyParam : JSON.stringify(family),
+		        	regPupilParam : JSON.stringify(regPupil),
+		        	parent1Param : JSON.stringify(parent1),
+		        	parent2Param : JSON.stringify(parent2),
+		        	gradeID : pupil.gradeID,
+		        	gender : pupil.gender 
+	        	  },
+	        	
 	        success: function(data) {
 	        	if(data != undefined){
-	        		pupilID = data.id;
+	        		alert()
 	        		
 	        	
 	        	}
@@ -128,7 +138,7 @@ function savePupilCardData(){
 	        }
 	        
 	      }); 
-	  	 * */
+	  	 
 	  	 
 	    
 	
