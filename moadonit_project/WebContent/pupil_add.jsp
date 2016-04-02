@@ -55,11 +55,32 @@
 
 		
 
-
-		var currentUserId =	 '${p.pupilNum}'
+		
 		var pupilID ;
 		 $(function() {
 			 	
+			 $('#staff').click(function() {
+				 var isChecked = this.checked;
+				 if(isChecked){
+					 $("#staffJobDiv").toggle(true);
+					 
+				 }else{
+					 $("#staffJobDiv").toggle(false);
+					 $("#staffJob").val('');
+				 }
+				 	
+				});
+			 
+			 //saveBtn
+			  $("#saveBtn").click(function() {
+			      // validate and process form here
+			      
+			  	 savePupilCardData();
+
+			      return false;
+			      
+			    });
+			 
 			 $('#date_of_birth').combodate({
 				    minYear: 1975,
 				    maxYear: 2016,
@@ -73,8 +94,7 @@
 			      
 			  		
 			  	var dataString = 'id='+ 1 + '&action=' + "get";
-			      
-			  
+			   
 			  	 $.ajax({
 			  		async: false,
 					type: 'GET',
@@ -250,6 +270,10 @@
 								<div class="checkbox">
 									<label for="staff">ילד סגל</label> <input type="checkbox"
 										id="staff">
+								</div>
+								<div class="form-group" style="display: none;" id="staffJobDiv">
+									<label for="staffJob">תפקיד ההורה</label> <input type="text"
+										class="form-control"  id="staffJob" placeholder="תפקיד">
 								</div>
 							</div>
 							

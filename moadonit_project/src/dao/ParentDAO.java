@@ -26,7 +26,7 @@ public class ParentDAO extends AbstractDAO {
 	private String delete = "DELETE FROM tbl_parent WHERE parentID = ?;";
 
 	private String SQL_LIST_ORDER_BY_ID = "SELECT * FROM tbl_parent ORDER BY parentid";
- ParentDAO(MyConnection con) {
+	 public ParentDAO(MyConnection con) {
 
 		/*
 		 * INSERT INTO tbl_parent(parentID, firstName, lastName, cellphone,
