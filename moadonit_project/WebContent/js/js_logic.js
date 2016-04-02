@@ -133,3 +133,37 @@ function savePupilCardData(){
 	    
 	
 }
+
+function loadPupilCard(dataString){
+	 $.ajax({
+	  		async: false,
+			type: 'GET',
+			datatype: 'jsonp',
+	        url: "FullPupilCardController",
+	        data: dataString,
+	        success: function(data) {
+	        	if(data != undefined){
+	        		pupilID = data.pupilNum;
+	        		pupilData = data;
+	        		setPupilCardData(pupilData);
+	        		
+	        	}
+	        	else
+     			alert("no data");
+	        },
+	        error: function(e) {
+	        	console.log("error");
+				
+	        }
+	        
+	      }); 
+	 $("fieldset :input").prop("disabled", true);
+	 $("fieldset input").prop("disabled", false);
+	 $("fieldset :input").attr('readonly', 'readonly');
+	 $("fieldset :checkbox").prop("disabled", true);
+	 $("fieldset :radio").prop("disabled", true);
+	 
+/*	 $("fieldset :textarea").attr('readonly', 'readonly');
+	 $("fieldset :select").attr('readonly', 'readonly');*/
+	 
+}
