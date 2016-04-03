@@ -18,7 +18,7 @@ public class PupilDAO  extends AbstractDAO{
 	 */
 	private static final long serialVersionUID = 3381926667682712141L;
 	private String insert = "INSERT INTO tbl_pupil"
-			+ "( firstName, lastName, cellphone, photoPath, birthDate, familyID, gradeID, gender) VALUES (?,?,?,?,?,?,?,?,?)";
+			+ "( firstName, lastName, cellphone, photoPath, birthDate, familyID, gradeID, gender) VALUES (?,?,?,?,?,?,?,?)";
 	private String delete = "DELETE FROM tbl_pupil WHERE pupilNum  = ?";
 	
 	private String select = "SELECT pupilNum, firstName, lastName, cellphone, photoPath, birthDate, familyID, gradeID, gender FROM tbl_pupil WHERE pupilNum = ?";
@@ -164,7 +164,7 @@ public class PupilDAO  extends AbstractDAO{
 				p.getTblFamily().getFamilyID(),
 				p.getTblGrade().getGradeID(),
 				p.getTblGenderRef().getGender()
-				,p.getPupilNum()
+				/*,p.getPupilNum()*/
 
 		};
 

@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=windows-1255"
-	pageEncoding="windows-1255"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
@@ -17,7 +17,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>ξεςγεπιϊ</title>
+    <title>ΧΧ•ΧΆΧ“Χ•Χ Χ™Χª</title>
 
 <!--  java script -->
 	<!-- <script src="resources/js/jquery-1.12.2.js"></script>
@@ -144,11 +144,11 @@
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="nav navbar-right top-nav" style="padding-top: 15px; ">
             	<a href="index.html">
-	            	<i class="fa fa-fw fa-power-off"></i>&nbsp;ιφιΰδ</a>
+	            	<i class="fa fa-fw fa-power-off"></i>&nbsp;Χ™Χ¦Χ™ΧΧ”</a>
             </div>
             <div class="navbar-header" >
             	<a class="navbar-brand" href="dashboard.jsp">
-            	<i class="fa fa-home fa-fw"></i>&nbsp;ξεςγεπιϊ</a>
+            	<i class="fa fa-home fa-fw"></i>&nbsp;ΧΧ•ΧΆΧ“Χ•Χ Χ™Χª</a>
                 
             </div>
             
@@ -156,17 +156,17 @@
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                      <li>
-                        <a href="" style="font-size: 120%; pointer-events: none;"> <i class="fa fa-fw fa-users"></i> ϊμξιγιν</a>
+                        <a href="" style="font-size: 120%; pointer-events: none;"> <i class="fa fa-fw fa-users"></i> ΧªΧΧΧ™Χ“Χ™Χ</a>
                         <br>
                      </li> 
                      <li>
-                        <a href="pupils_search.jsp" ><i class="fa fa-fw fa-search"></i> ηιτεω</a>
+                        <a href="pupils_search.jsp" ><i class="fa fa-fw fa-search"></i> Χ—Χ™Χ¤Χ•Χ©</a>
                      </li> 
                      <li>
-                        <a href="pupils_phones.jsp" ><i class="fa fa-fw fa-phone"></i> γτι χωψ</a>
+                        <a href="pupils_phones.jsp" ><i class="fa fa-fw fa-phone"></i> Χ“Χ¤Χ™ Χ§Χ©Χ¨</a>
                      </li>
                      <li class="active">
-                        <a href= "pupil_add.jsp"><i class="fa fa-fw fa-edit"></i> δερτϊ ηγω</a>
+                        <a href= "pupil_add.jsp"><i class="fa fa-fw fa-edit"></i> Χ”Χ•Χ΅Χ¤Χª Χ—Χ“Χ©</a>
                      </li>  
                 </ul>
             </div>
@@ -184,17 +184,17 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            δερτϊ ϊμξιγ
+                            Χ”Χ•Χ΅Χ¤Χª ΧªΧΧΧ™Χ“
                         </h1>
                         <ol class="breadcrumb">
                             <li>
-                                 <a href="dashboard.jsp"><i class="fa fa-home"></i> ψΰωι</a>
+                                 <a href="dashboard.jsp"><i class="fa fa-home"></i> Χ¨ΧΧ©Χ™</a>
                             </li>
                             <li>
-                                 <a href="pupils_search.jsp"><i class="fa fa-users"></i> ϊμξιγιν</a>
+                                 <a href="pupils_search.jsp"><i class="fa fa-users"></i> ΧªΧΧΧ™Χ“Χ™Χ</a>
                             </li>
                             <li class="active">
-                                <i class="fa fa-edit"></i> δερτϊ ϊμξιγ
+                                <i class="fa fa-edit"></i> Χ”Χ•Χ΅Χ¤Χª ΧªΧΧΧ™Χ“
                             </li>
                         </ol>
                     </div>
@@ -207,101 +207,101 @@
 						<div class="col-lg-12">
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="fName">ων τψθι</label> <input type="text"
-										class="form-control" id="fName" placeholder="ων">
+									<label for="fName">Χ©Χ Χ¤Χ¨ΧΧ™</label> <input type="text"
+										class="form-control" id="fName" placeholder="Χ©Χ">
 								</div>
 								<div class="form-group">
-									<label for="lName">ων ξωτηδ</label> <input type="text"
-										class="form-control" id="lName" placeholder="ξωτηδ">
+									<label for="lName">Χ©Χ ΧΧ©Χ¤Χ—Χ”</label> <input type="text"
+										class="form-control" id="lName" placeholder="ΧΧ©Χ¤Χ—Χ”">
 								</div>
 								<div class="form-group">
-									<label for="cell">θμτεο πιιγ ϊμξιγ</label> <input type="text"
-										class="form-control" id="cell" placeholder="θμτεο">
+									<label for="cell">ΧΧΧ¤Χ•Χ Χ Χ™Χ™Χ“ ΧªΧΧΧ™Χ“</label> <input type="text"
+										class="form-control" id="cell" placeholder="ΧΧΧ¤Χ•Χ">
 								</div> 
 							</div>
 		<!-- row 1 col 2 -->
 							<div class="col-lg-3">
 								<!-- <div class="form-group">
-									<label for="fName">ϊΰψικ μιγδ</label> <input type="text"
-										class="form-control" id="fName" placeholder="ων">
+									<label for="fName">ΧªΧΧ¨Χ™Χ ΧΧ™Χ“Χ”</label> <input type="text"
+										class="form-control" id="fName" placeholder="Χ©Χ">
 								</div> -->
 								
 								<div class="form-group">
-									<label for="date_of_birth">ϊΰψικ μιγδ</label>
+									<label for="date_of_birth">ΧªΧΧ¨Χ™Χ ΧΧ™Χ“Χ”</label>
 									<br>	
 									<input id="date_of_birth" value="01-01-2003"  data-smartDays="true" data-firstItem="name"
 										data-format="DD-MM-YYYY" data-template="D MMM YYYY"> 
 								</div>
 								<div class="form-group">
 									
-									<label for="grade">λιϊδ</label>
+									<label for="grade">Χ›Χ™ΧªΧ”</label>
 									<select class="form-control"
 										id="grade">
-										<option value="11">ΰ-ΰ</option>
-										<option value="12">ΰ-α</option>
-										<option value="13">ΰ-β</option>
-										<option value="21">α-ΰ</option>
-										<option value="22">α-α</option>
-										<option value="23">α-β</option>
-										<option value="31">β-ΰ</option>
-										<option value="32">β-α</option>
-										<option value="33">β-β</option>
-										<option value="41">γ-ΰ</option>
-										<option value="42">γ-α</option>
-										<option value="43">γ-β</option>
-										<option value="51">δ-ΰ</option>
-										<option value="52">δ-α</option>
-										<option value="53">α-β</option>
-										<option value="61">ε-ΰ</option>
-										<option value="62">ε-α</option>
-										<option value="63">ε-β</option>
+										<option value="11">Χ-Χ</option>
+										<option value="12">Χ-Χ‘</option>
+										<option value="13">Χ-Χ’</option>
+										<option value="21">Χ‘-Χ</option>
+										<option value="22">Χ‘-Χ‘</option>
+										<option value="23">Χ‘-Χ’</option>
+										<option value="31">Χ’-Χ</option>
+										<option value="32">Χ’-Χ‘</option>
+										<option value="33">Χ’-Χ’</option>
+										<option value="41">Χ“-Χ</option>
+										<option value="42">Χ“-Χ‘</option>
+										<option value="43">Χ“-Χ’</option>
+										<option value="51">Χ”-Χ</option>
+										<option value="52">Χ”-Χ‘</option>
+										<option value="53">Χ‘-Χ’</option>
+										<option value="61">Χ•-Χ</option>
+										<option value="62">Χ•-Χ‘</option>
+										<option value="63">Χ•-Χ’</option>
 									</select>
 								</div>
 								<div class="form-group">
-									<label for="cell" class="col-lg-1">ξβγψ</label>
+									<label for="cell" class="col-lg-1">ΧΧ’Χ“Χ¨</label>
 									<label class="radio-inline col-lg-2"> 
-									<input type="radio" name="genderGruop" id="male" value="1"> αο </label>
+									<input type="radio" name="genderGruop" id="male" value="1"> Χ‘Χ </label>
 									<label class="radio-inline col-lg-2">
-									<input type="radio" name="genderGruop" id="female" value="2">αϊ</label>
+									<input type="radio" name="genderGruop" id="female" value="2">Χ‘Χª</label>
 								</div>
 							</div>
 		<!-- row 1 col 3 -->
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="food">ρεβ ξπδ</label> <select class="form-control"
+									<label for="food">Χ΅Χ•Χ’ ΧΧ Χ”</label> <select class="form-control"
 										id="food">
-										<option value="1">ψβιμδ</option>
-										<option value="2">ΰτειδ</option>
-										<option value="3">φξηεπιϊ</option>
-										<option value="4">μμΰ-βμεθο</option>
+										<option value="1">Χ¨Χ’Χ™ΧΧ”</option>
+										<option value="2">ΧΧ¤Χ•Χ™Χ”</option>
+										<option value="3">Χ¦ΧΧ—Χ•Χ Χ™Χª</option>
+										<option value="4">ΧΧΧ-Χ’ΧΧ•ΧΧ</option>
 									</select>
 								</div>
 								<div class="checkbox ">
-									<label for="ethi">ΰϊιετι</label> <input type="checkbox"
+									<label for="ethi">ΧΧªΧ™Χ•Χ¤Χ™</label> <input type="checkbox"
 										id="ethi">
 								</div>
 								<div class="checkbox">
-									<label for="staff">ιμγ ρβμ</label> <input type="checkbox"
+									<label for="staff">Χ™ΧΧ“ Χ΅Χ’Χ</label> <input type="checkbox"
 										id="staff">
 								</div>
 								<div class="form-group" style="display: none;" id="staffJobDiv">
-									<label for="staffJob">ϊτχιγ δδεψδ</label> <input type="text"
-										class="form-control"  id="staffJob" placeholder="ϊτχιγ">
+									<label for="staffJob">ΧªΧ¤Χ§Χ™Χ“ Χ”Χ”Χ•Χ¨Χ”</label> <input type="text"
+										class="form-control"  id="staffJob" placeholder="ΧªΧ¤Χ§Χ™Χ“">
 								</div>
 							</div>
 							
 		<!-- row 1 col 4 -->							
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="health">αςιεϊ αψιΰεϊ</label> <input type="text"
+									<label for="health">Χ‘ΧΆΧ™Χ•Χª Χ‘Χ¨Χ™ΧΧ•Χª</label> <input type="text"
 										class="form-control" id="health" placeholder="">
 								</div>
 								<div class="form-group">
-									<label for="foodsens">ψβιωεϊ μξζεο</label> <input type="text"
+									<label for="foodsens">Χ¨Χ’Χ™Χ©Χ•Χª ΧΧΧ–Χ•Χ</label> <input type="text"
 										class="form-control" id="foodsens" placeholder="">
 								</div>
 								<div class="form-group">
-									<label for="comnt">δςψεϊ λμμιεϊ</label> <input type="text"
+									<label for="comnt">Χ”ΧΆΧ¨Χ•Χª Χ›ΧΧΧ™Χ•Χª</label> <input type="text"
 										class="form-control" id="comnt" placeholder="">
 								</div>
 							</div>
@@ -312,34 +312,34 @@
 					<!-- row 2 col 1 -->
 					<div class="row">
 						<div class="col-lg-12">
-						<h2>τψθι δϊχωψεϊ</h2>
+						<h2>Χ¤Χ¨ΧΧ™ Χ”ΧªΧ§Χ©Χ¨Χ•Χª</h2>
 							<div class="col-lg-3">
 								
 								<div class="form-group">
-									<label for="p1fName">ων δδεψδ</label> <input type="text"
-										class="form-control" id="p1fName" placeholder="ων">
+									<label for="p1fName">Χ©Χ Χ”Χ”Χ•Χ¨Χ”</label> <input type="text"
+										class="form-control" id="p1fName" placeholder="Χ©Χ">
 								</div>
 								<div class="form-group">
-									<label for="p1lName">ων ξωτηδ</label> <input type="text"
-										class="form-control" id="p1lName" placeholder="ξωτηδ">
+									<label for="p1lName">Χ©Χ ΧΧ©Χ¤Χ—Χ”</label> <input type="text"
+										class="form-control" id="p1lName" placeholder="ΧΧ©Χ¤Χ—Χ”">
 								</div>
 								<div class="form-group">
-									<label for="p1cell">θμτεο πιιγ</label> <input type="text"
-										class="form-control" id="p1cell" placeholder="θμτεο">
+									<label for="p1cell">ΧΧΧ¤Χ•Χ Χ Χ™Χ™Χ“</label> <input type="text"
+										class="form-control" id="p1cell" placeholder="ΧΧΧ¤Χ•Χ">
 								</div>
 								<div class="form-group">
-									<label for="p1mail">ΰιξιιμ</label> <input type="text"
-										class="form-control" id="p1mail" placeholder="ΰιξιιμ">
+									<label for="p1mail">ΧΧ™ΧΧ™Χ™Χ</label> <input type="text"
+										class="form-control" id="p1mail" placeholder="ΧΧ™ΧΧ™Χ™Χ">
 								</div>
 								<div class="form-group">
-									<label for="p1relat">χψαδ</label>
+									<label for="p1relat">Χ§Χ¨Χ‘Χ”</label>
 									<select class="form-control"
 										id="p1relat">
-										<option value="1">ΰξΰ</option>
-										<option value="2">ΰαΰ</option>
-										<option value="3">ΰη</option>
-										<option value="4">ΰηεϊ</option>
-										<option value="5">ΰηψ</option>
+										<option value="1">ΧΧΧ</option>
+										<option value="2">ΧΧ‘Χ</option>
+										<option value="3">ΧΧ—</option>
+										<option value="4">ΧΧ—Χ•Χª</option>
+										<option value="5">ΧΧ—Χ¨</option>
 									</select>
 								</div>
 							</div>
@@ -347,30 +347,30 @@
 							<div class="col-lg-3">
 								
 								<div class="form-group">
-									<label for="p2fName">ων δδεψδ</label> <input type="text"
-										class="form-control" id="p2fName" placeholder="ων">
+									<label for="p2fName">Χ©Χ Χ”Χ”Χ•Χ¨Χ”</label> <input type="text"
+										class="form-control" id="p2fName" placeholder="Χ©Χ">
 								</div>
 								<div class="form-group">
-									<label for="p2lName">ων ξωτηδ</label> <input type="text"
-										class="form-control" id="p2lName" placeholder="ξωτηδ">
+									<label for="p2lName">Χ©Χ ΧΧ©Χ¤Χ—Χ”</label> <input type="text"
+										class="form-control" id="p2lName" placeholder="ΧΧ©Χ¤Χ—Χ”">
 								</div>
 								<div class="form-group">
-									<label for="p2cell">θμτεο πιιγ</label> <input type="text"
-										class="form-control" id="p2cell" placeholder="θμτεο">
+									<label for="p2cell">ΧΧΧ¤Χ•Χ Χ Χ™Χ™Χ“</label> <input type="text"
+										class="form-control" id="p2cell" placeholder="ΧΧΧ¤Χ•Χ">
 								</div>
 								<div class="form-group">
-									<label for="p2mail">ΰιξιιμ</label> <input type="text"
-										class="form-control" id="p2mail" placeholder="ΰιξιιμ">
+									<label for="p2mail">ΧΧ™ΧΧ™Χ™Χ</label> <input type="text"
+										class="form-control" id="p2mail" placeholder="ΧΧ™ΧΧ™Χ™Χ">
 								</div>
 								<div class="form-group">
-									<label for="p2relat">χψαδ</label>
+									<label for="p2relat">Χ§Χ¨Χ‘Χ”</label>
 									<select class="form-control"
 										id="p2relat">
-										<option value="1">ΰξΰ</option>
-										<option value="2">ΰαΰ</option>
-										<option value="3">ΰη</option>
-										<option value="4">ΰηεϊ</option>
-										<option value="5">ΰηψ</option>
+										<option value="1">ΧΧΧ</option>
+										<option value="2">ΧΧ‘Χ</option>
+										<option value="3">ΧΧ—</option>
+										<option value="4">ΧΧ—Χ•Χª</option>
+										<option value="5">ΧΧ—Χ¨</option>
 									</select>
 								</div>
 							</div>
@@ -379,12 +379,12 @@
 							<div class="col-lg-3">
 								
 								<div class="form-group">
-									<label for="address">λϊεαϊ ξβεψιν</label> <input type="text"
-										class="form-control" id="address" placeholder="λϊεαϊ">
+									<label for="address">Χ›ΧªΧ•Χ‘Χª ΧΧ’Χ•Χ¨Χ™Χ</label> <input type="text"
+										class="form-control" id="address" placeholder="Χ›ΧªΧ•Χ‘Χª">
 								</div>
 								<div class="form-group">
-									<label for="phone">θμτεο ααιϊ</label> <input type="text"
-										class="form-control" id="phone" placeholder="θμτεο">
+									<label for="phone">ΧΧΧ¤Χ•Χ Χ‘Χ‘Χ™Χª</label> <input type="text"
+										class="form-control" id="phone" placeholder="ΧΧΧ¤Χ•Χ">
 								</div>
 							</div>
 							
@@ -392,19 +392,19 @@
 							<div class="col-lg-3">
 								
 								<div class="form-group">
-									<button>ωξεψ</button>
+									<button>Χ©ΧΧ•Χ¨</button>
 									<input type="submit" id="saveBtn" name="aveBtn"
-									class="btn btn-default" value="ωξεψ">
+									class="btn btn-default" value="Χ©ΧΧ•Χ¨">
 								</div>
 								<div class="form-group">
-									<button>ωξεψ επχδ</button>
+									<button>Χ©ΧΧ•Χ¨ Χ•Χ Χ§Χ”</button>
 									<input type="submit" id="saveClearBtn" name="saveClearBtn"
-									class="btn btn-default" value="ωξεψ επχδ">
+									class="btn btn-default" value="Χ©ΧΧ•Χ¨ Χ•Χ Χ§Χ”">
 									
 								</div>
 								<div class="form-group">
 								<input type="submit" id="clearBtn" name="clearBtn"
-									 class="btn btn-default" value="πχδ">
+									 class="btn btn-default" value="Χ Χ§Χ”">
 									<button id="testBtn">test</button>
 								</div>
 							</div>

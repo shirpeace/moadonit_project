@@ -16,7 +16,7 @@ public class FamilyDAO extends AbstractDAO {
 	private static final long serialVersionUID = -4505815614324512802L;
 
 	private String insert = "INSERT INTO tbl_family"
-			+ "( homeAddress, homePhoneNum, parentID1, parentID2) VALUES (?,?,?,?,?)";
+			+ "( homeAddress, homePhoneNum, parentID1, parentID2) VALUES (?,?,?,?)";
 
 	private String update = "UPDATE tbl_family "
 			+ "SET homeAddress=?,homePhoneNum=?,parentID1=?,parentID2=? WHERE familyID = ?";

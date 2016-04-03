@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class MyConnection {
 	private Connection connection;
-	private static final String url = "jdbc:mysql://132.75.252.108:3306/ms2016"; 
+	private static final String url = "jdbc:mysql://132.75.252.108:3306/ms2016?useUnicode=yes&characterEncoding=UTF-8"; 
 
 	static{
 		try {

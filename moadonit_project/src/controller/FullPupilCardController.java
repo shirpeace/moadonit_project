@@ -108,7 +108,7 @@ public class FullPupilCardController extends HttpServlet implements
 		
 		
 		String pupilStr, pupilRegStr, familyStr, parentStr1,parentStr2;
-		int gradeID , gender; 
+
 		Pupil p = new Pupil();
 		RegisterPupil rp = new RegisterPupil();
 		Family fam = new Family();
@@ -129,8 +129,7 @@ public class FullPupilCardController extends HttpServlet implements
 			familyStr = req.getParameter("familyParam");
 			parentStr1 = req.getParameter("parent1Param");
 			parentStr2 = req.getParameter("parent2Param");
-			gender = Integer.parseInt(req.getParameter("gender"));
-			gradeID = Integer.parseInt(req.getParameter("gradeID"));
+
 			
 			try {
 				
@@ -146,13 +145,11 @@ public class FullPupilCardController extends HttpServlet implements
 				
 				if (!parent1.getFirstName().trim().equals("")) {
 					//save parent 1
-					FamilyRelation fr = new FamilyRelation();
-					
 					this.parentDao.insert(parent1);
 					
 				}
 				
-				else if(!parent2.getFirstName().trim().equals("")){
+			    if(!parent2.getFirstName().trim().equals("")){
 					//save parent 2
 					this.parentDao.insert(parent2);
 				}
@@ -168,15 +165,7 @@ public class FullPupilCardController extends HttpServlet implements
 				//save family
 				this.familyDao.insert(fam);
 				//save pupil
-				p.setTblFamily(fam);
-				
-				GenderRef g = new GenderRef();
-				g.setGender(gender);				
-				p.setTblGenderRef(g);
-				
-				Grade grade = new Grade();
-				grade.setGradeID(gradeID);
-				p.setTblGrade(grade);
+				p.setTblFamily(fam);			
 				
 				this.pupilDao.insert(p);
 				
