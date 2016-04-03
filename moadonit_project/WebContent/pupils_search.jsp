@@ -40,58 +40,19 @@
 	<link rel="stylesheet" href="css/ui.jqgrid.css">
 	
 	
-	<script src="resources/js/jquery-1.12.2.js"></script>
-	<script src="resources/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
-	
+	<script src="js/jquery.js"></script>
+	<script src="js/jquery-ui.js"></script>
+	<script src="js/bootstrap.min.js"></script>
 	<script src="js/i18n/grid.locale-he.js"></script>
   <!--  <script src="js/i18n/grid.locale-en.js"></script>  -->
 	
  	
 	
     <script src="js/jquery.jqGrid.min.js"></script> 
-	<script src="js/getJqGridData.js"></script>
-<script type="text/javascript">
+	<script src="js/getJqGridData.js"></script> 
 
-var currentUserId =	 '${p.pupilNum}'
-
-var pupilID ;
- $(function() {
-	 	$("#testBtn").click(function() {
-	    var dataString = 'id='+ 1 + '&action=' + "get";
-	    $.ajax({
-	  		async: false,
-			type: 'GET',
-			datatype: 'jsonp',
-	        url: "FullPupilCardController",
-	        data: dataString,
-	        success: function(data) {
-	        	if(data != undefined){
-	        		pupilID = data.pupilNum;
-	        		
-	        		alert(pupilID); 
-	        		/* setPupilCardData(data); */
-	        		
-	        	}
-	        	else
-        			alert("no data");
-	        },
-	        error: function(e) {
-	        	console.log("error");
-				
-	        }
-	        
-	      }); 
-	      
-	  	 return false;
-	     
-	    });
-	 	
-	 	$("#testJSP").click(function() {
-	 		window.location.href = "pupil_card_view.jsp?pupil="+pupilID+"";
-	 	});
-	  });	
-</script>	
 	
+<script src="js/js_pupils_search.js"></script> 	
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -186,72 +147,10 @@ var pupilID ;
                             
 							<button id="testBtn">test get data</button>
 							<button id="testJSP">test JSP</button>
+							<button id="testgetlist">test get list</button>
                             <a href="pupil_card_view.jsp ">test call jsp</a>
                             
-                                <div class="table-responsive">
                                 
-                                    <table class="table table-bordered table-hover table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>שם פרטי</th>
-                                                <th>שם משפחה</th>
-                                                <th>מגדר</th>
-                                                <th>כיתה</th>
-                                                <th>רשום?</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>3326</td>
-                                                <td>10/21/2013</td>
-                                                <td>3:29 PM</td>
-                                                <td>$321.33</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3325</td>
-                                                <td>10/21/2013</td>
-                                                <td>3:20 PM</td>
-                                                <td>$234.34</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3324</td>
-                                                <td>10/21/2013</td>
-                                                <td>3:03 PM</td>
-                                                <td>$724.17</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3323</td>
-                                                <td>10/21/2013</td>
-                                                <td>3:00 PM</td>
-                                                <td>$23.71</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3322</td>
-                                                <td>10/21/2013</td>
-                                                <td>2:49 PM</td>
-                                                <td>$8345.23</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3321</td>
-                                                <td>10/21/2013</td>
-                                                <td>2:23 PM</td>
-                                                <td>$245.12</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3320</td>
-                                                <td>10/21/2013</td>
-                                                <td>2:15 PM</td>
-                                                <td>$5663.54</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3319</td>
-                                                <td>10/21/2013</td>
-                                                <td>2:13 PM</td>
-                                                <td>$943.45</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
                                <!--  <div class="text-right">
                                     <a href="#">View All Transactions <i class="fa fa-arrow-circle-right"></i></a>
                                 </div> -->
@@ -279,16 +178,17 @@ var pupilID ;
     </div>
     <!-- /#wrapper -->
 </div>
-    <!-- jQuery -->
-<!--     <script src="js/jquery.js"></script>
- -->
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
 
-    <!-- Morris Charts JavaScript -->
- <!--    <script src="js/plugins/morris/raphael.min.js"></script>
-    <script src="js/plugins/morris/morris.min.js"></script>
-    <script src="js/plugins/morris/morris-data.js"></script> -->
+ -->
+
+<script type="text/javascript">
+
+/* var currentUserId =	 '${p.pupilNum}' */
+
+var pupilID ;
+loadPupilSearch();
+</script>
+
 
 </body>
 

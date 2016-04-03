@@ -1,8 +1,8 @@
 jQuery(document).ready(function() {
         $("#list").jqGrid({
-                url : "GridServlet",
+                url : "FullPupilCardController?action=getAll",
                 datatype : "json",
-                mtype : 'POST',
+                mtype : 'GET',
                 colNames : ['שם פרטי' , 'שם משפחה' , 'מגדר', 'כיתה', 'רשום'],
                 colModel : [ {
                         name : 'id',
@@ -41,7 +41,7 @@ jQuery(document).ready(function() {
                 jsonReader : {
                         repeatitems : false,
                 },
-                editurl : "GridServlet"
+                editurl : "FullPupilCardController"
         });
         jQuery("#list").jqGrid('navGrid', '#pager', {
                 edit : true,
