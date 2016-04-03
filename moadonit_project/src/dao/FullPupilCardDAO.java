@@ -3,6 +3,9 @@ package dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import model.FullPupilCard;
 import util.DAOUtil;
 import controller.MyConnection;
@@ -10,6 +13,7 @@ import controller.MyConnection;
 public class FullPupilCardDAO extends AbstractDAO {
 
 	private String select = "SELECT * FROM fullPupilCard where pupilNum = ?";
+	private String selectAll = "SELECT * FROM fullPupilCard";
 	/**
 	 * 
 	 */
@@ -38,6 +42,24 @@ public class FullPupilCardDAO extends AbstractDAO {
 
 		return p;
 	}
+	
+	public List<FullPupilCard> selectAll() throws IllegalArgumentException, DAOException {
+		List<FullPupilCard> list = new ArrayList<>();
+
+		try (PreparedStatement statement = DAOUtil.prepareStatement(this.con.getConnection(), selectAll, false,
+				new Object[] { }); ResultSet resultSet = statement.executeQuery();) {
+
+			while (resultSet.next()) {
+				FullPupilCard p = map(resultSet);
+				list.add(p);
+			}
+
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+
+		return list;
+}
 
 	private FullPupilCard map(ResultSet resultSet) throws SQLException {
 		// TODO Auto-generated method stub

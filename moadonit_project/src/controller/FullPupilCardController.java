@@ -2,7 +2,11 @@ package controller;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -33,8 +37,9 @@ public class FullPupilCardController extends HttpServlet implements
 
 	MyConnection con = null;
 	private String action;
-	FullPupilCard fullPupil = null;
+	FullPupilCard pupilCard = null;
 	FullPupilCardDAO fullPupilDao;
+	List<FullPupilCard> pupilList = null;
 	
 	PupilDAO pupilDao;
 	FamilyDAO familyDao;
@@ -68,12 +73,12 @@ public class FullPupilCardController extends HttpServlet implements
 			action = req.getParameter("action");
 			if (action.equals("get")) {
 				
-				fullPupil = getFullPupilCard(req, resp);
+				pupilCard = getFullPupilCard(req, resp);
 				
 				
-				if (fullPupil != null) {
+				if (pupilCard != null) {
 
-					String jsonObj = DAOUtil.getJsonFromObject(fullPupil);
+					String jsonObj = DAOUtil.getJsonFromObject(pupilCard);
 					
 					resp.setContentType("application/json");
 					resp.setCharacterEncoding("UTF-8");
@@ -88,6 +93,39 @@ public class FullPupilCardController extends HttpServlet implements
 				}
 
 			}
+			else
+				if (action.equals("getAll")) {
+					pupilList = getFullPupilList(req, resp);
+					
+					
+					/*	if (pupilList != null) {
+						String jsonObj = "{'pupils':[ +";
+						for(int i=0;i<pupilList.size();i++){
+							;
+							jsonObj += "'"+DAOUtil.getJsonFromObject(pupilList.get(i))+",' +";
+						}
+						jsonObj += "]}'";*/
+						pupilCard = pupilList.get(0);
+						if (pupilCard != null) {
+
+							String jsonArray = DAOUtil.getJsonFromObject(pupilCard);
+							
+							
+			                jsonArray = "{\"page\":1,\"total\":\"2\",\"records\":"
+			                        + 1 + ",\"rows\":" + jsonArray + "}";
+							
+						resp.setContentType("application/json");
+						resp.setCharacterEncoding("UTF-8");
+						resp.getWriter().print(jsonArray);
+
+					} else {
+						resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+						resp.setContentType("application/json");
+						resp.setCharacterEncoding("UTF-8");
+						resp.getWriter().print("error in get data for pupils list");
+
+					}
+				}
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -230,5 +268,12 @@ public class FullPupilCardController extends HttpServlet implements
 
 		return p;
 	}
-
+	
+	protected List<FullPupilCard> getFullPupilList(HttpServletRequest req,
+			HttpServletResponse resp) {
+		List<FullPupilCard> pupils = new ArrayList<>();
+		pupils = this.fullPupilDao.selectAll();
+			
+		return pupils;
+	}
 }
