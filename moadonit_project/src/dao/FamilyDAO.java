@@ -109,7 +109,7 @@ public class FamilyDAO extends AbstractDAO {
 
 		Object[] values = { fam.getHomeAddress(), fam.getHomePhoneNum(),
 				fam.getTblParent1().getParentID(),
-				fam.getTblParent2().getParentID()
+				fam.getTblParent2() != null ? fam.getTblParent2().getParentID() :  null
 
 		};
 

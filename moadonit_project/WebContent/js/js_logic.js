@@ -53,7 +53,8 @@ function setPupilCardData(pupil){
 		}
 
 function savePupilCardData(){
-	
+		    
+	    
 	 	var pupil = new Object();
 	 	var family  = new Object();
 	 	var regPupil  = new Object();
@@ -69,11 +70,12 @@ function savePupilCardData(){
 	    pupil.photoPath = '';
 	    pupil.birthDate = $('#date_of_birth').combodate('getValue', null);
 	    pupil.familyID = null;	   
-	    pupil.tblGenderRef = {gender :  $("input[name=genderGruop]:checked").val() };
+	    var gender = $("input[name=genderGruop]:checked").val();
+	    pupil.tblGenderRef = {gender :  gender };
 	    pupil.tblGrade = { gradeID : $('#grade').val() };
 	    
-	    /*pupil.gradeID = $('#grade').val();
-	    pupil.gender = $("input[name=genderGruop]:checked").val();*/
+	    pupil.gradeID = $('#grade').val();
+	    pupil.gender = $("input[name=genderGruop]:checked").val();
 	    
 	    /* family data */	    
 	    family.familyID = null;
@@ -114,9 +116,7 @@ function savePupilCardData(){
 	    parent2.relationToPupil = $('#p2relat').val();
 	    parent2.tblFamilyRelation = { 'idFamilyRelation': $('#p2relat').val() };
 	    
-	   	    	  
-		   
-	  	
+	     
 	  	  $.ajax({
 	  		async: false,
 			type: 'POST',
@@ -133,14 +133,24 @@ function savePupilCardData(){
 	        	
 	        success: function(data) {
 	        	if(data != undefined){
-	        		alert(data);
-	        		
-	        	
+	        		/*alert(data);*/
+	        		if(data.msg == "1"){
+	        			pupilID = data.result;
+	        			bootbox.alert("נתונים נשמרו בהצלחה, הנך מועבר למסך תלמיד", function() {
+	        				// send user to the pupil page after successful insert
+	        				window.location.href = "pupil_card_view.jsp?pupil="+pupilID+"";
+	    	        	});
+	        		}
+	        		else if(data.msg == "0"){	        			
+	        			bootbox.alert("שגיאה בשמירת הנתונים, נא בדוק את הערכים ונסה שוב.", function() {	   	        		 
+	    	        	});
+	        		}
 	        	}
 	        },
 	        error: function(e) {
-	        	console.log("error");
-				
+	        	console.log(e);
+			        	bootbox.alert("שגיאה בשמירת הנתונים, נא בדוק את הערכים ונסה שוב.", function() {	   	        		 
+			        	});			
 	        }
 	        
 	      }); 
