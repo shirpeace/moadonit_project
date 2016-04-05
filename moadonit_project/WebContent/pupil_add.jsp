@@ -268,7 +268,7 @@
 										placeholder="משפחה">
 								</div>
 								<div class="form-group">
-									<label for="p1cell">טלפון נייד</label> <input type="number"
+									<label for="p1cell">טלפון נייד</label> <input type="text"
 										name="p1cell" class="form-control" id="p1cell"
 										placeholder="טלפון">
 								</div>
@@ -302,7 +302,7 @@
 										placeholder="משפחה">
 								</div>
 								<div class="form-group">
-									<label for="p2cell">טלפון נייד</label> <input type="number"
+									<label for="p2cell">טלפון נייד</label> <input type="text"
 										name="p2cell" class="form-control" id="p2cell"
 										placeholder="טלפון">
 								</div>
@@ -332,7 +332,7 @@
 										placeholder="כתובת">
 								</div>
 								<div class="form-group">
-									<label for="phone">טלפון בבית</label> <input type="number"
+									<label for="phone">טלפון בבית</label> <input type="text"
 										name="phone" class="form-control" id="phone"
 										placeholder="טלפון">
 								</div>
@@ -479,11 +479,13 @@
 					// set a rule to inputs
 					fName:  {
 						required: true,
-						minlength: 2
+						minlength: 2,
+						maxlength: 20
 					},
 					lName:  {
 						required: true,
-						minlength: 2
+						minlength: 2,
+						maxlength: 20
 					},
 					 cell: {
 						/* required: true, */
@@ -494,25 +496,62 @@
 					}, 
 					staffJob: {
 						required: "#staff:checked",
-						minlength: 2
+						minlength: 2,
+						maxlength: 20
 					}
 					,
 					p1fName : {
 						required: true,
-						
+						maxlength: 20
 					},
 					p1lName : {
 						required: true,
-						
+						maxlength: 20
 					},
-					/*  p1mail : {
-						required: true,
-						email: true
-					},  */
+					p2fName : {
+						
+						maxlength: 20
+					},
+					p2lName : {
+					
+						maxlength: 20
+					},
+					p1mail : {
+						email: true,
+						maxlength: 254
+					},  
+					p2cell : {
+						rangelength: [2, 10],
+						digits: true
+					},
+					p1cell : {
+						minlength: 10,
+						maxlength: 10,
+						digits: true
+					},
 					genderGruop : {
 						required: true,		
 						minlength: 1
-					}
+					},
+					phone : {
+						minlength: 9,
+						maxlength: 9,
+						digits: true
+					},address : {
+						
+						maxlength: 45,
+						digits: true
+					},
+					 health : { 
+						 maxlength: 20 
+					}, 
+					foodsens : { 
+					maxlength: 20
+					
+					}, 
+					comnt : { 
+						maxlength: 20
+					},
 					
 					
 				},

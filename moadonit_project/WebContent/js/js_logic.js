@@ -122,7 +122,7 @@ function savePupilCardData(){
 			type: 'POST',
 			datatype: 'jsonp',
 	        url: "FullPupilCardController",
-	        data: { action:"update", pupilParam : JSON.stringify(pupil), 
+	        data: { action:"insert", pupilParam : JSON.stringify(pupil), 
 		        	familyParam : JSON.stringify(family),
 		        	regPupilParam : JSON.stringify(regPupil),
 		        	parent1Param : JSON.stringify(parent1),
