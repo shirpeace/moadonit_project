@@ -140,17 +140,17 @@
                 <div class="col-lg-8">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h3 class="panel-title"><i class="fa fa-info fa-fw"></i> הוראות למשתמש</h3>
+                                <h3 class="panel-title"><i class="fa fa-info fa-fw"></i> כל התלמידים</h3>
                             </div>
                             <div class="panel-body">
-                            
+                            <!-- 
                             
 							<button id="testBtn">test get data</button>
 							<button id="testJSP">test JSP</button>
 							<button id="testgetlist">test get list</button>
                             <a href="pupil_card_view.jsp ">test call jsp</a>
                             
-                                
+                                 -->
                                <!--  <div class="text-right">
                                     <a href="#">View All Transactions <i class="fa fa-arrow-circle-right"></i></a>
                                 </div> -->
@@ -158,7 +158,7 @@
                                     <table class="table table-bordered table-hover table-striped" id="list">
                                 
 										<tr>
-											<td >helolo</td>
+											<td ></td>
 										</tr>
 									</table>
 								<div id="pager"></div>

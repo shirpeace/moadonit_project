@@ -15,6 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import dao.DAOException;
 import dao.FamilyDAO;
 import dao.FullPupilCardDAO;
@@ -60,6 +63,7 @@ public class FullPupilCardController extends HttpServlet implements
 		// TODO Auto-generated constructor stub
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -93,26 +97,38 @@ public class FullPupilCardController extends HttpServlet implements
 				}
 
 			}
-			else
+			/*else
 				if (action.equals("getAll")) {
 					pupilList = getFullPupilList(req, resp);
+					JSONArray pupilsList = new JSONArray();
+					for (FullPupilCard pupil : pupilList) {
+						int id = pupil.getPupilNum();
+						String fName = pupil.getFirstName();
+						String lName = pupil.getLastName();
+						int gender = pupil.getGender();
+						String grade = pupil.getGradeName();
+						Boolean reg;
+						if( pupil.getRegPupilNum() == 0){
+							reg = false;
+						}else reg = true;
+						
+						JSONObject user = new JSONObject();
+						user.put("id",id);
+						user.put("firstName",fName);
+						user.put("lastName",lName);
+						user.put("gender",gender);
+						user.put("Grade",grade);
+						user.put("isReg",reg);
+						
+						pupilsList.add(user);
+					}
 					
 					
-					/*	if (pupilList != null) {
-						String jsonObj = "{'pupils':[ +";
-						for(int i=0;i<pupilList.size();i++){
-							;
-							jsonObj += "'"+DAOUtil.getJsonFromObject(pupilList.get(i))+",' +";
-						}
-						jsonObj += "]}'";*/
-						pupilCard = pupilList.get(0);
-						if (pupilCard != null) {
+						if (pupilsList.isEmpty()) {
 
-							String jsonArray = DAOUtil.getJsonFromObject(pupilCard);
-							
-							
-			                jsonArray = "{\"page\":1,\"total\":\"2\",\"records\":"
-			                        + 1 + ",\"rows\":" + jsonArray + "}";
+							String jsonArray = pupilsList.toJSONString();
+							jsonArray = "{\"page\":1,\"total\":\"2\",\"records\":"
+			                        + pupilList.size() + ",\"rows\":" + jsonArray + "}";
 							
 						resp.setContentType("application/json");
 						resp.setCharacterEncoding("UTF-8");
@@ -125,7 +141,7 @@ public class FullPupilCardController extends HttpServlet implements
 						resp.getWriter().print("error in get data for pupils list");
 
 					}
-				}
+				}*/
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -230,7 +246,58 @@ public class FullPupilCardController extends HttpServlet implements
 			}
 			
 			
-		}
+		}else
+			if (action.equals("getAll")) {
+				pupilList = getFullPupilList(req, resp);
+				JSONArray pupilsList = new JSONArray();
+				for (FullPupilCard pupil : pupilList) {
+					int id = pupil.getPupilNum();
+					String fName = pupil.getFirstName();
+					String lName = pupil.getLastName();
+					String gend;
+					if(pupil.getGender()==1)
+						gend="בן";
+					else
+						if(pupil.getGender()==2)
+							gend="בת";
+						else
+							gend=" ";
+					String grade = pupil.getGradeName();
+					Boolean reg;
+					if( pupil.getRegPupilNum() == 0){
+						reg = false;
+					}else reg = true;
+					
+					JSONObject user = new JSONObject();
+					user.put("id",id);
+					user.put("firstName",fName);
+					user.put("lastName",lName);
+					user.put("gender",gend);
+					user.put("Grade",grade);
+					user.put("isReg",reg);
+					
+					pupilsList.add(user);
+				}
+				
+				
+					if (!pupilsList.isEmpty()) {
+
+						String jsonArray = pupilsList.toJSONString();
+						jsonArray = "{\"page\":1,\"total\":\"2\",\"records\":"
+		                        + pupilList.size() + ",\"rows\":" + jsonArray + "}";
+						
+					resp.setContentType("application/json");
+					resp.setCharacterEncoding("UTF-8");
+					resp.getWriter().print(jsonArray);
+
+				} else {
+					resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+					resp.setContentType("application/json");
+					resp.setCharacterEncoding("UTF-8");
+					resp.getWriter().print("error in get data for pupils list");
+
+				}
+			}
 		
 	}
 

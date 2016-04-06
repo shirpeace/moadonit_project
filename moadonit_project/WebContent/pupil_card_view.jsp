@@ -356,7 +356,7 @@
 	else{%>
 	
 	<script type="text/javascript">
-		var pupilID = "1";
+		var pupilID = "3";
 	</script>
 	
 	<%} %>
