@@ -48,10 +48,10 @@ public class RegisterPupilDAO extends AbstractDAO {
 	}
 
 	public void insert(RegisterPupil p) throws IllegalArgumentException, DAOException {
-		if (p.getPupilNum() != 0) {
+		/*if (p.getPupilNum() != 0) {
 			throw new IllegalArgumentException(
 					"parent is already created, the parent ID is not null.");
-		}
+		}*/
 
 		Object[] values = {
 
@@ -66,21 +66,21 @@ public class RegisterPupilDAO extends AbstractDAO {
 		try (
 
 		    PreparedStatement statement = DAOUtil.prepareStatement(
-				this.con.getConnection(), insert, true, values);) {
+				this.con.getConnection(), insert, false, values);) {
 			int affectedRows = statement.executeUpdate();
 			if (affectedRows == 0) {
 				throw new DAOException(
 						"Creating pupil failed, no rows affected.");
 			}
 
-			try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+			/*try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
 				if (generatedKeys.next()) {
 					p.setPupilNum(generatedKeys.getInt(1));
 				} else {
 					throw new DAOException(
 							"Creating pupil failed, no generated key obtained.");
 				}
-			}
+			}*/
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		}

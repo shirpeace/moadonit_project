@@ -100,6 +100,10 @@ public final class DAOUtil {
         throws SQLException
     {
         for (int i = 0; i < values.length; i++) {
+        	if (values[i] instanceof String) {
+        		statement.setString(i + 1, (String)values[i]);	
+			}
+        	else
             statement.setObject(i + 1, values[i]);
         }
     }

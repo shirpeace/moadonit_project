@@ -42,13 +42,20 @@ public class FullPupilCardController extends HttpServlet implements
 	private String action;
 	FullPupilCard pupilCard = null;
 	FullPupilCardDAO fullPupilDao;
+	Pupil p = null;
+	RegisterPupil rp = null;
+	Family fam = null;
+	Parent parent1 = null;
+	Parent parent2 = null;
 	List<FullPupilCard> pupilList = null;
-	
+
 	PupilDAO pupilDao;
 	FamilyDAO familyDao;
 	ParentDAO parentDao;
 	RegisterPupilDAO regPupilDao;
-	//Pupil 
+	JSONObject resultToClient = new JSONObject();;
+
+	// Pupil
 	/**
 	 * 
 	 */
@@ -97,58 +104,16 @@ public class FullPupilCardController extends HttpServlet implements
 				}
 
 			}
-			/*else
-				if (action.equals("getAll")) {
-					pupilList = getFullPupilList(req, resp);
-					JSONArray pupilsList = new JSONArray();
-					for (FullPupilCard pupil : pupilList) {
-						int id = pupil.getPupilNum();
-						String fName = pupil.getFirstName();
-						String lName = pupil.getLastName();
-						int gender = pupil.getGender();
-						String grade = pupil.getGradeName();
-						Boolean reg;
-						if( pupil.getRegPupilNum() == 0){
-							reg = false;
-						}else reg = true;
-						
-						JSONObject user = new JSONObject();
-						user.put("id",id);
-						user.put("firstName",fName);
-						user.put("lastName",lName);
-						user.put("gender",gender);
-						user.put("Grade",grade);
-						user.put("isReg",reg);
-						
-						pupilsList.add(user);
-					}
-					
-					
-						if (pupilsList.isEmpty()) {
-
-							String jsonArray = pupilsList.toJSONString();
-							jsonArray = "{\"page\":1,\"total\":\"2\",\"records\":"
-			                        + pupilList.size() + ",\"rows\":" + jsonArray + "}";
-							
-						resp.setContentType("application/json");
-						resp.setCharacterEncoding("UTF-8");
-						resp.getWriter().print(jsonArray);
-
-					} else {
-						resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-						resp.setContentType("application/json");
-						resp.setCharacterEncoding("UTF-8");
-						resp.getWriter().print("error in get data for pupils list");
-
-					}
-				}*/
+			
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			resp.setContentType("application/json");
 			resp.setCharacterEncoding("UTF-8");
-			resp.getWriter().print("error in get data for this pupil");
+			resultToClient.put("msg", 0);
+			resultToClient.put("result", null);
+			resp.getWriter().print(resultToClient);
 			e.printStackTrace();
 		}
 
@@ -160,93 +125,33 @@ public class FullPupilCardController extends HttpServlet implements
 		// TODO Auto-generated method stub
 		checkConnection(req,resp);
 		
-		
-		String pupilStr, pupilRegStr, familyStr, parentStr1,parentStr2;
-		int gradeID , gender; 
-		Pupil p = new Pupil();
-		RegisterPupil rp = new RegisterPupil();
-		Family fam = new Family();
-		Parent parent1 = new Parent();
-		Parent parent2 = new Parent();
-		
+		p = new Pupil();
+		rp = new RegisterPupil();
+		fam = new Family();
+		parent1 = new Parent();
+		parent2 = new Parent();
+
 		this.familyDao = new FamilyDAO(con);
 		this.parentDao = new ParentDAO(con);
 		this.pupilDao = new PupilDAO(con);
 		this.regPupilDao = new RegisterPupilDAO(con);
-		
+
 		action = req.getParameter("action");
-		
-		if (action.equals("update")){
-			
-			pupilStr = req.getParameter("pupilParam");
-			pupilRegStr = req.getParameter("regPupilParam");
-			familyStr = req.getParameter("familyParam");
-			parentStr1 = req.getParameter("parent1Param");
-			parentStr2 = req.getParameter("parent2Param");
-			gender = Integer.parseInt(req.getParameter("gender"));
-			gradeID = Integer.parseInt(req.getParameter("gradeID"));
-			
-			try {
+
+		try {
+
+			if (action.equals("insert")) {
 				
+				insertPupil(req, resp);
 				
-				p = (Pupil) DAOUtil.getObjectFromJson(pupilStr, Pupil.class);
-				rp = (RegisterPupil) DAOUtil.getObjectFromJson(pupilRegStr, RegisterPupil.class);
-				fam = (Family) DAOUtil.getObjectFromJson(familyStr, Family.class);
-				parent1 = (Parent) DAOUtil.getObjectFromJson(parentStr1, Parent.class);
-				parent2 = (Parent) DAOUtil.getObjectFromJson(parentStr2, Parent.class);
-				
-				//* transaction block start *//
-			    this.con.getConnection().setAutoCommit(false);
-				
-				if (!parent1.getFirstName().trim().equals("")) {
-					//save parent 1
-					FamilyRelation fr = new FamilyRelation();
-					
-					this.parentDao.insert(parent1);
-					
-				}
-				
-				else if(!parent2.getFirstName().trim().equals("")){
-					//save parent 2
-					this.parentDao.insert(parent2);
-				}
-				
-				if (parent1.getParentID() > 0) {
-					fam.setTblParent1(parent1);					
-				}
-				
-				if (parent2.getParentID() > 0) {
-					fam.setTblParent2(parent2);					
-				}
-				
-				//save family
-				this.familyDao.insert(fam);
-				//save pupil
-				p.setTblFamily(fam);
-				
-				GenderRef g = new GenderRef();
-				g.setGender(gender);				
-				p.setTblGenderRef(g);
-				
-				Grade grade = new Grade();
-				grade.setGradeID(gradeID);
-				p.setTblGrade(grade);
-				
-				this.pupilDao.insert(p);
-				
-				//save regPupil
-				rp.setPupilNum(p.getPupilNum());
-				this.regPupilDao.insert(rp);
-				
-				this.con.getConnection().commit();
-				
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				resp.setContentType("application/json");
+				resp.setCharacterEncoding("UTF-8");
+				resp.getWriter().print(resultToClient);
+
 			}
 			
 			
-		}else
+		else
 			if (action.equals("getAll")) {
 				pupilList = getFullPupilList(req, resp);
 				JSONArray pupilsList = new JSONArray();
@@ -291,18 +196,43 @@ public class FullPupilCardController extends HttpServlet implements
 					resp.getWriter().print(jsonArray);
 
 				} else {
-					resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+					
 					resp.setContentType("application/json");
 					resp.setCharacterEncoding("UTF-8");
-					resp.getWriter().print("error in get data for pupils list");
-
+					resultToClient.put("msg", 0);
+					resultToClient.put("result", "לא נמצאו נתונים");
+					resp.getWriter().print(resultToClient);
 				}
 			}
-		
+
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			resp.setContentType("application/json");
+			resp.setCharacterEncoding("UTF-8");
+
+			resultToClient.put("msg", 0);
+			resultToClient.put("result", null);
+			resp.getWriter().print(resultToClient);
+
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			resp.setContentType("application/json");
+			resp.setCharacterEncoding("UTF-8");
+			resultToClient.put("msg", 0);
+			resultToClient.put("result", null);
+			resp.getWriter().print(resultToClient);
+
+			e.printStackTrace();
+		}
+
 	}
 
-	protected void checkConnection(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	protected void checkConnection(HttpServletRequest req,
+			HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession session = req.getSession();
 		if (session.getAttribute("connection") != null) {
 			con = (MyConnection) session.getAttribute("connection");
@@ -324,8 +254,80 @@ public class FullPupilCardController extends HttpServlet implements
 		if (this.fullPupilDao == null)
 			this.fullPupilDao = new FullPupilCardDAO(con);
 
-
 	}
+
+	@SuppressWarnings("unchecked")
+	protected JSONObject insertPupil(HttpServletRequest req,
+			HttpServletResponse resp) throws IOException, SQLException {
+
+		String pupilStr, pupilRegStr, familyStr, parentStr1, parentStr2;
+
+		p = new Pupil();
+		rp = new RegisterPupil();
+		fam = new Family();
+		parent1 = new Parent();
+		parent2 = new Parent();
+
+		pupilStr = req.getParameter("pupilParam");
+		pupilRegStr = req.getParameter("regPupilParam");
+		familyStr = req.getParameter("familyParam");
+		parentStr1 = req.getParameter("parent1Param");
+		parentStr2 = req.getParameter("parent2Param");
+
+		p = (Pupil) DAOUtil.getObjectFromJson(pupilStr, Pupil.class);
+		rp = (RegisterPupil) DAOUtil.getObjectFromJson(pupilRegStr,
+				RegisterPupil.class);
+		fam = (Family) DAOUtil.getObjectFromJson(familyStr, Family.class);
+		parent1 = (Parent) DAOUtil.getObjectFromJson(parentStr1, Parent.class);
+		parent2 = (Parent) DAOUtil.getObjectFromJson(parentStr2, Parent.class);
+
+		// * transaction block start *//
+		this.con.getConnection().setAutoCommit(false);
+
+		// save parent only if first name and last name arent empty
+		if (!parent1.getFirstName().trim().equals("")
+				&& !parent1.getLastName().trim().equals("")) {
+			// save parent 1
+			this.parentDao.insert(parent1);
+
+		}
+
+		// save parent only if first name and last name arent empty
+		if (!parent2.getFirstName().trim().equals("")
+				&& !parent2.getLastName().trim().equals("")) {
+			// save parent 2
+			this.parentDao.insert(parent2);
+		}
+
+		if (parent2.getParentID() > 0) {
+			fam.setTblParent2(parent2);
+		}
+
+		// family must have parent1 (not null in DB )
+		if (parent1.getParentID() > 0) {
+			fam.setTblParent1(parent1);
+
+			// save family
+			this.familyDao.insert(fam);
+			// save pupil
+			p.setTblFamily(fam);
+
+		}
+
+		this.pupilDao.insert(p);
+
+		// save regPupil
+		rp.setPupilNum(p.getPupilNum());
+		this.regPupilDao.insert(rp);
+
+		this.con.getConnection().commit();
+
+		resultToClient.put("msg", 1);
+		resultToClient.put("result", p.getPupilNum());
+
+		return resultToClient;
+	}
+
 	protected FullPupilCard getFullPupilCard(HttpServletRequest req,
 			HttpServletResponse resp) {
 
@@ -335,12 +337,12 @@ public class FullPupilCardController extends HttpServlet implements
 
 		return p;
 	}
-	
+
 	protected List<FullPupilCard> getFullPupilList(HttpServletRequest req,
 			HttpServletResponse resp) {
 		List<FullPupilCard> pupils = new ArrayList<>();
 		pupils = this.fullPupilDao.selectAll();
-			
+
 		return pupils;
 	}
 }

@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=windows-1255"
-	pageEncoding="windows-1255"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
@@ -11,418 +11,579 @@
 
 <head>
 
-   <!--  <meta charset="utf-8"> -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<!--  <meta charset="utf-8"> -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
 
-    <title>ξεςγεπιϊ</title>
+<title>ΧΧ•ΧΆΧ“Χ•Χ Χ™Χª</title>
 
 <!--  java script -->
-	<!-- <script src="resources/js/jquery-1.12.2.js"></script>
+<!-- <script src="resources/js/jquery-1.12.2.js"></script>
 	<script src="resources/bootstrap/js/bootstrap.js"></script>
 	<script src="resources/js/template_logic.js"></script>
 	<script src="resources/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script> -->
-	  
-	  <!-- jQuery -->
-    <script src="js/jquery.js"></script>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
-	
-	<script src="js/jquery-ui.js"></script>
-	<script src="js/js_logic.js"></script>
-	
-    <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+<!-- jQuery -->
+<script src="js/jquery.js"></script>
 
-    <!-- Bootstrap Core CSS RTL-->
-    <link href="css/bootstrap-rtl.min.css" rel="stylesheet">
+<!-- Bootstrap Core JavaScript -->
+<script src="js/bootstrap.min.js"></script>
 
-    <!-- Custom CSS -->
-    <link href="css/sb-admin.css" rel="stylesheet">
-    <link href="css/sb-admin-rtl.css" rel="stylesheet">
-    <link href="css/mycss.css" rel="stylesheet">
+<script src="js/jquery-ui.js"></script>
+<script src="js/js_logic.js"></script>
 
-    <!-- Morris Charts CSS -->
-   <!--  <link href="css/plugins/morris.css" rel="stylesheet"> -->
+<!-- Bootstrap Core CSS -->
+<link href="css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Custom Fonts -->
-    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    
-   
-    
-    
-    
-	<script src="js/moment-with-locales.js"></script> 
-	<script src="js/combodate.js"></script> 
-	
+<!-- Bootstrap Core CSS RTL-->
+<link href="css/bootstrap-rtl.min.css" rel="stylesheet">
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
+<!-- Custom CSS -->
+<link href="css/sb-admin.css" rel="stylesheet">
+<link href="css/sb-admin-rtl.css" rel="stylesheet">
+<link href="css/mycss.css" rel="stylesheet">
+
+<!-- Morris Charts CSS -->
+<!--  <link href="css/plugins/morris.css" rel="stylesheet"> -->
+
+<!-- Custom Fonts -->
+<link href="font-awesome/css/font-awesome.min.css" rel="stylesheet"
+	type="text/css">
+
+
+
+
+
+<script src="js/moment-with-locales.js"></script>
+<script src="js/combodate.js"></script>
+
+<!-- form validation plugin -->
+<script src="js/jquery.validate.js"></script>
+<script src="js/additional-methods.js"></script>
+<script src="js/messages_he.js"></script>
+
+   <!-- bootbox code -->
+    <script src="js/bootbox.js"></script> 
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    
-	<script type="text/javascript">
-		
-		var pupilID ;
-		 $(function() {
-			 	
-			 $('#staff').click(function() {
-				 var isChecked = this.checked;
-				 if(isChecked){
-					 $("#staffJobDiv").toggle(true);
-					 
-				 }else{
-					 $("#staffJobDiv").toggle(false);
-					 $("#staffJob").val('');
-				 }
-				 	
-				});
-			 
-			 //saveBtn
-			  $("#saveBtn").click(function() {
-			      // validate and process form here
-			      
-			  	 savePupilCardData();
 
-			      return false;
-			      
-			    });
-			 
-			 $('#date_of_birth').combodate({
-				    minYear: 1975,
-				    maxYear: 2016,
-				    minuteStep: 10
-				});  
-			 moment.locale();         // he
-			
-			    /* $('#form').hide(); */
-			    $("#testBtn").click(function() {
-			      // validate and process form here
-			      
-			  		
-			  	var dataString = 'id='+ 1 + '&action=' + "get";
-			   
-			  	 $.ajax({
-			  		async: false,
-					type: 'GET',
-					datatype: 'jsonp',
-			        url: "FullPupilCardController",
-			        data: dataString,
-			        success: function(data) {
-			        	if(data != undefined){
-			        		pupilID = data.pupilNum;
-			        		setPupilCardData(data);
-			        	
-			        	}
-			        },
-			        error: function(e) {
-			        	console.log("error");
-						
-			        }
-			        
-			      }); 
-			      return false;
-			      
-			    });
-			  });
-		 
-		
+<script type="text/javascript">
+	var pupilID;
+
 </script>
 
 </head>
 
 <body>
 
-    <div id="wrapper">
+	<div id="wrapper">
 
-        <!-- Navigation -->
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <div class="nav navbar-right top-nav" style="padding-top: 15px; ">
-            	<a href="index.html">
-	            	<i class="fa fa-fw fa-power-off"></i>&nbsp;ιφιΰδ</a>
-            </div>
-            <div class="navbar-header" >
-            	<a class="navbar-brand" href="dashboard.jsp">
-            	<i class="fa fa-home fa-fw"></i>&nbsp;ξεςγεπιϊ</a>
-                
-            </div>
-            
-             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
-            <div class="collapse navbar-collapse navbar-ex1-collapse">
-                <ul class="nav navbar-nav side-nav">
-                     <li>
-                        <a href="" style="font-size: 120%; pointer-events: none;"> <i class="fa fa-fw fa-users"></i> ϊμξιγιν</a>
-                        <br>
-                     </li> 
-                     <li>
-                        <a href="pupils_search.jsp" ><i class="fa fa-fw fa-search"></i> ηιτεω</a>
-                     </li> 
-                     <li>
-                        <a href="pupils_phones.jsp" ><i class="fa fa-fw fa-phone"></i> γτι χωψ</a>
-                     </li>
-                     <li class="active">
-                        <a href= "pupil_add.jsp"><i class="fa fa-fw fa-edit"></i> δερτϊ ηγω</a>
-                     </li>  
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-            
-        </nav>
-        
-        <!-- Main content -->
-        <div id="page-wrapper">
-			
+		<!-- Navigation -->
+		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+			<div class="nav navbar-right top-nav" style="padding-top: 15px;">
+				<a href="index.html"> <i class="fa fa-fw fa-power-off"></i>&nbsp;Χ™Χ¦Χ™ΧΧ”
+				</a>
+			</div>
+			<div class="navbar-header">
+				<a class="navbar-brand" href="dashboard.jsp"> <i
+					class="fa fa-home fa-fw"></i>&nbsp;ΧΧ•ΧΆΧ“Χ•Χ Χ™Χª
+				</a>
 
-            <div class="container-fluid">
+			</div>
 
-                <!-- Page Heading -->
-                <div class="row">
-                    <div class="col-lg-12">
-                        <h1 class="page-header">
-                            δερτϊ ϊμξιγ
-                        </h1>
-                        <ol class="breadcrumb">
-                            <li>
-                                 <a href="dashboard.jsp"><i class="fa fa-home"></i> ψΰωι</a>
-                            </li>
-                            <li>
-                                 <a href="pupils_search.jsp"><i class="fa fa-users"></i> ϊμξιγιν</a>
-                            </li>
-                            <li class="active">
-                                <i class="fa fa-edit"></i> δερτϊ ϊμξιγ
-                            </li>
-                        </ol>
-                    </div>
-                </div>
-                <!-- /.row -->
+			<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+			<div class="collapse navbar-collapse navbar-ex1-collapse">
+				<ul class="nav navbar-nav side-nav">
+					<li><a href="" style="font-size: 120%; pointer-events: none;">
+							<i class="fa fa-fw fa-users"></i> ΧªΧΧΧ™Χ“Χ™Χ
+					</a> <br></li>
+					<li><a href="pupils_search.jsp"><i
+							class="fa fa-fw fa-search"></i> Χ—Χ™Χ¤Χ•Χ©</a></li>
+					<li><a href="pupils_phones.jsp"><i
+							class="fa fa-fw fa-phone"></i> Χ“Χ¤Χ™ Χ§Χ©Χ¨</a></li>
+					<li class="active"><a href="pupil_add.jsp"><i
+							class="fa fa-fw fa-edit"></i> Χ”Χ•Χ΅Χ¤Χª Χ—Χ“Χ©</a></li>
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
 
-				<form role="form" id="ajaxform">
-		<!-- row 1 col 1 -->
+		</nav>
+
+		<!-- Main content -->
+		<div id="page-wrapper">
+
+
+			<div class="container-fluid">
+
+				<!-- Page Heading -->
+				<div class="row">
+					<div class="col-lg-12">
+						<h1 class="page-header">Χ”Χ•Χ΅Χ¤Χª ΧªΧΧΧ™Χ“</h1>
+						<ol class="breadcrumb">
+							<li><a href="dashboard.jsp"><i class="fa fa-home"></i>
+									Χ¨ΧΧ©Χ™</a></li>
+							<li><a href="pupils_search.jsp"><i class="fa fa-users"></i>
+									ΧªΧΧΧ™Χ“Χ™Χ</a></li>
+							<li class="active"><i class="fa fa-edit"></i> Χ”Χ•Χ΅Χ¤Χª ΧªΧΧΧ™Χ“</li>
+						</ol>
+					</div>
+				</div>
+				<!-- /.row -->
+
+				<form role="form" class="cmxform" id="ajaxform" name="ajaxform" method="get" action="">
+					<!-- row 1 col 1 -->
 					<div class="row">
 						<div class="col-lg-12">
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="fName">ων τψθι</label> <input type="text"
-										class="form-control" id="fName" placeholder="ων">
+									<label for="fName">Χ©Χ Χ¤Χ¨ΧΧ™</label> <input type="text"
+										class="form-control" id="fName" name="fName" placeholder="Χ©Χ" >
 								</div>
 								<div class="form-group">
-									<label for="lName">ων ξωτηδ</label> <input type="text"
-										class="form-control" id="lName" placeholder="ξωτηδ">
+									<label for="lName">Χ©Χ ΧΧ©Χ¤Χ—Χ”</label> <input type="text" 
+										class="form-control" id="lName" name="lName" 
+										placeholder="ΧΧ©Χ¤Χ—Χ”">
 								</div>
 								<div class="form-group">
-									<label for="cell">θμτεο πιιγ ϊμξιγ</label> <input type="text"
-										class="form-control" id="cell" placeholder="θμτεο">
-								</div> 
+									<label for="cell">ΧΧΧ¤Χ•Χ Χ Χ™Χ™Χ“ ΧªΧΧΧ™Χ“</label> <input 
+										class="form-control" id="cell" name="cell" placeholder="ΧΧΧ¤Χ•Χ">
+								</div>
 							</div>
-		<!-- row 1 col 2 -->
+							<!-- row 1 col 2 -->
 							<div class="col-lg-3">
 								<!-- <div class="form-group">
-									<label for="fName">ϊΰψικ μιγδ</label> <input type="text"
-										class="form-control" id="fName" placeholder="ων">
+									<label for="fName">ΧªΧΧ¨Χ™Χ ΧΧ™Χ“Χ”</label> <input type="text"
+										class="form-control" id="fName" placeholder="Χ©Χ">
 								</div> -->
-								
+
 								<div class="form-group">
-									<label for="date_of_birth">ϊΰψικ μιγδ</label>
-									<br>	
-									<input id="date_of_birth" value="01-01-2003"  data-smartDays="true" data-firstItem="name"
-										data-format="DD-MM-YYYY" data-template="D MMM YYYY"> 
+									<label for="date_of_birth">ΧªΧΧ¨Χ™Χ ΧΧ™Χ“Χ”</label> <br> <input
+										id="date_of_birth" name="date_of_birth" value="01-01-2003"
+										data-smartDays="true" class=".ignore" data-firstItem="name"
+										data-format="DD-MM-YYYY" data-template="D MMM YYYY">
 								</div>
 								<div class="form-group">
-									
-									<label for="grade">λιϊδ</label>
-									<select class="form-control"
-										id="grade">
-										<option value="11">ΰ-ΰ</option>
-										<option value="12">ΰ-α</option>
-										<option value="13">ΰ-β</option>
-										<option value="21">α-ΰ</option>
-										<option value="22">α-α</option>
-										<option value="23">α-β</option>
-										<option value="31">β-ΰ</option>
-										<option value="32">β-α</option>
-										<option value="33">β-β</option>
-										<option value="41">γ-ΰ</option>
-										<option value="42">γ-α</option>
-										<option value="43">γ-β</option>
-										<option value="51">δ-ΰ</option>
-										<option value="52">δ-α</option>
-										<option value="53">α-β</option>
-										<option value="61">ε-ΰ</option>
-										<option value="62">ε-α</option>
-										<option value="63">ε-β</option>
+
+									<label for="grade">Χ›Χ™ΧªΧ”</label> <select class="form-control"
+										name="grade" id="grade">
+										<option value="11">Χ-Χ</option>
+										<option value="12">Χ-Χ‘</option>
+										<option value="13">Χ-Χ’</option>
+										<option value="21">Χ‘-Χ</option>
+										<option value="22">Χ‘-Χ‘</option>
+										<option value="23">Χ‘-Χ’</option>
+										<option value="31">Χ’-Χ</option>
+										<option value="32">Χ’-Χ‘</option>
+										<option value="33">Χ’-Χ’</option>
+										<option value="41">Χ“-Χ</option>
+										<option value="42">Χ“-Χ‘</option>
+										<option value="43">Χ“-Χ’</option>
+										<option value="51">Χ”-Χ</option>
+										<option value="52">Χ”-Χ‘</option>
+										<option value="53">Χ‘-Χ’</option>
+										<option value="61">Χ•-Χ</option>
+										<option value="62">Χ•-Χ‘</option>
+										<option value="63">Χ•-Χ’</option>
 									</select>
 								</div>
 								<div class="form-group">
-									<label for="cell" class="col-lg-1">ξβγψ</label>
-									<label class="radio-inline col-lg-2"> 
-									<input type="radio" name="genderGruop" id="male" value="1"> αο </label>
-									<label class="radio-inline col-lg-2">
-									<input type="radio" name="genderGruop" id="female" value="2">αϊ</label>
+								     <div class="checkbox-group required">
+									<label for="genderGruop" class="col-lg-1">ΧΧ’Χ“Χ¨</label>
+									 <label class="radio-inline col-lg-2">
+										 <input type="radio" name="genderGruop" id="male" value="1" checked="checked"> Χ‘Χ</label> 
+									<label class="radio-inline col-lg-2"> <input
+										type="radio" name="genderGruop" id="female" value="2">Χ‘Χª
+									</label>									
+									<!-- <span id="genderErr" style="font-weight:bold; color:red; display: inline; padding-right: 20px; visibility: hidden;">Χ Χ ΧΧ΅ΧΧ ΧΧ’Χ“Χ¨</span> -->
+									</div>
 								</div>
 							</div>
-		<!-- row 1 col 3 -->
+							<!-- row 1 col 3 -->
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="food">ρεβ ξπδ</label> <select class="form-control"
-										id="food">
-										<option value="1">ψβιμδ</option>
-										<option value="2">ΰτειδ</option>
-										<option value="3">φξηεπιϊ</option>
-										<option value="4">μμΰ-βμεθο</option>
+									<label for="food">Χ΅Χ•Χ’ ΧΧ Χ”</label> <select class="form-control"
+										name="food" id="food">
+										<option value="1">Χ¨Χ’Χ™ΧΧ”</option>
+										<option value="2">ΧΧ¤Χ•Χ™Χ”</option>
+										<option value="3">Χ¦ΧΧ—Χ•Χ Χ™Χª</option>
+										<option value="4">ΧΧΧ-Χ’ΧΧ•ΧΧ</option>
 									</select>
 								</div>
 								<div class="checkbox ">
-									<label for="ethi">ΰϊιετι</label> <input type="checkbox"
-										id="ethi">
+									<label for="ethi">ΧΧªΧ™Χ•Χ¤Χ™</label> <input type="checkbox"
+										id="ethi" name="ethi">
 								</div>
 								<div class="checkbox">
-									<label for="staff">ιμγ ρβμ</label> <input type="checkbox"
-										id="staff">
+									<label for="staff">Χ™ΧΧ“ Χ΅Χ’Χ</label> <input type="checkbox"
+										name="staff" id="staff">
 								</div>
 								<div class="form-group" style="display: none;" id="staffJobDiv">
-									<label for="staffJob">ϊτχιγ δδεψδ</label> <input type="text"
-										class="form-control"  id="staffJob" placeholder="ϊτχιγ">
+									<label for="staffJob">ΧªΧ¤Χ§Χ™Χ“ Χ”Χ”Χ•Χ¨Χ”</label> <input type="text"
+										name="staffJob" class="form-control" id="staffJob"
+										placeholder="ΧªΧ¤Χ§Χ™Χ“">
 								</div>
 							</div>
-							
-		<!-- row 1 col 4 -->							
+
+							<!-- row 1 col 4 -->
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="health">αςιεϊ αψιΰεϊ</label> <input type="text"
-										class="form-control" id="health" placeholder="">
+									<label for="health">Χ‘ΧΆΧ™Χ•Χª Χ‘Χ¨Χ™ΧΧ•Χª</label> <input type="text"
+										name="health" class="form-control" id="health" placeholder="">
 								</div>
 								<div class="form-group">
-									<label for="foodsens">ψβιωεϊ μξζεο</label> <input type="text"
-										class="form-control" id="foodsens" placeholder="">
+									<label for="foodsens">Χ¨Χ’Χ™Χ©Χ•Χª ΧΧΧ–Χ•Χ</label> <input type="text"
+										class="form-control" id="foodsens" name="foodsens"
+										placeholder="">
 								</div>
 								<div class="form-group">
-									<label for="comnt">δςψεϊ λμμιεϊ</label> <input type="text"
-										class="form-control" id="comnt" placeholder="">
+									<label for="comnt">Χ”ΧΆΧ¨Χ•Χª Χ›ΧΧΧ™Χ•Χª</label> <input type="text"
+										class="form-control" id="comnt" name="comnt" placeholder="">
 								</div>
 							</div>
 						</div>
 					</div>
-					
-					
+
+
 					<!-- row 2 col 1 -->
-					<div class="row">
+					<div class="row" style="position: relative;">
 						<div class="col-lg-12">
-						<h2>τψθι δϊχωψεϊ</h2>
+							<h2>Χ¤Χ¨ΧΧ™ Χ”ΧªΧ§Χ©Χ¨Χ•Χª</h2>
 							<div class="col-lg-3">
-								
+
 								<div class="form-group">
-									<label for="p1fName">ων δδεψδ</label> <input type="text"
-										class="form-control" id="p1fName" placeholder="ων">
+									<label for="p1fName">Χ©Χ Χ”Χ”Χ•Χ¨Χ”</label> <input type="text"
+										name="p1fName" class="form-control" id="p1fName"
+										placeholder="Χ©Χ">
 								</div>
 								<div class="form-group">
-									<label for="p1lName">ων ξωτηδ</label> <input type="text"
-										class="form-control" id="p1lName" placeholder="ξωτηδ">
+									<label for="p1lName">Χ©Χ ΧΧ©Χ¤Χ—Χ”</label> <input type="text"
+										name="p1lName" class="form-control" id="p1lName"
+										placeholder="ΧΧ©Χ¤Χ—Χ”">
 								</div>
 								<div class="form-group">
-									<label for="p1cell">θμτεο πιιγ</label> <input type="text"
-										class="form-control" id="p1cell" placeholder="θμτεο">
+									<label for="p1cell">ΧΧΧ¤Χ•Χ Χ Χ™Χ™Χ“</label> <input type="text"
+										name="p1cell" class="form-control" id="p1cell"
+										placeholder="ΧΧΧ¤Χ•Χ">
 								</div>
 								<div class="form-group">
-									<label for="p1mail">ΰιξιιμ</label> <input type="text"
-										class="form-control" id="p1mail" placeholder="ΰιξιιμ">
+									<label for="p1mail">ΧΧ™ΧΧ™Χ™Χ</label> <input type="email"
+										name="p1mail" class="form-control" id="p1mail"
+										placeholder="ΧΧ™ΧΧ™Χ™Χ">
 								</div>
 								<div class="form-group">
-									<label for="p1relat">χψαδ</label>
-									<select class="form-control"
-										id="p1relat">
-										<option value="1">ΰξΰ</option>
-										<option value="2">ΰαΰ</option>
-										<option value="3">ΰη</option>
-										<option value="4">ΰηεϊ</option>
-										<option value="5">ΰηψ</option>
+									<label for="p1relat">Χ§Χ¨Χ‘Χ”</label> <select class="form-control"
+										name="p1relat" id="p1relat">
+										<option value="1" selected="selected">ΧΧΧ</option>
+										<option value="2">ΧΧ‘Χ</option>
+										<option value="3">ΧΧ—</option>
+										<option value="4">ΧΧ—Χ•Χª</option>
+										<option value="5">ΧΧ—Χ¨</option>
 									</select>
 								</div>
 							</div>
-			<!-- row 2 col 2 -->
+							<!-- row 2 col 2 -->
 							<div class="col-lg-3">
-								
+
 								<div class="form-group">
-									<label for="p2fName">ων δδεψδ</label> <input type="text"
-										class="form-control" id="p2fName" placeholder="ων">
+									<label for="p2fName">Χ©Χ Χ”Χ”Χ•Χ¨Χ”</label> <input type="text"
+										name="p2fName" class="form-control" id="p2fName"
+										placeholder="Χ©Χ">
 								</div>
 								<div class="form-group">
-									<label for="p2lName">ων ξωτηδ</label> <input type="text"
-										class="form-control" id="p2lName" placeholder="ξωτηδ">
+									<label for="p2lName">Χ©Χ ΧΧ©Χ¤Χ—Χ”</label> <input type="text"
+										name="p2lName" class="form-control" id="p2lName"
+										placeholder="ΧΧ©Χ¤Χ—Χ”">
 								</div>
 								<div class="form-group">
-									<label for="p2cell">θμτεο πιιγ</label> <input type="text"
-										class="form-control" id="p2cell" placeholder="θμτεο">
+									<label for="p2cell">ΧΧΧ¤Χ•Χ Χ Χ™Χ™Χ“</label> <input type="text"
+										name="p2cell" class="form-control" id="p2cell"
+										placeholder="ΧΧΧ¤Χ•Χ">
 								</div>
 								<div class="form-group">
-									<label for="p2mail">ΰιξιιμ</label> <input type="text"
-										class="form-control" id="p2mail" placeholder="ΰιξιιμ">
+									<label for="p2mail">ΧΧ™ΧΧ™Χ™Χ</label> <input type="email"
+										name="p2mail" class="form-control" id="p2mail"
+										placeholder="ΧΧ™ΧΧ™Χ™Χ">
 								</div>
 								<div class="form-group">
-									<label for="p2relat">χψαδ</label>
-									<select class="form-control"
-										id="p2relat">
-										<option value="1">ΰξΰ</option>
-										<option value="2">ΰαΰ</option>
-										<option value="3">ΰη</option>
-										<option value="4">ΰηεϊ</option>
-										<option value="5">ΰηψ</option>
+									<label for="p2relat">Χ§Χ¨Χ‘Χ”</label> <select class="form-control"
+										name="p2relat" id="p2relat">
+										<option value="1">ΧΧΧ</option>
+										<option value="2" selected="selected">ΧΧ‘Χ</option>
+										<option value="3">ΧΧ—</option>
+										<option value="4">ΧΧ—Χ•Χª</option>
+										<option value="5">ΧΧ—Χ¨</option>
 									</select>
 								</div>
 							</div>
 
-			<!-- row 2 col 3 -->
+							<!-- row 2 col 3 -->
 							<div class="col-lg-3">
-								
+
 								<div class="form-group">
-									<label for="address">λϊεαϊ ξβεψιν</label> <input type="text"
-										class="form-control" id="address" placeholder="λϊεαϊ">
+									<label for="address">Χ›ΧªΧ•Χ‘Χª ΧΧ’Χ•Χ¨Χ™Χ</label> <input type="text"
+										name="address" class="form-control" id="address"
+										placeholder="Χ›ΧªΧ•Χ‘Χª">
 								</div>
 								<div class="form-group">
-									<label for="phone">θμτεο ααιϊ</label> <input type="text"
-										class="form-control" id="phone" placeholder="θμτεο">
+									<label for="phone">ΧΧΧ¤Χ•Χ Χ‘Χ‘Χ™Χª</label> <input type="text"
+										name="phone" class="form-control" id="phone"
+										placeholder="ΧΧΧ¤Χ•Χ">
 								</div>
 							</div>
-							
-			<!-- row 2 col 4 -->				
-							<div class="col-lg-3">
+
+							<!-- row 2 col 4 -->
+							<div class="col-lg-3" style="position: absolute;  bottom: 0; left: 0">
 								
-								<div class="form-group">
-									<button>ωξεψ</button>
+								<div class="form-group pull-left" id="viewModeBtn" >
+								    <div id="btnActionDiv">
+									<input type="button" id="saveBtn" name="editBtn"
+										class="btn btn-primary" value="Χ©ΧΧ•Χ¨">
+								    <input
+										type="submit" id="saveClearBtn" name="deleteBtn"
+										class="btn btn-primary" value="Χ©ΧΧ•Χ¨ Χ•Χ Χ§Χ”">
+								    <input
+										type="submit" id="clearBtn" name="clearBtn"
+										class="btn btn-primary" value="Χ Χ§Χ”">
+									</div>
+								</div>
+
+<!-- 								<div class="form-group">
+									<button>Χ©ΧΧ•Χ¨</button>
 									<input type="submit" id="saveBtn" name="aveBtn"
-									class="btn btn-default" value="ωξεψ">
+										class="btn btn-default" value="Χ©ΧΧ•Χ¨">
 								</div>
 								<div class="form-group">
-									<button>ωξεψ επχδ</button>
+									<button>Χ©ΧΧ•Χ¨ Χ•Χ Χ§Χ”</button>
 									<input type="submit" id="saveClearBtn" name="saveClearBtn"
-									class="btn btn-default" value="ωξεψ επχδ">
-									
-								</div>
-								<div class="form-group">
-								<input type="submit" id="clearBtn" name="clearBtn"
-									 class="btn btn-default" value="πχδ">
+										class="btn btn-default" value="Χ©ΧΧ•Χ¨ Χ•Χ Χ§Χ”">
+
+								</div>-->
+								<!-- <div class="form-group">
+									<input type="submit" id="clearBtn" name="clearBtn"
+										class="btn btn-default" value="Χ Χ§Χ”">
 									<button id="testBtn">test</button>
-								</div>
+								</div>  -->
 							</div>
 						</div>
 					</div>
 				</form>
 			</div>
-       </div>
-        <!-- /#page-wrapper -->
+		</div>
+		<!-- /#page-wrapper -->
 
-    </div>
-    <!-- /#wrapper -->
+	</div>
+	<!-- /#wrapper -->
 
-    <!-- Morris Charts JavaScript -->
-   <!--  <script src="js/plugins/morris/raphael.min.js"></script>
+	<!-- Morris Charts JavaScript -->
+	<!--  <script src="js/plugins/morris/raphael.min.js"></script>
     <script src="js/plugins/morris/morris.min.js"></script>
     <script src="js/plugins/morris/morris-data.js"></script> -->
+	<script type="text/javascript">
+	 /* //validate the form when it is submitted */
+	 $().ready(function (){
+		 
+		  $('#date_of_birth').combodate({
+				minYear : 1975,
+				maxYear : 2016,
+				minuteStep : 10
+			});
+			moment.locale(); // he
+			
+			$('.day').attr('name', 'day');
+			$('.month').attr('name', 'month');
+			$('.year').attr('name', 'year'); 
 
+			$('#staff').click(function() {
+				var isChecked = this.checked;
+				if (isChecked) {
+					$("#staffJobDiv").toggle(true);
+
+				} else {
+					$("#staffJobDiv").toggle(false);
+					$("#staffJob").val('');
+				}
+
+			});
+			
+
+			//saveBtn
+			$("#saveBtn").click(function() {
+				//savePupilCardData();
+				
+				// validate and process form here
+				 var form = $("#ajaxform");
+				//form.validate();
+				if (form.valid()) {	
+					 if($("#date_of_birth").combodate('getValue', null)== null)
+						return false;						 				
+						 
+					 savePupilCardData();
+				} else {
+					
+				} 
+
+				return false;
+
+			});
+
+			/* $('#form').hide(); */
+			$("#testBtn").click(function() {
+				// validate and process form here
+
+				var dataString = 'id=' + 1 + '&action=' + "get";
+
+				$.ajax({
+					async : false,
+					type : 'GET',
+					datatype : 'jsonp',
+					url : "FullPupilCardController",
+					data : dataString,
+					success : function(data) {
+						if (data != undefined) {
+							pupilID = data.pupilNum;
+							setPupilCardData(data);
+
+						}
+					},
+					error : function(e) {
+						console.log("error");
+
+					}
+
+				});
+				return false;
+
+			});		
+			
+			
+			/* set the validattion for form */
+			var validator = $("#ajaxform").validate({
+				
+				errorPlacement: function(error, element) {
+					// Append error within linked label					
+					error.css("color", "red");				
+					$( element )
+						.closest( "form" )
+							.find( "label[for='" + element.attr( "id" ) + "']" )
+								.append(  error );
+				},
+				rules: {   
+					
+					// set a rule to inputs
+					fName:  {
+						required: true,
+						minlength: 2,
+						maxlength: 20
+					},
+					lName:  {
+						required: true,
+						minlength: 2,
+						maxlength: 20
+					},
+					 cell: {
+						/* required: true, */
+						minlength: 10,
+						maxlength: 10,
+						digits: true
+						
+					}, 
+					staffJob: {
+						required: "#staff:checked",
+						minlength: 2,
+						maxlength: 20
+					}
+					,
+					p1fName : {
+						required: true,
+						maxlength: 20
+					},
+					p1lName : {
+						required: true,
+						maxlength: 20
+					},
+					p2fName : {
+						
+						maxlength: 20
+					},
+					p2lName : {
+					
+						maxlength: 20
+					},
+					p1mail : {
+						email: true,
+						maxlength: 254
+					},  
+					p2cell : {
+						rangelength: [2, 10],
+						digits: true
+					},
+					p1cell : {
+						minlength: 10,
+						maxlength: 10,
+						digits: true
+					},
+					genderGruop : {
+						required: true,		
+						minlength: 1
+					},
+					phone : {
+						minlength: 9,
+						maxlength: 9,
+						digits: true
+					},address : {
+						
+						maxlength: 45,
+						digits: true
+					},
+					 health : { 
+						 maxlength: 20 
+					}, 
+					foodsens : { 
+					maxlength: 20
+					
+					}, 
+					comnt : { 
+						maxlength: 20
+					},
+					
+					
+				},
+				errorElement: "span",
+				
+				/* messages: { 
+					
+					// set custom error msg to inputs
+					lName: {
+						required: " (required)",
+						minlength: " (must be at least 3 characters)"
+					},
+					genderGruop : {
+						required: " (required)",
+						
+						
+					}
+						
+					
+				} */
+			});
+			
+			$("#clearBtn").click(function() {
+				validator.resetForm();
+				 //$(this).closest('form').find("input[type=text],input[type=select],input[type=email],input[type=number], textarea").val("");
+				 $(this).closest('form')[0].reset();
+				 return false;
+			});
+
+	 });
+		
+	</script>
 </body>
 
 </html>
