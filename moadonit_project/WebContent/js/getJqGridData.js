@@ -2,12 +2,13 @@ jQuery(document).ready(function() {
         $("#list").jqGrid({
                 url : "FullPupilCardController?action=getAll",
                 datatype : "json",
-                mtype : 'GET',
-                colNames : ['שם פרטי' , 'שם משפחה' , 'מגדר', 'כיתה', 'רשום'],
+                mtype : 'POST',
+                colNames : ['מספר','שם פרטי' , 'שם משפחה' , 'מגדר', 'כיתה', 'רשום'],
                 colModel : [ {
                         name : 'id',
                         index : 'id',
-                        width : 100
+                        width : 100,
+                        hidden: true
                 }, {
                         name : 'firstName',
                         index : 'firstName',
@@ -19,25 +20,34 @@ jQuery(document).ready(function() {
                         width : 150,
                         editable : true
                 }, {
+                        name : 'gender',
+                        index : 'gender',
+                        width : 100,
+                        editable : true,
+                  /*      search: true,
+                        stype: 'select'*/
+                }, {
                         name : 'Grade',
-                        index : 'city',
+                        index : 'Grade',
                         width : 100,
                         editable : true
                 }, {
-                        name : 'Grade',
-                        index : 'state',
-                        width : 100,
-                        editable : true
+                    name : 'isReg',
+                    index : 'isReg',
+                    width : 100,
+                    editable : true
                 } ],
                 pager : '#pager',
-                rowNum : 10,
-                rowList : [ 10, 20, 30 ],
-                sortname : 'invid',
-                sortorder : 'desc',
+                rowNum : 30,
+                rowList : [ ],
+                sortname : 'Grade',
+              /*  sortorder : 'desc',*/
                 direction:"rtl",
                 viewrecords : true,
                 gridview : true,
-                caption: 'הגריד הראשון שלי',
+                height: 200,
+               
+               /* caption: 'כל התלמידים',*/
                 jsonReader : {
                         repeatitems : false,
                 },
@@ -49,4 +59,8 @@ jQuery(document).ready(function() {
                 del : true,
                 search : true
         });
+        
+      
+        jQuery("#list").jqGrid('filterToolbar',{autosearch:true});
+
 });

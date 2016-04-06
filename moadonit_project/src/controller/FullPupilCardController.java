@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import dao.DAOException;
@@ -74,21 +75,22 @@ public class FullPupilCardController extends HttpServlet implements
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-
+		
 		// check and set connection to session
-		checkConnection(req, resp);
-
+		checkConnection(req,resp);
+		
 		try {
-
+			
 			action = req.getParameter("action");
 			if (action.equals("get")) {
-
+				
 				pupilCard = getFullPupilCard(req, resp);
-
+				
+				
 				if (pupilCard != null) {
 
 					String jsonObj = DAOUtil.getJsonFromObject(pupilCard);
-
+					
 					resp.setContentType("application/json");
 					resp.setCharacterEncoding("UTF-8");
 					resp.getWriter().print(jsonObj);
@@ -101,41 +103,8 @@ public class FullPupilCardController extends HttpServlet implements
 
 				}
 
-			} else if (action.equals("getAll")) {
-				pupilList = getFullPupilList(req, resp);
-
-				/*
-				 * if (pupilList != null) { String jsonObj = "{'pupils':[ +";
-				 * for(int i=0;i<pupilList.size();i++){ ; jsonObj +=
-				 * "'"+DAOUtil.getJsonFromObject(pupilList.get(i))+",' +"; }
-				 * jsonObj += "]}'";
-				 */
-				pupilCard = pupilList.get(0);
-				if (pupilCard != null) {
-
-					String jsonArray = DAOUtil.getJsonFromObject(pupilCard);
-
-					jsonArray = "{\"page\":1,\"total\":\"2\",\"records\":" + 1
-							+ ",\"rows\":" + jsonArray + "}";
-
-					resp.setContentType("application/json");
-					resp.setCharacterEncoding("UTF-8");
-
-					resp.getWriter().print(jsonArray);
-					// resp.getWriter().print("{ msg: '1' , result: " +
-					// jsonArray + "}");
-
-				} else {
-					resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-					resp.setContentType("application/json");
-					resp.setCharacterEncoding("UTF-8");
-
-					resultToClient.put("msg", 0);
-					resultToClient.put("result", null);
-					resp.getWriter().print(resultToClient);
-
-				}
 			}
+			
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -150,12 +119,11 @@ public class FullPupilCardController extends HttpServlet implements
 
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		checkConnection(req, resp);
+		checkConnection(req,resp);
 		
 		p = new Pupil();
 		rp = new RegisterPupil();
@@ -181,6 +149,62 @@ public class FullPupilCardController extends HttpServlet implements
 				resp.getWriter().print(resultToClient);
 
 			}
+			
+			
+		else
+			if (action.equals("getAll")) {
+				pupilList = getFullPupilList(req, resp);
+				JSONArray pupilsList = new JSONArray();
+				for (FullPupilCard pupil : pupilList) {
+					int id = pupil.getPupilNum();
+					String fName = pupil.getFirstName();
+					String lName = pupil.getLastName();
+					String gend;
+					if(pupil.getGender()==1)
+						gend="בן";
+					else
+						if(pupil.getGender()==2)
+							gend="בת";
+						else
+							gend=" ";
+					String grade = pupil.getGradeName();
+					Boolean reg;
+					if( pupil.getRegPupilNum() == 0){
+						reg = false;
+					}else reg = true;
+					
+					JSONObject user = new JSONObject();
+					user.put("id",id);
+					user.put("firstName",fName);
+					user.put("lastName",lName);
+					user.put("gender",gend);
+					user.put("Grade",grade);
+					user.put("isReg",reg);
+					
+					pupilsList.add(user);
+				}
+				
+				
+					if (!pupilsList.isEmpty()) {
+
+						String jsonArray = pupilsList.toJSONString();
+						jsonArray = "{\"page\":1,\"total\":\"2\",\"records\":"
+		                        + pupilList.size() + ",\"rows\":" + jsonArray + "}";
+						
+					resp.setContentType("application/json");
+					resp.setCharacterEncoding("UTF-8");
+					resp.getWriter().print(jsonArray);
+
+				} else {
+					
+					resp.setContentType("application/json");
+					resp.setCharacterEncoding("UTF-8");
+					resultToClient.put("msg", 0);
+					resultToClient.put("result", "לא נמצאו נתונים");
+					resp.getWriter().print(resultToClient);
+				}
+			}
+
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -215,7 +239,8 @@ public class FullPupilCardController extends HttpServlet implements
 		} else {
 			try {
 				con = new MyConnection();
-
+				
+				
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -225,7 +250,7 @@ public class FullPupilCardController extends HttpServlet implements
 			}
 			session.setAttribute("connection", con);
 		}
-
+		
 		if (this.fullPupilDao == null)
 			this.fullPupilDao = new FullPupilCardDAO(con);
 
