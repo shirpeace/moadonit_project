@@ -6,7 +6,11 @@
 /*   the current user the us logged if to the system */
 var currentUserId =	 '<%=session.getAttribute("userid")%>';	
 
-
+// define state for the editable page
+	var state = {
+	    EDIT: 0,
+	    READ: 1,	    
+	};
 
 /*************************************************/
 //TODO //*  START  PUPILADD PAGE FUNCTIONS       */

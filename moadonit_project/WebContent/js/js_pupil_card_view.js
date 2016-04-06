@@ -7,7 +7,11 @@
 var currentUserId =	 '<%=session.getAttribute("userid")%>';	
 
 
-
+//define state for the editable page
+var state = {
+    EDIT: 0,
+    READ: 1,	    
+};
 /*************************************************/
 //TODO //*  START  PUPILADD PAGE FUNCTIONS       */
 /*************************************************/
@@ -111,7 +115,7 @@ function setPageBtns(){
 	});
 	
 	$("#editBtn").click(function() {
-		formEnable()
+		formEnable();
 		return false;
 	});
 	
@@ -134,7 +138,7 @@ function setPageBtns(){
 	});
 	
 	$("#cancelBtn").click(function() {
-		formDisable()
+		formDisable();
 		setPupilCardData(pupilData);
 		return false;
 	});

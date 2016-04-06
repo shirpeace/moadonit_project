@@ -363,6 +363,8 @@
 	
 	<script type="text/javascript">
 	var pupilData;	
+	// set the state at start to read. (state object from js_logic file)
+	var currentPageState = state.READ;
 	$(function(){
 		 $('#date_of_birth').combodate({
 			    minYear: 1975,
