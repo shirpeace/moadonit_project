@@ -49,7 +49,7 @@
  	
 	
     <script src="js/jquery.jqGrid.min.js"></script> 
-	<script src="js/getJqGridData.js"></script> 
+<!-- 	<script src="js/getJqGridData.js"></script>  -->
 
 	
 <script src="js/js_pupils_search.js"></script> 	
@@ -127,17 +127,8 @@
                 </div>
                 <!-- /.row -->
 
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="alert alert-info alert-dismissable">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                            <i class="fa fa-info-circle"></i>  <strong>Like SB Admin?</strong> Try out <a href="http://startbootstrap.com/template-overviews/sb-admin-2" class="alert-link">SB Admin 2</a> for additional features!
-                        </div>
-                    </div>
-                </div>
-                <!-- /.row -->
-
-                <div class="col-lg-8">
+                
+                <div class="col-lg-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h3 class="panel-title"><i class="fa fa-info fa-fw"></i> כל התלמידים</h3>
@@ -154,7 +145,7 @@
                                <!--  <div class="text-right">
                                     <a href="#">View All Transactions <i class="fa fa-arrow-circle-right"></i></a>
                                 </div> -->
-                                <div class="table-responsive">
+                                <div class="table-responsive col-lg-12">
                                     <table class="table table-bordered table-hover table-striped" id="list">
                                 
 										<tr>
@@ -165,7 +156,9 @@
                                 
                             </div>
                         </div>
-
+						<div>
+							<button id="resetBtn">reset search</button>
+						</div>
 					
                         
                     </div>
@@ -184,9 +177,10 @@
 <script type="text/javascript">
 
 /* var currentUserId =	 '${p.pupilNum}' */
-
-var pupilID ;
-loadPupilSearch();
+jQuery(document).ready(function() {
+	var pupilID ;
+	loadGrid();
+});
 </script>
 
 

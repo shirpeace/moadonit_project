@@ -41,7 +41,7 @@ jQuery(document).ready(function() {
                 rowNum : 30,
                 rowList : [ ],
                 sortname : 'Grade',
-              /*  sortorder : 'desc',*/
+                scroll: true,
                 direction:"rtl",
                 viewrecords : true,
                 gridview : true,
@@ -62,5 +62,6 @@ jQuery(document).ready(function() {
         
       
         jQuery("#list").jqGrid('filterToolbar',{autosearch:true});
+        
 
 });

@@ -13,7 +13,8 @@ import controller.MyConnection;
 public class FullPupilCardDAO extends AbstractDAO {
 
 	private String select = "SELECT * FROM fullPupilCard where pupilNum = ?";
-	private String selectAll = "SELECT * FROM fullPupilCard";
+	private String selectAll = "SELECT * FROM fullPupilCard ORDER BY ?";
+	private String selectSearch = "SELECT * FROM fullPupilCard where pupilNum = ?";
 	/**
 	 * 
 	 */
@@ -43,11 +44,11 @@ public class FullPupilCardDAO extends AbstractDAO {
 		return p;
 	}
 	
-	public List<FullPupilCard> selectAll() throws IllegalArgumentException, DAOException {
+	public List<FullPupilCard> selectAll(String sind) throws IllegalArgumentException, DAOException {
 		List<FullPupilCard> list = new ArrayList<>();
 
 		try (PreparedStatement statement = DAOUtil.prepareStatement(this.con.getConnection(), selectAll, false,
-				new Object[] { }); ResultSet resultSet = statement.executeQuery();) {
+				 sind); ResultSet resultSet = statement.executeQuery();) {
 
 			while (resultSet.next()) {
 				FullPupilCard p = map(resultSet);
@@ -95,6 +96,25 @@ public class FullPupilCardDAO extends AbstractDAO {
 		p.setP2mail(resultSet.getString("p2mail"));
 		p.setP2relation(resultSet.getInt("p2relation"));		
 		return p;
+	}
+
+	public List<FullPupilCard> selectSearch(String sind) {
+		List<FullPupilCard> list = new ArrayList<>();
+
+		
+		try (PreparedStatement statement = DAOUtil.prepareStatement(this.con.getConnection(), selectSearch , false,
+				new Object[] { sind}); ResultSet resultSet = statement.executeQuery();) {
+
+			while (resultSet.next()) {
+				FullPupilCard p = map(resultSet);
+				list.add(p);
+			}
+
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+
+		return list;
 	}
 
 }

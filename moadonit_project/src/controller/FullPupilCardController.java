@@ -40,6 +40,7 @@ public class FullPupilCardController extends HttpServlet implements
 
 	MyConnection con = null;
 	private String action;
+	JSONObject filters ;
 	FullPupilCard pupilCard = null;
 	FullPupilCardDAO fullPupilDao;
 	Pupil p = null;
@@ -119,6 +120,7 @@ public class FullPupilCardController extends HttpServlet implements
 
 	}
 
+	@SuppressWarnings({ "unused", "unchecked" })
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -137,7 +139,8 @@ public class FullPupilCardController extends HttpServlet implements
 		this.regPupilDao = new RegisterPupilDAO(con);
 
 		action = req.getParameter("action");
-
+		
+		
 		try {
 
 			if (action.equals("insert")) {
@@ -152,59 +155,43 @@ public class FullPupilCardController extends HttpServlet implements
 			
 			
 		else
-			if (action.equals("getAll")) {
-				pupilList = getFullPupilList(req, resp);
-				JSONArray pupilsList = new JSONArray();
-				for (FullPupilCard pupil : pupilList) {
-					int id = pupil.getPupilNum();
-					String fName = pupil.getFirstName();
-					String lName = pupil.getLastName();
-					String gend;
-					if(pupil.getGender()==1)
-						gend="בן";
-					else
-						if(pupil.getGender()==2)
-							gend="בת";
-						else
-							gend=" ";
-					String grade = pupil.getGradeName();
-					Boolean reg;
-					if( pupil.getRegPupilNum() == 0){
-						reg = false;
-					}else reg = true;
+			if (action.equals("pupilSearch")) {
+				// on searching
+				String search =req.getParameter("_search");
+				if(search.equals("true")){
+					pupilList = searchPupilList(req, resp);
+					String fnameParm = req.getParameter("firstName");
+					String lnameParm = req.getParameter("lastName");
+					String genderParm = req.getParameter("gender");
+					String gradeParm = req.getParameter("gradeName");
+					String isRegParm = req.getParameter("isReg");
 					
-					JSONObject user = new JSONObject();
-					user.put("id",id);
-					user.put("firstName",fName);
-					user.put("lastName",lName);
-					user.put("gender",gend);
-					user.put("Grade",grade);
-					user.put("isReg",reg);
-					
-					pupilsList.add(user);
 				}
 				
-				
-					if (!pupilsList.isEmpty()) {
-
-						String jsonArray = pupilsList.toJSONString();
-						jsonArray = "{\"page\":1,\"total\":\"2\",\"records\":"
-		                        + pupilList.size() + ",\"rows\":" + jsonArray + "}";
+				else{ // on page load
+					pupilList = getFullPupilList(req, resp);
+					JSONArray jsonPupilList = new JSONArray();
+					getList(jsonPupilList);
+					if (!jsonPupilList.isEmpty()) {
+	
+							String jsonResponse = jsonPupilList.toJSONString();
+							jsonResponse = "{\"page\":1,\"total\":\"1\",\"records\":"
+			                        + pupilList.size() + ",\"rows\":" + jsonResponse + "}";
+							
+						resp.setContentType("application/json");
+						resp.setCharacterEncoding("UTF-8");
+						resp.getWriter().print(jsonResponse);
+	
+					} else {
 						
-					resp.setContentType("application/json");
-					resp.setCharacterEncoding("UTF-8");
-					resp.getWriter().print(jsonArray);
-
-				} else {
-					
-					resp.setContentType("application/json");
-					resp.setCharacterEncoding("UTF-8");
-					resultToClient.put("msg", 0);
-					resultToClient.put("result", "לא נמצאו נתונים");
-					resp.getWriter().print(resultToClient);
+						resp.setContentType("application/json");
+						resp.setCharacterEncoding("UTF-8");
+						resultToClient.put("msg", 0);
+						resultToClient.put("result", "לא נמצאו נתונים");
+						resp.getWriter().print(resultToClient);
+					}
 				}
 			}
-
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -230,6 +217,8 @@ public class FullPupilCardController extends HttpServlet implements
 		}
 
 	}
+
+	
 
 	protected void checkConnection(HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
@@ -341,8 +330,48 @@ public class FullPupilCardController extends HttpServlet implements
 	protected List<FullPupilCard> getFullPupilList(HttpServletRequest req,
 			HttpServletResponse resp) {
 		List<FullPupilCard> pupils = new ArrayList<>();
-		pupils = this.fullPupilDao.selectAll();
+		pupils = this.fullPupilDao.selectAll(req.getParameter("sidx"));
 
 		return pupils;
+	}
+	
+	private List<FullPupilCard> searchPupilList(HttpServletRequest req, HttpServletResponse resp) {
+		List<FullPupilCard> pupils = new ArrayList<>();
+		pupils = this.fullPupilDao.selectSearch(req.getParameter("sidx"));
+
+		return pupils;
+	}
+
+
+@SuppressWarnings("unchecked")
+protected void getList(JSONArray pupilsList){
+	for (FullPupilCard pupil : pupilList) {
+		int id = pupil.getPupilNum();
+		String fName = pupil.getFirstName();
+		String lName = pupil.getLastName();
+		String gend;
+		if(pupil.getGender()==1)
+			gend="בן";
+		else
+			if(pupil.getGender()==2)
+				gend="בת";
+			else
+				gend=" ";
+		String grade = pupil.getGradeName();
+		Boolean reg;
+		if( pupil.getRegPupilNum() == 0){
+			reg = false;
+		}else reg = true;
+		
+		JSONObject user = new JSONObject();
+		user.put("id",id);
+		user.put("firstName",fName);
+		user.put("lastName",lName);
+		user.put("gender",gend);
+		user.put("gradeName",grade);
+		user.put("isReg",reg);
+		
+		pupilsList.add(user);
+		}
 	}
 }
