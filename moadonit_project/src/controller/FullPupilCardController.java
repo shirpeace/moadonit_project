@@ -330,7 +330,7 @@ public class FullPupilCardController extends HttpServlet implements
 	protected List<FullPupilCard> getFullPupilList(HttpServletRequest req,
 			HttpServletResponse resp) {
 		List<FullPupilCard> pupils = new ArrayList<>();
-		pupils = this.fullPupilDao.selectAll(req.getParameter("sidx"));
+		pupils = this.fullPupilDao.selectAll(req.getParameter("sidx"), req.getParameter("sord"));
 
 		return pupils;
 	}

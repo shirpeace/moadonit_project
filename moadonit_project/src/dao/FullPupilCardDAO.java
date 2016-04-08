@@ -13,8 +13,8 @@ import controller.MyConnection;
 public class FullPupilCardDAO extends AbstractDAO {
 
 	private String select = "SELECT * FROM fullPupilCard where pupilNum = ?";
-	private String selectAll = "SELECT * FROM fullPupilCard ORDER BY ?";
-	private String selectSearch = "SELECT * FROM fullPupilCard where pupilNum = ?";
+	private String selectAll = "SELECT * FROM fullPupilCard ORDER BY ";
+	private String selectSearch = "SELECT * FROM fullPupilCard where firstName = ?";
 	/**
 	 * 
 	 */
@@ -44,11 +44,12 @@ public class FullPupilCardDAO extends AbstractDAO {
 		return p;
 	}
 	
-	public List<FullPupilCard> selectAll(String sind) throws IllegalArgumentException, DAOException {
+	public List<FullPupilCard> selectAll(String sind, String sord) throws IllegalArgumentException, DAOException {
 		List<FullPupilCard> list = new ArrayList<>();
-
-		try (PreparedStatement statement = DAOUtil.prepareStatement(this.con.getConnection(), selectAll, false,
-				 sind); ResultSet resultSet = statement.executeQuery();) {
+		String stat = selectAll +" "+ sind +" "+ sord;
+		
+				//(where %s,fName=null?"firstName=fname":" ");
+		try (PreparedStatement statement = DAOUtil.prepareStatement(this.con.getConnection(), stat, false); ResultSet resultSet = statement.executeQuery();) {
 
 			while (resultSet.next()) {
 				FullPupilCard p = map(resultSet);

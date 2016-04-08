@@ -57,16 +57,13 @@ function loadGrid(){
               editable : false,
               stype: "select",
               searchoptions: { value: ":;1:רשום;2:לא רשום"},
-             /* edittype:'checkbox',
-              editoptions: { value:"True:False"}, */
               formatter: "checkbox",
-            /*  formatoptions: {disabled : false} */
           } ],
           pager : '#pager',
           rowNum : 30,
           rowList : [ ],
           sortname : 'gradeName',
-         /* scroll: true,*/
+          /*scroll: true,*/
           direction:"rtl",
           viewrecords : true,
           gridview : true,
