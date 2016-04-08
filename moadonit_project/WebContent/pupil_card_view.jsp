@@ -26,8 +26,18 @@
     <script src="js/bootstrap.min.js"></script>
 	
 	<script src="js/jquery-ui.js"></script>
-	<script src="js/js_pupil_card_view.js"></script>
+
 	
+	   <!-- bootbox code -->
+    <script src="js/bootbox.js"></script> 
+    
+    
+	<script src="js/moment-with-locales.js"></script> 
+	<script src="js/combodate.js"></script> 
+	
+	<script src="js/js_logic.js"></script>
+    	<script src="js/js_pupil_card_view.js"></script>
+    
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
@@ -45,12 +55,7 @@
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     
-   <!-- bootbox code -->
-    <script src="js/bootbox.js"></script> 
-    
-    
-	<script src="js/moment-with-locales.js"></script> 
-	<script src="js/combodate.js"></script> 
+
 	
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -109,9 +114,9 @@
                 <!-- Page Heading -->
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header">
+                        <h2 class="page-header" style="margin: 0px 0 0px; border-bottom: 1px solid #a6b7bd">
                             יוסי משה
-                        </h1>
+                        </h2>
                         <ol class="breadcrumb">
                             <li>
                                  <a href="dashboard.jsp"><i class="fa fa-home"></i> ראשי</a>
@@ -134,20 +139,20 @@
            		<form role="form" id="ajaxform">
            		<fieldset >
 		<!-- row 1 col 1 -->
-					<div class="row">
+					<div class="row" style="border-bottom: 1px solid #a6b7bd">
 						<div class="col-lg-12">
 							<div class="col-lg-3">
 								<div class="form-group">
 									<label for="fName">שם פרטי</label> <input type="text"
-										class="form-control" id="fName" placeholder="שם">
+										class="form-control input-sm" id="fName" placeholder="שם">
 								</div>
 								<div class="form-group">
 									<label for="lName">שם משפחה</label> <input type="text"
-										class="form-control" id="lName" placeholder="משפחה">
+										class="form-control input-sm" id="lName" placeholder="משפחה">
 								</div>
 								<div class="form-group">
 									<label for="cell">טלפון נייד תלמיד</label> <input type="text"
-										class="form-control" id="cell" placeholder="טלפון">
+										class="form-control input-sm" id="cell" placeholder="טלפון">
 								</div> 
 							</div>
 		<!-- row 1 col 2 -->
@@ -156,12 +161,12 @@
 									<label for="date_of_birth">תאריך לידה</label>
 									<br>	
 									<input id="date_of_birth" value="01-01-2003"  data-smartDays="true" data-firstItem="name"
-										data-format="DD-MM-YYYY" data-template="D MMM YYYY"> 
+										data-format="DD-MM-YYYY" data-template="D MMM YYYY" > 
 								</div>
 								<div class="form-group">
 									
 									<label for="grade">כיתה</label>
-									<select class="form-control"
+									<select class="form-control input-sm"
 										id="grade">
 										<option value="11">א-א</option>
 										<option value="12">א-ב</option>
@@ -194,7 +199,7 @@
 		<!-- row 1 col 3 -->
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="food">סוג מנה</label> <select class="form-control"
+									<label for="food">סוג מנה</label> <select class="form-control input-sm"
 										id="food">
 										<option value="1">רגילה</option>
 										<option value="2">אפויה</option>
@@ -215,16 +220,18 @@
 		<!-- row 1 col 4 -->							
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="health">בעיות בריאות</label> <input type="text"
-										class="form-control" id="health" placeholder="">
+									<label for="health">בעיות בריאות</label> 
+									 <input type="text"
+										class="form-control input-sm" id="health" placeholder=""> 
+										<!-- <textarea rows="2" class="form-control input-sm" id="health" ></textarea> -->
 								</div>
 								<div class="form-group">
 									<label for="foodsens">רגישות למזון</label> <input type="text"
-										class="form-control" id="foodsens" placeholder="">
+										class="form-control input-sm" id="foodsens" placeholder="">
 								</div>
 								<div class="form-group">
 									<label for="comnt">הערות כלליות</label> <input type="text"
-										class="form-control" id="comnt" placeholder="">
+										class="form-control input-sm" id="comnt" placeholder="">
 								</div>
 							</div>
 						</div>
@@ -232,30 +239,30 @@
 					
 					
 					<!-- row 2 col 1 -->
-					<div class="row">
-						<div class="col-lg-12">
-						<h2>פרטי התקשרות</h2>
+					<div class="row" style="position: relative; ">
+						<div class="col-lg-12">	
+						<h3>פרטי התקשרות</h3>					
 							<div class="col-lg-3">
 								
 								<div class="form-group">
 									<label for="p1fName">שם ההורה</label> <input type="text"
-										class="form-control" id="p1fName" placeholder="שם">
+										class="form-control input-sm" id="p1fName" placeholder="שם">
 								</div>
 								<div class="form-group">
 									<label for="p1lName">שם משפחה</label> <input type="text"
-										class="form-control" id="p1lName" placeholder="משפחה">
+										class="form-control input-sm" id="p1lName" placeholder="משפחה">
 								</div>
 								<div class="form-group">
 									<label for="p1cell">טלפון נייד</label> <input type="text"
-										class="form-control" id="p1cell" placeholder="טלפון">
+										class="form-control input-sm" id="p1cell" placeholder="טלפון">
 								</div>
 								<div class="form-group">
 									<label for="p1mail">אימייל</label> <input type="text"
-										class="form-control" id="p1mail" placeholder="אימייל">
+										class="form-control input-sm" id="p1mail" placeholder="אימייל">
 								</div>
 								<div class="form-group">
 									<label for="p1relat">קרבה</label>
-									<select class="form-control"
+									<select class="form-control input-sm"
 										id="p1relat">
 										<option value="1">אמא</option>
 										<option value="2">אבא</option>
@@ -270,23 +277,23 @@
 								
 								<div class="form-group">
 									<label for="p2fName">שם ההורה</label> <input type="text"
-										class="form-control" id="p2fName" placeholder="שם">
+										class="form-control input-sm" id="p2fName" placeholder="שם">
 								</div>
 								<div class="form-group">
 									<label for="p2lName">שם משפחה</label> <input type="text"
-										class="form-control" id="p2lName" placeholder="משפחה">
+										class="form-control input-sm" id="p2lName" placeholder="משפחה">
 								</div>
 								<div class="form-group">
 									<label for="p2cell">טלפון נייד</label> <input type="text"
-										class="form-control" id="p2cell" placeholder="טלפון">
+										class="form-control input-sm" id="p2cell" placeholder="טלפון">
 								</div>
 								<div class="form-group">
 									<label for="p2mail">אימייל</label> <input type="text"
-										class="form-control" id="p2mail" placeholder="אימייל">
+										class="form-control input-sm" id="p2mail" placeholder="אימייל">
 								</div>
 								<div class="form-group">
 									<label for="p2relat">קרבה</label>
-									<select class="form-control"
+									<select class="form-control input-sm"
 										id="p2relat">
 										<option value="1">אמא</option>
 										<option value="2">אבא</option>
@@ -302,16 +309,16 @@
 								
 								<div class="form-group">
 									<label for="address">כתובת מגורים</label> <input type="text"
-										class="form-control" id="address" placeholder="כתובת">
+										class="form-control input-sm" id="address" placeholder="כתובת">
 								</div>
 								<div class="form-group">
 									<label for="phone">טלפון בבית</label> <input type="text"
-										class="form-control" id="phone" placeholder="טלפון">
+										class="form-control input-sm" id="phone" placeholder="טלפון">
 								</div>
 							</div>
 							
 			<!-- row 2 col 4 -->				
-							<div class="col-lg-3 ">
+							<div class="col-lg-3" style="position: absolute;  bottom: 0; left: 0">
 								
 								<div class="form-group pull-left" id="viewModeBtn">
 									<input type="button" id="editBtn" name="editBtn"
@@ -363,6 +370,8 @@
 	
 	<script type="text/javascript">
 	var pupilData;	
+	// set the state at start to read. (state object from js_logic file)
+	var currentPageState = state.READ;
 	$(function(){
 		 $('#date_of_birth').combodate({
 			    minYear: 1975,

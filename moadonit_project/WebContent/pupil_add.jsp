@@ -415,7 +415,7 @@
 
 			//saveBtn
 			$("#saveBtn").click(function() {
-				//savePupilCardData();
+				
 				
 				// validate and process form here
 				 var form = $("#ajaxform");
@@ -424,7 +424,7 @@
 					 if($("#date_of_birth").combodate('getValue', null)== null)
 						return false;						 				
 						 
-					 savePupilCardData();
+					 savePupilCardData("insert");
 				} else {
 					
 				} 
@@ -433,36 +433,6 @@
 
 			});
 
-			/* $('#form').hide(); */
-			$("#testBtn").click(function() {
-				// validate and process form here
-
-				var dataString = 'id=' + 1 + '&action=' + "get";
-
-				$.ajax({
-					async : false,
-					type : 'GET',
-					datatype : 'jsonp',
-					url : "FullPupilCardController",
-					data : dataString,
-					success : function(data) {
-						if (data != undefined) {
-							pupilID = data.pupilNum;
-							setPupilCardData(data);
-
-						}
-					},
-					error : function(e) {
-						console.log("error");
-
-					}
-
-				});
-				return false;
-
-			});		
-			
-			
 			/* set the validattion for form */
 			var validator = $("#ajaxform").validate({
 				

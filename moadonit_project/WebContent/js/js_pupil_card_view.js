@@ -7,7 +7,11 @@
 var currentUserId =	 '<%=session.getAttribute("userid")%>';	
 
 
-
+//define state for the editable page
+var state = {
+    EDIT: 1,
+    READ: 0,	    
+};
 /*************************************************/
 //TODO //*  START  PUPILADD PAGE FUNCTIONS       */
 /*************************************************/
@@ -87,6 +91,11 @@ function loadPupilCard(dataString){
 
 }
 
+function deletePupil(id){
+	
+	
+}
+
 function setPageBtns(){
 	bootbox.setDefaults({
 		locale: "he"
@@ -96,10 +105,8 @@ function setPageBtns(){
 	$("#deleteBtn").click(function() {
 		bootbox.confirm("האם אתה רוצה למחוק?", function(result) {
 			if (result === true) {                                             
-			    alert(" delete");                              
-			  } else {
-			    alert("don't");                          
-			  }
+			    deletePupil(id);                            
+			  } 
 		});
 		return false;
 	});
@@ -111,11 +118,12 @@ function setPageBtns(){
 	});
 	
 	$("#editBtn").click(function() {
-		formEnable()
+		formEnable();
 		return false;
 	});
 	
 	$("#saveBtn").click(function() {
+		
 		var newData = pupilData; newData.firstName = "שירה"; //false edit - delete!!!
 		//try saving to DB
 		var result = true; //false value - delete!!!
@@ -128,13 +136,15 @@ function setPageBtns(){
 		}
 		//if error
 		else{
-			bootbox.alert("היתה בעיה בשמירה. נסה שוב.", function() {});
+			bootbox.alert("היתה בעיה בשמירה. נסה שוב.", function() {
+				
+			});
 		}
 		return false;
 	});
 	
 	$("#cancelBtn").click(function() {
-		formDisable()
+		formDisable();
 		setPupilCardData(pupilData);
 		return false;
 	});
@@ -149,6 +159,7 @@ function formEnable(){
 	 $("#editModeBtn").show();
 	
 }
+
 function formDisable(){
 	$("fieldset :input").prop("disabled", true);
 	$("fieldset input").prop("disabled", false);
