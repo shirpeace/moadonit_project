@@ -1,4 +1,4 @@
-var grades = "";
+var grades = "";  
 function loadPupilSearch() {
 	loadGrid();
 	$("#resetBtn").click(function() {

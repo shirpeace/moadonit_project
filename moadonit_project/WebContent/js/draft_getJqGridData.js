@@ -1,4 +1,4 @@
-jQuery(document).ready(function() {
+jQuery(document).ready(function() { 
         $("#list").jqGrid({
                 url : "FullPupilCardController?action=getAll",
                 datatype : "json",
