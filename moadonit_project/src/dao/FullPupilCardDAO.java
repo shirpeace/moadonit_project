@@ -13,7 +13,7 @@ import controller.MyConnection;
 public class FullPupilCardDAO extends AbstractDAO {
 
 	private String select = "SELECT * FROM fullPupilCard where pupilNum = ?";
-	private String selectAll = "SELECT * FROM fullPupilCard ORDER BY ";
+	private String selectAll = "SELECT * FROM fullPupilCard ";
 	private String selectSearch = "SELECT * FROM fullPupilCard where firstName = ?";
 	/**
 	 * 
@@ -46,7 +46,7 @@ public class FullPupilCardDAO extends AbstractDAO {
 	
 	public List<FullPupilCard> selectAll(String sind, String sord) throws IllegalArgumentException, DAOException {
 		List<FullPupilCard> list = new ArrayList<>();
-		String stat = selectAll +" "+ sind +" "+ sord;
+		String stat = selectAll +" ORDER BY "+ sind +" "+ sord;
 		
 				//(where %s,fName=null?"firstName=fname":" ");
 		try (PreparedStatement statement = DAOUtil.prepareStatement(this.con.getConnection(), stat, false); ResultSet resultSet = statement.executeQuery();) {
@@ -99,12 +99,34 @@ public class FullPupilCardDAO extends AbstractDAO {
 		return p;
 	}
 
-	public List<FullPupilCard> selectSearch(String sind) {
+	public List<FullPupilCard> selectSearch(String sind, String sord,String fName,String lName,String gend,String grade,String isReg) {
 		List<FullPupilCard> list = new ArrayList<>();
-
+		String stat = selectAll;
+		if(fName!=null ||lName!=null || gend!=null || grade!=null || isReg!=null){
+			stat+=" where ";
+			if(fName!=null){
+				stat+="firstName LIKE '%" +fName +"%' and ";
+			}
+			if(lName!=null){
+				stat+="lastName LIKE '%" +lName +"%' and ";
+			}
+			if(gend!=null){
+				stat+="gender =" +gend +" and ";
+			}
+			if(grade!=null){
+				stat+="gradeID =" +grade +" and ";
+			}
+			if(isReg!=null){
+				if(isReg.equals("1"))
+					stat+="regPupilNum is not null";
+				else
+					stat+="regPupilNum is null";
+			}else
+				stat = stat.substring(0, stat.length()-4);
+		}
 		
-		try (PreparedStatement statement = DAOUtil.prepareStatement(this.con.getConnection(), selectSearch , false,
-				new Object[] { sind}); ResultSet resultSet = statement.executeQuery();) {
+		
+		try (PreparedStatement statement = DAOUtil.prepareStatement(this.con.getConnection(), stat , false); ResultSet resultSet = statement.executeQuery();) {
 
 			while (resultSet.next()) {
 				FullPupilCard p = map(resultSet);

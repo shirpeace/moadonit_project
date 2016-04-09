@@ -105,7 +105,13 @@ public class FullPupilCardController extends HttpServlet implements
 				}
 
 			}
-			
+			if (action.equals("getGrades")){
+				String jsonObj = "{11:\"aa\",12:\"ab\"}";
+				
+				resp.setContentType("application/json");
+				resp.setCharacterEncoding("UTF-8");
+				resp.getWriter().print(jsonObj);
+			}
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -160,11 +166,26 @@ public class FullPupilCardController extends HttpServlet implements
 				String search =req.getParameter("_search");
 				if(search.equals("true")){
 					pupilList = searchPupilList(req, resp);
-					String fnameParm = req.getParameter("firstName");
-					String lnameParm = req.getParameter("lastName");
-					String genderParm = req.getParameter("gender");
-					String gradeParm = req.getParameter("gradeName");
-					String isRegParm = req.getParameter("isReg");
+					JSONArray jsonPupilList = new JSONArray();
+					getList(jsonPupilList);
+					if (!jsonPupilList.isEmpty()) {
+	
+							String jsonResponse = jsonPupilList.toJSONString();
+							jsonResponse = "{\"page\":1,\"total\":\"1\",\"records\":"
+			                        + pupilList.size() + ",\"rows\":" + jsonResponse + "}";
+							
+						resp.setContentType("application/json");
+						resp.setCharacterEncoding("UTF-8");
+						resp.getWriter().print(jsonResponse);
+	
+					} else {
+						
+						resp.setContentType("application/json");
+						resp.setCharacterEncoding("UTF-8");
+						resultToClient.put("msg", 0);
+						resultToClient.put("result", "לא נמצאו נתונים");
+						resp.getWriter().print(resultToClient);
+					}
 					
 				}
 				
@@ -337,7 +358,7 @@ public class FullPupilCardController extends HttpServlet implements
 	
 	private List<FullPupilCard> searchPupilList(HttpServletRequest req, HttpServletResponse resp) {
 		List<FullPupilCard> pupils = new ArrayList<>();
-		pupils = this.fullPupilDao.selectSearch(req.getParameter("sidx"));
+		pupils = this.fullPupilDao.selectSearch(req.getParameter("sidx"), req.getParameter("sord"),req.getParameter("firstName"),req.getParameter("lastName"),req.getParameter("gender"),req.getParameter("gradeName"),req.getParameter("isReg"));
 
 		return pupils;
 	}

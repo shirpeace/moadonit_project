@@ -47,9 +47,7 @@
   <!--  <script src="js/i18n/grid.locale-en.js"></script>  -->
 	
  	
-	
     <script src="js/jquery.jqGrid.min.js"></script> 
-<!-- 	<script src="js/getJqGridData.js"></script>  -->
 
 	
 <script src="js/js_pupils_search.js"></script> 	
@@ -134,34 +132,26 @@
                                 <h3 class="panel-title"><i class="fa fa-info fa-fw"></i> כל התלמידים</h3>
                             </div>
                             <div class="panel-body">
-                            <!-- 
-                            
-							<button id="testBtn">test get data</button>
-							<button id="testJSP">test JSP</button>
-							<button id="testgetlist">test get list</button>
-                            <a href="pupil_card_view.jsp ">test call jsp</a>
-                            
-                                 -->
+                           
                                <!--  <div class="text-right">
                                     <a href="#">View All Transactions <i class="fa fa-arrow-circle-right"></i></a>
                                 </div> -->
-                                <div class="table-responsive col-lg-12">
+                                <div class="table-responsive col-lg-10">
                                     <table class="table table-bordered table-hover table-striped" id="list">
                                 
 										<tr>
 											<td ></td>
 										</tr>
 									</table>
+								
 								<div id="pager"></div>
                                 
                             </div>
-                        </div>
-						<div>
-							<button id="resetBtn">reset search</button>
+							<div class="col-lg-2">
+								<button id="resetBtn">נקה חיפוש</button>
+							</div>
 						</div>
-					
-                        
-                    </div>
+					</div>
             </div>
             <!-- /.container-fluid -->
 
@@ -179,7 +169,7 @@
 /* var currentUserId =	 '${p.pupilNum}' */
 jQuery(document).ready(function() {
 	var pupilID ;
-	loadGrid();
+	loadPupilSearch();
 });
 </script>
 

@@ -1,20 +1,39 @@
-var grades = "";  
+var grades;  
 function loadPupilSearch() {
+	$.ajax({
+  		async: false,
+		type: 'GET',
+		datatype: 'json',
+        url: "FullPupilCardController?action=getGrades",
+        data: grades,
+        success: function(data) {
+        	if(data != undefined){
+        		/*pupilID = data.pupilNum;
+        		pupilData = data;
+        		setPupilCardData(pupilData);*/
+        		alert("grades"+grades);
+        	}
+        	else
+ 			alert("no data");
+        },
+        error: function(e) {
+        	console.log("error loading grades");
+        	
+			
+        }
+        
+      }); 
 	loadGrid();
 	$("#resetBtn").click(function() {
-		$(".ui-reset").click();
-		/*var grid = $("#list");
-	    grid.jqGrid('setGridParam',{search:false});
-
-	    var postData = grid.jqGrid('getGridParam','postData');
-	    $.extend(postData,{filters:""});
-	    // for singe search you should replace the line with
-	    // $.extend(postData,{searchField:"",searchString:"",searchOper:""});
-
-	    grid.trigger("reloadGrid",[{page:1}]);*/
-		return false;
-		});
-	  }
+		var grid = $("#list");
+		grid.jqGrid('setGridParam',{search:false});
+		var postData = grid.jqGrid('getGridParam','postData');
+		$.extend(postData,{filters:""});
+		$(".ui-widget-content").val("");
+		grid.trigger("reloadGrid",[{page:1}]);
+		
+	});
+}
 function loadGrid(){
 	  $("#list").jqGrid({
           url : "FullPupilCardController?action=pupilSearch",
@@ -77,13 +96,20 @@ function loadGrid(){
                   repeatitems : false,
           },
           editurl : "FullPupilCardController",
-          recreateFilter:true
+          recreateFilter:true,
+          
+          rowList: [],        // disable page size dropdown
+          pgbuttons: false,     // disable page control like next, back button
+          pgtext: null         // disable pager text like 'Page 0 of 10'
+          /*viewrecords: false*/
+          
   });
   jQuery("#list").jqGrid('navGrid', '#pager', {
           edit : false,
           add : false,
           del : false,
-          search : true
+          search : false,
+          refresh: false
   });
   
 
