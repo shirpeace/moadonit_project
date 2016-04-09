@@ -27,16 +27,23 @@
 	
 	<script src="js/jquery-ui.js"></script>
 
-	
-	   <!-- bootbox code -->
-    <script src="js/bootbox.js"></script> 
     
     
 	<script src="js/moment-with-locales.js"></script> 
-	<script src="js/combodate.js"></script> 
-	
+	<script src="js/combodate.js"></script> 	   
+    
+    
 	<script src="js/js_logic.js"></script>
-    	<script src="js/js_pupil_card_view.js"></script>
+    
+    <script src="js/js_pupil_card_view.js"></script>
+    
+    	<!-- form validation plugin -->
+	<script src="js/jquery.validate.js"></script>
+	<script src="js/additional-methods.js"></script>
+	<script src="js/messages_he.js"></script>
+	
+		   <!-- bootbox code -->
+    <script src="js/bootbox.js"></script> 
     
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -44,6 +51,8 @@
     <!-- Bootstrap Core CSS RTL-->
     <link href="css/bootstrap-rtl.min.css" rel="stylesheet">
 
+
+    
     <!-- Custom CSS -->
     <link href="css/sb-admin.css" rel="stylesheet">
     <link href="css/sb-admin-rtl.css" rel="stylesheet">
@@ -189,11 +198,13 @@
 									</select>
 								</div>
 								<div class="form-group">
-									<label for="cell" class="col-lg-1">מגדר</label>
-									<label class="radio-inline col-lg-2"> 
-									<input type="radio" name="genderGruop" id="male" value="1"> בן </label>
-									<label class="radio-inline col-lg-2">
-									<input type="radio" name="genderGruop" id="female" value="2">בת</label>
+									<div class="checkbox-group required">
+										<label for="cell" class="col-lg-1">מגדר</label>
+										<label class="radio-inline col-lg-2"> 
+										<input type="radio" name="genderGruop" id="male" value="1"> בן </label>
+										<label class="radio-inline col-lg-2">
+										<input type="radio" name="genderGruop" id="female" value="2">בת</label>
+									</div>
 								</div>
 							</div>
 		<!-- row 1 col 3 -->
@@ -334,7 +345,7 @@
 								</div>
 								
 								<div class="form-group pull-left" id="editModeBtn" style="display: none">
-									<input type="submit" id="saveBtn" name="editBtn"
+									<input type="submit" id="saveBtn" name="saveBtn"
 									class="btn btn-primary" value="שמור שינויים">
 								
 									<input type="submit" id="cancelBtn" name="deleteBtn"
@@ -378,9 +389,164 @@
 			    maxYear: 2016,
 			    minuteStep: 10
 			});  
-		 moment.locale();         // he
+			 moment.locale();         // he
 		    var dataString = 'id='+ pupilID + '&action=' + "get";
-		    loadPupilCard(dataString);		   
+		    loadPupilCard(dataString);	
+		    
+			$("#saveBtn").click(function() {
+				var result ;
+				//check for changes before saving data
+				//if ($('#ajaxform').hasClass('dirty')) {
+					
+					// validate and process form here
+					 var form = $("#ajaxform");
+					//form.validate();
+					if (form.valid()) {	
+						 if($("#date_of_birth").combodate('getValue', null)== null)
+							return false;						 				
+							 
+						 
+						 	return false;
+						 	result = savePupilCardData("update");			
+							if(result === true){
+								formDisable();
+								$('#ajaxform').trigger('reinitialize.areYouSure');
+							}
+							
+					} else {
+						
+					} 
+					
+					
+				//}
+				
+				
+				return false;
+			});
+			
+			/* set the validattion for form */
+			var validator = $("#ajaxform").validate({
+				
+				errorPlacement: function(error, element) {
+					// Append error within linked label					
+					error.css("color", "red");				
+					$( element )
+						.closest( "form" )
+							.find( "label[for='" + element.attr( "id" ) + "']" )
+								.append(  error );
+				},
+				rules: {   
+					
+					// set a rule to inputs
+					fName:  {
+						required: true,
+						minlength: 2,
+						maxlength: 20
+					},
+					lName:  {
+						required: true,
+						minlength: 2,
+						maxlength: 20
+					},
+					 cell: {
+						/* required: true, */
+						minlength: 10,
+						maxlength: 10,
+						digits: true
+						
+					}, 
+					staffJob: {
+						required: "#staff:checked",
+						minlength: 2,
+						maxlength: 20
+					}
+					,
+					p1fName : {
+						required: true,
+						maxlength: 20
+					},
+					p1lName : {
+						required: true,
+						maxlength: 20
+					},
+					p2fName : {
+						
+						maxlength: 20
+					},
+					p2lName : {
+					
+						maxlength: 20
+					},
+					p1mail : {
+						email: true,
+						maxlength: 254
+					},  
+					p2cell : {
+						rangelength: [2, 10],
+						digits: true
+					},
+					p1cell : {
+						minlength: 10,
+						maxlength: 10,
+						digits: true
+					},
+					genderGruop : {
+						required: true,		
+						minlength: 1
+					},
+					phone : {
+						minlength: 9,
+						maxlength: 9,
+						digits: true
+					},address : {
+						
+						maxlength: 45,
+						digits: true
+					},
+					 health : { 
+						 maxlength: 20 
+					}, 
+					foodsens : { 
+					maxlength: 20
+					
+					}, 
+					comnt : { 
+						maxlength: 20
+					},
+					
+					
+				},
+				errorElement: "span",
+				
+				/* messages: { 
+					
+					// set custom error msg to inputs
+					lName: {
+						required: " (required)",
+						minlength: " (must be at least 3 characters)"
+					},
+					genderGruop : {
+						required: " (required)",
+						
+						
+					}
+						
+					
+				} */
+			});
+			
+		    /*$('#ajaxform').areYouSure( { message: "ישנם שינויים שלא נשמרו !"} );
+		    
+			// code below is optional to handle disabled state of the save button
+	        $('#ajaxform').bind('dirty.areYouSure', function () {
+	            // Enable save button only as the form is dirty.
+	            $('#saveBtn').attr({ 'disabled': false });
+	        });
+	        $('#ajaxform').bind('clean.areYouSure', function () {
+	            // Form is clean so nothing to save - disable the save button.
+	            $('#saveBtn').attr({ 'disabled': true });
+	        });*/
+	        
 		  /*   setPageBtns(); */
 		});
 	</script>

@@ -60,7 +60,7 @@ public class RegisterPupilDAO extends AbstractDAO {
 				 */
 				 p.getPupilNum(), p.getHealthProblems(), p.getEthiopian(), p.getStaffChild(),
 						p.getFoodSensitivity(), p.getOtherComments(),
-						p.getTblFoodType().getFoodTypeID()
+						(p.getTblFoodType() != null && p.getTblFoodType().getFoodTypeID() > 0 ) ? p.getTblFoodType().getFoodTypeID() : 0
 				};
 
 		try (
@@ -100,7 +100,8 @@ public class RegisterPupilDAO extends AbstractDAO {
 		 */
 		p.getHealthProblems(), p.getEthiopian(), p.getStaffChild(),
 				p.getFoodSensitivity(), p.getOtherComments(),
-				p.getTblFoodType().getFoodTypeID(), p.getPupilNum()
+				(p.getTblFoodType() != null && p.getTblFoodType().getFoodTypeID() > 0 ) ? p.getTblFoodType().getFoodTypeID() : 0
+				, p.getPupilNum()
 
 		};
 

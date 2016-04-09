@@ -58,7 +58,7 @@ public class ParentDAO extends AbstractDAO {
 	
 	public void update(Parent p) throws DAOException {
         if (p.getParentID() == 0) {
-            throw new IllegalArgumentException("User is not created yet, the user ID is null.");
+            throw new IllegalArgumentException("parent is not created yet, the user ID is null.");
         }
 
        
@@ -75,7 +75,7 @@ public class ParentDAO extends AbstractDAO {
         ) {
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
-                throw new DAOException("Updating user failed, no rows affected.");
+                throw new DAOException("Updating parent failed, no rows affected.");
             }
         } catch (SQLException e) {
             throw new DAOException(e);

@@ -122,26 +122,7 @@ function setPageBtns(){
 		return false;
 	});
 	
-	$("#saveBtn").click(function() {
-		
-		var newData = pupilData; newData.firstName = "שירה"; //false edit - delete!!!
-		//try saving to DB
-		var result = true; //false value - delete!!!
-		//if success
-		if(result === true){
-			bootbox.alert("השינויים נשמרו.", function() {});
-			pupilData = newData;
-			setPupilCardData(newData);
-			formDisable();
-		}
-		//if error
-		else{
-			bootbox.alert("היתה בעיה בשמירה. נסה שוב.", function() {
-				
-			});
-		}
-		return false;
-	});
+
 	
 	$("#cancelBtn").click(function() {
 		formDisable();
