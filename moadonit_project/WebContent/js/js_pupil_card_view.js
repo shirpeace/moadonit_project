@@ -19,6 +19,8 @@ var state = {
 function setPupilCardData(pupil){
 			
 			if(pupil != undefined){
+				
+				$('.page-header').html(pupil.firstName + " " + pupil.lastName);
 				var d = new Date(pupil.birthDate);
 			/* pupil details import */
 			$('#fName').val(pupil.firstName);
@@ -31,9 +33,20 @@ function setPupilCardData(pupil){
 			if(pupil.ethiopian===1){
 				$('#ethi').prop('checked', true);
 			}
+			else{
+				$('#ethi').prop('checked', false);
+			}
+			
 			if(pupil.staffChild !== null){
 				$('#staff').prop('checked', true);
+				$("#staffJobDiv").toggle(true);
+				$("#staffJob").val(pupil.staffChild);
 			}
+			else{
+				$('#staff').prop('checked', false);
+				$("#staffJobDiv").toggle(false);				
+			}
+			
 			$('#health').val(pupil.healthProblems);
 			$('#foodsens').val(pupil.foodSensitivity);
 			$('#comnt').val(pupil.otherComments);
@@ -43,13 +56,22 @@ function setPupilCardData(pupil){
 			$('#p1lName').val(pupil.p1lname);
 			$('#p1cell').val(pupil.p1cell);
 			$('#p1mail').val(pupil.p1mail);
-			$('#p1relat').val(pupil.p1relation);	
+			
+			if(pupil.p1relation == 0){
+				$('#p1relat :nth-child(1)').prop('selected', true); 
+			}
+			else
+				$('#p1relat :nth-child(' + pupil.p1relation + ')').prop('selected', true);		
 			
 			$('#p2fName').val(pupil.p2fname);
 			$('#p2lName').val(pupil.p2lname);
 			$('#p2cell').val(pupil.p2cell);
 			$('#p2mail').val(pupil.p2mail);
-			$('#p2relat').val(pupil.p2relation);	
+			if(pupil.p2relation == 0){
+				$('#p2relat :nth-child(2)').prop('selected', true);
+			}
+			else
+				$('#p2relat :nth-child(' + pupil.p2relation + ')').prop('selected', true);	
 			
 			$('#address').val(pupil.homeAddress);
 			$('#phone').val(pupil.homePhoneNum);
@@ -80,7 +102,7 @@ function loadPupilCard(dataString){
 	        		
 	        	}
 	        	else
-     			alert("no data");
+     			alert("לא קיימים נתונים");
 	        },
 	        error: function(e) {
 	        	console.log("error");
@@ -102,6 +124,37 @@ function setPageBtns(){
 	});
 	
 
+	$("#saveBtn").click(function() {
+		var result ;
+		//check for changes before saving data
+		//if ($('#ajaxform').hasClass('dirty')) {
+			
+			// validate and process form here
+			 var form = $("#ajaxform");
+			 var dateVal = $("#date_of_birth").combodate('getValue', null);
+			//form.validate();
+			if (form.valid()) {	
+				 if(dateVal == null || dateVal == "")
+						return false;									 				
+					 
+				 	result = savePupilCardData("update",false);			
+					if(result === true){
+						formDisable();
+						$('.page-header').html($('#fName').val() + " " + $('#lName').val());
+						/*$('#ajaxform').trigger('reinitialize.areYouSure');*/
+					}
+					
+			} else {
+				
+			} 
+			
+			
+		//}
+		
+		
+		return false;
+	});
+	
 	$("#deleteBtn").click(function() {
 		bootbox.confirm("האם אתה רוצה למחוק?", function(result) {
 			if (result === true) {                                             
@@ -123,12 +176,6 @@ function setPageBtns(){
 	});
 	
 
-	
-	$("#cancelBtn").click(function() {
-		formDisable();
-		setPupilCardData(pupilData);
-		return false;
-	});
 }
 
 function formEnable(){
@@ -139,6 +186,7 @@ function formEnable(){
 	 $("#viewModeBtn").hide();
 	 $("#editModeBtn").show();
 	
+	/* $('#ajaxform').areYouSure( { message: "ישנם שינויים שלא נשמרו !"} );*/
 }
 
 function formDisable(){

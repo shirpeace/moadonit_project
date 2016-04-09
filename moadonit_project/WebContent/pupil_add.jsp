@@ -197,7 +197,7 @@
 								     <div class="checkbox-group required">
 									<label for="genderGruop" class="col-lg-1">מגדר</label>
 									 <label class="radio-inline col-lg-2">
-										 <input type="radio" name="genderGruop" id="male" value="1" checked="checked"> בן</label> 
+									<input type="radio" name="genderGruop" id="male" value="1" checked="checked"> בן</label> 
 									<label class="radio-inline col-lg-2"> <input
 										type="radio" name="genderGruop" id="female" value="2">בת
 									</label>									
@@ -343,10 +343,10 @@
 								
 								<div class="form-group pull-left" id="viewModeBtn" >
 								    <div id="btnActionDiv">
-									<input type="button" id="saveBtn" name="editBtn"
+									<input type="button" id="saveBtn" name="saveBtn"
 										class="btn btn-primary" value="שמור">
 								    <input
-										type="submit" id="saveClearBtn" name="deleteBtn"
+										type="button" id="saveClearBtn" name="saveClearBtn"
 										class="btn btn-primary" value="שמור ונקה">
 								    <input
 										type="submit" id="clearBtn" name="clearBtn"
@@ -419,12 +419,14 @@
 				
 				// validate and process form here
 				 var form = $("#ajaxform");
+				var dateVal = $("#date_of_birth").combodate('getValue', null);
 				//form.validate();
 				if (form.valid()) {	
-					 if($("#date_of_birth").combodate('getValue', null)== null)
-						return false;						 				
-						 
-					 savePupilCardData("insert");
+					 if(dateVal == null || dateVal == ""){
+						return false;
+						
+					 }
+					 savePupilCardData("insert",true);
 				} else {
 					
 				} 
@@ -433,6 +435,29 @@
 
 			});
 
+			
+			$("#saveClearBtn").click(function() {
+				
+				var result;
+				// validate and process form here
+				 var form = $("#ajaxform");
+				//form.validate();
+				if (form.valid()) {	
+					 if($("#date_of_birth").combodate('getValue', null)== null)
+						return false;						 				
+						 
+					 result =  savePupilCardData("insert",false);
+					 if (result) {
+						 $("#clearBtn").click();
+					}
+				} else {
+					
+				} 
+
+				return false;
+
+			});
+			
 			/* set the validattion for form */
 			var validator = $("#ajaxform").validate({
 				
@@ -444,18 +469,22 @@
 							.find( "label[for='" + element.attr( "id" ) + "']" )
 								.append(  error );
 				},
-				rules: {   
+					rules: {   
 					
 					// set a rule to inputs
-					fName:  {
+					// input must have name and id attr' and with same value !!!
+					fName : {  
 						required: true,
 						minlength: 2,
-						maxlength: 20
-					},
+						maxlength: 20,  
+						nameValidator : true //custom validation from additional-methods.js
+						},
+					
 					lName:  {
 						required: true,
 						minlength: 2,
-						maxlength: 20
+						maxlength: 20,
+						nameValidator : true 
 					},
 					 cell: {
 						/* required: true, */
@@ -467,29 +496,37 @@
 					staffJob: {
 						required: "#staff:checked",
 						minlength: 2,
-						maxlength: 20
+						maxlength: 20,
+						nameValidator : true 
 					}
 					,
 					p1fName : {
 						required: true,
-						maxlength: 20
+						maxlength: 20,
+						nameValidator : true 
 					},
 					p1lName : {
 						required: true,
-						maxlength: 20
+						maxlength: 20,
+						nameValidator : true 
 					},
 					p2fName : {
 						
-						maxlength: 20
+						maxlength: 20,
+						nameValidator : true 
 					},
 					p2lName : {
-					
-						maxlength: 20
+						maxlength: 20,
+						nameValidator : true 
 					},
 					p1mail : {
 						email: true,
 						maxlength: 254
-					},  
+					},
+					p2mail : {
+						email: true,
+						maxlength: 254
+					}, 
 					p2cell : {
 						rangelength: [2, 10],
 						digits: true
@@ -499,10 +536,10 @@
 						maxlength: 10,
 						digits: true
 					},
-					genderGruop : {
+					 genderGruop : {
 						required: true,		
 						minlength: 1
-					},
+					}, 
 					phone : {
 						minlength: 9,
 						maxlength: 9,
@@ -510,7 +547,7 @@
 					},address : {
 						
 						maxlength: 45,
-						digits: true
+						
 					},
 					 health : { 
 						 maxlength: 20 

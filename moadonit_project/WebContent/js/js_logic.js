@@ -18,7 +18,7 @@ var currentUserId =	 '<%=session.getAttribute("userid")%>';
 
 /* action to update/insert pupil*/
 
-function savePupilCardData(action){
+function savePupilCardData(action,forward){
 		    
 	    
 	 	var pupil = new Object();
@@ -125,10 +125,16 @@ function savePupilCardData(action){
 	        			result = true;
 	        			pupilID = data.result;
 	        			if(action === "insert"){
-		        			bootbox.alert("נתונים נשמרו בהצלחה, הנך מועבר למסך תלמיד", function() {
-		        				// send user to the pupil page after successful insert
-		        				window.location.href = "pupil_card_view.jsp?pupil="+pupilID+"";
-		    	        	});
+	        				if (typeof forward != undefined && forward) {
+	        					bootbox.alert("נתונים נשמרו בהצלחה, הנך מועבר למסך תלמיד", function() {
+			        				// send user to the pupil page after successful insert
+			        				window.location.href = "pupil_card_view.jsp?pupil="+pupilID+"";
+			    	        	});
+							} else {
+								bootbox.alert("נתונים נשמרו בהצלחה", function() {			        				
+			    	        	});
+							}
+		        			
 	        			}else{
 	        				bootbox.alert("נתונים עודכנו בהצלחה", function() {		        				
 		    	        	});

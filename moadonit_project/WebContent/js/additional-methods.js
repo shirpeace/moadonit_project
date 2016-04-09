@@ -618,6 +618,10 @@ $.validator.addMethod( "lettersonly", function( value, element ) {
 	return this.optional( element ) || /^[a-z]+$/i.test( value );
 }, "Letters only please" );
 
+$.validator.addMethod( "nameValidator", function( value, element ) {
+	 return this.optional(element) ||  /^[א-תa-zA-Z -']+$/i.test( value ); 
+}, " ערך לא תקין " );
+
 $.validator.addMethod( "letterswithbasicpunc", function( value, element ) {
 	return this.optional( element ) || /^[a-z\-.,()'"\s]+$/i.test( value );
 }, "Letters or punctuation only please" );
