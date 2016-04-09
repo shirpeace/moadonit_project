@@ -62,7 +62,8 @@ public class PupilDAO  extends AbstractDAO{
         		
         		p.getFirstName(),
 				p.getLastName(),p.getCellphone(), p.getPhotoPath(),
-				p.getBirthDate(), p.getTblFamily().getFamilyID(),
+				p.getBirthDate(), 
+				(p.getTblFamily() != null && p.getTblFamily().getFamilyID() > 0) ? p.getTblFamily().getFamilyID() : null,
 				p.getTblGrade().getGradeID(),p.getTblGenderRef().getGender(),p.getPupilNum()
 
 		};
@@ -161,7 +162,7 @@ public class PupilDAO  extends AbstractDAO{
 				p.getCellphone(), 
 				p.getPhotoPath(),
 				DAOUtil.toSqlDate(p.getBirthDate()), 
-				p.getTblFamily() != null ? p.getTblFamily().getFamilyID() : null,
+				(p.getTblFamily() != null && p.getTblFamily().getFamilyID() > 0) ? p.getTblFamily().getFamilyID() : null,
 				p.getTblGrade().getGradeID(),
 				p.getTblGenderRef().getGender()
 				/*,p.getPupilNum()*/

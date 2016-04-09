@@ -76,7 +76,7 @@
 
 <script type="text/javascript">
 	var pupilID;
-
+	var pupilData;
 </script>
 
 </head>

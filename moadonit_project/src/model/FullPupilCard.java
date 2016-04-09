@@ -54,8 +54,10 @@ public class FullPupilCard implements Serializable {
 	private String p1lname;
 
 	private String p1mail;
-
+	
 	private int p1relation;
+	
+	private int parent1ID;
 
 	private String p2cell;
 
@@ -66,6 +68,8 @@ public class FullPupilCard implements Serializable {
 	private String p2mail;
 
 	private int p2relation;
+	
+	private int parent2ID;
 
 	private String photoPath;
 	@Id
@@ -284,6 +288,22 @@ public class FullPupilCard implements Serializable {
 
 	public void setP2relation(int p2relation) {
 		this.p2relation = p2relation;
+	}
+
+	public int getParent1ID() {
+		return parent1ID;
+	}
+
+	public void setParent1ID(int parent1id) {
+		parent1ID = parent1id;
+	}
+
+	public int getParent2ID() {
+		return parent2ID;
+	}
+
+	public void setParent2ID(int parent2id) {
+		parent2ID = parent2id;
 	}
 
 	public String getPhotoPath() {

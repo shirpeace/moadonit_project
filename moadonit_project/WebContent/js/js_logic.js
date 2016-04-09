@@ -29,8 +29,12 @@ function savePupilCardData(action){
 	 	/*var relation1 = new  Object();
 	 	var relation2 = new  Object();*/
 	 	
-	    pupil.pupilNum = pupil.pupilNum == 0 ? 0 : pupil.pupilNum;	    
-	    pupil.firstName = $('#fName').val();
+	 	if(typeof pupilData != undefined && pupilData != "" && pupilData != null)
+	 		pupil.pupilNum = pupilData.pupilNum;
+	 	else
+	 		pupil.pupilNum = 0;	
+	    
+	 	pupil.firstName = $('#fName').val();
 	    pupil.lastName = $('#lName').val();
 	    pupil.cellphone = $('#cell').val();
 	    pupil.photoPath = '';
@@ -43,14 +47,22 @@ function savePupilCardData(action){
 	    pupil.gradeID = $('#grade').val();
 	    pupil.gender = $("input[name=genderGruop]:checked").val();
 	    
-	    /* family data */	    
-	    family.familyID = null;
+	    /* family data */
+	    if(typeof pupilData != undefined && pupilData != "" && pupilData != null)
+	    	family.familyID = pupilData.familyID;
+	    else
+	    	family.familyID = null;	    
+	    
 	    family.homeAddress = $('#address').val();
 	    family.homePhoneNum = $('#phone').val();
 	    family.parentID1 = null;
 	    family.parentID2 = null;
-	    	    
-	    regPupil.pupilNum = pupil.pupilNum == 0 ? 0 : pupil.pupilNum;	
+	    	
+	    if(typeof pupilData != undefined && pupilData != "" && pupilData != null)
+	    	regPupil.pupilNum = pupilData.regPupilNum;
+		else
+			regPupil.pupilNum = 0;	
+	    	  
 	    regPupil.healthProblems = $('#health').val();
 	    regPupil.ethiopian = $('#ethi').is(":checked") ? 1 : 0;
 	    
@@ -66,7 +78,11 @@ function savePupilCardData(action){
 	    /* regPupil.foodType = $('#food').find('option:selected').val(); */
 	    
 	    /* parents data  */
-	    parent1.parentID = null;
+	    if(typeof pupilData != undefined && pupilData != "" && pupilData != null)
+	    	parent1.parentID = pupilData.parent1ID;
+	    else
+	    	parent1.parentID = null;
+	    
 	    parent1.firstName = $('#p1fName').val();
 	    parent1.lastName = $('#p1lName').val();
 	    parent1.cellphone = $('#p1cell').val();
@@ -74,7 +90,11 @@ function savePupilCardData(action){
 	    parent1.relationToPupil = $('#p1relat').val();	
 	    parent1.tblFamilyRelation = {idFamilyRelation: $('#p1relat').val() };
 	    
-	    parent2.parentID = null;
+	    if(typeof pupilData != undefined && pupilData != "" && pupilData != null)
+	    	parent2.parentID = pupilData.parent2ID;
+	    else
+	    	parent2.parentID = null;
+	    
 	    parent2.firstName = $('#p2fName').val();
 	    parent2.lastName = $('#p2lName').val();
 	    parent2.cellphone = $('#p2cell').val();
@@ -82,6 +102,7 @@ function savePupilCardData(action){
 	    parent2.relationToPupil = $('#p2relat').val();
 	    parent2.tblFamilyRelation = { 'idFamilyRelation': $('#p2relat').val() };
 	    
+	    var result;
 	     
 	  	  $.ajax({
 	  		async: false,
@@ -101,19 +122,28 @@ function savePupilCardData(action){
 	        	if(data != undefined){
 	        		/*alert(data);*/
 	        		if(data.msg == "1"){
+	        			result = true;
 	        			pupilID = data.result;
-	        			bootbox.alert("נתונים נשמרו בהצלחה, הנך מועבר למסך תלמיד", function() {
-	        				// send user to the pupil page after successful insert
-	        				window.location.href = "pupil_card_view.jsp?pupil="+pupilID+"";
-	    	        	});
+	        			if(action === "insert"){
+		        			bootbox.alert("נתונים נשמרו בהצלחה, הנך מועבר למסך תלמיד", function() {
+		        				// send user to the pupil page after successful insert
+		        				window.location.href = "pupil_card_view.jsp?pupil="+pupilID+"";
+		    	        	});
+	        			}else{
+	        				bootbox.alert("נתונים עודכנו בהצלחה", function() {		        				
+		    	        	});
+	        				
+	        			}
 	        		}
-	        		else if(data.msg == "0"){	        			
+	        		else if(data.msg == "0"){	
+	        			result = false;
 	        			bootbox.alert("שגיאה בשמירת הנתונים, נא בדוק את הערכים ונסה שוב.", function() {	   	        		 
 	    	        	});
 	        		}
 	        	}
 	        },
 	        error: function(e) {
+	        	result = false;
 	        	console.log(e);
 			        	bootbox.alert("שגיאה בשמירת הנתונים, נא בדוק את הערכים ונסה שוב.", function() {	   	        		 
 			        	});			
@@ -122,8 +152,66 @@ function savePupilCardData(action){
 	      }); 
 	  	 
 	  	 
-	    
+	    return result;
 	
 }
 
+/*
+* FormChanges(string FormID | DOMelement FormNode)
+ * Returns an array of changed form elements.
+ * An empty array indicates no changes have been made.
+ * NULL indicates that the form does not exist.
+ * 
+ * ***********************
+ * not in use
+ * ***********************
+ * */
+function FormChanges(form) {
+
+	// get form
+	if (typeof form == "string") form = document.getElementById(form);
+	if (!form || !form.nodeName || form.nodeName.toLowerCase() != "form") return null;
 	
+	// find changed elements
+	var changed = [], n, c, def, o, ol, opt;
+	for (var e = 0, el = form.elements.length; e < el; e++) {
+		n = form.elements[e];
+		c = false;
+		
+		switch (n.nodeName.toLowerCase()) {
+		
+			// select boxes
+			case "select":
+				def = 0;
+				for (o = 0, ol = n.options.length; o < ol; o++) {
+					opt = n.options[o];
+					c = c || (opt.selected != opt.defaultSelected);
+					if (opt.defaultSelected) def = o;
+				}
+				if (c && !n.multiple) c = (def != n.selectedIndex);
+				break;
+			
+			// input / textarea
+			case "textarea":
+			case "input":
+				
+				switch (n.type.toLowerCase()) {
+					case "checkbox":
+					case "radio":
+						// checkbox / radio
+						c = (n.checked != n.defaultChecked);
+						break;
+					default:
+						// standard values
+						c = (n.value != n.defaultValue);
+						break;				
+				}
+				break;
+		}
+		
+		if (c) changed.push(n);
+	}
+	
+	return changed;
+
+}	
