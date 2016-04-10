@@ -419,13 +419,13 @@
 				
 				// validate and process form here
 				 var form = $("#ajaxform");
-				var dateVal = $("#date_of_birth").combodate('getValue', null);
+				//var dateVal = $("#date_of_birth").combodate('getValue', null);
 				//form.validate();
 				if (form.valid()) {	
-					 if(dateVal == null || dateVal == ""){
-						return false;
+					// if(dateVal == null || dateVal == "")
+						//return false;
 						
-					 }
+					 
 					 savePupilCardData("insert",true);
 				} else {
 					
@@ -441,10 +441,11 @@
 				var result;
 				// validate and process form here
 				 var form = $("#ajaxform");
+				 //var dateVal = $("#date_of_birth").combodate('getValue', null);
 				//form.validate();
 				if (form.valid()) {	
-					 if($("#date_of_birth").combodate('getValue', null)== null)
-						return false;						 				
+					//if(dateVal == null || dateVal == "")
+						//return false;					 				
 						 
 					 result =  savePupilCardData("insert",false);
 					 if (result) {

@@ -131,11 +131,11 @@ function setPageBtns(){
 			
 			// validate and process form here
 			 var form = $("#ajaxform");
-			 var dateVal = $("#date_of_birth").combodate('getValue', null);
+			 //var dateVal = $("#date_of_birth").combodate('getValue', null);
 			//form.validate();
 			if (form.valid()) {	
-				 if(dateVal == null || dateVal == "")
-						return false;									 				
+				// if(dateVal == null || dateVal == "")
+						//return false;									 				
 					 
 				 	result = savePupilCardData("update",false);			
 					if(result === true){
