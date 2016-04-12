@@ -482,7 +482,7 @@ public class FullPupilCardController extends HttpServlet implements
 
 
 @SuppressWarnings("unchecked")
-protected void getList(JSONArray pupilsList){
+protected void getList(JSONArray jsonResult){
 	for (FullPupilCard pupil : pupilList) {
 		int id = pupil.getPupilNum();
 		String fName = pupil.getFirstName();
@@ -509,7 +509,7 @@ protected void getList(JSONArray pupilsList){
 		user.put("gradeName",grade);
 		user.put("isReg",reg);
 		
-		pupilsList.add(user);
+		jsonResult.add(user);
 		}
 	}
 }

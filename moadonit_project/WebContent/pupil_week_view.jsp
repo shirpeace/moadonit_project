@@ -29,12 +29,27 @@
     <link href="css/sb-admin.css" rel="stylesheet">
     <link href="css/sb-admin-rtl.css" rel="stylesheet">
 
-    <!-- Morris Charts CSS -->
-    <link href="css/plugins/morris.css" rel="stylesheet">
-
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
+	<link rel="stylesheet" href="css/ui.jqgrid.css">
+
+ <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+	<script src="js/jquery-ui.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+	
+
+
+	<!-- bootbox code -->
+    <script src="js/bootbox.js"></script> 
+    
+    <script src="js/i18n/grid.locale-he.js"></script>
+    <script src="js/jquery.jqGrid.min.js"></script> 
+	
+	<script src="js/js_logic.js"></script>    
+    <script src="js/js_pupil_week_view.js"></script>    
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -113,13 +128,8 @@
                 <!-- /.row -->
 
                 <div class="row">
-                    <div class="col-lg-12">
-                        <div class="alert alert-info alert-dismissable">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                            <i class="fa fa-info-circle"></i>  <strong>Like SB Admin?</strong> Try out <a href="http://startbootstrap.com/template-overviews/sb-admin-2" class="alert-link">SB Admin 2</a> for additional features!
-                        </div>
-                    </div>
-                </div>
+                   
+               
                 <!-- /.row -->
 				
 				<div class="col-lg-2">
@@ -130,65 +140,36 @@
                                 <h3 class="panel-title"><i class="fa fa-search fa-fw"></i> תכנית שבועית</h3>
                             </div>
                             <div class="panel-body">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-hover table-striped">
-                                        <thead>
-                                            <tr>
-                                                <td></td>
-                                                <th>ראשון</th>
-                                                <th>שני</th>
-                                                <th>שלישי</th>
-                                                <th>רביעי</th>
-                                                <th>חמישי</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>אוכל בלבד</td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td>חוג 1</td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td>חוג 2</td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+              					<div class="table-responsive col-lg-12">
+                                    <table class="table table-bordered table-hover table-striped" id="list">
+                                
+										<tr>
+											<td>
+											</td>
+										</tr>
+									</table>
+								
+								<div id="pager"></div>
+                                
+                            	</div>                              
+                            </div>
+                        </div>
+                    </div>
+             	</div>
+             	
+             	<div class="row">
+             	<div class="col-lg-2">
+				</div>
+             	 <div class="col-lg-8">
+             	 <div class="panel panel-default">
+                            <div class="panel-heading">
+                               <!--  <h3 class="panel-title"><i class="fa fa-search fa-fw"></i>עריכת רישום</h3> -->
+                                <a href="javascript:;" data-toggle="collapse" data-target="#editReg">עריכת הרישום <i class="fa fa-arrow-circle-down"></i></a>
+                               
                                 </div>
-                                <div class="text-right">
-                                    <a href="javascript:;" data-toggle="collapse" data-target="#editReg">עריכת הרישום <i class="fa fa-arrow-circle-down"></i></a>
-
+                            <div class="panel-body">
+                            <div class="text-right">
+                                   
 								<div id="editReg" class="collapse">
 									להכניס טבלה עם חמש עמודות, בכל אחת קומבו בוקס לסוג הרישום
 									<br>
@@ -198,8 +179,11 @@
 
 								</div>
                             </div>
-                        </div>
-                    </div>
+                </div>
+                 </div>
+                              
+             	 </div>
+             	</div>
             </div>
 
         <!-- /#page-wrapper -->
@@ -213,11 +197,32 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 
-    <!-- Morris Charts JavaScript -->
-    <script src="js/plugins/morris/raphael.min.js"></script>
-    <script src="js/plugins/morris/morris.min.js"></script>
-    <script src="js/plugins/morris/morris-data.js"></script>
 
+		<%
+			if(request.getParameter("pupil") != null){
+				String pupil = request.getParameter("pupil");
+		%>	
+				<script type="text/javascript">
+					var pupilID = "<%=pupil%>";
+				</script>
+				<%} 
+		else{%>
+		
+				<script type="text/javascript">
+					var pupilID = "3";
+				</script>
+				
+		<%} %>
+		
+		<script type="text/javascript">
+		
+		
+	$(function(){	
+	
+		loadRegistrationGrid(pupilID);
+	
+	});
+		</script>
 </body>
 
 </html>
