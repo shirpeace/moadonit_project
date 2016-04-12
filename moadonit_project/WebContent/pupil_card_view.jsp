@@ -210,7 +210,8 @@
 		<!-- row 1 col 3 -->
 							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="food">סוג מנה</label> <select class="form-control input-sm"
+									<label for="food">סוג מנה</label>
+									<select class="form-control input-sm"
 										id="food" name="food" >
 										<option value="1">רגילה</option>
 										<option value="2">אפויה</option>

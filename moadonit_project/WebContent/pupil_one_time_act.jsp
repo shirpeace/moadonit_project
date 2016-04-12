@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=windows-1255"
+<%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="windows-1255"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -11,14 +11,42 @@
 
 <head>
 
-   <!--  <meta charset="utf-8"> -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
 
     <title>מועדונית</title>
-
+	
+	 <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+	<script src="js/moment-with-locales.js"></script> 
+    
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+	
+	<script src="js/jquery-ui.js"></script>
+	<script src="js/js_logic.js"></script>
+    
+    
+	
+	<script src="js/combodate.js"></script> 	   
+   
+    <script src="js/js_pupil_one_time_act.js"></script> 
+	
+    
+    <script src="js/jquery.are-you-sure.js"></script> 
+    
+    	<!-- form validation plugin -->
+	<script src="js/jquery.validate.js"></script>
+	<script src="js/additional-methods.js"></script>
+	<script src="js/messages_he.js"></script>
+	
+	<!-- bootbox code -->
+    <script src="js/bootbox.js"></script> 
+    <script src="js/bootstrap-datepicker.js"></script> 
+  <!--   <script src="js/i18n/bootstrap-datepicker.he.min.js"></script>  -->
+	
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
@@ -28,12 +56,13 @@
     <!-- Custom CSS -->
     <link href="css/sb-admin.css" rel="stylesheet">
     <link href="css/sb-admin-rtl.css" rel="stylesheet">
-
-    <!-- Morris Charts CSS -->
-    <link href="css/plugins/morris.css" rel="stylesheet">
+	<link href="css/datepicker.css" rel="stylesheet">
+	<link href="css/bootstrap-datepicker.standalone.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -49,7 +78,7 @@
     <div id="wrapper">
 
         <!-- Navigation -->
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <nav class="navbar navbar-inverse navbar-fixed-top"  >
             <div class="nav navbar-right top-nav" style="padding-top: 15px; ">
             	<a href="index.html">
 	            	<i class="fa fa-fw fa-power-off"></i>&nbsp;יציאה</a>
@@ -115,112 +144,96 @@
                 </div>
                 <!-- /.row -->
 
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="alert alert-info alert-dismissable">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                            <i class="fa fa-info-circle"></i>  <strong>Like SB Admin?</strong> Try out <a href="http://startbootstrap.com/template-overviews/sb-admin-2" class="alert-link">SB Admin 2</a> for additional features!
-                        </div>
-                    </div>
-                </div>
-                <!-- /.row -->
-				
-				<div class="col-lg-2">
-				</div>
-                <div class="col-lg-8">
+                <div >
+					<!-- <div class="col-lg-2">
+					</div> -->
+	                <div class="col-lg-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h3 class="panel-title"><i class="fa fa-info fa-fw"></i> בחר תאריך וסוג רישום ולחץ שמור</h3>
                             </div>
                             <div class="panel-body">
-                                <!-- <div class="table-responsive">
-                                    <table class="table table-bordered table-hover table-striped">
-                                        <thead>
-                                            <tr>
-                                                <td></td>
-                                                <th>ראשון</th>
-                                                <th>שני</th>
-                                                <th>שלישי</th>
-                                                <th>רביעי</th>
-                                                <th>חמישי</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>אוכל בלבד</td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td>חוג 1</td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td>חוג 2</td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div> -->
                                 <div class="text-right">
-<!--                                     <a href="javascript:;" data-toggle="collapse" data-target="#editReg">עריכת הרישום <i class="fa fa-arrow-circle-down"></i></a>
- -->
-									<div id="editReg" >
-										להכניס קומבו בוקס לסוג הרישום (רישום / ביטול)
-										<br>
-										בחירת תאריך רלוונטי וכפתורי שמירה ומחיקה
-									</div>
-
-
+                                	<form >
+										<div class="row">
+											<div class="form-group col-lg-3">
+												<label for="action">ברצוני</label>
+												<select class="form-control " id="action" name="action" onchange="actionChanged()">
+													<option value="1">לרשום את התלמיד</option>
+													<option value="2">לבטל רישום</option>
+												</select>
+											</div>
+											
+											<div class="form-group  col-lg-3">
+												<label for="datepicker">בתאריך</label>
+												<input type="date" class="form-control" name="datepicker"  id="datepicker" placeholder="בחר">
+											</div>
+											<div class="form-group col-lg-3 " id="typeDiv">
+												<label for="type">סוג הרישום</label>
+												<select class="form-control " id="type" name="type">
+													<option value="1">מועדונית</option>
+													<option value="2">אוכל בלבד</option>
+												</select>
+											</div>
+											<div class="form-group  col-lg-2">
+												<label for="type"> </label>
+												<input class="form-control btn btn-primary " style="margin-top: 5px;" type="button" value="שמור">
+											</div>
+										</div>
+									</form>
+									
 								</div>
+								
                             </div>
                         </div>
                     </div>
+            	</div>
             </div>
 
         <!-- /#page-wrapper -->
 
     </div>
     <!-- /#wrapper -->
+</div>
 
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
-
-    <!-- Morris Charts JavaScript -->
-    <script src="js/plugins/morris/raphael.min.js"></script>
-    <script src="js/plugins/morris/morris.min.js"></script>
-    <script src="js/plugins/morris/morris-data.js"></script>
-
+	<%
+	if(request.getParameter("pupil") != null){
+				String pupil = request.getParameter("pupil");
+		%>	
+	<script type="text/javascript">
+		var pupilID = "<%=pupil%>";
+	</script>
+	<%} 
+	else{%>
+	
+	<script type="text/javascript">
+		var pupilID = "3";	
+	</script>
+	<%} %>
+	
+	
+	<script type="text/javascript">
+		var dataString = 'id='+ pupilID + '&action=' + "get";
+		var pupilData;
+		loadPupilOneAct(dataString);	
+		
+		
+		
+		/* 
+		 $('#datePick').datepicker({
+		    format: "dd/mm/yyyy",
+		    startDate: "today",
+		    maxViewMode: 0,
+		    todayBtn: true,
+		    locale: "he",
+		    keyboardNavigation: false,
+		    daysOfWeekDisabled: "5,6",
+		    todayHighlight: true,
+		    toggleActive: true
+		});  */
+	</script>
+		
 </body>
 
 </html>
