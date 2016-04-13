@@ -24,7 +24,7 @@ public class RegToMoadonit implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date registerDate;
 
-	private String source;
+	private int source;
 
 	@Column(name = "`sunday?`")
 	private int sunday_;
@@ -67,11 +67,11 @@ public class RegToMoadonit implements Serializable {
 		this.registerDate = registerDate;
 	}
 
-	public String getSource() {
+	public int getSource() {
 		return this.source;
 	}
 
-	public void setSource(String source) {
+	public void setSource(int source) {
 		this.source = source;
 	}
 

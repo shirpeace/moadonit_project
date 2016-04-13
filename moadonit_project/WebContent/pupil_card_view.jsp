@@ -414,7 +414,8 @@
 			});
 			
 			$('#detailsLink').attr('href','pupil_card_view.jsp?pupil=' + pupilID);
-			
+			$('#scheduleLink').attr('href','pupil_week_view.jsp?pupil=' + pupilID);
+			$('#regLink').attr('href','pupil_week_view.jsp?pupil=' + pupilID);
 			
 			var dataString = 'id='+ pupilID + '&action=' + "get";
 		   	loadPupilCard(dataString);	

@@ -8,6 +8,7 @@ import java.util.List;
 
 import controller.MyConnection;
 import model.RegToMoadonit;
+import model.RegToMoadonitPK;
 import util.DAOUtil;
 
 public class RegToMoadonitDAO extends AbstractDAO {
@@ -48,11 +49,19 @@ public class RegToMoadonitDAO extends AbstractDAO {
 	private RegToMoadonit map(ResultSet resultSet)  throws SQLException {
 		// TODO Auto-generated method stub
 		RegToMoadonit rtm = new  RegToMoadonit();
+		
 		rtm.setSunday_(resultSet.getInt("sunday_"));
 		rtm.setMonday_(resultSet.getInt("monday_"));
 		rtm.setTuesday_(resultSet.getInt("tuesday_"));
 		rtm.setWednesday_(resultSet.getInt("wednesday_"));
 		rtm.setThursday_(resultSet.getInt("thursday_"));
+		rtm.setRegisterDate(resultSet.getDate("registerDate"));
+		rtm.setSource(resultSet.getInt("source"));
+		rtm.setWritenBy(resultSet.getInt("writenBy"));
+		RegToMoadonitPK pk=  new RegToMoadonitPK();
+		pk.setPupilNum(resultSet.getInt("pupilNum"));
+		pk.setStartDate(resultSet.getDate("startDate"));
+		rtm.setId(pk);
 		
 		return rtm;
 	}

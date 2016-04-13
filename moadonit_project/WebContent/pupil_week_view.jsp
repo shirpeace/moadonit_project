@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=windows-1255"
-	pageEncoding="windows-1255"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="utf-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
@@ -17,7 +17,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>ξεςγεπιϊ</title>
+    <title>ΧΧ•ΧΆΧ“Χ•Χ Χ™Χª</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -32,6 +32,8 @@
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
+	    <!-- jqgrid style -->
+    <link rel="stylesheet" href="resources/jquery-ui-1.11.4.custom/jquery-ui.css">
 	<link rel="stylesheet" href="css/ui.jqgrid.css">
 
  <!-- jQuery -->
@@ -39,14 +41,14 @@
 	<script src="js/jquery-ui.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
-	
-
+	 <script src="js/i18n/grid.locale-he.js"></script>
+ 	<script src="js/jquery.jqGrid.min.js"></script> 
 
 	<!-- bootbox code -->
     <script src="js/bootbox.js"></script> 
     
-    <script src="js/i18n/grid.locale-he.js"></script>
-    <script src="js/jquery.jqGrid.min.js"></script> 
+   
+   
 	
 	<script src="js/js_logic.js"></script>    
     <script src="js/js_pupil_week_view.js"></script>    
@@ -67,11 +69,11 @@
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="nav navbar-right top-nav" style="padding-top: 15px; ">
             	<a href="index.html">
-	            	<i class="fa fa-fw fa-power-off"></i>&nbsp;ιφιΰδ</a>
+	            	<i class="fa fa-fw fa-power-off"></i>&nbsp;Χ™Χ¦Χ™ΧΧ”</a>
             </div>
             <div class="navbar-header" >
             	<a class="navbar-brand" href="dashboard.jsp">
-            	<i class="fa fa-home fa-fw"></i>&nbsp;ξεςγεπιϊ</a>
+            	<i class="fa fa-home fa-fw"></i>&nbsp;ΧΧ•ΧΆΧ“Χ•Χ Χ™Χª</a>
                 
             </div>
             
@@ -79,17 +81,17 @@
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li>
-                        <a href="" style="font-size: 120%; pointer-events: none;"> <i class="fa fa-fw fa-users"></i> λψθιρ ϊμξιγ</a>
+                        <a href="" style="font-size: 120%; pointer-events: none;"> <i class="fa fa-fw fa-users"></i> Χ›Χ¨ΧΧ™Χ΅ ΧªΧΧΧ™Χ“</a>
                         <br>
                      </li> 
                      <li>
-                        <a href= "pupil_card_view.jsp"><i class="fa fa-fw fa-list-alt"></i> τψθιν ΰιωιιν</a>
+                        <a href= "pupil_card_view.jsp"><i class="fa fa-fw fa-list-alt"></i> Χ¤Χ¨ΧΧ™Χ ΧΧ™Χ©Χ™Χ™Χ</a>
                      </li> 
                      <li class="active">
-                        <a href= "pupil_week_view.jsp"><i class="fa fa-fw fa-th"></i> ϊλπιϊ ωαεςιϊ</a>
+                        <a href= "pupil_week_view.jsp"><i class="fa fa-fw fa-th"></i> ΧªΧ›Χ Χ™Χª Χ©Χ‘Χ•ΧΆΧ™Χª</a>
                      </li>
                      <li>
-                        <a href= "pupil_week_view.jsp"><i class="fa fa-fw fa-edit"></i> ςψιλϊ ψιωεν</a>
+                        <a href= "pupil_week_view.jsp"><i class="fa fa-fw fa-edit"></i> ΧΆΧ¨Χ™Χ›Χª Χ¨Χ™Χ©Χ•Χ</a>
                      </li>  
                 </ul>
             </div>
@@ -107,20 +109,20 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            ιερι ξωδ
+                            Χ™Χ•Χ΅Χ™ ΧΧ©Χ”
                         </h1>
                         <ol class="breadcrumb">
                             <li>
-                                 <a href="dashboard.jsp"><i class="fa fa-home"></i> ψΰωι</a>
+                                 <a href="dashboard.jsp"><i class="fa fa-home"></i> Χ¨ΧΧ©Χ™</a>
                             </li>
                             <li>
-                                 <a href="dashboard.jsp"><i class="fa fa-users"></i> ϊμξιγιν</a>
+                                 <a href="dashboard.jsp"><i class="fa fa-users"></i> ΧªΧΧΧ™Χ“Χ™Χ</a>
                             </li>
                             <li>
-                                 <a href="dashboard.jsp"><i class="fa fa-list-alt"></i> λψθιρ ϊμξιγ</a>
+                                 <a href="dashboard.jsp"><i class="fa fa-list-alt"></i> Χ›Χ¨ΧΧ™Χ΅ ΧªΧΧΧ™Χ“</a>
                             </li>
                             <li class="active">
-                                <i class="fa fa-th"></i> ϊλπιϊ ωαεςιϊ μϊμξιγ
+                                <i class="fa fa-th"></i> ΧªΧ›Χ Χ™Χª Χ©Χ‘Χ•ΧΆΧ™Χª ΧΧªΧΧΧ™Χ“
                             </li>
                         </ol>
                     </div>
@@ -137,7 +139,7 @@
                 <div class="col-lg-8">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h3 class="panel-title"><i class="fa fa-search fa-fw"></i> ϊλπιϊ ωαεςιϊ</h3>
+                                <h3 class="panel-title"><i class="fa fa-search fa-fw"></i> ΧªΧ›Χ Χ™Χª Χ©Χ‘Χ•ΧΆΧ™Χª</h3>
                             </div>
                             <div class="panel-body">
               					<div class="table-responsive col-lg-12">
@@ -163,17 +165,17 @@
              	 <div class="col-lg-8">
              	 <div class="panel panel-default">
                             <div class="panel-heading">
-                               <!--  <h3 class="panel-title"><i class="fa fa-search fa-fw"></i>ςψιλϊ ψιωεν</h3> -->
-                                <a href="javascript:;" data-toggle="collapse" data-target="#editReg">ςψιλϊ δψιωεν <i class="fa fa-arrow-circle-down"></i></a>
+                               <!--  <h3 class="panel-title"><i class="fa fa-search fa-fw"></i>ΧΆΧ¨Χ™Χ›Χª Χ¨Χ™Χ©Χ•Χ</h3> -->
+                                <a href="javascript:;" data-toggle="collapse" data-target="#editReg">ΧΆΧ¨Χ™Χ›Χª Χ”Χ¨Χ™Χ©Χ•Χ <i class="fa fa-arrow-circle-down"></i></a>
                                
                                 </div>
                             <div class="panel-body">
                             <div class="text-right">
                                    
 								<div id="editReg" class="collapse">
-									μδλπιρ θαμδ ςν ηξω ςξεγεϊ, αλμ ΰηϊ χεξαε αεχρ μρεβ δψιωεν
+									ΧΧ”Χ›Χ Χ™Χ΅ ΧΧ‘ΧΧ” ΧΆΧ Χ—ΧΧ© ΧΆΧΧ•Χ“Χ•Χª, Χ‘Χ›Χ ΧΧ—Χª Χ§Χ•ΧΧ‘Χ• Χ‘Χ•Χ§Χ΅ ΧΧ΅Χ•Χ’ Χ”Χ¨Χ™Χ©Χ•Χ
 									<br>
-									αηιψϊ ϊΰψικ δϊημδ εχεξαε μαηιψϊ ριαϊ δψιωεν ελτϊεψι ωξιψδ εξηιχδ
+									Χ‘Χ—Χ™Χ¨Χª ΧªΧΧ¨Χ™Χ Χ”ΧªΧ—ΧΧ” Χ•Χ§Χ•ΧΧ‘Χ• ΧΧ‘Χ—Χ™Χ¨Χª Χ΅Χ™Χ‘Χª Χ”Χ¨Χ™Χ©Χ•Χ Χ•Χ›Χ¤ΧªΧ•Χ¨Χ™ Χ©ΧΧ™Χ¨Χ” Χ•ΧΧ—Χ™Χ§Χ”
 								</div>
 
 
@@ -191,38 +193,33 @@
     </div>
     <!-- /#wrapper -->
 
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
-
-
-		<%
-			if(request.getParameter("pupil") != null){
-				String pupil = request.getParameter("pupil");
-		%>	
-				<script type="text/javascript">
+	<%
+		if (request.getParameter("pupil") != null) {
+			String pupil = request.getParameter("pupil");
+	%>
+	<script type="text/javascript">
 					var pupilID = "<%=pupil%>";
-				</script>
-				<%} 
-		else{%>
-		
-				<script type="text/javascript">
-					var pupilID = "3";
-				</script>
-				
-		<%} %>
-		
-		<script type="text/javascript">
-		
-		
-	$(function(){	
-	
-		loadRegistrationGrid(pupilID);
-	
-	});
-		</script>
+	</script>
+	<%
+		} else {
+	%>
+
+	<script type="text/javascript">
+		var pupilID = "3";
+	</script>
+
+	<%
+		}
+	%>
+
+	<script type="text/javascript">
+		$(function() {
+
+			loadRegistrationGrid(pupilID);
+
+		});
+	</script>
 </body>
 
 </html>
