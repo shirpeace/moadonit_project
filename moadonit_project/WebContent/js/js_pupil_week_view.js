@@ -15,6 +15,43 @@ var state = {
 /*************************************************/
 //TODO //*  START PAGE FUNCTIONS       */
 /*************************************************/
+function setPupilCardData(pupil){
+	
+	if(pupil != undefined){
+		
+		$('.page-header').html(pupil.firstName + " " + pupil.lastName);
+	}
+}
+
+function loadPupilCard(dataString){
+	
+	$.ajax({
+	  		async: false,
+			type: 'GET',
+			datatype: 'jsonp',
+	        url: "FullPupilCardController",
+	        data: dataString,
+	        success: function(data) {
+	        	if(data != undefined){
+	        		pupilID = data.pupilNum;
+	        		pupilData = data;
+	        		setPupilCardData(pupilData);
+	        		
+	        	}
+	        	else
+     			alert("לא קיימים נתונים");
+	        },
+	        error: function(e) {
+	        	alert("שגיאה בשליפת נתונים");
+	        	console.log("error");
+				
+	        }
+	        
+	      }); 
+
+}
+
+
 function loadRegistrationGrid(pupilID){
 	  $("#list").jqGrid({
         url : "PupilRegistration?action=getRegistration&pupilID="+ pupilID,
@@ -24,33 +61,34 @@ function loadRegistrationGrid(pupilID){
         colModel : [ {
                 name : 'type',
                 index : 'type',
-                width : 100,               
+                          
         }, {
                 name : 'sunday',
                 index : 'sunday',
-                width : 100,    
+                
                 
         }, {
                 name : 'monday',
                 index : 'monday',
-                width : 100,    
+                
                 
         }, {
                 name : 'tuesday',
                 index : 'tuesday',
-                width : 100,                                
+                                            
                 
         }, {
                 name : 'wednesday',
-                index : 'wednesday',
-                width : 100,
-                width : 100,    
+                index : 'wednesday',                
+                
         }, {
             name : 'thursday', 
             index : 'thursday',
-            width : 100,            
+                       
         } ],
         pager : '#pager',
+        autowidth: true,
+        shrinkToFit: true,
         rowNum : 30,
         rowList : [ ],
         sortname : 'sunday',
@@ -59,6 +97,7 @@ function loadRegistrationGrid(pupilID){
         viewrecords : true,
         gridview : true,
         height: "100%",
+        width: "100%",
        /* ondblClickRow: function(rowId) {
             var rowData = jQuery(this).getRowData(rowId); 
             var pupilID = rowData.id;

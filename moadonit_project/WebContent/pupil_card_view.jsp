@@ -413,9 +413,9 @@
 
 			});
 			
-			$('#detailsLink').attr('href','pupil_card_view.jsp?pupil=' + pupilID);
-			$('#scheduleLink').attr('href','pupil_week_view.jsp?pupil=' + pupilID);
-			$('#regLink').attr('href','pupil_week_view.jsp?pupil=' + pupilID);
+			$('#detailsLink').attr('href','pupil_card_view.jsp?li=0&pupil=' + pupilID);
+			$('#scheduleLink').attr('href','pupil_week_view.jsp?li=1&pupil=' + pupilID);
+			$('#regLink').attr('href','pupil_week_view.jsp?li=2&pupil=' + pupilID);
 			
 			var dataString = 'id='+ pupilID + '&action=' + "get";
 		   	loadPupilCard(dataString);	
