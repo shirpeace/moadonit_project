@@ -13,7 +13,7 @@ function loadPupilOneAct(dataString) {
         		
         	}
         	else
- 			alert("לא קיימים נתונים");
+        		console.log("לא קיימים נתונים");
         },
         error: function(e) {
         	console.log("error");
@@ -30,3 +30,29 @@ function actionChanged(){
 	else
 		$("#typeDiv").hide();
 }
+
+
+$("#saveBtn").click(function() {
+	if($("#datepicker").val()!=null){
+		var msg = "התלמיד "+pupilData.firstName + " " + pupilData.lastName;
+		if($("#action").val()===1){
+			msg+= "ירשם ל" + $("#type").val()===1?"מועדונית ":"אוכל בלבד ";
+			
+		}
+		else
+			msg+= " יוסר מפעילות";
+			
+		msg+= "בתאריך "+ $("#datepicker").val();
+		bootbox.confirm(msg, function(result) {
+			if (result === true)                                             
+			    saveOneTimeAct(id);                            
+			   
+		});
+			
+		}
+//	else
+//		tell the user to enter date
+		
+	
+	return false;
+});

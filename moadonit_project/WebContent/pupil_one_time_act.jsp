@@ -26,7 +26,7 @@
     
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
-   
+    <script src="js/bootbox.js"></script> 
     <script src="js/js_pupil_one_time_act.js"></script> 
 
     <script src="js/bootstrap-datepicker.js"></script> 
@@ -161,7 +161,7 @@
 											</div>
 											<div class="form-group  col-lg-2">
 												<label for="type"> </label>
-												<input class="form-control btn btn-primary " style="margin-top: 5px;" type="button" value="щоеш">
+												<input class="form-control btn btn-primary" id="saveBtn" style="margin-top: 5px;" type="button" value="щоеш">
 											</div>											
 										</div>
 									</form>
