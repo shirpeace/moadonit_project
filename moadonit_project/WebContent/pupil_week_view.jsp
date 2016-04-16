@@ -126,7 +126,7 @@
                        <ol class="breadcrumb">
 							<li><a href="dashboard.jsp"><i class="fa fa-home"></i>
 									ראשי</a></li>
-							<li><a href="dashboard.jsp"><i class="fa fa-users"></i>
+							<li><a href="pupils_search.jsp"><i class="fa fa-users"></i>
 									תלמידים</a></li>
 							<li><a href="dashboard.jsp"><i class="fa fa-list-alt"></i>
 									כרטיס תלמיד</a></li>

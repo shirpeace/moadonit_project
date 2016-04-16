@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -17,10 +18,11 @@ import javax.servlet.http.HttpSession;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import model.FullPupilCard;
+import model.AttendancePK;
 import model.RegToMoadonit;
 import model.RegToMoadonitPK;
-import dao.FullPupilCardDAO;
+import model.Attendance;
+import dao.AttendanceDAO;
 import dao.RegToMoadonitDAO;
 
 @WebServlet("/PupilAttendance")
@@ -36,6 +38,7 @@ public class PupilAttendanceController extends HttpServlet implements Serializab
 	JSONObject resultToClient = new JSONObject();
 	List<RegToMoadonit> pupilRegList = null;
 	RegToMoadonitDAO regDAO ;
+	AttendanceDAO attendDao;
 	private String action;
 
 	@Override
@@ -45,7 +48,6 @@ public class PupilAttendanceController extends HttpServlet implements Serializab
 
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -59,7 +61,7 @@ public class PupilAttendanceController extends HttpServlet implements Serializab
 		this.reg = new RegToMoadonit();
 		try {
 			if (action.equals("getBlankAttend")) {
-				prepareAttendTbl(null, null);
+				prepareAttendanceTbl(null, null);
 				
 
 			}
@@ -138,10 +140,28 @@ public class PupilAttendanceController extends HttpServlet implements Serializab
 		}
 
 	}
-	
-	private void prepareAttendTbl(Date start, Date end) throws SQLException{
-		
-		
+//TODO consider the case where you get 2 regs per pupil (present&future regs)
+	private void prepareAttendanceTbl(Date start, Date end) throws SQLException{
+		List<RegToMoadonit> list = regDAO.getActiveRegs(end);
+		for (RegToMoadonit reg : list) {
+			List<Integer> regedTo = new ArrayList<Integer>();
+			if(reg.getSunday_()!=0) regedTo.add(Calendar.SUNDAY);
+			if(reg.getMonday_()!=0) regedTo.add(Calendar.MONDAY);
+			if(reg.getTuesday_()!=0) regedTo.add(Calendar.TUESDAY);
+			if(reg.getWednesday_()!=0) regedTo.add(Calendar.WEDNESDAY);
+			if(reg.getThursday_()!=0) regedTo.add(Calendar.THURSDAY);
+			
+			Calendar cal = Calendar.getInstance();
+			for(cal.setTime(start) ; cal.after(end) ; cal.add(Calendar.DAY_OF_YEAR, 1)){
+				if(list.contains(cal.get(Calendar.DAY_OF_WEEK))) {
+					Attendance att = new Attendance();
+					AttendancePK pk=  new AttendancePK();
+					pk.setPupilID(reg.getId().getPupilNum());
+					pk.setSpecifficDate(cal.getTime());
+					att.setId(pk);
+					attendDao.insert(att);
+				}
+			}
+		}
 	}
-
 }

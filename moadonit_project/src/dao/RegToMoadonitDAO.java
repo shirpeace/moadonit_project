@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import controller.MyConnection;
@@ -23,7 +24,8 @@ public class RegToMoadonitDAO extends AbstractDAO {
 	 */
 	private static final long serialVersionUID = 1L;
 	private String selectAll = "SELECT * FROM ms2016.tbl_reg_to_moadonit WHERE pupilNum = ? and  startdate <= CURDATE() order by startdate desc";
-
+	private String getActiveRegInPeriod = "{call ms2016.getActiveRegInPeriod (?)}";
+			
 	public List<RegToMoadonit> selectAll(int id)
 			throws IllegalArgumentException, DAOException {
 		List<RegToMoadonit> list = new ArrayList<>();
@@ -46,6 +48,25 @@ public class RegToMoadonitDAO extends AbstractDAO {
 		return list;
 	}
 
+	public List<RegToMoadonit> getActiveRegs(Date id) throws IllegalArgumentException, DAOException {
+		List<RegToMoadonit> list = new ArrayList<>();
+
+		try (PreparedStatement statement = DAOUtil
+				.prepareCallbackStatement(this.con.getConnection(), getActiveRegInPeriod, new Object[] { id });
+				ResultSet resultSet = statement.executeQuery();) {
+
+			while (resultSet.next()) {
+				RegToMoadonit p = map(resultSet);
+				list.add(p);
+			}
+
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+
+		return list;
+	}
+	
 	private RegToMoadonit map(ResultSet resultSet)  throws SQLException {
 		// TODO Auto-generated method stub
 		RegToMoadonit rtm = new  RegToMoadonit();
