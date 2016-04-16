@@ -108,6 +108,9 @@
                      <li>
                         <a href= "pupil_week_view.jsp" id="regLink" ><i class="fa fa-fw fa-edit"></i> עריכת רישום</a>
                      </li>  
+                    <li>
+                        <a href= "pupil_one_time_act.jsp"><i class="fa fa-fw fa-plus-square-o"></i> פעילות חד פעמית</a>
+                     </li> 
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

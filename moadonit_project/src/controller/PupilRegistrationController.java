@@ -60,12 +60,16 @@ public class PupilRegistrationController extends HttpServlet implements Serializ
 			if (action.equals("getRegistration")) {
 
 				this.pupilRegList = getRegistration(req, resp);
+				String jsonResponse = "";
+				JSONArray registrationData = new JSONArray();
+				
 				if (!pupilRegList.isEmpty()) {
-					JSONArray registrationData = new JSONArray();
+					
 					this.getRegistrationRow(registrationData);
+					
 					if (!registrationData.isEmpty()) {
 
-						String jsonResponse = registrationData.toJSONString();
+						jsonResponse = registrationData.toJSONString();
 						jsonResponse = "{\"page\":1,\"total\":\"1\",\"records\":"
 								+ pupilRegList.size() + ",\"rows\":" + jsonResponse
 								+ "}";
@@ -78,16 +82,19 @@ public class PupilRegistrationController extends HttpServlet implements Serializ
 
 						resp.setContentType("application/json");
 						resp.setCharacterEncoding("UTF-8");
-						resultToClient.put("msg", 0);
-						resultToClient.put("result", "לא נמצאו נתונים");
-						resp.getWriter().print(resultToClient);
+						jsonResponse = "{\"page\":0,\"total\":\"0\",\"records\":"
+								+ 0 + ",\"rows\":" + jsonResponse
+								+ "}";
+						resp.getWriter().print(jsonResponse);
 					}
 				}else{
 					resp.setContentType("application/json");
 					resp.setCharacterEncoding("UTF-8");
-					resultToClient.put("msg", 0);
-					resultToClient.put("result", "לא נמצאו נתונים");
-					resp.getWriter().print(resultToClient);
+					jsonResponse = registrationData.toJSONString();
+					jsonResponse = "{\"page\":0,\"total\":\"0\",\"records\":"
+							+ 0 + ",\"rows\":" + jsonResponse
+							+ "}";
+					resp.getWriter().print(jsonResponse);
 				}
 				
 

@@ -20,35 +20,19 @@
 	
 	 <!-- jQuery -->
     <script src="js/jquery.js"></script>
+    <script src="js/jquery-ui.js"></script>
+	
 	<script src="js/moment-with-locales.js"></script> 
     
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
-	
-	<script src="js/jquery-ui.js"></script>
-	<script src="js/js_logic.js"></script>
-    
-    
-	
-	<script src="js/combodate.js"></script> 	   
     <script src="js/bootbox.js"></script> 
     <script src="js/js_pupil_one_time_act.js"></script> 
-	
-    
-    <script src="js/jquery.are-you-sure.js"></script> 
-    
-    	<!-- form validation plugin -->
-	<script src="js/jquery.validate.js"></script>
-	<script src="js/additional-methods.js"></script>
-	<script src="js/messages_he.js"></script>
-	
-	<!-- bootbox code -->
-    <script src="js/bootbox.js"></script> 
+
     <script src="js/bootstrap-datepicker.js"></script> 
-  <!--   <script src="js/i18n/bootstrap-datepicker.he.min.js"></script>  -->
-	
+	<script src="js/i18n/bootstrap-datepicker.he.min.js"></script> 
     <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.css" rel="stylesheet">
 
     <!-- Bootstrap Core CSS RTL-->
     <link href="css/bootstrap-rtl.min.css" rel="stylesheet">
@@ -57,7 +41,7 @@
     <link href="css/sb-admin.css" rel="stylesheet">
     <link href="css/sb-admin-rtl.css" rel="stylesheet">
 	<link href="css/datepicker.css" rel="stylesheet">
-	<link href="css/bootstrap-datepicker.standalone.css" rel="stylesheet">
+	<!-- <link href="css/bootstrap-datepicker.standalone.css" rel="stylesheet"> -->
 
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -97,16 +81,16 @@
                         <br>
                      </li> 
                      <li>
-                        <a href= "pupil_card_view.jsp"><i class="fa fa-fw fa-list-alt"></i> פרטים אישיים</a>
+                        <a id="detailsLink" href= "pupil_card_view.jsp"><i class="fa fa-fw fa-list-alt"></i> פרטים אישיים</a>
                      </li> 
                      <li>
-                        <a href= "pupil_week_view.jsp"><i class="fa fa-fw fa-th"></i> תכנית שבועית</a>
+                        <a id="scheduleLink" href= "pupil_week_view.jsp"><i class="fa fa-fw fa-th"></i> תכנית שבועית</a>
                      </li>
                      <li>
-                        <a href= "pupil_week_view.jsp"><i class="fa fa-fw fa-edit"></i> עריכת רישום</a>
+                        <a id="regLink" href= "pupil_week_view.jsp"><i class="fa fa-fw fa-edit"></i> עריכת רישום</a>
                      </li> 
                      <li class="active">
-                        <a href= "pupil_week_view.jsp"><i class="fa fa-fw fa-plus-square-o"></i> פעילות חד פעמית</a>
+                        <a href= "pupil_one_time_act.jsp"><i class="fa fa-fw fa-plus-square-o"></i> פעילות חד פעמית</a>
                      </li>  
                 </ul>
             </div>
@@ -164,11 +148,7 @@
 												</select>
 											</div>
 											
-											<div class="form-group  col-lg-3">
-												<label for="datepicker">בתאריך</label>
-												<input type="date" class="form-control" name="datepicker"  id="datepicker" placeholder="בחר">
-											</div>
-											<div class="form-group col-lg-3 " id="typeDiv">
+											<div class="form-group col-lg-2" id="typeDiv">
 												<label for="type">סוג הרישום</label>
 												<select class="form-control " id="type" name="type">
 													<option value="1">מועדונית</option>
@@ -176,9 +156,13 @@
 												</select>
 											</div>
 											<div class="form-group  col-lg-2">
+												<label for="datePick"> בתאריך</label>
+												<input  type="text" class="form-control" id="datePick">
+											</div>
+											<div class="form-group  col-lg-2">
 												<label for="type"> </label>
 												<input class="form-control btn btn-primary" id="saveBtn" style="margin-top: 5px;" type="button" value="שמור">
-											</div>
+											</div>											
 										</div>
 									</form>
 									
@@ -216,22 +200,25 @@
 	<script type="text/javascript">
 		var dataString = 'id='+ pupilID + '&action=' + "get";
 		var pupilData;
-		loadPupilOneAct(dataString);	
 		
+		$('#detailsLink').attr('href','pupil_card_view.jsp?li=0&pupil=' + pupilID);
+		$('#scheduleLink').attr('href','pupil_week_view.jsp?li=1&pupil=' + pupilID);
+		$('#regLink').attr('href','pupil_week_view.jsp?li=2&pupil=' + pupilID);
 		
-		
-		/* 
+		loadPupilOneAct(dataString);			
+
 		 $('#datePick').datepicker({
 		    format: "dd/mm/yyyy",
-		    startDate: "today",
+		    language: "he" ,
+		     startDate: "today",
 		    maxViewMode: 0,
+		    minViewMode: 0,
 		    todayBtn: true,
-		    locale: "he",
 		    keyboardNavigation: false,
 		    daysOfWeekDisabled: "5,6",
 		    todayHighlight: true,
-		    toggleActive: true
-		});  */
+		    toggleActive: true 
+		}); 
 	</script>
 		
 </body>

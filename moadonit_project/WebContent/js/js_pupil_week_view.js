@@ -58,6 +58,13 @@ function loadRegistrationGrid(pupilID){
         datatype : "json",
         mtype : 'POST',
         colNames : ['','יום ראשון' , 'יום שני' , 'יום שלישי', 'יום רביעי', 'יום חמישי'],
+        loadComplete: function (data) {
+            if (parseInt(data.records, 10) == 0) {
+                $("#pager div.ui-paging-info").show();              
+            } else {
+                $("#pager div.ui-paging-info").hide();
+            }
+        },
         colModel : [ {
                 name : 'type',
                 index : 'type',
@@ -109,8 +116,8 @@ function loadRegistrationGrid(pupilID){
         /*editurl : "FullPupilCardController",*/
         recreateFilter:true,               
         pgbuttons: false,     // disable page control like next, back button
-        pgtext: null         // disable pager text like 'Page 0 of 10'
-        /*viewrecords: false*/
+        pgtext: null       ,  // disable pager text like 'Page 0 of 10'
+        viewrecords: true
         
 });
 jQuery("#list").jqGrid('navGrid', '#pager', {

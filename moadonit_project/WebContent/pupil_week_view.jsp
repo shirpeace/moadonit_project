@@ -32,7 +32,7 @@
 <!-- Custom Fonts -->
 <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet"
 	type="text/css">
-
+<link href="css/datepicker.css" rel="stylesheet">
 <!-- jqgrid style -->
 <link rel="stylesheet"
 	href="resources/jquery-ui-1.11.4.custom/jquery-ui.css">
@@ -48,7 +48,8 @@
 
 <!-- bootbox code -->
 <script src="js/bootbox.js"></script>
-
+  <script src="js/bootstrap-datepicker.js"></script> 
+	<script src="js/i18n/bootstrap-datepicker.he.min.js"></script> 
 
 
 
@@ -91,6 +92,9 @@
 							class="fa fa-fw fa-th"></i> תכנית שבועית</a></li>
 					<li><a href="pupil_week_view.jsp" id="regLink"><i
 							class="fa fa-fw fa-edit"></i> עריכת רישום</a></li>
+							                     <li>
+                        <a href= "pupil_one_time_act.jsp"><i class="fa fa-fw fa-plus-square-o"></i> פעילות חד פעמית</a>
+                     </li>  
 				</ul>
 			</div>
 			<!-- /.navbar-collapse -->
@@ -132,6 +136,8 @@
 									כרטיס תלמיד</a></li>
 							<li class="active"><i class="fa fa-th"></i> תכנית שבועית
 								לתלמיד</li>
+						<li>
+                        	<a href= "pupil_week_view.jsp"><i class="fa fa-fw fa-plus-square-o"></i> פעילות חד פעמית</a>
 						</ol>
                     </div>
                 </div>
@@ -159,8 +165,8 @@
 											<td></td>
 										</tr>
 									</table>
-
-									<div id="pager"></div>
+ 
+									<div id="pager"></div> 
 
 								</div>
 							</div>
@@ -250,10 +256,10 @@
 											</div> -->
 											</div>
 											<div class="row">
-												<div class="form-group col-lg-3">
-													<label for="datepicker">תאריך תחילה</label>
-												<input type="date" class="form-control" name="datepicker"  id="datepicker" placeholder="בחר">
-												</div>
+											<div class="form-group  col-lg-2">
+												<label for="datePick"> בתאריך</label>
+												<input  type="text" class="form-control" id="datePick">
+											</div>
 												<div class="form-group col-lg-3">
 													<label for="action">סיבת הרישום</label> <select
 														class="form-control " id="action" name="action"
@@ -290,10 +296,12 @@
 		if (request.getParameter("pupil") != null) {
 			String pupil = request.getParameter("pupil");
 			String li = request.getParameter("li");
+			String reg = request.getParameter("reg");
 	%>
 	<script type="text/javascript">
 					var pupilID = "<%=pupil%>";
 					var selectedLi = "<%=li%>";
+					var reg = "<%= reg %>";
 	</script>
 	<%
 		} else {
@@ -301,7 +309,7 @@
 
 	<script type="text/javascript">
 		var pupilID = "3";
-		var selectedLi = 1;
+		var selectedLi, reg;
 	</script>
 
 	<%
@@ -313,17 +321,37 @@
 
 			$('#detailsLink').attr('href','pupil_card_view.jsp?li=0&pupil=' + pupilID);
 			$('#scheduleLink').attr('href','pupil_week_view.jsp?li=1&pupil=' + pupilID);
-			$('#regLink').attr('href','pupil_week_view.jsp?li=2&pupil=' + pupilID);
+			$('#regLink').attr('href','pupil_week_view.jsp?reg=1&li=2&pupil=' + pupilID);
 			
 			var dataString = 'id='+ pupilID + '&action=' + "get";
 			loadPupilCard(dataString);
 			
+			 $('#datePick').datepicker({
+				    format: "dd/mm/yyyy",
+				    language: "he" ,
+				     startDate: "today",
+				    maxViewMode: 0,
+				    minViewMode: 0,
+				    todayBtn: true,
+				    keyboardNavigation: false,
+				    daysOfWeekDisabled: "5,6",
+				    todayHighlight: true,
+				    toggleActive: true 
+				}); 
+			 
 			loadRegistrationGrid(pupilID);
 		     
 			if(selectedLi == 1)
 				$('#scheduleLink').parent().addClass('active');
 			else if(selectedLi == 2)
 				$('#regLink').parent().addClass('active');
+			
+			if (reg != undefined && reg ==1 ) {
+				
+				$("#editReg").slideToggle(500, function () {
+
+			    }); 
+			}
 		});
 		
 	</script>
