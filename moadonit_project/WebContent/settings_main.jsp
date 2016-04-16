@@ -17,6 +17,25 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
+<script type="text/javascript">
+		var currentUserId =	 '<%=session.getAttribute("userid")%>';	
+		
+	</script>
+	
+	<%
+		response.setHeader("Cache-Control", "no-cache");
+		response.setHeader("Cache-Control", "no-store");
+		response.setHeader("Pragma", "no-cache");
+		response.setDateHeader("Expires", 0);
+	%>
+	
+ 	<%
+		if (session.getAttribute("userid") == null) {
+			response.sendRedirect("login.jsp");
+			return;
+		}
+	%> 
+
     <title>מועדונית</title>
 
     <!-- Bootstrap Core CSS -->
@@ -51,7 +70,7 @@
         <!-- Navigation -->
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="nav navbar-right top-nav" style="padding-top: 15px; ">
-            	<a href="index.html">
+            	<a href="login.jsp?action=logout">
 	            	<i class="fa fa-fw fa-power-off"></i>&nbsp;יציאה</a>
             </div>
             <div class="navbar-header" >
@@ -68,10 +87,10 @@
                         <br>
                      </li> 
                      <li class="active">
-                        <a href= "pupil_card_view.jsp"><i class="fa fa-fw fa-file-o"></i> קייטרינג</a>
+                        <a href= "cater_order.jsp"><i class="fa fa-fw fa-file-o"></i> קייטרינג</a>
                      </li> 
                      <li>
-                        <a href= "pupil_week_view.jsp"><i class="fa fa-fw fa-file-text-o"></i> צוות המועדונית</a>
+                        <a href= "#"><i class="fa fa-fw fa-file-text-o"></i> צוות המועדונית</a>
                      </li>
                 </ul>
             </div>
@@ -89,7 +108,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            הערכת כמות מנות להזמנה
+                            ניהול המערכת
                         </h1>
                         <ol class="breadcrumb">
                             <li>
@@ -103,19 +122,19 @@
                 </div>
                 <!-- /.row -->
 
-                <div class="row">
+               <!--  <div class="row">
                     <div class="col-lg-12">
                         <div class="alert alert-info alert-dismissable">
                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                             <i class="fa fa-info-circle"></i>  <strong>Like SB Admin?</strong> Try out <a href="http://startbootstrap.com/template-overviews/sb-admin-2" class="alert-link">SB Admin 2</a> for additional features!
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <!-- /.row -->
 				
 				<div class="col-lg-2">
 				</div>
-                <div class="col-lg-8">
+ <!--                <div class="col-lg-8">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h3 class="panel-title"><i class="fa fa-search fa-fw"></i> תכנית שבועית</h3>
@@ -198,7 +217,7 @@
 								</div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
             </div>
 
         <!-- /#page-wrapper -->

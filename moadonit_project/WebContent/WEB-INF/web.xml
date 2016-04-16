@@ -5,9 +5,7 @@
 	id="WebApp_ID" version="3.0">
 	<display-name>moadonit_project</display-name>
 	<welcome-file-list>
-		<!-- for testing -->
-		<welcome-file>pupil_card_view.jsp</welcome-file>
-		<!-- for testing -->
+	
 		
 		<welcome-file>login.jsp</welcome-file>
 		<welcome-file>index.htm</welcome-file>

@@ -51,7 +51,7 @@
         <!-- Navigation -->
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="nav navbar-right top-nav" style="padding-top: 15px; ">
-            	<a href="login.jsp">
+            	<a href="login.jsp?action=logout">
 	            	<i class="fa fa-fw fa-power-off"></i>&nbsp;יציאה</a>
             </div>
             <div class="navbar-header" >
