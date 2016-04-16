@@ -133,7 +133,7 @@
                                  <a href="dashboard.jsp"><i class="fa fa-home"></i> ראשי</a>
                             </li>
                             <li>
-                                 <a href="dashboard.jsp"><i class="fa fa-users"></i> תלמידים</a>
+                                 <a href="pupils_search.jsp"><i class="fa fa-users"></i> תלמידים</a>
                             </li>
                             <li>
                                  <a href="dashboard.jsp"><i class="fa fa-user"></i> כרטיס תלמיד</a>

@@ -19,7 +19,7 @@ public class Attendance implements Serializable {
 
 	private int activityNum;
 
-	@Column(name="`attended?`")
+	@Column(name="`attended_`")
 	private int attended_;
 
 	@Column(name="rec_type")

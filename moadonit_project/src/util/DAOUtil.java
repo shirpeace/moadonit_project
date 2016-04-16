@@ -2,6 +2,7 @@ package util;
 
 
 import java.io.IOException;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -54,6 +55,19 @@ public final class DAOUtil {
         return statement;
     }
 
+    public static CallableStatement prepareCallbackStatement
+    (Connection connection, String sql, Object... values)
+        throws SQLException
+{
+    	CallableStatement statement = connection.prepareCall(sql);
+    
+   
+    setValues(statement, values);
+    
+    
+    return statement;
+}
+    
     public static  String getJsonFromObject(Object o){
     	String jsonInString = "";
     	
