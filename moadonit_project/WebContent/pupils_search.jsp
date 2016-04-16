@@ -17,6 +17,25 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
+<script type="text/javascript">
+		var currentUserId =	 '<%=session.getAttribute("userid")%>';	
+		
+	</script>
+	
+	<%
+		response.setHeader("Cache-Control", "no-cache");
+		response.setHeader("Cache-Control", "no-store");
+		response.setHeader("Pragma", "no-cache");
+		response.setDateHeader("Expires", 0);
+	%>
+	
+ 	<%
+		if (session.getAttribute("userid") == null) {
+			response.sendRedirect("login.jsp");
+			return;
+		}
+	%> 
+
     <title>מועדונית</title>
 
     <!-- Bootstrap Core CSS -->
@@ -68,7 +87,7 @@
         <!-- Navigation -->
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="nav navbar-right top-nav" style="padding-top: 15px; ">
-            	<a href="index.html">
+            	<a href="login.jsp?action=logout">
 	            	<i class="fa fa-fw fa-power-off"></i>&nbsp;יציאה</a>
             </div>
             <div class="navbar-header" >
@@ -114,11 +133,8 @@
                             <li>
                                  <a href="dashboard.jsp"><i class="fa fa-home"></i> ראשי</a>
                             </li>
-                            <li>
-                                 <a href="dashboard.jsp"><i class="fa fa-users"></i> תלמידים</a>
-                            </li>
                             <li class="active">
-                                <i class="fa fa-search"></i> חיפוש תלמיד
+                                <i class="fa fa-users"></i> תלמידים
                             </li>
                         </ol>
                     </div>

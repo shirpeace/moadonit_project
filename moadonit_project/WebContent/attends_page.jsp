@@ -17,6 +17,25 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
+<script type="text/javascript">
+		var currentUserId =	 '<%=session.getAttribute("userid")%>';	
+		
+	</script>
+	
+	<%
+		response.setHeader("Cache-Control", "no-cache");
+		response.setHeader("Cache-Control", "no-store");
+		response.setHeader("Pragma", "no-cache");
+		response.setDateHeader("Expires", 0);
+	%>
+	
+ 	<%
+		if (session.getAttribute("userid") == null) {
+			response.sendRedirect("login.jsp");
+			return;
+		}
+	%> 
+
     <title>מועדונית</title>
 
     <!-- Bootstrap Core CSS -->
@@ -51,7 +70,7 @@
         <!-- Navigation -->
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="nav navbar-right top-nav" style="padding-top: 15px; ">
-            	<a href="index.html">
+            	<a href="login.jsp?action=logout">
 	            	<i class="fa fa-fw fa-power-off"></i>&nbsp;יציאה</a>
             </div>
             <div class="navbar-header" >
@@ -68,13 +87,13 @@
                         <br>
                      </li> 
                      <li class="active">
-                        <a href="pupils_search.jsp" ><i class="fa fa-fw fa-file-o"></i> דפי נוכחות</a>
+                        <a href="attends_page.jsp" ><i class="fa fa-fw fa-file-o"></i> דפי נוכחות</a>
                      </li> 
                      <li>
-                        <a href="pupils_phones.jsp" ><i class="fa fa-fw fa-check-square-o"></i> הזנת נוכחות בפועל</a>
+                        <a href="#" ><i class="fa fa-fw fa-check-square-o"></i> הזנת נוכחות בפועל</a>
                      </li>
                      <li>
-                        <a href= "pupil_add.jsp"><i class="fa fa-fw fa-file-text-o"></i> דוח חודשי</a>
+                        <a href= "#"><i class="fa fa-fw fa-file-text-o"></i> דוח חודשי</a>
                      </li>  
                 </ul>
             </div>
@@ -97,25 +116,22 @@
                             <li>
                                  <a href="dashboard.jsp"><i class="fa fa-home"></i> ראשי</a>
                             </li>
-                            <li>
-                                 <a href="dashboard.jsp"><i class="fa fa-check-square-o"></i> נוכחות</a>
-                            </li>
                             <li class="active">
-                                 <a href="dashboard.jsp"><i class="fa fa-check-square-o"></i> דפי נוכחות</a>
+                                 <i class="fa fa-check-square-o"></i> נוכחות
                             </li>
                         </ol>
                     </div>
                 </div>
                 <!-- /.row -->
 
-                <div class="row">
+               <!--  <div class="row">
                     <div class="col-lg-12">
                         <div class="alert alert-info alert-dismissable">
                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                             <i class="fa fa-info-circle"></i>  <strong>Like SB Admin?</strong> Try out <a href="http://startbootstrap.com/template-overviews/sb-admin-2" class="alert-link">SB Admin 2</a> for additional features!
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <!-- /.row -->
 
                 <div class="col-lg-8">

@@ -16,6 +16,25 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
+<script type="text/javascript">
+		var currentUserId =	 '<%=session.getAttribute("userid")%>';	
+		
+	</script>
+	
+	<%
+		response.setHeader("Cache-Control", "no-cache");
+		response.setHeader("Cache-Control", "no-store");
+		response.setHeader("Pragma", "no-cache");
+		response.setDateHeader("Expires", 0);
+	%>
+	
+ 	<%
+		if (session.getAttribute("userid") == null) {
+			response.sendRedirect("login.jsp");
+			return;
+		}
+	%> 
+
     <title>מועדונית</title>
 	
 	 <!-- jQuery -->
@@ -64,7 +83,7 @@
         <!-- Navigation -->
         <nav class="navbar navbar-inverse navbar-fixed-top"  >
             <div class="nav navbar-right top-nav" style="padding-top: 15px; ">
-            	<a href="index.html">
+            	<a href="login.jsp?action=logout">
 	            	<i class="fa fa-fw fa-power-off"></i>&nbsp;יציאה</a>
             </div>
             <div class="navbar-header" >
@@ -107,9 +126,7 @@
                 <!-- Page Heading -->
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header">
-                            יוסי משה
-                        </h1>
+                        <h1 class="page-header"></h1>
                         <ol class="breadcrumb">
                             <li>
                                  <a href="dashboard.jsp"><i class="fa fa-home"></i> ראשי</a>
@@ -118,7 +135,7 @@
                                  <a href="pupils_search.jsp"><i class="fa fa-users"></i> תלמידים</a>
                             </li>
                             <li>
-                                 <a href="dashboard.jsp"><i class="fa fa-user"></i> כרטיס תלמיד</a>
+                                 <a href="pupil_card_view.jsp"><i class="fa fa-user"></i> כרטיס תלמיד</a>
                             </li>
                             <li class="active">
                                 <i class="fa fa-plus-square-o"></i> פעילות חד פעמית

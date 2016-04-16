@@ -443,9 +443,10 @@ public class FullPupilCardController extends HttpServlet implements
 		this.pupilDao.insert(p);
 
 		// save regPupil
+		if(rp.get){
 		rp.setPupilNum(p.getPupilNum());
 		this.regPupilDao.insert(rp);
-
+		}
 		this.con.getConnection().commit();
 
 		resultToClient.put("msg", 1);
