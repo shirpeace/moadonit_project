@@ -171,7 +171,7 @@
 						<div class="panel panel-default">
 							<div class="panel-heading">
 								<h3 class="panel-title">
-									<i class="fa fa-search fa-fw"></i> תכנית שבועית
+									<!-- <i class="fa fa-search fa-fw"></i> --> תכנית שבועית
 								</h3>
 							</div>
 							<div class="panel-body">
@@ -201,7 +201,7 @@
 						<div class="panel panel-default">
 							<div class="panel-heading">
 								<h3 class="panel-title">
-									<i class="fa fa-search fa-fw"></i> היסטורית רישום
+									<!-- <i class="fa fa-search fa-fw"></i> --> היסטורית רישום
 								</h3>
 							</div>
 							<div class="panel-body">
@@ -226,7 +226,7 @@
 					<div class="col-lg-10">
 						<div class="panel panel-default">
 							<div class="panel-heading">								
-								<a href="javascript:;" data-toggle="collapse"
+								<a href="#editReg" data-toggle="collapse"
 									data-target="#editReg">עריכת הרישום <i
 									class="fa fa-arrow-circle-down"></i></a>
 

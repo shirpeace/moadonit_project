@@ -150,7 +150,7 @@ public class PupilRegistrationController extends HttpServlet implements Serializ
 			for (RegToMoadonit regPupil : this.pupilRegList) {
 				JSONObject user = new JSONObject();
 				
-				user.put("startDate",regPupil.getId().getStartDate());				
+				user.put("startDate",regPupil.getId().getStartDate().getTime());				
 				user.put("sunday", getRegType(regPupil.getSunday_()));
 				user.put("monday", getRegType(regPupil.getMonday_()));
 				user.put("tuesday", getRegType(regPupil.getTuesday_()));

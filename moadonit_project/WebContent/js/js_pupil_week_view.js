@@ -4,7 +4,9 @@
 
 /* the current user the us logged if to the system */
 var currentUserId = '<%=session.getAttribute("userid")%>';
-
+/*$.extend($.jgrid.ajaxOptions, {
+	async : false
+});*/
 // define state for the editable page
 var state = {
 	EDIT : 1,
@@ -114,9 +116,9 @@ function loadWeekGrid(pupilID) {
 						/* editurl : "FullPupilCardController", */
 						recreateFilter : true,
 						pgbuttons : false, // disable page control like next,
-											// back button
+						// back button
 						pgtext : null, // disable pager text like 'Page 0 of
-										// 10'
+						// 10'
 						viewrecords : true
 
 					});
@@ -136,13 +138,14 @@ function loadWeekGrid(pupilID) {
 }
 
 function loadRegistrationGrid(pupilID) {
+
 	$("#listRegistration").jqGrid(
 			{
 				url : "PupilRegistration?action=getRegistration&pupilID="
 						+ pupilID,
 				datatype : "json",
 				mtype : 'POST',
-				colNames : [  'תאריך התחלה', 'יום ראשון', 'יום שני',
+				colNames : [ 'תאריך התחלה', 'יום ראשון', 'יום שני',
 						'יום שלישי', 'יום רביעי', 'יום חמישי' ],
 				loadComplete : function(data) {
 					if (parseInt(data.records, 10) == 0) {
@@ -151,31 +154,44 @@ function loadRegistrationGrid(pupilID) {
 						$("#listRegistrationPager div.ui-paging-info").hide();
 					}
 				},
-				colModel : [ {
-					name : 'startDate',
-					index : 'startDate',
+				loadError : function(xhr, status, error) {
+					alert("complete loadError");
+				},
+				colModel : [
+						{
+							name : "startDate",
+							index : 'startDate',
+							sorttype : "date",
+							//formatter:'date', formatoptions: {srcformat: 'U', newformat:'dd/mm/yyyy'}/*,
+							formatter : function(cellValue, opts, rwd) {
+								if (cellValue) {
+									return $.fn.fmatter.call(this, "date",
+											new Date(cellValue), opts, rwd);
+								} else {
+									return '';
+								}
+							}
+						}, {
+							name : 'sunday',
+							index : 'sunday',
 
-				}, {
-					name : 'sunday',
-					index : 'sunday',
+						}, {
+							name : 'monday',
+							index : 'monday',
 
-				}, {
-					name : 'monday',
-					index : 'monday',
+						}, {
+							name : 'tuesday',
+							index : 'tuesday',
 
-				}, {
-					name : 'tuesday',
-					index : 'tuesday',
+						}, {
+							name : 'wednesday',
+							index : 'wednesday',
 
-				}, {
-					name : 'wednesday',
-					index : 'wednesday',
+						}, {
+							name : 'thursday',
+							index : 'thursday',
 
-				}, {
-					name : 'thursday',
-					index : 'thursday',
-
-				} ],
+						} ],
 				pager : '#listRegistrationPager',
 				autowidth : true,
 				shrinkToFit : true,
@@ -200,7 +216,7 @@ function loadRegistrationGrid(pupilID) {
 				/* editurl : "FullPupilCardController", */
 				recreateFilter : true,
 				pgbuttons : false, // disable page control like next, back
-									// button
+				// button
 				pgtext : null, // disable pager text like 'Page 0 of 10'
 				viewrecords : true
 
