@@ -208,76 +208,91 @@
 								<div class="text-right">
 									<div id="editReg" class="collapse">
 										<form>
-											<div class="row">
-												<div class="form-group col-lg-2">
-													<label for="action">יום ראשון</label> <select
-														class="form-control " id="action" name="action"
-														onchange="actionChanged()">
-														<option value="1">מועדונית</option>
-														<option value="2">אוכל בלבד</option>
-													</select>
+												<div class="row">
+													<div class="form-group col-lg-2">
+														<label for="action">יום ראשון</label> <select
+															class="form-control " id="action" name="action"
+															onchange="actionChanged()">
+															<option value="2">לא רשום</option>
+															<option value="1">מועדונית</option>
+															<option value="2">אוכל בלבד</option>
+														</select>
+													</div>
+													<div class="form-group col-lg-2">
+														<label for="action">יום שני</label> <select
+															class="form-control " id="action" name="action"
+															onchange="actionChanged()">
+															<option value="2">לא רשום</option>
+															<option value="1">מועדונית</option>
+															<option value="2">אוכל בלבד</option>
+														</select>
+													</div>
+													<div class="form-group col-lg-2">
+														<label for="action">יום שלישי</label> <select
+															class="form-control " id="action" name="action"
+															onchange="actionChanged()">
+															<option value="2">לא רשום</option>
+															<option value="1">מועדונית</option>
+															<option value="2">אוכל בלבד</option>
+														</select>
+													</div>
+													<div class="form-group col-lg-2">
+														<label for="action">יום רביעי</label> <select
+															class="form-control " id="action" name="action"
+															onchange="actionChanged()">
+															<option value="2">לא רשום</option>
+															<option value="1">מועדונית</option>
+															<option value="2">אוכל בלבד</option>
+														</select>
+													</div>
+													<div class="form-group col-lg-2">
+														<label for="action">יום חמישי</label> <select
+															class="form-control " id="action" name="action"
+															onchange="actionChanged()">
+															<option value="2">לא רשום</option>
+															<option value="1">מועדונית</option>
+															<option value="2">אוכל בלבד</option>
+														</select>
+													</div>
+													
+													<!-- <div class="form-group  col-lg-2">
+													<label for="type"> </label>
+													<input class="form-control btn btn-primary " style="margin-top: 5px;" type="button" value="שמור">
+												</div> -->
 												</div>
-												<div class="form-group col-lg-2">
-													<label for="action">יום שני</label> <select
-														class="form-control " id="action" name="action"
-														onchange="actionChanged()">
-														<option value="1">מועדונית</option>
-														<option value="2">אוכל בלבד</option>
-													</select>
-												</div>
-												<div class="form-group col-lg-2">
-													<label for="action">יום שלישי</label> <select
-														class="form-control " id="action" name="action"
-														onchange="actionChanged()">
-														<option value="1">מועדונית</option>
-														<option value="2">אוכל בלבד</option>
-													</select>
-												</div>
-												<div class="form-group col-lg-2">
-													<label for="action">יום רביעי</label> <select
-														class="form-control " id="action" name="action"
-														onchange="actionChanged()">
-														<option value="1">מועדונית</option>
-														<option value="2">אוכל בלבד</option>
-													</select>
-												</div>
-												<div class="form-group col-lg-2">
-													<label for="action">יום חמישי</label> <select
-														class="form-control " id="action" name="action"
-														onchange="actionChanged()">
-														<option value="1">מועדונית</option>
-														<option value="2">אוכל בלבד</option>
-													</select>
-												</div>
-												
-												<!-- <div class="form-group  col-lg-2">
-												<label for="type"> </label>
-												<input class="form-control btn btn-primary " style="margin-top: 5px;" type="button" value="שמור">
-											</div> -->
-											</div>
-											<div class="row">
-											<div class="form-group  col-lg-2">
-												<label for="datePick"> בתאריך</label>
-												<input  type="text" class="form-control" id="datePick">
-											</div>
-												<div class="form-group col-lg-3">
-													<label for="action">סיבת הרישום</label> <select
-														class="form-control " id="action" name="action"
-														onchange="actionChanged()">
-														<option value="1">לרשום את התלמיד</option>
-														<option value="2">לבטל רישום</option>
-													</select>
-												</div>
+												<div class="row">
 												<div class="form-group  col-lg-2">
-													<label for="type"> </label> <input
-														class="form-control btn btn-primary "
-														style="margin-top: 5px;" type="button" value="שמור">
+													<label for="datePick"> בתאריך</label>
+													<input  type="text" class="form-control" id="datePick">
 												</div>
+													<div class="form-group col-lg-3">
+														<label for="action">סיבת הרישום</label> <select
+															class="form-control " id="action" name="action"
+															onchange="actionChanged()">
+															<option value="1">לרשום את התלמיד</option>
+															<option value="2">לבטל רישום</option>
+														</select>
+													</div>
+													<div class="form-group  col-lg-2">
+														<label for="type"> </label> <input
+															class="form-control btn btn-primary "
+															style="margin-top: 5px;" type="button" value="שמור">
+													</div>
+												</div>
+											</form>
+										<div class="row">
+											<div class="table-responsive col-lg-12">
+												<table class="table table-bordered table-hover table-striped"
+													id="listRegistration">
+													<tr>
+														<td></td>
+													</tr>
+												</table>			 
+												<div id="listRegistrationPager"></div> 			
 											</div>
-										</form>
+										</div>
 									</div>
 								</div>
-
 							</div>
 						</div>
 					</div>
@@ -339,8 +354,8 @@
 				    toggleActive: true 
 				}); 
 			 
-			loadRegistrationGrid(pupilID);
-		     
+			loadWeekGrid(pupilID);
+			loadRegistrationGrid(pupilID); 
 			if(selectedLi == 1)
 				$('#scheduleLink').parent().addClass('active');
 			else if(selectedLi == 2)
@@ -348,7 +363,7 @@
 			
 			if (reg != undefined && reg ==1 ) {
 				
-				$("#editReg").slideToggle(500, function () {
+				$("#editReg").slideToggle(100, function () {
 
 			    }); 
 			}

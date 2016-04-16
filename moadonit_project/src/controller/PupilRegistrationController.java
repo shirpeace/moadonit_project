@@ -98,6 +98,8 @@ public class PupilRegistrationController extends HttpServlet implements Serializ
 				}
 				
 
+			}else if (action.equals("getWeekGrid")) {
+				
 			}
 
 		} catch (SQLException e) {

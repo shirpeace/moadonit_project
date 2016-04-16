@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import controller.MyConnection;
@@ -18,6 +19,9 @@ public class RegToMoadonitDAO extends AbstractDAO {
 		// TODO Auto-generated constructor stub
 	}
 
+	private String insert = "INSERT INTO tbl_reg_to_moadonit "
+			+ "(pupilNum,registerDate,startDate,sunday_,monday_,tuesday_,wednesday_,thursday_,writenBy,source)"
+			+ "VALUES(?,?,?,?,?,?,?,?,?,?);";
 	/**
 	 * 
 	 */
@@ -44,6 +48,43 @@ public class RegToMoadonitDAO extends AbstractDAO {
 		}
 
 		return list;
+	}
+	
+	public boolean insert(RegToMoadonit regToMo) throws IllegalArgumentException, DAOException {
+		boolean result = false;
+		if (regToMo.getId() ==  null) {
+			throw new IllegalArgumentException(
+					"RegToMoadonit is already created, the parent ID is not null.");
+		}
+
+		//(pupilNum,registerDate,startDate,sunday_,monday_,tuesday_,wednesday_,thursday_,writenBy,source)
+		Object[] values = { regToMo.getId().getPupilNum(),
+				DAOUtil.toSqlDate(new Date()) ,
+				regToMo.getId().getStartDate(),
+				regToMo.getSunday_(),regToMo.getMonday_(),regToMo.getTuesday_(),regToMo.getWednesday_(),regToMo.getThursday_(),
+				regToMo.getWritenBy(),
+				regToMo.getSource()
+		};
+
+		try (
+
+		PreparedStatement statement = DAOUtil.prepareStatement(
+				this.con.getConnection(), insert, true, values);) {
+			int affectedRows = statement.executeUpdate();
+			result = true;
+			
+			if (affectedRows == 0) {
+				result = false;
+				throw new DAOException(
+						"Creating RegToMoadonit failed, no rows affected.");
+			}
+
+		} catch (SQLException e) {
+			result = false;
+			throw new DAOException(e);
+		}
+		
+		return result;
 	}
 
 	private RegToMoadonit map(ResultSet resultSet)  throws SQLException {

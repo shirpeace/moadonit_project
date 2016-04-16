@@ -51,13 +51,94 @@ function loadPupilCard(dataString){
 
 }
 
+function loadWeekGrid(pupilID){
+	  $("#list").jqGrid({
+      url : "PupilRegistration?action=getWeekGrid&pupilID="+ pupilID,
+      datatype : "json",
+      mtype : 'POST',
+      colNames : ['','יום ראשון' , 'יום שני' , 'יום שלישי', 'יום רביעי', 'יום חמישי'],
+      loadComplete: function (data) {
+          if (parseInt(data.records, 10) == 0) {
+              $("#pager div.ui-paging-info").show();              
+          } else {
+              $("#pager div.ui-paging-info").hide();
+          }
+      },
+      colModel : [ {
+              name : 'type',
+              index : 'type',
+                        
+      }, {
+              name : 'sunday',
+              index : 'sunday',
+              
+              
+      }, {
+              name : 'monday',
+              index : 'monday',
+              
+              
+      }, {
+              name : 'tuesday',
+              index : 'tuesday',
+                                          
+              
+      }, {
+              name : 'wednesday',
+              index : 'wednesday',                
+              
+      }, {
+          name : 'thursday', 
+          index : 'thursday',
+                     
+      } ],
+      pager : '#pager',
+      autowidth: true,
+      shrinkToFit: true,
+      rowNum : 30,
+      rowList : [ ],
+      sortname : 'sunday',
+      /*scroll: true,*/
+      direction:"rtl",
+      viewrecords : true,
+      gridview : true,
+      height: "100%",
+      width: "100%",
+     /* ondblClickRow: function(rowId) {
+          var rowData = jQuery(this).getRowData(rowId); 
+          var pupilID = rowData.id;
+          window.location.href = "pupil_card_view.jsp?pupil="+pupilID+"";
+      },*/
+      jsonReader : {
+              repeatitems : false,
+      },
+      /*editurl : "FullPupilCardController",*/
+      recreateFilter:true,               
+      pgbuttons: false,     // disable page control like next, back button
+      pgtext: null       ,  // disable pager text like 'Page 0 of 10'
+      viewrecords: true
+      
+});
+jQuery("#list").jqGrid('navGrid', '#pager', {
+      edit : false,
+      add : false,
+      del : false,
+      search : false,
+      refresh: false
+});
+
+
+/*jQuery("#list").jqGrid('filterToolbar',{autosearch:true, stringResult: true});*/
+
+
+}	
 
 function loadRegistrationGrid(pupilID){
 	  $("#list").jqGrid({
         url : "PupilRegistration?action=getRegistration&pupilID="+ pupilID,
         datatype : "json",
         mtype : 'POST',
-        colNames : ['','יום ראשון' , 'יום שני' , 'יום שלישי', 'יום רביעי', 'יום חמישי'],
+        colNames : ['','תאריך התחלה','יום ראשון' , 'יום שני' , 'יום שלישי', 'יום רביעי', 'יום חמישי'],
         loadComplete: function (data) {
             if (parseInt(data.records, 10) == 0) {
                 $("#pager div.ui-paging-info").show();              
