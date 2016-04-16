@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -56,16 +57,24 @@ public class PupilRegistrationController extends HttpServlet implements Serializ
 		action = req.getParameter("action");
 
 		this.reg = new RegToMoadonit();
+		String jsonResponse = "";
+		JSONArray registrationData;
+		
 		try {
-			if (action.equals("getRegistration")) {
+			if (action.equals("getRegistration") || action.equals("getWeekGrid") ) {
 
-				this.pupilRegList = getRegistration(req, resp);
-				String jsonResponse = "";
-				JSONArray registrationData = new JSONArray();
+				this.pupilRegList = getRegistration(req, resp);		
+				registrationData = new JSONArray();
 				
 				if (!pupilRegList.isEmpty()) {
 					
-					this.getRegistrationRow(registrationData);
+					if (action.equals("getRegistration")){
+						this.getRegistrationRow(registrationData,1);
+						
+					}else if (action.equals("getWeekGrid")){
+						
+						this.getRegistrationRow(registrationData,0);
+					}
 					
 					if (!registrationData.isEmpty()) {
 
@@ -97,9 +106,6 @@ public class PupilRegistrationController extends HttpServlet implements Serializ
 					resp.getWriter().print(jsonResponse);
 				}
 				
-
-			}else if (action.equals("getWeekGrid")) {
-				
 			}
 
 		} catch (SQLException e) {
@@ -122,19 +128,41 @@ public class PupilRegistrationController extends HttpServlet implements Serializ
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void getRegistrationRow(JSONArray registrationData) {
+	protected void getRegistrationRow(JSONArray registrationData,int type) {
 
-		RegToMoadonit regPupil = this.pupilRegList.get(0);
+		if (type == 0) { //get data for weekGrid
+			
+			RegToMoadonit regPupil = this.pupilRegList.get(0);
 
-		JSONObject user = new JSONObject();
-		user.put("type", "סוג רישום");
-		user.put("sunday", getRegType(regPupil.getSunday_()));
-		user.put("monday", getRegType(regPupil.getMonday_()));
-		user.put("tuesday", getRegType(regPupil.getTuesday_()));
-		user.put("wednesday", getRegType(regPupil.getWednesday_()));
-		user.put("thursday", getRegType(regPupil.getThursday_()));
+			JSONObject user = new JSONObject();
+			user.put("type", "סוג רישום");
+			user.put("sunday", getRegType(regPupil.getSunday_()));
+			user.put("monday", getRegType(regPupil.getMonday_()));
+			user.put("tuesday", getRegType(regPupil.getTuesday_()));
+			user.put("wednesday", getRegType(regPupil.getWednesday_()));
+			user.put("thursday", getRegType(regPupil.getThursday_()));
 
-		registrationData.add(user);
+			registrationData.add(user);
+			
+		}
+		else if (type == 1){ // get data for for registration
+			
+			for (RegToMoadonit regPupil : this.pupilRegList) {
+				JSONObject user = new JSONObject();
+				
+				user.put("startDate",regPupil.getId().getStartDate());				
+				user.put("sunday", getRegType(regPupil.getSunday_()));
+				user.put("monday", getRegType(regPupil.getMonday_()));
+				user.put("tuesday", getRegType(regPupil.getTuesday_()));
+				user.put("wednesday", getRegType(regPupil.getWednesday_()));
+				user.put("thursday", getRegType(regPupil.getThursday_()));
+
+				registrationData.add(user);	
+				
+			}			
+			
+		}
+		
 
 	}
 
