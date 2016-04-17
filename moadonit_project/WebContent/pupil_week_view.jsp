@@ -171,7 +171,7 @@
 						<div class="panel panel-default">
 							<div class="panel-heading">
 								<h3 class="panel-title">
-									<i class="fa fa-search fa-fw"></i> תכנית שבועית
+									<!-- <i class="fa fa-search fa-fw"></i> --> תכנית שבועית
 								</h3>
 							</div>
 							<div class="panel-body">
@@ -191,39 +191,47 @@
 						</div>
 					</div>
 				</div>
+				<div class="row">
 
+
+					<!-- /.row -->
+
+					<div class="col-lg-1"></div>
+					<div class="col-lg-10">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									<!-- <i class="fa fa-search fa-fw"></i> --> היסטורית רישום
+								</h3>
+							</div>
+							<div class="panel-body">
+								<div class="table-responsive col-lg-12">
+									<table class="table table-bordered table-hover table-striped"
+										id="listRegistration">
+
+										<tr>
+											<td></td>
+										</tr>
+									</table>
+ 
+									<div id="listRegistrationPager"></div> 
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 				<div class="row">
 					<div class="col-lg-1"></div>
 					<div class="col-lg-10">
-						<!--  <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title"><i class="fa fa-search fa-fw"></i>עריכת רישום</h3>
-                                <a href="javascript:;" data-toggle="collapse" data-target="#editReg">עריכת הרישום <i class="fa fa-arrow-circle-down"></i></a>
-                               
-                                </div>
-                            <div class="panel-body">
-                            <div class="text-right">
-                                   
-								<div id="editReg" class="collapse">
-									להכניס טבלה עם חמש עמודות, בכל אחת קומבו בוקס לסוג הרישום
-									<br>
-									בחירת תאריך התחלה וקומבו לבחירת סיבת הרישום וכפתורי שמירה ומחיקה
-								</div>
-
-
-								</div>
-                            </div>
-                </div> -->
 						<div class="panel panel-default">
-							<div class="panel-heading">
-								<!--  <h3 class="panel-title"><i class="fa fa-search fa-fw"></i>עריכת רישום</h3> -->
-								<a href="javascript:;" data-toggle="collapse"
+							<div class="panel-heading">								
+								<a href="#editReg" data-toggle="collapse"
 									data-target="#editReg">עריכת הרישום <i
 									class="fa fa-arrow-circle-down"></i></a>
 
 							</div>
 							<div class="panel-body">
-								<div class="text-right">
 									<div id="editReg" class="collapse">
 										<form>
 												<div class="row">
@@ -298,19 +306,8 @@
 													</div>
 												</div>
 											</form>
-										<div class="row">
-											<div class="table-responsive col-lg-12">
-												<table class="table table-bordered table-hover table-striped"
-													id="listRegistration">
-													<tr>
-														<td></td>
-													</tr>
-												</table>			 
-												<div id="listRegistrationPager"></div> 			
-											</div>
-										</div>
 									</div>
-								</div>
+								
 							</div>
 						</div>
 					</div>
@@ -373,7 +370,9 @@
 				}); 
 			 
 			loadWeekGrid(pupilID);
+			
 			loadRegistrationGrid(pupilID); 
+			
 			if(selectedLi == 1)
 				$('#scheduleLink').parent().addClass('active');
 			else if(selectedLi == 2)
