@@ -20,12 +20,26 @@ public class MyConnection {
 	public MyConnection() throws SQLException, Exception {
 				
 		connection = DriverManager.getConnection(url, "ms2016", "r118i67");
+		System.out.println("open connection !");
 	}
 
 
 	public Connection getConnection() {
 		//System.out.println(connection.toString());
+		try {
+			if (this.connection.isClosed()) {
+				connection = DriverManager.getConnection(url, "ms2016", "r118i67");
+				System.out.println("open connection !");
+			}else{
+				return connection;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return connection;
+		
 	}
 
 

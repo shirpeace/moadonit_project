@@ -142,6 +142,7 @@ public class FullPupilCardController extends HttpServlet implements
 		this.parentDao = new ParentDAO(con);
 		this.pupilDao = new PupilDAO(con);
 		this.regPupilDao = new RegisterPupilDAO(con);
+		this.fullPupilDao = new FullPupilCardDAO(con);
 
 		action = req.getParameter("action");
 		
@@ -268,9 +269,6 @@ public class FullPupilCardController extends HttpServlet implements
 			}
 			session.setAttribute("connection", con);
 		}
-		
-		if (this.fullPupilDao == null)
-			this.fullPupilDao = new FullPupilCardDAO(con);
 
 	}
 
