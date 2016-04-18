@@ -2,16 +2,10 @@
 //TODO //* START Global PARMS and FUNCTIONS */
 /** ********************************************** */
 
-/* the current user the us logged if to the system */
-var currentUserId = '<%=session.getAttribute("userid")%>';
 /*$.extend($.jgrid.ajaxOptions, {
 	async : false
 });*/
-// define state for the editable page
-var state = {
-	EDIT : 1,
-	READ : 0,
-};
+
 /** ********************************************** */
 // TODO //* START PAGE FUNCTIONS */
 /** ********************************************** */
@@ -235,3 +229,57 @@ function loadRegistrationGrid(pupilID) {
 	 */
 
 }
+
+function saveRegistraion(){
+	
+	var rtm = new Object();
+	var parts =$('#datePick').val().split('/');
+	var mydate = new Date(parts[2],parts[1]-1,parts[0]);
+	
+	rtm.id = { startDate : mydate , pupilNum: pupilID }; // pk
+	rtm.sunday = $('#sunday').val();
+	rtm.monday = $('#monday').val();
+	rtm.tuesday =$('#tuesday').val();
+	rtm.wednesday = $('#wednesday').val();
+	rtm.thursday = $('#thursday').val();
+	rtm.registerDate = new Date();
+	/*rtm.writenBy = currentUserId;*/
+	rtm.source = $('#reason').val();
+		
+	
+	var result;
+    
+	  $.ajax({
+		async: false,
+		type: 'POST',
+		datatype: 'jsonp',
+      url: "PupilRegistration",
+      data: { action: "addRegistration" , rtm : JSON.stringify(rtm) },      	
+      success: function(data) {
+      	if(data != undefined){
+      		/*alert(data);*/
+      		if(data.msg == "1"){
+      			result = true;      			
+      			loadWeekGrid(pupilID);
+      			bootbox.alert("נתונים נשמרו בהצלחה", function() {			        				
+	        	});
+      		}
+      		else if(data.msg == "0"){	
+      			result = false;
+      			bootbox.alert("שגיאה בשמירת הנתונים, נא בדוק את הערכים ונסה שוב.", function() {	   	        		 
+  	        	});
+      		}
+      	}
+      },
+      error: function(e) {
+      	result = false;
+      	console.log(e);
+		        	bootbox.alert("שגיאה בשמירת הנתונים, נא בדוק את הערכים ונסה שוב.", function() {	   	        		 
+		        	});			
+      }
+      
+    });
+	  
+   return result;
+	
+} 

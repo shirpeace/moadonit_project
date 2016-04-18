@@ -84,13 +84,13 @@ public class loginController extends HttpServlet implements Serializable {
 					
 					u.put("username",rs.getString("userName"));
 					u.put("password",rs.getString("password"));
-					
+					u.put("userID",rs.getInt("userID"));
 
-					users.add(u);
+					//users.add(u);
 					
 					this.loggedIn = true;
 					this.msg = "OK";
-					session.setAttribute("userid", user);
+					session.setAttribute("userid", u);
 					response.setContentType("application/json");
 					response.setCharacterEncoding("UTF-8");
 					response.getWriter().print(users);
@@ -114,7 +114,7 @@ public class loginController extends HttpServlet implements Serializable {
 	public boolean validateUsernamePassword(String user, String password) {
 		if (user == null || user.trim().equals("") || password == null
 				|| password.equals("")) {
-			this.msg = "йщ мома аъ лм дфшийн";
+			this.msg = "пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ";
 
 			return false;
 		}
@@ -123,11 +123,11 @@ public class loginController extends HttpServlet implements Serializable {
 		if (valid) {
 			return true;
 		} else {
-			this.msg = "щн ощъощ ае сйсоа айрн рлерйн , джп фшийн щеб";
+			this.msg = "пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ , пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ";
 			/*
 			 * FacesContext.getCurrentInstance().addMessage( null, new
 			 * FacesMessage(FacesMessage.SEVERITY_WARN,
-			 * "щн ощъощ ае сйсоа айрн рлерйн , джп фшийн щеб"));
+			 * "пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ , пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ"));
 			 */
 			return false;
 		}

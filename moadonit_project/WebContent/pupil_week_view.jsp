@@ -17,10 +17,6 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<script type="text/javascript">
-		var currentUserId =	 '<%=session.getAttribute("userid")%>';	
-		
-	</script>
 	
 	<%
 		response.setHeader("Cache-Control", "no-cache");
@@ -34,8 +30,14 @@
 			response.sendRedirect("login.jsp");
 			return;
 		}
+	
 	%> 
-
+	
+	<script type="text/javascript">
+			
+			var currentUserId =	 '${ session.getAttribute("userid") }';
+		
+		</script>
 <title>מועדונית</title>
 
 <!-- Bootstrap Core CSS -->
@@ -70,7 +72,10 @@
   <script src="js/bootstrap-datepicker.js"></script> 
 	<script src="js/i18n/bootstrap-datepicker.he.min.js"></script> 
 
-
+    	<!-- form validation plugin -->
+	<script src="js/jquery.validate.js"></script>
+	<script src="js/additional-methods.js"></script>
+	<script src="js/messages_he.js"></script>
 
 <script src="js/js_logic.js"></script>
 <script src="js/js_pupil_week_view.js"></script>
@@ -233,11 +238,11 @@
 							</div>
 							<div class="panel-body">
 									<div id="editReg" class="collapse">
-										<form>
+										<form id="regform" >
 												<div class="row">
 													<div class="form-group col-lg-2">
 														<label for="action">יום ראשון</label> <select
-															class="form-control " id="action" name="action"
+															class="form-control " id="sunday" name="sunday"
 															onchange="actionChanged()">
 															<option value="2">לא רשום</option>
 															<option value="1">מועדונית</option>
@@ -246,7 +251,7 @@
 													</div>
 													<div class="form-group col-lg-2">
 														<label for="action">יום שני</label> <select
-															class="form-control " id="action" name="action"
+															class="form-control " id="monday" name="monday"
 															onchange="actionChanged()">
 															<option value="2">לא רשום</option>
 															<option value="1">מועדונית</option>
@@ -255,7 +260,7 @@
 													</div>
 													<div class="form-group col-lg-2">
 														<label for="action">יום שלישי</label> <select
-															class="form-control " id="action" name="action"
+															class="form-control " id="tuesday" name="tuesday"
 															onchange="actionChanged()">
 															<option value="2">לא רשום</option>
 															<option value="1">מועדונית</option>
@@ -264,7 +269,7 @@
 													</div>
 													<div class="form-group col-lg-2">
 														<label for="action">יום רביעי</label> <select
-															class="form-control " id="action" name="action"
+															class="form-control " id="wednesday" name="wednesday"
 															onchange="actionChanged()">
 															<option value="2">לא רשום</option>
 															<option value="1">מועדונית</option>
@@ -273,7 +278,7 @@
 													</div>
 													<div class="form-group col-lg-2">
 														<label for="action">יום חמישי</label> <select
-															class="form-control " id="action" name="action"
+															class="form-control " id="thursday" name="thursday"
 															onchange="actionChanged()">
 															<option value="2">לא רשום</option>
 															<option value="1">מועדונית</option>
@@ -289,19 +294,18 @@
 												<div class="row">
 												<div class="form-group  col-lg-2">
 													<label for="datePick"> בתאריך</label>
-													<input  type="text" class="form-control" id="datePick">
+													<input  type="text" class="form-control" id="datePick" name="datePick" >
 												</div>
 													<div class="form-group col-lg-3">
 														<label for="action">סיבת הרישום</label> <select
-															class="form-control " id="action" name="action"
-															onchange="actionChanged()">
+															class="form-control " id="reason" name="reason" >
 															<option value="1">לרשום את התלמיד</option>
 															<option value="2">לבטל רישום</option>
 														</select>
 													</div>
 													<div class="form-group  col-lg-2">
 														<label for="type"> </label> <input
-															class="form-control btn btn-primary "
+															class="form-control btn btn-primary" id="btnSave"
 															style="margin-top: 5px;" type="button" value="שמור">
 													</div>
 												</div>
@@ -384,6 +388,37 @@
 
 			    }); 
 			}
+			
+			$('#btnSave').click(function() {
+				var form = $("#regform");
+				if (form.valid())
+					saveRegistraion();
+				
+			});
+			
+			 /* set the validattion for form */
+			var validator = $("#regform").validate({
+				
+				errorPlacement: function(error, element) {
+					// Append error within linked label					
+					error.css("color", "red");				
+					$( element )
+						.closest( "form" )
+							.find( "label[for='" + element.attr( "id" ) + "']" )
+								.append(  error );
+				},
+				rules: {   
+					
+					// set a rule to inputs
+					// input must have name and id attr' and with same value !!!
+					datePick : {  
+						required: true
+						
+						}
+					
+				}			
+			});
+			
 		});
 		
 	</script>

@@ -258,7 +258,7 @@ public class FullPupilCardController extends HttpServlet implements
 		} else {
 			try {
 				con = new MyConnection();
-				
+				session.setAttribute("connection", con);
 				
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -267,7 +267,7 @@ public class FullPupilCardController extends HttpServlet implements
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			session.setAttribute("connection", con);
+			
 		}
 
 	}

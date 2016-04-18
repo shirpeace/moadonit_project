@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.mail.Session;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import util.DAOUtil;
 import model.FullPupilCard;
 import model.RegToMoadonit;
 import model.RegToMoadonitPK;
@@ -106,12 +109,49 @@ public class PupilRegistrationController extends HttpServlet implements Serializ
 					resp.getWriter().print(jsonResponse);
 				}
 				
+			}else if(action.equals("addRegistration")){
+				boolean r =  addRegistration(req, resp);
+				if (r) {
+					resultToClient.put("msg", 1);
+					resultToClient.put("result", null);
+				}else{
+					resultToClient.put("msg", 0);
+					resultToClient.put("result", "שגיאה בשמירת הנתונים");
+				}
+				
+				resp.setContentType("application/json");
+				resp.setCharacterEncoding("UTF-8");
+				resp.getWriter().print(resultToClient);
 			}
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}catch(IOException e) {
+			e.printStackTrace();
+			
 		}
+	}
+
+	private boolean addRegistration(HttpServletRequest req,
+			HttpServletResponse resp) throws IOException, SQLException {
+		// TODO Auto-generated method stub
+		boolean r = false;
+		String rtm = req.getParameter("rtm");
+		this.reg = (RegToMoadonit) DAOUtil.getObjectFromJson(rtm, this.reg.getClass());
+		this.reg.getId().setStartDate(new Date());
+		if(req.getSession().getAttribute("userid") != null){
+			JSONObject user = (JSONObject)req.getSession().getAttribute("userid");
+			this.reg.setWritenBy((int)user.get("userID"));
+		}
+		
+		// * transaction block start *//
+		this.con.getConnection().setAutoCommit(false);
+		r = this.regDAO.insert(this.reg);
+		this.con.getConnection().commit();
+		
+		return r;
+		
 	}
 
 	protected List<RegToMoadonit> getRegistration(HttpServletRequest req,
