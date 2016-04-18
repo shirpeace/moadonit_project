@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=windows-1255"
+<%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="windows-1255"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -16,7 +16,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-
+	
 <script type="text/javascript">
 		var currentUserId =	 '<%=session.getAttribute("userid")%>';	
 		
@@ -54,12 +54,16 @@
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <script src="js/jquery.js"></script>
+	<script src="js/jquery-ui.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/i18n/grid.locale-he.js"></script>
+	
+ 	
+    <script src="js/jquery.jqGrid.min.js"></script> 
+
+	
+	<script src="js/js_attends_page.js"></script> 	
 
 </head>
 
@@ -134,81 +138,36 @@
                 </div> -->
                 <!-- /.row -->
 
-                <div class="col-lg-8">
+                <div class="col-lg-12">
                         <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title"><i class="fa fa-info fa-fw"></i> הוראות למשתמש</h3>
+                            <div class="panel-heading form-group form-inline">
+                                <span class="panel-title pull-right"><i class="fa fa-info fa-fw"></i>טבלת נוכחות לשבועיים הבאים</span>
+                                
+                                <select id="down" class="pull-left" onchange="actionChanged()"></select>
+										<label for="#down" class=" pull-left ">בחר כיתה</label>
+                                <!-- <button id="resetBtn" class="pull-left">נקה חיפוש</button> -->
+								<div class="clearfix"></div>
                             </div>
                             <div class="panel-body">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-hover table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>שם פרטי</th>
-                                                <th>שם משפחה</th>
-                                                <th>מגדר</th>
-                                                <th>כיתה</th>
-                                                <th>רשום?</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>3326</td>
-                                                <td>10/21/2013</td>
-                                                <td>3:29 PM</td>
-                                                <td>$321.33</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3325</td>
-                                                <td>10/21/2013</td>
-                                                <td>3:20 PM</td>
-                                                <td>$234.34</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3324</td>
-                                                <td>10/21/2013</td>
-                                                <td>3:03 PM</td>
-                                                <td>$724.17</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3323</td>
-                                                <td>10/21/2013</td>
-                                                <td>3:00 PM</td>
-                                                <td>$23.71</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3322</td>
-                                                <td>10/21/2013</td>
-                                                <td>2:49 PM</td>
-                                                <td>$8345.23</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3321</td>
-                                                <td>10/21/2013</td>
-                                                <td>2:23 PM</td>
-                                                <td>$245.12</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3320</td>
-                                                <td>10/21/2013</td>
-                                                <td>2:15 PM</td>
-                                                <td>$5663.54</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3319</td>
-                                                <td>10/21/2013</td>
-                                                <td>2:13 PM</td>
-                                                <td>$943.45</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="text-right">
+                           
+                               <!--  <div class="text-right">
                                     <a href="#">View All Transactions <i class="fa fa-arrow-circle-right"></i></a>
-                                </div>
+                                </div> -->
+                                <div class="table-responsive col-lg-10">
+                                    <table class="table table-bordered table-hover table-striped" id="list">
+                                
+										<tr>
+											<td ></td>
+										</tr>
+									</table>
+								
+								<div id="pager"></div>
+                                
                             </div>
-                        </div>
-                    </div>
+							
+						</div>
+					</div>
+            </div>
             </div>
             <!-- /.container-fluid -->
 
@@ -217,18 +176,7 @@
 
     </div>
     <!-- /#wrapper -->
-
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
-
-    <!-- Morris Charts JavaScript -->
-    <script src="js/plugins/morris/raphael.min.js"></script>
-    <script src="js/plugins/morris/morris.min.js"></script>
-    <script src="js/plugins/morris/morris-data.js"></script>
-
+  
 </body>
 
 </html>

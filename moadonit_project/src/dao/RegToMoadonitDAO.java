@@ -27,7 +27,7 @@ public class RegToMoadonitDAO extends AbstractDAO {
 	 */
 	private static final long serialVersionUID = 1L;
 	private String selectAll = "SELECT * FROM ms2016.tbl_reg_to_moadonit WHERE pupilNum = ? and  startdate <= CURDATE() order by startdate desc";
-	private String getActiveRegInPeriod = "{call ms2016.getActiveRegInPeriod (?)}";
+	private String getActiveRegInPeriod = "{call ms2016.getActiveRegInPeriodTry (?)}";
 			
 	public List<RegToMoadonit> selectAll(int id)
 			throws IllegalArgumentException, DAOException {

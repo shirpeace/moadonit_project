@@ -1,14 +1,17 @@
-var grades;  
-function loadPupilSearch() {
+var grades; 
+var selectedGrade;
+jQuery(document).ready(function() {	
+	//populate grades combo
 	$.ajax({
   		async: false,
 		type: 'GET',
 		datatype: 'json',
-        url: "FullPupilCardController?action=getGrades",
-        
+        url: "FullPupilCardController",
+        data: "action=getGrades",
         success: function(data) {
         	if(data != undefined){
-        		grades=data;
+        		grades=data.grades;
+        		
         		console.log("grades"+grades);
         	}
         	else
@@ -21,6 +24,47 @@ function loadPupilSearch() {
         }
         
       }); 
+	if(grades!=undefined){
+		var listitems="";
+		$.each(grades, function(key, value){
+		    listitems += '<option value=' + key + '>' + value + '</option>';
+		});
+		$('#down').append(listitems);
+		}
+	else //for demo only
+		selectedGrade=11;
+	
+	//generating attendances record in DB
+	$.ajax({
+			async: false,
+		type: 'POST',
+		datatype: 'json',
+	    url: "PupilAttendanceController",
+	    data: { action: "getBlankAttend" },
+	    success: function(data) {
+	    	if(data != undefined){
+	    		
+	    		console.log("success");
+	    	}
+	    	else
+	    		console.log("no data");
+	    },
+	    error: function(e) {
+	    	console.log("error loading");
+	    }
+	    
+	  }); 
+	loadGrid();
+});
+
+function actionChanged(){
+	loadGrid($("#down").val());
+	
+}
+
+
+/*function loadPupilSearch() {
+
 	loadGrid();
 	$("#resetBtn").click(function() {
 		var grid = $("#list");
@@ -31,18 +75,25 @@ function loadPupilSearch() {
 		grid.trigger("reloadGrid",[{page:1}]);
 		
 	});
+}*/
+function addDays(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
 }
 function loadGrid(){
+	var today = new(Date);
+	var colN=['שם','מגדר','ימים במועדונית',today.toDateString(), addDays(today, 1).toDateString()];
 	  $("#list").jqGrid({
-          url : "FullPupilCardController?action=pupilSearch",
+          url : "PupilAttendanceController?action=loadGrid",
           datatype : "json",
           mtype : 'POST',
-          colNames : ['מספר','שם פרטי' , 'שם משפחה' , 'מגדר', 'כיתה', 'רשום'],
+          colNames : colN,//create an array before this call
           colModel : [ {
                   name : 'id',
                   index : 'id',
-                  width : 100,
-                  hidden: true
+                  width : 100/*,
+                  hidden: true*/
           }, {
                   name : 'firstName',
                   index : 'firstName',
@@ -54,42 +105,30 @@ function loadGrid(){
                   width : 150,
                   editable : true
           }, {
-                  name : 'gender',
-                  index : 'gender',
-                  width : 100,
-                  editable : true,
-                  stype: "select",
-                  searchoptions: { value: ":;1:בן;2:בת"}
+	              name : 'today',
+	              index : 'today',
+	              width : 150,
+	              editable : true
           }, {
-                  name : 'gradeName',
-                  index : 'gradeName',
-                  width : 100,
-                  editable : true,
-                  stype: "select",
-                  searchoptions:  grades
-          }, {
-              name : 'isReg', 
-              index : 'isReg',
-              width : 100,
-              editable : false,
-              stype: "select",
-              searchoptions: { value: ":;1:רשום;2:לא רשום"},
-              formatter: "checkbox",
+		          name : 'tommorow',
+		          index : 'tommorow',
+		          width : 150,
+		          editable : true
           } ],
-          pager : '#pager',
-          rowNum : 30,
+         /* pager : '#pager',*/
+          rowNum : 40,
           rowList : [ ],
-          sortname : 'gradeName',
+          sortname : 'lastName',
           /*scroll: true,*/
           direction:"rtl",
           viewrecords : true,
           gridview : true,
           height: "100%",
-          ondblClickRow: function(rowId) {
+         /* ondblClickRow: function(rowId) {
               var rowData = jQuery(this).getRowData(rowId); 
               var pupilID = rowData.id;
               window.location.href = "pupil_card_view.jsp?pupil="+pupilID+"";
-          },
+          },*/
           jsonReader : {
                   repeatitems : false,
           },
@@ -102,16 +141,16 @@ function loadGrid(){
           /*viewrecords: false*/
           
   });
-  jQuery("#list").jqGrid('navGrid', '#pager', {
+  /*jQuery("#list").jqGrid('navGrid', '#pager', {
           edit : false,
           add : false,
           del : false,
           search : false,
           refresh: false
-  });
+  });*/
   
 
-  jQuery("#list").jqGrid('filterToolbar',{autosearch:true/*, stringResult: true*/});
+  
   
 
 }	 	

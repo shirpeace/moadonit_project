@@ -21,6 +21,7 @@ import org.json.simple.JSONObject;
 import dao.DAOException;
 import dao.FamilyDAO;
 import dao.FullPupilCardDAO;
+import dao.GradeDAO;
 import dao.ParentDAO;
 import dao.PupilDAO;
 import dao.RegisterPupilDAO;
@@ -54,6 +55,7 @@ public class FullPupilCardController extends HttpServlet implements
 	FamilyDAO familyDao;
 	ParentDAO parentDao;
 	RegisterPupilDAO regPupilDao;
+	GradeDAO gradeDAO;
 	JSONObject resultToClient = new JSONObject();;
 
 	// Pupil
@@ -79,7 +81,7 @@ public class FullPupilCardController extends HttpServlet implements
 
 		// check and set connection to session
 		checkConnection(req, resp);
-
+		gradeDAO= new GradeDAO(con);
 		try {
 
 			action = req.getParameter("action");
@@ -105,7 +107,8 @@ public class FullPupilCardController extends HttpServlet implements
 
 			}
 			if (action.equals("getGrades")){
-				String jsonObj = "{11:\"aa\",12:\"ab\"}";
+				
+				JSONObject jsonObj = getGradesJson();
 				
 				resp.setContentType("application/json");
 				resp.setCharacterEncoding("UTF-8");
@@ -125,7 +128,21 @@ public class FullPupilCardController extends HttpServlet implements
 
 	}
 
-	@SuppressWarnings({ "unused", "unchecked" })
+	@SuppressWarnings("unchecked")
+	private JSONObject getGradesJson() {
+		List<Grade> list = gradeDAO.selectIndex();
+		String values= "";
+		for (int i=1;i<list.size();i++) { //{ value: ":;1:בן;2:בת"}
+			Grade grade=list.get(i-1);
+			values += grade.getGradeID()+":"+ grade.getGradeName()+";";
+		}
+		values=values.substring(0, values.length()-1);
+		JSONObject json = new JSONObject();
+		json.put("value", values);
+		return json;
+	}
+
+	@SuppressWarnings({ "unchecked" })
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -441,11 +458,11 @@ public class FullPupilCardController extends HttpServlet implements
 		this.pupilDao.insert(p);
 
 		// save regPupil
-	//	if(rp.get){
+
 		//if(rp.get){
 		rp.setPupilNum(p.getPupilNum());
 		this.regPupilDao.insert(rp);
-	//	}
+
 		//}
 		this.con.getConnection().commit();
 

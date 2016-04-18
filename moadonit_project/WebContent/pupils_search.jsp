@@ -145,7 +145,9 @@
                 <div class="col-lg-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h3 class="panel-title"><i class="fa fa-info fa-fw"></i> כל התלמידים</h3>
+                                <h3 class="panel-title pull-right"><i class="fa fa-info fa-fw"></i> כל התלמידים</h3>
+                                <button id="resetBtn" class="pull-left">נקה חיפוש</button>
+                                <div class="clearfix"></div>
                             </div>
                             <div class="panel-body">
                            
@@ -163,9 +165,7 @@
 								<div id="pager"></div>
                                 
                             </div>
-							<div class="col-lg-2">
-								<button id="resetBtn">נקה חיפוש</button>
-							</div>
+							
 						</div>
 					</div>
             </div>
