@@ -25,7 +25,7 @@ import model.Attendance;
 import dao.AttendanceDAO;
 import dao.RegToMoadonitDAO;
 
-@WebServlet("/PupilAttendance")
+@WebServlet("/PupilAttendanceController")
 public class PupilAttendanceController extends HttpServlet implements Serializable {
 
 	/**
@@ -48,6 +48,7 @@ public class PupilAttendanceController extends HttpServlet implements Serializab
 
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -61,9 +62,12 @@ public class PupilAttendanceController extends HttpServlet implements Serializab
 		this.reg = new RegToMoadonit();
 		try {
 			if (action.equals("getBlankAttend")) {
-				prepareAttendanceTbl(null, null);
+				prepareAttendanceTbl(new Date(1,1,16), new Date(18,4,16));
 				
 
+			}
+			if(action.equals("loadGrid")){
+				
 			}
 
 		} catch (SQLException e) {
@@ -142,6 +146,7 @@ public class PupilAttendanceController extends HttpServlet implements Serializab
 	}
 //TODO consider the case where you get 2 regs per pupil (present&future regs)
 	private void prepareAttendanceTbl(Date start, Date end) throws SQLException{
+		this.regDAO = new RegToMoadonitDAO(con);
 		List<RegToMoadonit> list = regDAO.getActiveRegs(end);
 		for (RegToMoadonit reg : list) {
 			List<Integer> regedTo = new ArrayList<Integer>();

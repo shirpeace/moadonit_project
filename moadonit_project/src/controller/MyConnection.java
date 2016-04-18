@@ -19,7 +19,8 @@ public class MyConnection {
 	
 	public MyConnection() throws SQLException, Exception {
 				
-		connection = DriverManager.getConnection(url, "ms2016", "r118i67");
+		connection = DriverManager.getConnection(url, "ts2016", "n227u31");
+		//connection = DriverManager.getConnection(url, "ms2016", "r118i67");
 		System.out.println("open connection !");
 	}
 
