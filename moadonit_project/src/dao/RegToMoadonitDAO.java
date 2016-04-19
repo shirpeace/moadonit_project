@@ -22,13 +22,14 @@ public class RegToMoadonitDAO extends AbstractDAO {
 	private String insert = "INSERT INTO tbl_reg_to_moadonit "
 			+ "(pupilNum,registerDate,startDate,sunday_,monday_,tuesday_,wednesday_,thursday_,writenBy,source)"
 			+ "VALUES(?,?,?,?,?,?,?,?,?,?);";
+	private String checkPK = "SELECT pupilNum, startDate FROM tbl_reg_to_moadonit where pupilNum = ? and startDate = ?";
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private String selectAll = "SELECT * FROM ms2016.tbl_reg_to_moadonit WHERE pupilNum = ? and  startdate <= CURDATE() order by startdate desc";
 	private String getActiveRegInPeriod = "{call ms2016.getActiveRegInPeriodTry (?)}";
-			
+
 	public List<RegToMoadonit> selectAll(int id)
 			throws IllegalArgumentException, DAOException {
 		List<RegToMoadonit> list = new ArrayList<>();
@@ -50,22 +51,47 @@ public class RegToMoadonitDAO extends AbstractDAO {
 
 		return list;
 	}
-	
-	public boolean insert(RegToMoadonit regToMo) throws IllegalArgumentException, DAOException {
-		boolean result = false;
-		if (regToMo.getId() ==  null) {
+
+	public boolean checkPk(RegToMoadonit regToMo) {
+
+		if (regToMo.getId() == null) {
 			throw new IllegalArgumentException(
-					"RegToMoadonit is already created, the parent ID is not null.");
+					"Cant check RegToMoadonit , the PK ID is not null.");
 		}
 
-		//(pupilNum,registerDate,startDate,sunday_,monday_,tuesday_,wednesday_,thursday_,writenBy,source)
+		Object[] pk = { 
+				regToMo.getId().getPupilNum(),
+				DAOUtil.toSqlDate(regToMo.getId().getStartDate()) };
+		try (PreparedStatement statement = DAOUtil.prepareStatement(
+				this.con.getConnection(), checkPK, false, pk);
+				ResultSet resultSet = statement.executeQuery();) {
+
+			while (resultSet.next()) {
+				return true;
+			}
+
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+
+		return false;
+	}
+
+	public boolean insert(RegToMoadonit regToMo)
+			throws IllegalArgumentException, DAOException {
+		boolean result = false;
+		if (regToMo.getId() == null) {
+			throw new IllegalArgumentException(
+					"Cant create RegToMoadonit , the PK ID is not null.");
+		}
+
+		// (pupilNum,registerDate,startDate,sunday_,monday_,tuesday_,wednesday_,thursday_,writenBy,source)
 		Object[] values = { regToMo.getId().getPupilNum(),
-				DAOUtil.toSqlDate(new Date()) ,
-				regToMo.getId().getStartDate(),
-				regToMo.getSunday_(),regToMo.getMonday_(),regToMo.getTuesday_(),regToMo.getWednesday_(),regToMo.getThursday_(),
-				regToMo.getWritenBy(),
-				regToMo.getSource()
-		};
+				DAOUtil.toSqlDate(regToMo.getId().getStartDate()),
+				regToMo.getId().getStartDate(), regToMo.getSunday_(),
+				regToMo.getMonday_(), regToMo.getTuesday_(),
+				regToMo.getWednesday_(), regToMo.getThursday_(),
+				regToMo.getWritenBy(), regToMo.getSource() };
 
 		try (
 
@@ -73,7 +99,7 @@ public class RegToMoadonitDAO extends AbstractDAO {
 				this.con.getConnection(), insert, true, values);) {
 			int affectedRows = statement.executeUpdate();
 			result = true;
-			
+
 			if (affectedRows == 0) {
 				result = false;
 				throw new DAOException(
@@ -84,15 +110,17 @@ public class RegToMoadonitDAO extends AbstractDAO {
 			result = false;
 			throw new DAOException(e);
 		}
-		
+
 		return result;
 	}
 
-	public List<RegToMoadonit> getActiveRegs(Date id) throws IllegalArgumentException, DAOException {
+	public List<RegToMoadonit> getActiveRegs(Date id)
+			throws IllegalArgumentException, DAOException {
 		List<RegToMoadonit> list = new ArrayList<>();
 
-		try (PreparedStatement statement = DAOUtil
-				.prepareCallbackStatement(this.con.getConnection(), getActiveRegInPeriod, new Object[] { id });
+		try (PreparedStatement statement = DAOUtil.prepareCallbackStatement(
+				this.con.getConnection(), getActiveRegInPeriod,
+				new Object[] { id });
 				ResultSet resultSet = statement.executeQuery();) {
 
 			while (resultSet.next()) {
@@ -106,11 +134,11 @@ public class RegToMoadonitDAO extends AbstractDAO {
 
 		return list;
 	}
-	
-	private RegToMoadonit map(ResultSet resultSet)  throws SQLException {
+
+	private RegToMoadonit map(ResultSet resultSet) throws SQLException {
 		// TODO Auto-generated method stub
-		RegToMoadonit rtm = new  RegToMoadonit();
-		
+		RegToMoadonit rtm = new RegToMoadonit();
+
 		rtm.setSunday_(resultSet.getInt("sunday_"));
 		rtm.setMonday_(resultSet.getInt("monday_"));
 		rtm.setTuesday_(resultSet.getInt("tuesday_"));
@@ -119,11 +147,11 @@ public class RegToMoadonitDAO extends AbstractDAO {
 		rtm.setRegisterDate(resultSet.getDate("registerDate"));
 		rtm.setSource(resultSet.getInt("source"));
 		rtm.setWritenBy(resultSet.getInt("writenBy"));
-		RegToMoadonitPK pk=  new RegToMoadonitPK();
+		RegToMoadonitPK pk = new RegToMoadonitPK();
 		pk.setPupilNum(resultSet.getInt("pupilNum"));
 		pk.setStartDate(resultSet.getDate("startDate"));
 		rtm.setId(pk);
-		
+
 		return rtm;
 	}
 }

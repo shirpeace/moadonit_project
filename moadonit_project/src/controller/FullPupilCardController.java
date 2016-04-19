@@ -82,6 +82,7 @@ public class FullPupilCardController extends HttpServlet implements
 		// check and set connection to session
 		checkConnection(req, resp);
 		gradeDAO= new GradeDAO(con);
+		this.fullPupilDao = new FullPupilCardDAO(con);
 		try {
 
 			action = req.getParameter("action");
@@ -185,6 +186,7 @@ public class FullPupilCardController extends HttpServlet implements
 					pupilList = searchPupilList(req, resp);
 					JSONArray jsonPupilList = new JSONArray();
 					getList(jsonPupilList);
+					
 					if (!jsonPupilList.isEmpty()) {
 	
 							String jsonResponse = jsonPupilList.toJSONString();

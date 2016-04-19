@@ -243,7 +243,7 @@
 													<div class="form-group col-lg-2">
 														<label for="action">יום ראשון</label> <select
 															class="form-control " id="sunday" name="sunday"
-															onchange="actionChanged()">
+															 >
 															<option value="2">לא רשום</option>
 															<option value="1">מועדונית</option>
 															<option value="2">אוכל בלבד</option>
@@ -252,7 +252,7 @@
 													<div class="form-group col-lg-2">
 														<label for="action">יום שני</label> <select
 															class="form-control " id="monday" name="monday"
-															onchange="actionChanged()">
+															 >
 															<option value="2">לא רשום</option>
 															<option value="1">מועדונית</option>
 															<option value="2">אוכל בלבד</option>
@@ -261,7 +261,7 @@
 													<div class="form-group col-lg-2">
 														<label for="action">יום שלישי</label> <select
 															class="form-control " id="tuesday" name="tuesday"
-															onchange="actionChanged()">
+															 >
 															<option value="2">לא רשום</option>
 															<option value="1">מועדונית</option>
 															<option value="2">אוכל בלבד</option>
@@ -270,7 +270,7 @@
 													<div class="form-group col-lg-2">
 														<label for="action">יום רביעי</label> <select
 															class="form-control " id="wednesday" name="wednesday"
-															onchange="actionChanged()">
+															 >
 															<option value="2">לא רשום</option>
 															<option value="1">מועדונית</option>
 															<option value="2">אוכל בלבד</option>
@@ -279,7 +279,7 @@
 													<div class="form-group col-lg-2">
 														<label for="action">יום חמישי</label> <select
 															class="form-control " id="thursday" name="thursday"
-															onchange="actionChanged()">
+															 >
 															<option value="2">לא רשום</option>
 															<option value="1">מועדונית</option>
 															<option value="2">אוכל בלבד</option>
@@ -390,9 +390,17 @@
 			}
 			
 			$('#btnSave').click(function() {
+				var result;
 				var form = $("#regform");
-				if (form.valid())
-					saveRegistraion();
+				if (form.valid()){
+					result = saveRegistraion();
+					if (result) {
+						loadWeekGrid(pupilID);
+						loadRegistrationGrid(pupilID); 
+						bootbox.alert("נתונים נשמרו בהצלחה", function() {			        				
+			        	});
+					}
+				}
 				
 			});
 			
