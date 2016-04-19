@@ -2,9 +2,9 @@
 //TODO //* START Global PARMS and FUNCTIONS */
 /** ********************************************** */
 
-/*$.extend($.jgrid.ajaxOptions, {
+$.extend($.jgrid.ajaxOptions, {
 	async : false
-});*/
+});
 
 /** ********************************************** */
 // TODO //* START PAGE FUNCTIONS */
@@ -54,12 +54,18 @@ function loadWeekGrid(pupilID) {
 						mtype : 'POST',
 						colNames : [ '', 'יום ראשון', 'יום שני', 'יום שלישי',
 								'יום רביעי', 'יום חמישי' ],
+						ajaxGridOptions: {
+							async : false
+						    },
 						loadComplete : function(data) {
 							if (parseInt(data.records, 10) == 0) {
 								$("#pager div.ui-paging-info").show();
 							} else {
 								$("#pager div.ui-paging-info").hide();
 							}
+						},
+						loadError : function(xhr, status, error) {
+							alert("complete loadError");
 						},
 						colModel : [ {
 							name : 'type',
@@ -237,11 +243,11 @@ function saveRegistraion(){
 	var mydate = new Date(parts[2],parts[1]-1,parts[0]);
 	
 	rtm.id = { startDate : mydate , pupilNum: pupilID }; // pk
-	rtm.sunday = $('#sunday').val();
-	rtm.monday = $('#monday').val();
-	rtm.tuesday =$('#tuesday').val();
-	rtm.wednesday = $('#wednesday').val();
-	rtm.thursday = $('#thursday').val();
+	rtm.sunday_ = $('#sunday').val();
+	rtm.monday_ = $('#monday').val();
+	rtm.tuesday_ =$('#tuesday').val();
+	rtm.wednesday_ = $('#wednesday').val();
+	rtm.thursday_ = $('#thursday').val();
 	rtm.registerDate = new Date();
 	/*rtm.writenBy = currentUserId;*/
 	rtm.source = $('#reason').val();
@@ -259,14 +265,11 @@ function saveRegistraion(){
       	if(data != undefined){
       		/*alert(data);*/
       		if(data.msg == "1"){
-      			result = true;      			
-      			loadWeekGrid(pupilID);
-      			bootbox.alert("נתונים נשמרו בהצלחה", function() {			        				
-	        	});
+      			result = true;      			      			      			
       		}
       		else if(data.msg == "0"){	
       			result = false;
-      			bootbox.alert("שגיאה בשמירת הנתונים, נא בדוק את הערכים ונסה שוב.", function() {	   	        		 
+      			bootbox.alert(data.result, function() {	   	        		 
   	        	});
       		}
       	}
