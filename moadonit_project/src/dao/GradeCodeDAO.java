@@ -6,15 +6,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Grade;
-import model.RegToMoadonit;
-import model.Room;
+import model.GenderRef;
+import model.GradeCode;
 import util.DAOUtil;
 import controller.MyConnection;
 
-public class GradeDAO extends AbstractDAO {
+public class GradeCodeDAO extends AbstractDAO {
 
-	public GradeDAO(MyConnection con) {
+	/**
+	 * select a specific grade by a giving id , or all grade if id is not presented
+	 * {@value id} the id , if not giving , 0 is sent to proc
+	 */
+	private String selectIndex = "{ call ms2016.get_grade_code (?) }";
+
+	public GradeCodeDAO(MyConnection con) {
 		super(con);
 		// TODO Auto-generated constructor stub
 	}
@@ -22,17 +27,11 @@ public class GradeDAO extends AbstractDAO {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -5155823344858834940L;
 
-	private String select = "SELECT gradeID,  "
-			+ "tbl_grade.gradeName,    tbl_grade.gradeTeacher,   "
-			+ " tbl_grade.locationForMoadonit FROM tbl_grade where gradeid = ?";
-
-	private String selectIndex = "SELECT gradeID, tbl_grade.gradeName FROM tbl_grade";
-
-	public Grade selectById(int id) throws IllegalArgumentException,
+/*	public GradeCode selectById(int id) throws IllegalArgumentException,
 			DAOException {
-		Grade grade = new Grade();
+		GradeCode grade = new GradeCode();
 
 		try (PreparedStatement statement = DAOUtil.prepareStatement(
 				this.con.getConnection(), select, false, new Object[] { id });
@@ -49,18 +48,18 @@ public class GradeDAO extends AbstractDAO {
 		}
 
 		return grade;
-	}
+	}*/
 
-	public List<Grade> selectIndex() throws IllegalArgumentException,
+	public List<GradeCode> selectIndex(int id) throws IllegalArgumentException,
 			DAOException {
-		
-		List<Grade> list = new ArrayList<>();
-		try (PreparedStatement statement = DAOUtil.prepareStatement(
-				this.con.getConnection(), selectIndex, false, new Object[] {});
+
+		List<GradeCode> list = new ArrayList<>();
+		try (PreparedStatement statement = DAOUtil.prepareCallbackStatement(
+				this.con.getConnection(), selectIndex, new Object[] {  id});
 				ResultSet resultSet = statement.executeQuery();) {
 
 			while (resultSet.next()) {
-				Grade p = map(resultSet);
+				GradeCode p = map(resultSet);
 				list.add(p);
 			}
 
@@ -71,11 +70,12 @@ public class GradeDAO extends AbstractDAO {
 		return list;
 	}
 
-	private Grade map(ResultSet resultSet) throws SQLException {
+	private GradeCode map(ResultSet resultSet) throws SQLException {
 
-		Grade g = new Grade();
+		GradeCode g = new GradeCode();
 		g.setGradeID(resultSet.getInt("gradeID"));
 		g.setGradeName((resultSet.getString("gradeName")));
 		return g;
 	}
+
 }

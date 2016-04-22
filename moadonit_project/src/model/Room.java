@@ -2,7 +2,6 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.List;
 
 
 /**
@@ -19,10 +18,6 @@ public class Room implements Serializable {
 	private int roomID;
 
 	private String name;
-
-	//bi-directional many-to-one association to Grade
-	@OneToMany(mappedBy="tblRoom")
-	private List<Grade> tblGrades;
 
 	public Room() {
 	}
@@ -41,28 +36,6 @@ public class Room implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public List<Grade> getTblGrades() {
-		return this.tblGrades;
-	}
-
-	public void setTblGrades(List<Grade> tblGrades) {
-		this.tblGrades = tblGrades;
-	}
-
-	public Grade addTblGrade(Grade tblGrade) {
-		getTblGrades().add(tblGrade);
-		tblGrade.setTblRoom(this);
-
-		return tblGrade;
-	}
-
-	public Grade removeTblGrade(Grade tblGrade) {
-		getTblGrades().remove(tblGrade);
-		tblGrade.setTblRoom(null);
-
-		return tblGrade;
 	}
 
 }

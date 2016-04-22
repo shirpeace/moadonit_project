@@ -2,6 +2,7 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.util.List;
 
 
 /**
@@ -20,6 +21,10 @@ public class User implements Serializable {
 	private String password;
 
 	private String userName;
+
+	//bi-directional many-to-one association to RegToMoadonit
+	@OneToMany(mappedBy="tblUser")
+	private List<RegToMoadonit> tblRegToMoadonits;
 
 	public User() {
 	}
@@ -46,6 +51,28 @@ public class User implements Serializable {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public List<RegToMoadonit> getTblRegToMoadonits() {
+		return this.tblRegToMoadonits;
+	}
+
+	public void setTblRegToMoadonits(List<RegToMoadonit> tblRegToMoadonits) {
+		this.tblRegToMoadonits = tblRegToMoadonits;
+	}
+
+	public RegToMoadonit addTblRegToMoadonit(RegToMoadonit tblRegToMoadonit) {
+		getTblRegToMoadonits().add(tblRegToMoadonit);
+		tblRegToMoadonit.setTblUser(this);
+
+		return tblRegToMoadonit;
+	}
+
+	public RegToMoadonit removeTblRegToMoadonit(RegToMoadonit tblRegToMoadonit) {
+		getTblRegToMoadonits().remove(tblRegToMoadonit);
+		tblRegToMoadonit.setTblUser(null);
+
+		return tblRegToMoadonit;
 	}
 
 }

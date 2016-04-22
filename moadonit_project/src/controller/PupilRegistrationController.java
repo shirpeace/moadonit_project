@@ -23,6 +23,7 @@ import util.DAOUtil;
 import model.FullPupilCard;
 import model.RegToMoadonit;
 import model.RegToMoadonitPK;
+import model.User;
 import dao.FullPupilCardDAO;
 import dao.RegToMoadonitDAO;
 
@@ -117,7 +118,10 @@ public class PupilRegistrationController extends HttpServlet implements
 				if (req.getSession().getAttribute("userid") != null) {
 					JSONObject user = (JSONObject) req.getSession()
 							.getAttribute("userid");
-					this.reg.setWritenBy((int) user.get("userID"));
+					User u = new User();
+					u = (User) DAOUtil.getObjectFromJson(user.toString(), u.getClass());
+					
+					this.reg.setTblUser(u);
 
 					if (this.regDAO.checkPk(this.reg)) {
 
@@ -191,11 +195,11 @@ public class PupilRegistrationController extends HttpServlet implements
 
 			JSONObject user = new JSONObject();
 			user.put("type", "סוג רישום");
-			user.put("sunday", getRegType(regPupil.getSunday_()));
-			user.put("monday", getRegType(regPupil.getMonday_()));
-			user.put("tuesday", getRegType(regPupil.getTuesday_()));
-			user.put("wednesday", getRegType(regPupil.getWednesday_()));
-			user.put("thursday", getRegType(regPupil.getThursday_()));
+			user.put("sunday", getRegType(regPupil.getTblRegType1().getTypeNum()));
+			user.put("monday", getRegType(regPupil.getTblRegType2().getTypeNum()));
+			user.put("tuesday", getRegType(regPupil.getTblRegType3().getTypeNum()));
+			user.put("wednesday", getRegType(regPupil.getTblRegType4().getTypeNum()));
+			user.put("thursday", getRegType(regPupil.getTblRegType5().getTypeNum()));
 
 			registrationData.add(user);
 
@@ -205,11 +209,11 @@ public class PupilRegistrationController extends HttpServlet implements
 				JSONObject user = new JSONObject();
 
 				user.put("startDate", regPupil.getId().getStartDate().getTime());
-				user.put("sunday", getRegType(regPupil.getSunday_()));
-				user.put("monday", getRegType(regPupil.getMonday_()));
-				user.put("tuesday", getRegType(regPupil.getTuesday_()));
-				user.put("wednesday", getRegType(regPupil.getWednesday_()));
-				user.put("thursday", getRegType(regPupil.getThursday_()));
+				user.put("sunday", getRegType(regPupil.getTblRegType1().getTypeNum()));
+				user.put("monday", getRegType(regPupil.getTblRegType2().getTypeNum()));
+				user.put("tuesday", getRegType(regPupil.getTblRegType3().getTypeNum()));
+				user.put("wednesday", getRegType(regPupil.getTblRegType4().getTypeNum()));
+				user.put("thursday", getRegType(regPupil.getTblRegType5().getTypeNum()));
 
 				registrationData.add(user);
 

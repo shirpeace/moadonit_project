@@ -6,7 +6,6 @@ import java.sql.SQLException;
 
 import model.Family;
 import model.GenderRef;
-import model.Grade;
 import model.Pupil;
 import util.DAOUtil;
 import controller.MyConnection;
@@ -18,13 +17,13 @@ public class PupilDAO  extends AbstractDAO{
 	 */
 	private static final long serialVersionUID = 3381926667682712141L;
 	private String insert = "INSERT INTO tbl_pupil"
-			+ "( firstName, lastName, cellphone, photoPath, birthDate, familyID, gradeID, gender) VALUES (?,?,?,?,?,?,?,?)";
+			+ "( firstName, lastName, cellphone, photoPath, birthDate, familyID, gender) VALUES (?,?,?,?,?,?,?)";
 	private String delete = "DELETE FROM tbl_pupil WHERE pupilNum  = ?";
 	
-	private String select = "SELECT pupilNum, firstName, lastName, cellphone, photoPath, birthDate, familyID, gradeID, gender FROM tbl_pupil WHERE pupilNum = ?";
+	private String select = "SELECT pupilNum, firstName, lastName, cellphone, photoPath, birthDate, familyID, gender FROM tbl_pupil WHERE pupilNum = ?";
 	
 	private String update = "UPDATE tbl_pupil "
-	+ "SET firstName=?,lastName=?,cellphone=?,photoPath=?,birthDate=?,familyID=?,gradeID=?,gender=? where pupilNum = ?";
+	+ "SET firstName=?,lastName=?,cellphone=?,photoPath=?,birthDate=?,familyID=?,gender=? where pupilNum = ?";
 	
 	public PupilDAO(MyConnection con) {
 		super(con);
@@ -64,7 +63,7 @@ public class PupilDAO  extends AbstractDAO{
 				p.getLastName(),p.getCellphone(), p.getPhotoPath(),
 				p.getBirthDate(), 
 				(p.getTblFamily() != null && p.getTblFamily().getFamilyID() > 0) ? p.getTblFamily().getFamilyID() : null,
-				p.getTblGrade().getGradeID(),p.getTblGenderRef().getGender(),p.getPupilNum()
+				p.getTblGenderRef().getGender(),p.getPupilNum()
 
 		};
 
@@ -98,8 +97,8 @@ public class PupilDAO  extends AbstractDAO{
 				if(p.getTblFamily() != null)
 				p.setTblFamily(new FamilyDAO(con).selectById(p.getTblFamily().getFamilyID()));
 				
-				if(p.getTblGrade() != null)
-				p.setTblGrade(new GradeDAO(con).selectById(p.getTblGrade().getGradeID()));
+			/*	if(p.getTblGrade() != null)
+				p.setTblGrade(new GradeDAO(con).selectById(p.getTblGrade().getGradeID()));*/
 				
 				if(p.getTblGenderRef() != null)
 				p.setTblGenderRef(new GenderDAO(con).selectById(p.getTblGenderRef().getGender()));
@@ -121,10 +120,10 @@ public class PupilDAO  extends AbstractDAO{
 			
 		p.setBirthDate(resultSet.getDate("birthDate"));
 		
-		//set the  id for later fetch of grade data
+/*		//set the  id for later fetch of grade data
 		Grade gr = new Grade();
 		gr.setGradeID(resultSet.getInt("gradeID"));
-		p.setTblGrade(gr);
+		p.setTblGrade(gr);*/
 		
 		p.setPhotoPath(resultSet.getString("photoPath"));
 
@@ -163,7 +162,7 @@ public class PupilDAO  extends AbstractDAO{
 				p.getPhotoPath(),
 				DAOUtil.toSqlDate(p.getBirthDate()), 
 				(p.getTblFamily() != null && p.getTblFamily().getFamilyID() > 0) ? p.getTblFamily().getFamilyID() : null,
-				p.getTblGrade().getGradeID(),
+				/*p.getTblGrade().getGradeID(),*/
 				p.getTblGenderRef().getGender()
 				/*,p.getPupilNum()*/
 

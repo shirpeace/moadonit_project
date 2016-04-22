@@ -2,6 +2,7 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.util.List;
 
 
 /**
@@ -18,6 +19,10 @@ public class RegSource implements Serializable {
 	private int sourceNum;
 
 	private String sourceName;
+
+	//bi-directional many-to-one association to RegToMoadonit
+	@OneToMany(mappedBy="tblRegSource")
+	private List<RegToMoadonit> tblRegToMoadonits;
 
 	public RegSource() {
 	}
@@ -36,6 +41,28 @@ public class RegSource implements Serializable {
 
 	public void setSourceName(String sourceName) {
 		this.sourceName = sourceName;
+	}
+
+	public List<RegToMoadonit> getTblRegToMoadonits() {
+		return this.tblRegToMoadonits;
+	}
+
+	public void setTblRegToMoadonits(List<RegToMoadonit> tblRegToMoadonits) {
+		this.tblRegToMoadonits = tblRegToMoadonits;
+	}
+
+	public RegToMoadonit addTblRegToMoadonit(RegToMoadonit tblRegToMoadonit) {
+		getTblRegToMoadonits().add(tblRegToMoadonit);
+		tblRegToMoadonit.setTblRegSource(this);
+
+		return tblRegToMoadonit;
+	}
+
+	public RegToMoadonit removeTblRegToMoadonit(RegToMoadonit tblRegToMoadonit) {
+		getTblRegToMoadonits().remove(tblRegToMoadonit);
+		tblRegToMoadonit.setTblRegSource(null);
+
+		return tblRegToMoadonit;
 	}
 
 }

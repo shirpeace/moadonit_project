@@ -30,6 +30,18 @@ public class Pupil implements Serializable {
 
 	private String photoPath;
 
+	//bi-directional many-to-one association to Attendance
+	@OneToMany(mappedBy="tblPupil")
+	private List<Attendance> tblAttendances;
+
+	//bi-directional many-to-one association to GradePupil
+	@OneToMany(mappedBy="tblPupil")
+	private List<GradePupil> tblGradePupils;
+
+	//bi-directional many-to-one association to OneTimeReg
+	@OneToMany(mappedBy="tblPupil")
+	private List<OneTimeReg> tblOneTimeRegs;
+
 	//bi-directional many-to-one association to Family
 	@ManyToOne
 	@JoinColumn(name="familyID")
@@ -40,14 +52,9 @@ public class Pupil implements Serializable {
 	@JoinColumn(name="gender")
 	private GenderRef tblGenderRef;
 
-	//bi-directional many-to-one association to Grade
-	@ManyToOne
-	@JoinColumn(name="gradeID")
-	private Grade tblGrade;
-
-	//bi-directional many-to-one association to RegisterPupil
-	@OneToMany(mappedBy="tblPupil")
-	private List<RegisterPupil> tblRegisterPupils;
+	//bi-directional one-to-one association to RegisterPupil
+	@OneToOne(mappedBy="tblPupil")
+	private RegisterPupil tblRegisterPupil;
 
 	public Pupil() {
 	}
@@ -100,6 +107,72 @@ public class Pupil implements Serializable {
 		this.photoPath = photoPath;
 	}
 
+	public List<Attendance> getTblAttendances() {
+		return this.tblAttendances;
+	}
+
+	public void setTblAttendances(List<Attendance> tblAttendances) {
+		this.tblAttendances = tblAttendances;
+	}
+
+	public Attendance addTblAttendance(Attendance tblAttendance) {
+		getTblAttendances().add(tblAttendance);
+		tblAttendance.setTblPupil(this);
+
+		return tblAttendance;
+	}
+
+	public Attendance removeTblAttendance(Attendance tblAttendance) {
+		getTblAttendances().remove(tblAttendance);
+		tblAttendance.setTblPupil(null);
+
+		return tblAttendance;
+	}
+
+	public List<GradePupil> getTblGradePupils() {
+		return this.tblGradePupils;
+	}
+
+	public void setTblGradePupils(List<GradePupil> tblGradePupils) {
+		this.tblGradePupils = tblGradePupils;
+	}
+
+	public GradePupil addTblGradePupil(GradePupil tblGradePupil) {
+		getTblGradePupils().add(tblGradePupil);
+		tblGradePupil.setTblPupil(this);
+
+		return tblGradePupil;
+	}
+
+	public GradePupil removeTblGradePupil(GradePupil tblGradePupil) {
+		getTblGradePupils().remove(tblGradePupil);
+		tblGradePupil.setTblPupil(null);
+
+		return tblGradePupil;
+	}
+
+	public List<OneTimeReg> getTblOneTimeRegs() {
+		return this.tblOneTimeRegs;
+	}
+
+	public void setTblOneTimeRegs(List<OneTimeReg> tblOneTimeRegs) {
+		this.tblOneTimeRegs = tblOneTimeRegs;
+	}
+
+	public OneTimeReg addTblOneTimeReg(OneTimeReg tblOneTimeReg) {
+		getTblOneTimeRegs().add(tblOneTimeReg);
+		tblOneTimeReg.setTblPupil(this);
+
+		return tblOneTimeReg;
+	}
+
+	public OneTimeReg removeTblOneTimeReg(OneTimeReg tblOneTimeReg) {
+		getTblOneTimeRegs().remove(tblOneTimeReg);
+		tblOneTimeReg.setTblPupil(null);
+
+		return tblOneTimeReg;
+	}
+
 	public Family getTblFamily() {
 		return this.tblFamily;
 	}
@@ -116,34 +189,12 @@ public class Pupil implements Serializable {
 		this.tblGenderRef = tblGenderRef;
 	}
 
-	public Grade getTblGrade() {
-		return this.tblGrade;
+	public RegisterPupil getTblRegisterPupil() {
+		return this.tblRegisterPupil;
 	}
 
-	public void setTblGrade(Grade tblGrade) {
-		this.tblGrade = tblGrade;
-	}
-
-	public List<RegisterPupil> getTblRegisterPupils() {
-		return this.tblRegisterPupils;
-	}
-
-	public void setTblRegisterPupils(List<RegisterPupil> tblRegisterPupils) {
-		this.tblRegisterPupils = tblRegisterPupils;
-	}
-
-	public RegisterPupil addTblRegisterPupil(RegisterPupil tblRegisterPupil) {
-		getTblRegisterPupils().add(tblRegisterPupil);
-		tblRegisterPupil.setTblPupil(this);
-
-		return tblRegisterPupil;
-	}
-
-	public RegisterPupil removeTblRegisterPupil(RegisterPupil tblRegisterPupil) {
-		getTblRegisterPupils().remove(tblRegisterPupil);
-		tblRegisterPupil.setTblPupil(null);
-
-		return tblRegisterPupil;
+	public void setTblRegisterPupil(RegisterPupil tblRegisterPupil) {
+		this.tblRegisterPupil = tblRegisterPupil;
 	}
 
 }

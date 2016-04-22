@@ -10,35 +10,61 @@ import java.util.Date;
  * 
  */
 @Entity
-@Table(name = "tbl_reg_to_moadonit")
-@NamedQuery(name = "RegToMoadonit.findAll", query = "SELECT r FROM RegToMoadonit r")
+@Table(name="tbl_reg_to_moadonit")
+@NamedQuery(name="RegToMoadonit.findAll", query="SELECT r FROM RegToMoadonit r")
 public class RegToMoadonit implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
 	private RegToMoadonitPK id;
 
-	@Column(name = "`monday?`")
-	private int monday_;
-
 	@Temporal(TemporalType.DATE)
 	private Date registerDate;
 
-	private int source;
+	//bi-directional many-to-one association to RegSource
+	@ManyToOne
+	@JoinColumn(name="source")
+	private RegSource tblRegSource;
 
-	@Column(name = "`sunday?`")
-	private int sunday_;
+	//bi-directional many-to-one association to RegType
+	@ManyToOne
+	@JoinColumn(name="sunday_")
+	private RegType tblRegType1;
 
-	@Column(name = "`thursday?`")
-	private int thursday_;
+	//bi-directional many-to-one association to RegType
+	@ManyToOne
+	@JoinColumn(name="monday_")
+	private RegType tblRegType2;
 
-	@Column(name = "`tuesday?`")
-	private int tuesday_;
+	//bi-directional many-to-one association to RegType
+	@ManyToOne
+	@JoinColumn(name="tuesday_")
+	private RegType tblRegType3;
 
-	@Column(name = "`wednesday?`")
-	private int wednesday_;
+	//bi-directional many-to-one association to RegType
+	@ManyToOne
+	@JoinColumn(name="wednesday_")
+	private RegType tblRegType4;
 
-	private int writenBy;
+	//bi-directional many-to-one association to RegType
+	@ManyToOne
+	@JoinColumn(name="thursday_")
+	private RegType tblRegType5;
+
+	//bi-directional many-to-one association to RegisterPupil
+	@ManyToOne
+	@JoinColumn(name="pupilNum")
+	private RegisterPupil tblRegisterPupil;
+
+	//bi-directional many-to-one association to SchoolYear
+	@ManyToOne
+	@JoinColumn(name="activeYear")
+	private SchoolYear tblSchoolYear;
+
+	//bi-directional many-to-one association to User
+	@ManyToOne
+	@JoinColumn(name="writenBy")
+	private User tblUser;
 
 	public RegToMoadonit() {
 	}
@@ -51,14 +77,6 @@ public class RegToMoadonit implements Serializable {
 		this.id = id;
 	}
 
-	public int getMonday_() {
-		return this.monday_;
-	}
-
-	public void setMonday_(int monday_) {
-		this.monday_ = monday_;
-	}
-
 	public Date getRegisterDate() {
 		return this.registerDate;
 	}
@@ -67,52 +85,76 @@ public class RegToMoadonit implements Serializable {
 		this.registerDate = registerDate;
 	}
 
-	public int getSource() {
-		return this.source;
+	public RegSource getTblRegSource() {
+		return this.tblRegSource;
 	}
 
-	public void setSource(int source) {
-		this.source = source;
+	public void setTblRegSource(RegSource tblRegSource) {
+		this.tblRegSource = tblRegSource;
 	}
 
-	public int getSunday_() {
-		return this.sunday_;
+	public RegType getTblRegType1() {
+		return this.tblRegType1;
 	}
 
-	public void setSunday_(int sunday_) {
-		this.sunday_ = sunday_;
+	public void setTblRegType1(RegType tblRegType1) {
+		this.tblRegType1 = tblRegType1;
 	}
 
-	public int getThursday_() {
-		return this.thursday_;
+	public RegType getTblRegType2() {
+		return this.tblRegType2;
 	}
 
-	public void setThursday_(int thursday_) {
-		this.thursday_ = thursday_;
+	public void setTblRegType2(RegType tblRegType2) {
+		this.tblRegType2 = tblRegType2;
 	}
 
-	public int getTuesday_() {
-		return this.tuesday_;
+	public RegType getTblRegType3() {
+		return this.tblRegType3;
 	}
 
-	public void setTuesday_(int tuesday_) {
-		this.tuesday_ = tuesday_;
+	public void setTblRegType3(RegType tblRegType3) {
+		this.tblRegType3 = tblRegType3;
 	}
 
-	public int getWednesday_() {
-		return this.wednesday_;
+	public RegType getTblRegType4() {
+		return this.tblRegType4;
 	}
 
-	public void setWednesday_(int wednesday_) {
-		this.wednesday_ = wednesday_;
+	public void setTblRegType4(RegType tblRegType4) {
+		this.tblRegType4 = tblRegType4;
 	}
 
-	public int getWritenBy() {
-		return this.writenBy;
+	public RegType getTblRegType5() {
+		return this.tblRegType5;
 	}
 
-	public void setWritenBy(int writenBy) {
-		this.writenBy = writenBy;
+	public void setTblRegType5(RegType tblRegType5) {
+		this.tblRegType5 = tblRegType5;
+	}
+
+	public RegisterPupil getTblRegisterPupil() {
+		return this.tblRegisterPupil;
+	}
+
+	public void setTblRegisterPupil(RegisterPupil tblRegisterPupil) {
+		this.tblRegisterPupil = tblRegisterPupil;
+	}
+
+	public SchoolYear getTblSchoolYear() {
+		return this.tblSchoolYear;
+	}
+
+	public void setTblSchoolYear(SchoolYear tblSchoolYear) {
+		this.tblSchoolYear = tblSchoolYear;
+	}
+
+	public User getTblUser() {
+		return this.tblUser;
+	}
+
+	public void setTblUser(User tblUser) {
+		this.tblUser = tblUser;
 	}
 
 }
