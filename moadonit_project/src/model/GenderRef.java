@@ -16,7 +16,7 @@ public class GenderRef implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private int gender; 
+	private int gender;
 
 	private String genderName;
 

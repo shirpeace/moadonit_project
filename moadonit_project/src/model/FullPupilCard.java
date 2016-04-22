@@ -9,7 +9,7 @@ import java.util.Date;
  * The persistent class for the fullPupilCard database table.
  * 
  */
-@Entity
+
 @NamedQuery(name="FullPupilCard.findAll", query="SELECT f FROM FullPupilCard f")
 public class FullPupilCard implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -54,10 +54,8 @@ public class FullPupilCard implements Serializable {
 	private String p1lname;
 
 	private String p1mail;
-	
+
 	private int p1relation;
-	
-	private int parent1ID;
 
 	private String p2cell;
 
@@ -68,11 +66,13 @@ public class FullPupilCard implements Serializable {
 	private String p2mail;
 
 	private int p2relation;
-	
+
+	private int parent1ID;
+
 	private int parent2ID;
 
 	private String photoPath;
-	@Id
+
 	private int pupilNum;
 
 	private int regPupilNum;
@@ -291,19 +291,19 @@ public class FullPupilCard implements Serializable {
 	}
 
 	public int getParent1ID() {
-		return parent1ID;
+		return this.parent1ID;
 	}
 
-	public void setParent1ID(int parent1id) {
-		parent1ID = parent1id;
+	public void setParent1ID(int parent1ID) {
+		this.parent1ID = parent1ID;
 	}
 
 	public int getParent2ID() {
-		return parent2ID;
+		return this.parent2ID;
 	}
 
-	public void setParent2ID(int parent2id) {
-		parent2ID = parent2id;
+	public void setParent2ID(int parent2ID) {
+		this.parent2ID = parent2ID;
 	}
 
 	public String getPhotoPath() {

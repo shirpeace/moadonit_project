@@ -1,8 +1,8 @@
 package model;
 
 import java.io.Serializable;
-
 import javax.persistence.*;
+import java.util.List;
 
 
 /**
@@ -17,18 +17,6 @@ public class RegisterPupil implements Serializable {
 
 	@Id
 	private int pupilNum;
-	
-	
-	
-	public int getPupilNum() {
-		return pupilNum;
-	}
-
-	public void setPupilNum(int pupilNum) {
-		this.pupilNum = pupilNum;
-	}
-
-
 
 	private int ethiopian;
 
@@ -40,17 +28,29 @@ public class RegisterPupil implements Serializable {
 
 	private String staffChild;
 
+	//bi-directional many-to-one association to RegToMoadonit
+	@OneToMany(mappedBy="tblRegisterPupil")
+	private List<RegToMoadonit> tblRegToMoadonits;
+
 	//bi-directional many-to-one association to FoodType
 	@ManyToOne
 	@JoinColumn(name="foodType")
 	private FoodType tblFoodType;
 
-	//bi-directional many-to-one association to Pupil
-	@ManyToOne
+	//bi-directional one-to-one association to Pupil
+	@OneToOne
 	@JoinColumn(name="pupilNum")
 	private Pupil tblPupil;
 
 	public RegisterPupil() {
+	}
+
+	public int getPupilNum() {
+		return this.pupilNum;
+	}
+
+	public void setPupilNum(int pupilNum) {
+		this.pupilNum = pupilNum;
 	}
 
 	public int getEthiopian() {
@@ -91,6 +91,28 @@ public class RegisterPupil implements Serializable {
 
 	public void setStaffChild(String staffChild) {
 		this.staffChild = staffChild;
+	}
+
+	public List<RegToMoadonit> getTblRegToMoadonits() {
+		return this.tblRegToMoadonits;
+	}
+
+	public void setTblRegToMoadonits(List<RegToMoadonit> tblRegToMoadonits) {
+		this.tblRegToMoadonits = tblRegToMoadonits;
+	}
+
+	public RegToMoadonit addTblRegToMoadonit(RegToMoadonit tblRegToMoadonit) {
+		getTblRegToMoadonits().add(tblRegToMoadonit);
+		tblRegToMoadonit.setTblRegisterPupil(this);
+
+		return tblRegToMoadonit;
+	}
+
+	public RegToMoadonit removeTblRegToMoadonit(RegToMoadonit tblRegToMoadonit) {
+		getTblRegToMoadonits().remove(tblRegToMoadonit);
+		tblRegToMoadonit.setTblRegisterPupil(null);
+
+		return tblRegToMoadonit;
 	}
 
 	public FoodType getTblFoodType() {

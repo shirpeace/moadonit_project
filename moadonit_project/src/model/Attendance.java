@@ -17,13 +17,26 @@ public class Attendance implements Serializable {
 	@EmbeddedId
 	private AttendancePK id;
 
-	private int activityNum;
-
-	@Column(name="`attended_`")
-	private int attended_;
+	@Column(name="attended_")
+	private int attended;
 
 	@Column(name="rec_type")
 	private int recType;
+
+	//bi-directional many-to-one association to Pupil
+	@ManyToOne
+	@JoinColumn(name="pupilID")
+	private Pupil tblPupil;
+
+	//bi-directional many-to-one association to SchoolYear
+	@ManyToOne
+	@JoinColumn(name="activeYear")
+	private SchoolYear tblSchoolYear;
+
+	//bi-directional many-to-one association to Activity
+	@ManyToOne
+	@JoinColumn(name="activityNum")
+	private Activity tblActivity;
 
 	public Attendance() {
 	}
@@ -36,20 +49,12 @@ public class Attendance implements Serializable {
 		this.id = id;
 	}
 
-	public int getActivityNum() {
-		return this.activityNum;
+	public int getAttended() {
+		return this.attended;
 	}
 
-	public void setActivityNum(int activityNum) {
-		this.activityNum = activityNum;
-	}
-
-	public int getAttended_() {
-		return this.attended_;
-	}
-
-	public void setAttended_(int attended_) {
-		this.attended_ = attended_;
+	public void setAttended(int attended) {
+		this.attended = attended;
 	}
 
 	public int getRecType() {
@@ -58,6 +63,30 @@ public class Attendance implements Serializable {
 
 	public void setRecType(int recType) {
 		this.recType = recType;
+	}
+
+	public Pupil getTblPupil() {
+		return this.tblPupil;
+	}
+
+	public void setTblPupil(Pupil tblPupil) {
+		this.tblPupil = tblPupil;
+	}
+
+	public SchoolYear getTblSchoolYear() {
+		return this.tblSchoolYear;
+	}
+
+	public void setTblSchoolYear(SchoolYear tblSchoolYear) {
+		this.tblSchoolYear = tblSchoolYear;
+	}
+
+	public Activity getTblActivity() {
+		return this.tblActivity;
+	}
+
+	public void setTblActivity(Activity tblActivity) {
+		this.tblActivity = tblActivity;
 	}
 
 }

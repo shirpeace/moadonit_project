@@ -8,8 +8,11 @@ import java.util.Date;
 import java.util.List;
 
 import controller.MyConnection;
+import model.RegSource;
 import model.RegToMoadonit;
 import model.RegToMoadonitPK;
+import model.RegType;
+import model.User;
 import util.DAOUtil;
 
 public class RegToMoadonitDAO extends AbstractDAO {
@@ -88,10 +91,10 @@ public class RegToMoadonitDAO extends AbstractDAO {
 		// (pupilNum,registerDate,startDate,sunday_,monday_,tuesday_,wednesday_,thursday_,writenBy,source)
 		Object[] values = { regToMo.getId().getPupilNum(),
 				DAOUtil.toSqlDate(regToMo.getId().getStartDate()),
-				regToMo.getId().getStartDate(), regToMo.getSunday_(),
-				regToMo.getMonday_(), regToMo.getTuesday_(),
-				regToMo.getWednesday_(), regToMo.getThursday_(),
-				regToMo.getWritenBy(), regToMo.getSource() };
+				regToMo.getId().getStartDate(), regToMo.getTblRegType1(),
+				regToMo.getTblRegType2(), regToMo.getTblRegType3(),
+				regToMo.getTblRegType4(), regToMo.getTblRegType5(),
+				regToMo.getTblUser().getUserID(), regToMo.getTblRegSource().getSourceNum() };
 
 		try (
 
@@ -137,21 +140,39 @@ public class RegToMoadonitDAO extends AbstractDAO {
 
 	private RegToMoadonit map(ResultSet resultSet) throws SQLException {
 		// TODO Auto-generated method stub
-		RegToMoadonit rtm = new RegToMoadonit();
+				RegToMoadonit rtm = new RegToMoadonit();
 
-		rtm.setSunday_(resultSet.getInt("sunday_"));
-		rtm.setMonday_(resultSet.getInt("monday_"));
-		rtm.setTuesday_(resultSet.getInt("tuesday_"));
-		rtm.setWednesday_(resultSet.getInt("wednesday_"));
-		rtm.setThursday_(resultSet.getInt("thursday_"));
-		rtm.setRegisterDate(resultSet.getDate("registerDate"));
-		rtm.setSource(resultSet.getInt("source"));
-		rtm.setWritenBy(resultSet.getInt("writenBy"));
-		RegToMoadonitPK pk = new RegToMoadonitPK();
-		pk.setPupilNum(resultSet.getInt("pupilNum"));
-		pk.setStartDate(resultSet.getDate("startDate"));
-		rtm.setId(pk);
+				RegType rt = new RegType();
+				rt.setTypeNum(resultSet.getInt("sunday_"));		
+				rtm.setTblRegType1(rt);		
+				
+				rt.setTypeNum(resultSet.getInt("monday_"));		
+				rtm.setTblRegType2(rt);
+				
+				rt.setTypeNum(resultSet.getInt("tuesday_"));		
+				rtm.setTblRegType3(rt);
+				
+				rt.setTypeNum(resultSet.getInt("wednesday_"));		
+				rtm.setTblRegType4(rt);
+				
+				rt.setTypeNum(resultSet.getInt("thursday_"));		
+				rtm.setTblRegType5(rt);
+						
+				rtm.setRegisterDate(resultSet.getDate("registerDate"));
+				
+				User u = new User();
+				u.setUserID(resultSet.getInt("writenBy"));
+				rtm.setTblUser(u);
+				
+				RegSource rs = new RegSource();
+				rs.setSourceNum(resultSet.getInt("source"));
+				rtm.setTblRegSource(rs);
+				
+				RegToMoadonitPK pk = new RegToMoadonitPK();
+				pk.setPupilNum(resultSet.getInt("pupilNum"));
+				pk.setStartDate(resultSet.getDate("startDate"));
+				rtm.setId(pk);
 
-		return rtm;
+				return rtm;
 	}
 }

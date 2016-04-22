@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import model.Activity;
 import model.Attendance;
 import model.AttendancePK;
 import util.DAOUtil;
@@ -32,9 +33,11 @@ public class AttendanceDAO extends AbstractDAO {
 		pk.setPupilID(resultSet.getInt("pupilID"));
 		pk.setSpecifficDate(resultSet.getDate("specifficDate"));
 		att.setId(pk);
-		att.setAttended_(resultSet.getInt("attended_"));
+		att.setAttended(resultSet.getInt("attended_"));
 		att.setRecType(resultSet.getInt("recType"));
-		att.setActivityNum(resultSet.getInt("activityNum"));
+		Activity act = new Activity();
+		act.setActivityNum(resultSet.getInt("activityNum"));
+		att.setTblActivity(act);
 		
 		return att;
 	}
@@ -62,7 +65,7 @@ public class AttendanceDAO extends AbstractDAO {
 					"Attendance is not created yet, the Attendance ID is null.");
 		}
 
-		Object[] values = { att.getAttended_(),att.getRecType(), att.getActivityNum(), 
+		Object[] values = { att.getAttended(),att.getRecType(), att.getTblActivity().getActivityNum(), 
 				att.getId().getPupilID(), att.getId().getSpecifficDate()
 
 		};
@@ -102,8 +105,8 @@ public class AttendanceDAO extends AbstractDAO {
 
 	public Boolean insert(Attendance att) throws IllegalArgumentException, DAOException {
 		
-		Object[] values = {att.getId().getPupilID(), att.getId().getSpecifficDate(), att.getAttended_(),att.getRecType(),
-				att.getActivityNum()
+		Object[] values = {att.getId().getPupilID(), att.getId().getSpecifficDate(), att.getAttended(),att.getRecType(),
+				att.getTblActivity().getActivityNum()
 		};
 
 		try (

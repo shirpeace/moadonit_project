@@ -96,11 +96,11 @@ public class PupilAttendanceController extends HttpServlet implements Serializab
 
 		JSONObject user = new JSONObject();
 		user.put("type", "סוג רישום");
-		user.put("sunday", getRegType(regPupil.getSunday_()));
-		user.put("monday", getRegType(regPupil.getMonday_()));
-		user.put("tuesday", getRegType(regPupil.getTuesday_()));
-		user.put("wednesday", getRegType(regPupil.getWednesday_()));
-		user.put("thursday", getRegType(regPupil.getThursday_()));
+		user.put("sunday", getRegType(regPupil.getTblRegType1().getTypeNum()));
+		user.put("monday", getRegType(regPupil.getTblRegType2().getTypeNum()));
+		user.put("tuesday", getRegType(regPupil.getTblRegType3().getTypeNum()));
+		user.put("wednesday", getRegType(regPupil.getTblRegType4().getTypeNum()));
+		user.put("thursday", getRegType(regPupil.getTblRegType5().getTypeNum()));
 
 		registrationData.add(user);
 
@@ -150,11 +150,11 @@ public class PupilAttendanceController extends HttpServlet implements Serializab
 		List<RegToMoadonit> list = regDAO.getActiveRegs(end);
 		for (RegToMoadonit reg : list) {
 			List<Integer> regedTo = new ArrayList<Integer>();
-			if(reg.getSunday_()!=0) regedTo.add(Calendar.SUNDAY);
-			if(reg.getMonday_()!=0) regedTo.add(Calendar.MONDAY);
-			if(reg.getTuesday_()!=0) regedTo.add(Calendar.TUESDAY);
-			if(reg.getWednesday_()!=0) regedTo.add(Calendar.WEDNESDAY);
-			if(reg.getThursday_()!=0) regedTo.add(Calendar.THURSDAY);
+			if(reg.getTblRegType1().getTypeNum()!=0) regedTo.add(Calendar.SUNDAY);
+			if(reg.getTblRegType2().getTypeNum()!=0) regedTo.add(Calendar.MONDAY);
+			if(reg.getTblRegType3().getTypeNum()!=0) regedTo.add(Calendar.TUESDAY);
+			if(reg.getTblRegType4().getTypeNum()!=0) regedTo.add(Calendar.WEDNESDAY);
+			if(reg.getTblRegType5().getTypeNum()!=0) regedTo.add(Calendar.THURSDAY);
 			
 			Calendar cal = Calendar.getInstance();
 			for(cal.setTime(start) ; cal.after(end) ; cal.add(Calendar.DAY_OF_YEAR, 1)){

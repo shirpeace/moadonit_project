@@ -21,7 +21,8 @@ import org.json.simple.JSONObject;
 import dao.DAOException;
 import dao.FamilyDAO;
 import dao.FullPupilCardDAO;
-import dao.GradeDAO;
+import dao.GradeCodeDAO;
+/*import dao.GradeDAO;*/
 import dao.ParentDAO;
 import dao.PupilDAO;
 import dao.RegisterPupilDAO;
@@ -30,7 +31,8 @@ import model.Family;
 import model.FamilyRelation;
 import model.FullPupilCard;
 import model.GenderRef;
-import model.Grade;
+/*import model.Grade;*/
+import model.GradeCode;
 import model.Parent;
 import model.Pupil;
 import model.RegisterPupil;
@@ -55,7 +57,7 @@ public class FullPupilCardController extends HttpServlet implements
 	FamilyDAO familyDao;
 	ParentDAO parentDao;
 	RegisterPupilDAO regPupilDao;
-	GradeDAO gradeDAO;
+	GradeCodeDAO gradeDAO;
 	JSONObject resultToClient = new JSONObject();;
 
 	// Pupil
@@ -81,7 +83,7 @@ public class FullPupilCardController extends HttpServlet implements
 
 		// check and set connection to session
 		checkConnection(req, resp);
-		gradeDAO= new GradeDAO(con);
+		gradeDAO= new GradeCodeDAO(con);
 		this.fullPupilDao = new FullPupilCardDAO(con);
 		try {
 
@@ -131,10 +133,10 @@ public class FullPupilCardController extends HttpServlet implements
 
 	@SuppressWarnings("unchecked")
 	private JSONObject getGradesJson() {
-		List<Grade> list = gradeDAO.selectIndex();
+		List<GradeCode> list = gradeDAO.selectIndex(0);
 		String values= "";
-		for (int i=1;i<list.size();i++) { //{ value: ":;1:בן;2:בת"}
-			Grade grade=list.get(i-1);
+		for (int i=0;i<list.size();i++) { //{ value: ":;1:בן;2:בת"}
+			GradeCode grade=list.get(i);
 			values += grade.getGradeID()+":"+ grade.getGradeName()+";";
 		}
 		values=values.substring(0, values.length()-1);

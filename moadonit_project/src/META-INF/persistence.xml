@@ -8,9 +8,7 @@
 		<class>model.Family</class>
 		<class>model.FamilyRelation</class>
 		<class>model.FoodType</class>
-		<class>model.FullPupilCard</class>
 		<class>model.GenderRef</class>
-		<class>model.Grade</class>
 		<class>model.Parent</class>
 		<class>model.Pupil</class>
 		<class>model.RegSource</class>
@@ -20,6 +18,19 @@
 		<class>model.RegisterPupil</class>
 		<class>model.Room</class>
 		<class>model.User</class>
+		<class>model.GeneralParameter</class>
+		<class>model.GradeCode</class>
+		<class>model.GradePupil</class>
+		<class>model.GradePupilPK</class>
+		<class>model.GradeTeacher</class>
+		<class>model.GradeTeacherPK</class>
+		<class>model.SchoolYear</class>
+		<class>model.OneTimeReg</class>
+		<class>model.OneTimeRegPK</class>
+		<class>model.Activity</class>
+		<class>model.ActivityType</class>
+		<!-- <class>model.FullPupilCard</class> -->
+
 	</persistence-unit>
 	
 </persistence>
