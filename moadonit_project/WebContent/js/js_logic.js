@@ -42,10 +42,18 @@ function savePupilCardData(action,forward){
 	    pupil.familyID = null;	   
 	    var gender = $("input[name=genderGruop]:checked").val();
 	    pupil.tblGenderRef = {gender :  gender };
-	    pupil.tblGrade = { gradeID : $('#grade').val() };
+	    /*pupil.tblGrade = { gradeID : $('#grade').val() };*/	    
+		pupil.tblGradePupils = [ {
+		    	id: {pupilNum: pupil.pupilNum ,
+				gradeID: $('#grade').val(), 
+				yearID: null //set the year id in DB from a DB function
+			  } 
+		    }
+	    ];
 	    
-	    pupil.gradeID = $('#grade').val();
-	    pupil.gender = $("input[name=genderGruop]:checked").val();
+	    
+	    /*pupil.gradeID = $('#grade').val();*/
+	    /*pupil.gender = $("input[name=genderGruop]:checked").val();*/
 	    
 	    /* family data */
 	    if(typeof pupilData != undefined && pupilData != "" && pupilData != null)

@@ -56,6 +56,20 @@ public class Pupil implements Serializable {
 	@OneToOne(mappedBy="tblPupil")
 	private RegisterPupil tblRegisterPupil;
 
+	//bi-directional many-to-many association to GradeInYear
+	@ManyToMany
+	@JoinTable(
+		name="tbl_grade_pupil"
+		, joinColumns={
+			@JoinColumn(name="pupilNum")
+			}
+		, inverseJoinColumns={
+			@JoinColumn(name="gradeID", referencedColumnName="gradeID"),
+			@JoinColumn(name="yearID", referencedColumnName="yearID")
+			}
+		)
+	private List<GradeInYear> tblGradeInYears;
+
 	public Pupil() {
 	}
 
@@ -195,6 +209,14 @@ public class Pupil implements Serializable {
 
 	public void setTblRegisterPupil(RegisterPupil tblRegisterPupil) {
 		this.tblRegisterPupil = tblRegisterPupil;
+	}
+
+	public List<GradeInYear> getTblGradeInYears() {
+		return this.tblGradeInYears;
+	}
+
+	public void setTblGradeInYears(List<GradeInYear> tblGradeInYears) {
+		this.tblGradeInYears = tblGradeInYears;
 	}
 
 }

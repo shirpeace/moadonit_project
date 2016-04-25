@@ -229,6 +229,7 @@
 								<div class="form-group">
 									<label for="food">סוג מנה</label> <select class="form-control"
 										name="food" id="food">
+										<option value="0">בחר</option>
 										<option value="1">רגילה</option>
 										<option value="2">אפויה</option>
 										<option value="3">צמחונית</option>

@@ -22,6 +22,7 @@ import dao.DAOException;
 import dao.FamilyDAO;
 import dao.FullPupilCardDAO;
 import dao.GradeCodeDAO;
+import dao.GradePupilDAO;
 /*import dao.GradeDAO;*/
 import dao.ParentDAO;
 import dao.PupilDAO;
@@ -58,6 +59,7 @@ public class FullPupilCardController extends HttpServlet implements
 	ParentDAO parentDao;
 	RegisterPupilDAO regPupilDao;
 	GradeCodeDAO gradeDAO;
+	GradePupilDAO gradePupilDAO;
 	JSONObject resultToClient = new JSONObject();;
 
 	// Pupil
@@ -163,6 +165,7 @@ public class FullPupilCardController extends HttpServlet implements
 		this.pupilDao = new PupilDAO(con);
 		this.regPupilDao = new RegisterPupilDAO(con);
 		this.fullPupilDao = new FullPupilCardDAO(con);
+		this.gradePupilDAO = new GradePupilDAO(con);
 
 		action = req.getParameter("action");
 		
@@ -366,7 +369,7 @@ public class FullPupilCardController extends HttpServlet implements
 			
 			
 			// save pupil
-			p.setTblFamily(fam);
+			p.setTblFamily(fam);			
 
 		}
 		
@@ -374,17 +377,31 @@ public class FullPupilCardController extends HttpServlet implements
 			// update pupil		
 			this.pupilDao.update(p);
 			
+			// update gradePupil
+			if(!p.getTblGradePupils().isEmpty())
+			this.gradePupilDAO.update(p.getTblGradePupils().get(0));
+			
 			if (rp.getPupilNum() > 0) {
 				//check if update regPupil		
 				RegisterPupil temp = this.regPupilDao.selectById(rp.getPupilNum());
-				if(temp.getPupilNum() > 0)
-					this.regPupilDao.update(rp);
+				if(temp.getPupilNum() > 0){
+					if(rp.getEthiopian() != 0 || !rp.getFoodSensitivity().trim().equals("") || !rp.getHealthProblems().trim().equals("")
+							|| !rp.getOtherComments().trim().equals("") || (rp.getStaffChild() != null && !rp.getStaffChild().trim().equals("")) || rp.getTblFoodType().getFoodTypeID() != 0 ){
+						rp.setPupilNum(p.getPupilNum());
+						this.regPupilDao.update(rp);
+					}
+					
+				}
 			}
 			else{
 				
 				// insert regPupil				
 				rp.setPupilNum(p.getPupilNum());
-				this.regPupilDao.insert(rp);
+				if(rp.getEthiopian() != 0 || !rp.getFoodSensitivity().trim().equals("") || !rp.getHealthProblems().trim().equals("")
+						|| !rp.getOtherComments().trim().equals("") || (rp.getStaffChild() != null && !rp.getStaffChild().trim().equals("")) || rp.getTblFoodType().getFoodTypeID() != 0 ){
+					rp.setPupilNum(p.getPupilNum());
+					this.regPupilDao.insert(rp);
+				}				
 				
 			}
 			
@@ -460,14 +477,20 @@ public class FullPupilCardController extends HttpServlet implements
 		}
 
 		this.pupilDao.insert(p);
+		
+		
+		//save pupil is to the pupilGrade id entity and save pupilGrade to DB
+		p.getTblGradePupils().get(0).getId().setPupilNum(p.getPupilNum());
+		//insert row to pupilgrade for this pupil
+		this.gradePupilDAO.insert(p.getTblGradePupils().get(0));
 
 		// save regPupil
 
-		//if(rp.get){
-		rp.setPupilNum(p.getPupilNum());
-		this.regPupilDao.insert(rp);
-
-		//}
+		if(rp.getEthiopian() != 0 || !rp.getFoodSensitivity().trim().equals("") || !rp.getHealthProblems().trim().equals("")
+				|| !rp.getOtherComments().trim().equals("") || (rp.getStaffChild() != null && !rp.getStaffChild().trim().equals("")) || rp.getTblFoodType().getFoodTypeID() != 0 ){
+			rp.setPupilNum(p.getPupilNum());
+			this.regPupilDao.insert(rp);
+		}
 		this.con.getConnection().commit();
 
 		resultToClient.put("msg", 1);

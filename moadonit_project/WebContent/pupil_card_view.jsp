@@ -235,6 +235,7 @@
 									<label for="food">סוג מנה</label>
 									<select class="form-control input-sm"
 										id="food" name="food" >
+										<option value="0">בחר</option>
 										<option value="1">רגילה</option>
 										<option value="2">אפויה</option>
 										<option value="3">צמחונית</option>

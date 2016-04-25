@@ -4,35 +4,27 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 /**
- * The primary key class for the tbl_grade_teacher database table.
+ * The primary key class for the tbl_grade_in_year database table.
  * 
  */
-/*@Embeddable  not in use - sould be deleted */
-public class GradeTeacherPK implements Serializable {
+@Embeddable
+public class GradeInYearPK implements Serializable {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
 	@Column(insertable=false, updatable=false)
 	private int gradeID;
 
-	private String teacherName;
-
 	@Column(insertable=false, updatable=false)
 	private int yearID;
 
-	public GradeTeacherPK() {
+	public GradeInYearPK() {
 	}
 	public int getGradeID() {
 		return this.gradeID;
 	}
 	public void setGradeID(int gradeID) {
 		this.gradeID = gradeID;
-	}
-	public String getTeacherName() {
-		return this.teacherName;
-	}
-	public void setTeacherName(String teacherName) {
-		this.teacherName = teacherName;
 	}
 	public int getYearID() {
 		return this.yearID;
@@ -45,13 +37,12 @@ public class GradeTeacherPK implements Serializable {
 		if (this == other) {
 			return true;
 		}
-		if (!(other instanceof GradeTeacherPK)) {
+		if (!(other instanceof GradeInYearPK)) {
 			return false;
 		}
-		GradeTeacherPK castOther = (GradeTeacherPK)other;
+		GradeInYearPK castOther = (GradeInYearPK)other;
 		return 
 			(this.gradeID == castOther.gradeID)
-			&& this.teacherName.equals(castOther.teacherName)
 			&& (this.yearID == castOther.yearID);
 	}
 
@@ -59,7 +50,6 @@ public class GradeTeacherPK implements Serializable {
 		final int prime = 31;
 		int hash = 17;
 		hash = hash * prime + this.gradeID;
-		hash = hash * prime + this.teacherName.hashCode();
 		hash = hash * prime + this.yearID;
 		
 		return hash;

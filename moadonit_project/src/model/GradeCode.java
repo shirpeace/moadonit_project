@@ -24,9 +24,9 @@ public class GradeCode implements Serializable {
 	@OneToMany(mappedBy="tblGradeCode")
 	private List<GradePupil> tblGradePupils;
 
-	//bi-directional many-to-one association to GradeTeacher
+	//bi-directional many-to-one association to GradeInYear
 	@OneToMany(mappedBy="tblGradeCode")
-	private List<GradeTeacher> tblGradeTeachers;
+	private List<GradeInYear> tblGradeInYears;
 
 	public GradeCode() {
 	}
@@ -69,26 +69,26 @@ public class GradeCode implements Serializable {
 		return tblGradePupil;
 	}
 
-	public List<GradeTeacher> getTblGradeTeachers() {
-		return this.tblGradeTeachers;
+	public List<GradeInYear> getTblGradeInYears() {
+		return this.tblGradeInYears;
 	}
 
-	public void setTblGradeTeachers(List<GradeTeacher> tblGradeTeachers) {
-		this.tblGradeTeachers = tblGradeTeachers;
+	public void setTblGradeInYears(List<GradeInYear> tblGradeInYears) {
+		this.tblGradeInYears = tblGradeInYears;
 	}
 
-	public GradeTeacher addTblGradeTeacher(GradeTeacher tblGradeTeacher) {
-		getTblGradeTeachers().add(tblGradeTeacher);
-		tblGradeTeacher.setTblGradeCode(this);
+	public GradeInYear addTblGradeInYear(GradeInYear tblGradeInYear) {
+		getTblGradeInYears().add(tblGradeInYear);
+		tblGradeInYear.setTblGradeCode(this);
 
-		return tblGradeTeacher;
+		return tblGradeInYear;
 	}
 
-	public GradeTeacher removeTblGradeTeacher(GradeTeacher tblGradeTeacher) {
-		getTblGradeTeachers().remove(tblGradeTeacher);
-		tblGradeTeacher.setTblGradeCode(null);
+	public GradeInYear removeTblGradeInYear(GradeInYear tblGradeInYear) {
+		getTblGradeInYears().remove(tblGradeInYear);
+		tblGradeInYear.setTblGradeCode(null);
 
-		return tblGradeTeacher;
+		return tblGradeInYear;
 	}
 
 }

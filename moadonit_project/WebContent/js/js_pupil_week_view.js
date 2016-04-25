@@ -243,14 +243,14 @@ function saveRegistraion(){
 	var mydate = new Date(parts[2],parts[1]-1,parts[0]);
 	
 	rtm.id = { startDate : mydate , pupilNum: pupilID }; // pk
-	rtm.sunday_ = $('#sunday').val();
-	rtm.monday_ = $('#monday').val();
-	rtm.tuesday_ =$('#tuesday').val();
-	rtm.wednesday_ = $('#wednesday').val();
-	rtm.thursday_ = $('#thursday').val();
+	rtm.tblRegType1 = { typeNum: $('#sunday').val() };
+	rtm.tblRegType2 = { typeNum: $('#monday').val() }; 
+	rtm.tblRegType3 = { typeNum: $('#tuesday').val() }; 
+	rtm.tblRegType4 = { typeNum: $('#wednesday').val() }; 
+	rtm.tblRegType5 = { typeNum: $('#thursday').val() }; 
 	rtm.registerDate = new Date();
 	/*rtm.writenBy = currentUserId;*/
-	rtm.source = $('#reason').val();
+	rtm.tblRegSource  = {sourceNum : $('#reason').val() } ;
 		
 	
 	var result;
@@ -265,6 +265,9 @@ function saveRegistraion(){
       	if(data != undefined){
       		/*alert(data);*/
       		if(data.msg == "1"){
+      			$("#list").trigger("reloadGrid");
+      			$("#listRegistration").trigger("reloadGrid");    
+      			
       			result = true;      			      			      			
       		}
       		else if(data.msg == "0"){	

@@ -22,15 +22,15 @@ public class RegToMoadonitDAO extends AbstractDAO {
 		// TODO Auto-generated constructor stub
 	}
 
-	private String insert = "INSERT INTO tbl_reg_to_moadonit "
-			+ "(pupilNum,registerDate,startDate,sunday_,monday_,tuesday_,wednesday_,thursday_,writenBy,source)"
-			+ "VALUES(?,?,?,?,?,?,?,?,?,?);";
-	private String checkPK = "SELECT pupilNum, startDate FROM tbl_reg_to_moadonit where pupilNum = ? and startDate = ?";
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String selectAll = "SELECT * FROM ms2016.tbl_reg_to_moadonit WHERE pupilNum = ? and  startdate <= CURDATE() order by startdate desc";
+	private String insert = "INSERT INTO tbl_reg_to_moadonit "
+			+ "(pupilNum,registerDate,startDate,sunday_,monday_,tuesday_,wednesday_,thursday_,writenBy,source , activeYear )"
+			+ "VALUES(?,?,?,?,?,?,?,?,?,?, ms2016.get_currentYearID() );";
+	private String checkPK = "SELECT pupilNum, startDate FROM tbl_reg_to_moadonit where pupilNum = ? and startDate = ? and activeYear =  ms2016.get_currentYearID()";
+	private String selectAll = "SELECT * FROM ms2016.tbl_reg_to_moadonit WHERE pupilNum = ? and  startdate <= CURDATE() and activeYear =  ms2016.get_currentYearID() order by startdate desc";
 	private String getActiveRegInPeriod = "{call ms2016.getActiveRegInPeriodTry (?)}";
 
 	public List<RegToMoadonit> selectAll(int id)
@@ -91,9 +91,9 @@ public class RegToMoadonitDAO extends AbstractDAO {
 		// (pupilNum,registerDate,startDate,sunday_,monday_,tuesday_,wednesday_,thursday_,writenBy,source)
 		Object[] values = { regToMo.getId().getPupilNum(),
 				DAOUtil.toSqlDate(regToMo.getId().getStartDate()),
-				regToMo.getId().getStartDate(), regToMo.getTblRegType1(),
-				regToMo.getTblRegType2(), regToMo.getTblRegType3(),
-				regToMo.getTblRegType4(), regToMo.getTblRegType5(),
+				regToMo.getId().getStartDate(), regToMo.getTblRegType1().getTypeNum(),
+				regToMo.getTblRegType2().getTypeNum(), regToMo.getTblRegType3().getTypeNum(),
+				regToMo.getTblRegType4().getTypeNum(), regToMo.getTblRegType5().getTypeNum(),
 				regToMo.getTblUser().getUserID(), regToMo.getTblRegSource().getSourceNum() };
 
 		try (
@@ -142,19 +142,28 @@ public class RegToMoadonitDAO extends AbstractDAO {
 		// TODO Auto-generated method stub
 				RegToMoadonit rtm = new RegToMoadonit();
 
+				RegToMoadonitPK pk = new RegToMoadonitPK();
+				pk.setPupilNum(resultSet.getInt("pupilNum"));
+				pk.setStartDate(resultSet.getDate("startDate"));
+				rtm.setId(pk);
+				
 				RegType rt = new RegType();
 				rt.setTypeNum(resultSet.getInt("sunday_"));		
 				rtm.setTblRegType1(rt);		
 				
+				rt = new RegType();
 				rt.setTypeNum(resultSet.getInt("monday_"));		
 				rtm.setTblRegType2(rt);
 				
+				rt = new RegType();
 				rt.setTypeNum(resultSet.getInt("tuesday_"));		
 				rtm.setTblRegType3(rt);
 				
+				rt = new RegType();
 				rt.setTypeNum(resultSet.getInt("wednesday_"));		
 				rtm.setTblRegType4(rt);
 				
+				rt = new RegType();
 				rt.setTypeNum(resultSet.getInt("thursday_"));		
 				rtm.setTblRegType5(rt);
 						
@@ -168,10 +177,7 @@ public class RegToMoadonitDAO extends AbstractDAO {
 				rs.setSourceNum(resultSet.getInt("source"));
 				rtm.setTblRegSource(rs);
 				
-				RegToMoadonitPK pk = new RegToMoadonitPK();
-				pk.setPupilNum(resultSet.getInt("pupilNum"));
-				pk.setStartDate(resultSet.getDate("startDate"));
-				rtm.setId(pk);
+				
 
 				return rtm;
 	}
