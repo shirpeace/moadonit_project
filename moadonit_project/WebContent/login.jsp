@@ -38,10 +38,14 @@
 
     <title>מועדונית</title>
 
+
+    <!-- Bootstrap Core JavaScript -->
+   
+
 	<!--  java script -->
 	<script src="resources/js/jquery-1.12.2.js"></script>
-	<script src="resources/bootstrap/js/bootstrap.js"></script>
-	<script src="resources/js/template_logic.js"></script>
+	 <script src="js/bootstrap.min.js"></script >
+<!-- 	<script src="resources/js/template_logic.js"></script> -->
 	<script src="resources/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
 
     <!-- Bootstrap Core CSS -->
@@ -241,16 +245,7 @@
     </div>
     <!-- /#wrapper -->
 
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script >
-
-    <!-- Morris Charts JavaScript -->
-    <script src="js/plugins/morris/raphael.min.js"></script>
-    <script src="js/plugins/morris/morris.min.js"></script>
-    <script src="js/plugins/morris/morris-data.js"></script>
+  
 
 </body>
 

@@ -30,9 +30,10 @@ public class RegToMoadonitDAO extends AbstractDAO {
 			+ "(pupilNum,registerDate,startDate,sunday_,monday_,tuesday_,wednesday_,thursday_,writenBy,source , activeYear )"
 			+ "VALUES(?,?,?,?,?,?,?,?,?,?, ms2016.get_currentYearID() );";
 	private String checkPK = "SELECT pupilNum, startDate FROM tbl_reg_to_moadonit where pupilNum = ? and startDate = ? and activeYear =  ms2016.get_currentYearID()";
-	private String selectAll = "SELECT * FROM ms2016.tbl_reg_to_moadonit WHERE pupilNum = ? and  startdate <= CURDATE() and activeYear =  ms2016.get_currentYearID() order by startdate desc";
+//	private String selectAll = "SELECT * FROM ms2016.tbl_reg_to_moadonit WHERE pupilNum = ? and  startdate <= CURDATE() and activeYear =  ms2016.get_currentYearID() order by startdate desc";
 	private String getActiveRegInPeriod = "{call ms2016.getActiveRegInPeriodTry (?)}";
 	private String getAllRegsForPupil = "{ call ms2016.get_Regs_For_Pupils( ? , ? ) }";
+	private String getActiveRegForPupil = "{ call ms2016.getActiveRegByPupilId( ? ) }";
 	public List<RegToMoadonit> selectAll(int id, int future)
 			throws IllegalArgumentException, DAOException {
 		List<RegToMoadonit> list = new ArrayList<>();
@@ -124,6 +125,27 @@ public class RegToMoadonitDAO extends AbstractDAO {
 
 		try (PreparedStatement statement = DAOUtil.prepareCallbackStatement(
 				this.con.getConnection(), getActiveRegInPeriod,
+				new Object[] { id });
+				ResultSet resultSet = statement.executeQuery();) {
+
+			while (resultSet.next()) {
+				RegToMoadonit p = map(resultSet);
+				list.add(p);
+			}
+
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+
+		return list;
+	}
+	
+	public List<RegToMoadonit> getActiveRegForPupil(int id)
+			throws IllegalArgumentException, DAOException {
+		List<RegToMoadonit> list = new ArrayList<>();
+
+		try (PreparedStatement statement = DAOUtil.prepareCallbackStatement(
+				this.con.getConnection(), getActiveRegForPupil,
 				new Object[] { id });
 				ResultSet resultSet = statement.executeQuery();) {
 

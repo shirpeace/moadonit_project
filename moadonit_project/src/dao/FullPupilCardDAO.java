@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.FullPupilCard;
+import model.RegToMoadonit;
 import util.DAOUtil;
 import controller.MyConnection;
 
@@ -124,6 +125,75 @@ public class FullPupilCardDAO extends AbstractDAO {
 				else
 					stat+="regPupilNum is null";
 			}else
+				stat = stat.substring(0, stat.length()-4);
+		}
+		///
+		/*this.regToMoadonitDAO = new RegToMoadonitDAO(con);
+		List<RegToMoadonit> active = regToMoadonitDAO.getActiveRegForPupil(pupil.getPupilNum());
+		Boolean reg = false;
+		if(!active.isEmpty()){
+			RegToMoadonit r = active.get(0);
+			if(r.getTblRegType1().getTypeNum()==1 && r.getTblRegType2().getTypeNum()==1 && r.getTblRegType3().getTypeNum()==1 && 
+					r.getTblRegType4().getTypeNum()==1 && r.getTblRegType5().getTypeNum()==1 )
+				reg = false;
+			else
+				reg = true;
+		}*/
+		///
+		
+		try (PreparedStatement statement = DAOUtil.prepareStatement(this.con.getConnection(), stat , false); 
+						ResultSet resultSet = statement.executeQuery();) {
+
+			while (resultSet.next()) {
+				FullPupilCard p = map(resultSet);
+				list.add(p);
+			}
+
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+
+		return list;
+	}
+	
+	public List<FullPupilCard> selectSearch(String sind, String sord,String fName,String lName,String gend,String grade,
+							String pupilCell, String homePhone,String p1name,String p1cell,String p2name,String p2cell) {
+		List<FullPupilCard> list = new ArrayList<>();
+		String stat = selectAll;
+		if(fName!=null ||lName!=null || gend!=null   || (grade!=null && !grade.equals(" "))  || pupilCell!=null|| 
+				homePhone!=null|| p1name!=null|| p1cell!=null|| p2name!=null|| p2cell!=null){
+			stat+=" where ";
+			if(fName!=null){
+				stat+="firstName LIKE '%" +fName +"%' and ";
+			}
+			if(lName!=null){
+				stat+="lastName LIKE '%" +lName +"%' and ";
+			}
+			if(gend!=null){
+				stat+="gender =" +gend +" and ";
+			}
+			if(grade!=null && !grade.equals(" ")){
+				stat+="gradeID =" +grade +" and ";
+			}
+			if(pupilCell!=null){
+				stat+="cellphone LIKE '%" +pupilCell +"%' and ";
+			}
+			if(homePhone!=null){
+				stat+="homePhoneNum LIKE '%" +homePhone +"%' and ";
+			}
+			if(p1name!=null){
+				stat+="p1fname LIKE '%" +p1name +"%' and ";
+			}
+			if(p1cell!=null){
+				stat+="p1cell LIKE '%" +p1cell +"%' and ";
+			}
+			if(p2name!=null){
+				stat+="p2fname LIKE '%" +p2name +"%' and ";
+			}
+			if(p2cell!=null){
+				stat+="p2cell LIKE '%" +p2cell +"%' and ";
+			}
+			else
 				stat = stat.substring(0, stat.length()-4);
 		}
 		
