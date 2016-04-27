@@ -32,7 +32,10 @@ jQuery(document).ready(function() {
 		$('#down').append(listitems);
 		}
 	else //for demo only
+		{
+		$('#down').append('<option value=' + 11 + '>אא</option>');
 		selectedGrade=11;
+		}
 	
 	//generating attendances record in DB
 	$.ajax({
@@ -54,7 +57,7 @@ jQuery(document).ready(function() {
 	    }
 	    
 	  }); 
-	loadGrid();
+	loadGrid(selectedGrade);
 });
 
 function actionChanged(){
@@ -83,52 +86,109 @@ function addDays(date, days) {
 }
 function loadGrid(){
 	var today = new(Date);
-	var colN=['שם','מגדר','ימים במועדונית',today.toDateString(), addDays(today, 1).toDateString()];
+	var colN=['שם','מגדר','ימים במועדונית'];
+	for(var i=0;i<14;i++)
+		colN.push(addDays(today, i).toDateString().slice(4,10));
 	  $("#list").jqGrid({
           url : "PupilAttendanceController?action=loadGrid",
           datatype : "json",
           mtype : 'POST',
           colNames : colN,//create an array before this call
           colModel : [ {
-                  name : 'id',
-                  index : 'id',
+                  name : 'name',
+                  index : 'name',
                   width : 100/*,
                   hidden: true*/
           }, {
-                  name : 'firstName',
-                  index : 'firstName',
-                  width : 150,
+                  name : 'gender',
+                  index : 'gender',
+                  width : 30,
                   editable : true
           }, {
-                  name : 'lastName',
+                  name : 'regDays',
                   index : 'lastName',
-                  width : 150,
+                  width : 100,
                   editable : true
           }, {
 	              name : 'today',
 	              index : 'today',
-	              width : 150,
+	              width : 30,
 	              editable : true
           }, {
 		          name : 'tommorow',
 		          index : 'tommorow',
-		          width : 150,
+		          width : 30,
 		          editable : true
-          } ],
+          } , {
+	          name : 'day3',
+	          index : 'day3',
+	          width : 30,
+	          editable : true
+      }, {
+    name : 'day4',
+    index : 'day4',
+    width : 30,
+    editable : true
+}, {
+    name : 'day5',
+    index : 'day5',
+    width : 30,
+    editable : true
+}, {
+    name : 'day6',
+    index : 'day6',
+    width : 30,
+    editable : true
+}, {
+    name : 'day7',
+    index : 'day7',
+    width : 30,
+    editable : true
+}, {
+    name : 'day8',
+    index : 'day8',
+    width : 30,
+    editable : true
+}, {
+    name : 'day9',
+    index : 'day9',
+    width : 30,
+    editable : true
+}, {
+    name : 'day10',
+    index : 'day10',
+    width : 30,
+    editable : true
+}, {
+    name : 'day11',
+    index : 'day11',
+    width : 30,
+    editable : true
+}, {
+    name : 'day12',
+    index : 'day12',
+    width : 30,
+    editable : true
+}, {
+    name : 'day13',
+    index : 'day13',
+    width : 30,
+    editable : true
+}, {
+    name : 'day14',
+    index : 'day14',
+    width : 30,
+    editable : true
+}],
          /* pager : '#pager',*/
           rowNum : 40,
           rowList : [ ],
-          sortname : 'lastName',
+          sortname : 'name',
           /*scroll: true,*/
           direction:"rtl",
           viewrecords : true,
           gridview : true,
           height: "100%",
-         /* ondblClickRow: function(rowId) {
-              var rowData = jQuery(this).getRowData(rowId); 
-              var pupilID = rowData.id;
-              window.location.href = "pupil_card_view.jsp?pupil="+pupilID+"";
-          },*/
           jsonReader : {
                   repeatitems : false,
           },

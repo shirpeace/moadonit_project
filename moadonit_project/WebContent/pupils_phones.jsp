@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=windows-1255"
+<%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="windows-1255"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -54,7 +54,20 @@
 
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	
+	
+	<script src="js/jquery.js"></script>
+	<script src="js/jquery-ui.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/i18n/grid.locale-he.js"></script>
+  <!--  <script src="js/i18n/grid.locale-en.js"></script>  -->
+	
+ 	
+    <script src="js/jquery.jqGrid.min.js"></script> 
 
+	
+	<script src="js/js_pupils_phones.js"></script> 	
+	
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -138,13 +151,25 @@
                 </div> -->
                 <!-- /.row -->
 
-                <div class="col-lg-8">
+                <div class="col-lg-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h3 class="panel-title"><i class="fa fa-info fa-fw"></i> הוראות למשתמש</h3>
                             </div>
                             <div class="panel-body">
-                                <div class="table-responsive">
+                            <div class="table-responsive col-lg-10">
+                                    <table class="table table-bordered table-hover table-striped" id="list">
+                                
+                                
+										<tr>
+											<td ></td>
+										</tr>
+									</table>
+								
+								<div id="pager"></div>
+                                
+                            </div>
+                                <!-- <div class="table-responsive">
                                     <table class="table table-bordered table-hover table-striped">
                                         <thead>
                                             <tr>
@@ -206,7 +231,7 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -218,18 +243,15 @@
 
     </div>
     <!-- /#wrapper -->
+<script type="text/javascript">
 
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
-
-    <!-- Morris Charts JavaScript -->
-    <script src="js/plugins/morris/raphael.min.js"></script>
-    <script src="js/plugins/morris/morris.min.js"></script>
-    <script src="js/plugins/morris/morris-data.js"></script>
-
+/* var currentUserId =	 '${p.pupilNum}' */
+jQuery(document).ready(function() {
+	var pupilID ;
+	loadPupilSearch();
+});
+</script>
+  
 </body>
 
 </html>

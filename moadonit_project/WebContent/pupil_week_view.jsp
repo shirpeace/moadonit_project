@@ -117,7 +117,7 @@
 					<li><a href="pupil_week_view.jsp" id="regLink"><i
 							class="fa fa-fw fa-edit"></i> עריכת רישום</a></li>
 							                     <li>
-                        <a href= "pupil_one_time_act.jsp"><i class="fa fa-fw fa-plus-square-o"></i> פעילות חד פעמית</a>
+                        <a href= "pupil_one_time_act.jsp" id="oneTimeLink"><i class="fa fa-fw fa-plus-square-o"></i> פעילות חד פעמית</a>
                      </li>  
 				</ul>
 			</div>
@@ -356,6 +356,7 @@
 			$('#detailsLink').attr('href','pupil_card_view.jsp?li=0&pupil=' + pupilID);
 			$('#scheduleLink').attr('href','pupil_week_view.jsp?li=1&pupil=' + pupilID);
 			$('#regLink').attr('href','pupil_week_view.jsp?reg=1&li=2&pupil=' + pupilID);
+			$('#oneTimeLink').attr('href','pupil_week_view.jsp?li=3&pupil=' + pupilID);
 			
 			var dataString = 'id='+ pupilID + '&action=' + "get";
 			loadPupilCard(dataString);
