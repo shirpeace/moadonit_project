@@ -32,15 +32,16 @@ public class RegToMoadonitDAO extends AbstractDAO {
 	private String checkPK = "SELECT pupilNum, startDate FROM tbl_reg_to_moadonit where pupilNum = ? and startDate = ? and activeYear =  ms2016.get_currentYearID()";
 	private String selectAll = "SELECT * FROM ms2016.tbl_reg_to_moadonit WHERE pupilNum = ? and  startdate <= CURDATE() and activeYear =  ms2016.get_currentYearID() order by startdate desc";
 	private String getActiveRegInPeriod = "{call ms2016.getActiveRegInPeriodTry (?)}";
-
-	public List<RegToMoadonit> selectAll(int id)
+	private String getAllRegsForPupil = "{ call ms2016.get_Regs_For_Pupils( ? , ? ) }";
+	public List<RegToMoadonit> selectAll(int id, int future)
 			throws IllegalArgumentException, DAOException {
 		List<RegToMoadonit> list = new ArrayList<>();
 
+
 		// (where %s,fName=null?"firstName=fname":" ");
 		try (PreparedStatement statement = DAOUtil
-				.prepareStatement(this.con.getConnection(), selectAll, false,
-						new Object[] { id });
+				.prepareCallbackStatement(this.con.getConnection(), getAllRegsForPupil,
+						new Object[] { id , future});
 				ResultSet resultSet = statement.executeQuery();) {
 
 			while (resultSet.next()) {

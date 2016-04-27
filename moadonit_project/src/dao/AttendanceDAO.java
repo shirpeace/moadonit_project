@@ -18,14 +18,14 @@ public class AttendanceDAO extends AbstractDAO {
 	private static final long serialVersionUID = -4505815614324512802L;
 
 	private String insert = "INSERT INTO tbl_attendance"
-			+ "( pupilID, specifficDate, attended_, rec_type, activityNum) VALUES (?,?,?,?,?)";
+			+ "( pupilID, specifficDate, attended_, rec_type, activityNum, activeYear) VALUES (?,?,?,?,?, ms2016.get_currentYearID() )";
 
 	private String update = "UPDATE tbl_attendance "
-			+ "SET attended_=?, rec_type=?, activityNum=? WHERE pupilID=? and specifficDate=?";
+			+ "SET attended_=?, rec_type=?, activityNum=? WHERE pupilID=? and specifficDate=? and activeYear = ms2016.get_currentYearID()";
 
-	private String delete = "DELETE FROM tbl_attendance WHERE pupilID = ?;";
+	private String delete = "DELETE FROM tbl_attendance WHERE pupilID = ? and activeYear = ms2016.get_currentYearID()";
 
-	private String select = "SELECT pupilID, specifficDate, attended_, rec_type, activityNum FROM tbl_attendance WHERE pupilID = ?";
+	private String select = "SELECT pupilID, specifficDate, attended_, rec_type, activityNum FROM tbl_attendance WHERE pupilID = ? and activeYear = ms2016.get_currentYearID()";
 
 	private Attendance map(ResultSet resultSet) throws SQLException {
 		Attendance att = new Attendance();

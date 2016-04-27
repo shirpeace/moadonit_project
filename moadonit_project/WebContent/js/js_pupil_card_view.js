@@ -19,14 +19,20 @@ var state = {
 function setPupilCardData(pupil){
 			
 			if(pupil != undefined){
-				
+				var d;
 				$('.page-header').html(pupil.firstName + " " + pupil.lastName);
-				var d = new Date(pupil.birthDate);
+				if(pupil.birthDate != null){
+					
+					d = new Date(pupil.birthDate);
+					$('#date_of_birth').combodate('setValue', d);
+				}
+								
+				
 			/* pupil details import */
 			$('#fName').val(pupil.firstName);
 			$('#lName').val(pupil.lastName);
 			$('#cell').val(pupil.cellphone);
-			$('#date_of_birth').combodate('setValue', d);
+			
 			$('#grade').val(pupil.gradeID);	
 			$("input[name=genderGruop][value=" + pupil.gender + "]").prop('checked', true);	
 			$('#food').val(pupil.foodType);	

@@ -104,7 +104,7 @@ public class FullPupilCardDAO extends AbstractDAO {
 	public List<FullPupilCard> selectSearch(String sind, String sord,String fName,String lName,String gend,String grade,String isReg) {
 		List<FullPupilCard> list = new ArrayList<>();
 		String stat = selectAll;
-		if(fName!=null ||lName!=null || gend!=null || grade!=null || isReg!=null){
+		if(fName!=null ||lName!=null || gend!=null   || (grade!=null && !grade.equals(" "))  || isReg!=null){
 			stat+=" where ";
 			if(fName!=null){
 				stat+="firstName LIKE '%" +fName +"%' and ";
@@ -115,7 +115,7 @@ public class FullPupilCardDAO extends AbstractDAO {
 			if(gend!=null){
 				stat+="gender =" +gend +" and ";
 			}
-			if(grade!=null){
+			if(grade!=null && !grade.equals(" ")){
 				stat+="gradeID =" +grade +" and ";
 			}
 			if(isReg!=null){

@@ -136,7 +136,7 @@ public class FullPupilCardController extends HttpServlet implements
 	@SuppressWarnings("unchecked")
 	private JSONObject getGradesJson() {
 		List<GradeCode> list = gradeDAO.selectIndex(0);
-		String values= "";
+		String values= " : ;";
 		for (int i=0;i<list.size();i++) { //{ value: ":;1:בן;2:בת"}
 			GradeCode grade=list.get(i);
 			values += grade.getGradeID()+":"+ grade.getGradeName()+";";
@@ -387,6 +387,11 @@ public class FullPupilCardController extends HttpServlet implements
 				if(temp.getPupilNum() > 0){
 					if(rp.getEthiopian() != 0 || !rp.getFoodSensitivity().trim().equals("") || !rp.getHealthProblems().trim().equals("")
 							|| !rp.getOtherComments().trim().equals("") || (rp.getStaffChild() != null && !rp.getStaffChild().trim().equals("")) || rp.getTblFoodType().getFoodTypeID() != 0 ){
+						
+						if (rp.getTblFoodType().getFoodTypeID() ==  0 ) {
+							rp.getTblFoodType().setFoodTypeID(1);
+						}
+						
 						rp.setPupilNum(p.getPupilNum());
 						this.regPupilDao.update(rp);
 					}
@@ -396,9 +401,14 @@ public class FullPupilCardController extends HttpServlet implements
 			else{
 				
 				// insert regPupil				
-				rp.setPupilNum(p.getPupilNum());
+				rp.setPupilNum(p.getPupilNum());				
 				if(rp.getEthiopian() != 0 || !rp.getFoodSensitivity().trim().equals("") || !rp.getHealthProblems().trim().equals("")
-						|| !rp.getOtherComments().trim().equals("") || (rp.getStaffChild() != null && !rp.getStaffChild().trim().equals("")) || rp.getTblFoodType().getFoodTypeID() != 0 ){
+						|| !rp.getOtherComments().trim().equals("") || (rp.getStaffChild() != null && !rp.getStaffChild().trim().equals("")) || rp.getTblFoodType().getFoodTypeID() !=  0){
+					
+					if (rp.getTblFoodType().getFoodTypeID() ==  0 ) {
+						rp.getTblFoodType().setFoodTypeID(1);
+					}
+					
 					rp.setPupilNum(p.getPupilNum());
 					this.regPupilDao.insert(rp);
 				}				

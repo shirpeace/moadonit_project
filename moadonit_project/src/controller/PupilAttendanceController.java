@@ -84,7 +84,7 @@ public class PupilAttendanceController extends HttpServlet implements Serializab
 		int pupilID = Integer.parseInt(req.getParameter("pupilID"));
 		// dao
 		this.regDAO = new RegToMoadonitDAO(con);
-		pupils = regDAO.selectAll(pupilID);
+		pupils = regDAO.selectAll(pupilID,0);
 
 		return pupils;
 	}

@@ -68,7 +68,11 @@ public class PupilRegistrationController extends HttpServlet implements
 			if (action.equals("getRegistration")
 					|| action.equals("getWeekGrid")) {
 
-				this.pupilRegList = getRegistration(req, resp);
+				if (action.equals("getRegistration"))
+					this.pupilRegList = getRegistration(req, resp,1);
+				else if (action.equals("getWeekGrid"))
+					this.pupilRegList = getRegistration(req, resp,0);
+				
 				registrationData = new JSONArray();
 
 				if (!pupilRegList.isEmpty()) {
@@ -174,14 +178,14 @@ public class PupilRegistrationController extends HttpServlet implements
 	}
 
 	protected List<RegToMoadonit> getRegistration(HttpServletRequest req,
-			HttpServletResponse resp) throws IOException, SQLException {
+			HttpServletResponse resp , int future) throws IOException, SQLException {
 
 		List<RegToMoadonit> pupils = new ArrayList<>();
 
 		int pupilID = Integer.parseInt(req.getParameter("pupilID"));
 		// dao
 		this.regDAO = new RegToMoadonitDAO(con);
-		pupils = regDAO.selectAll(pupilID);
+		pupils = regDAO.selectAll(pupilID,future);
 
 		return pupils;
 	}
@@ -195,6 +199,7 @@ public class PupilRegistrationController extends HttpServlet implements
 
 			JSONObject user = new JSONObject();
 			user.put("type", "סוג רישום");
+			user.put("startDate", regPupil.getId().getStartDate().getTime());
 			user.put("sunday", getRegType(regPupil.getTblRegType1().getTypeNum()));
 			user.put("monday", getRegType(regPupil.getTblRegType2().getTypeNum()));
 			user.put("tuesday", getRegType(regPupil.getTblRegType3().getTypeNum()));

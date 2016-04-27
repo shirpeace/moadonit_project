@@ -191,7 +191,7 @@
 									<label for="date_of_birth">תאריך לידה</label>
 									<br>	
 									<input id="date_of_birth" name="date_of_birth" 
-									value="01-01-2003" class=".ignore" data-smartDays="true" data-firstItem="name"
+									class=".ignore" data-smartDays="true" data-firstItem="name"
 										data-format="DD-MM-YYYY" data-template="D MMM YYYY" > 
 								</div>
 								<div class="form-group">
