@@ -8,7 +8,7 @@ import javax.persistence.*;
  * The persistent class for the tbl_grade_teacher database table.
  * 
  */
-@Entity
+/*@Entity not in use - sould be deleted*/
 @Table(name="tbl_grade_teacher")
 @NamedQuery(name="GradeTeacher.findAll", query="SELECT g FROM GradeTeacher g")
 public class GradeTeacher implements Serializable {

@@ -29,7 +29,7 @@ public class AttendanceDAO extends AbstractDAO {
 
 	private Attendance map(ResultSet resultSet) throws SQLException {
 		Attendance att = new Attendance();
-		AttendancePK pk=  new AttendancePK();
+		AttendancePK pk = new AttendancePK();
 		pk.setPupilID(resultSet.getInt("pupilID"));
 		pk.setSpecifficDate(resultSet.getDate("specifficDate"));
 		att.setId(pk);
@@ -38,7 +38,7 @@ public class AttendanceDAO extends AbstractDAO {
 		Activity act = new Activity();
 		act.setActivityNum(resultSet.getInt("activityNum"));
 		att.setTblActivity(act);
-		
+
 		return att;
 	}
 
@@ -65,7 +65,8 @@ public class AttendanceDAO extends AbstractDAO {
 					"Attendance is not created yet, the Attendance ID is null.");
 		}
 
-		Object[] values = { att.getAttended(),att.getRecType(), att.getTblActivity().getActivityNum(), 
+		Object[] values = { att.getAttended(), att.getRecType(),
+				att.getTblActivity().getActivityNum(),
 				att.getId().getPupilID(), att.getId().getSpecifficDate()
 
 		};
@@ -84,8 +85,8 @@ public class AttendanceDAO extends AbstractDAO {
 		}
 	}
 
-	public Attendance selectById(AttendancePK id) throws IllegalArgumentException,
-			DAOException {
+	public Attendance selectById(AttendancePK id)
+			throws IllegalArgumentException, DAOException {
 		Attendance att = new Attendance();
 
 		try (PreparedStatement statement = DAOUtil.prepareStatement(
@@ -103,11 +104,12 @@ public class AttendanceDAO extends AbstractDAO {
 		return att;
 	}
 
-	public Boolean insert(Attendance att) throws IllegalArgumentException, DAOException {
-		
-		Object[] values = {att.getId().getPupilID(), att.getId().getSpecifficDate(), att.getAttended(),att.getRecType(),
-				att.getTblActivity().getActivityNum()
-		};
+	public Boolean insert(Attendance att) throws IllegalArgumentException,
+			DAOException {
+
+		Object[] values = { att.getId().getPupilID(),
+				att.getId().getSpecifficDate(), att.getAttended(),
+				att.getRecType(), att.getTblActivity().getActivityNum() };
 
 		try (
 
@@ -117,14 +119,14 @@ public class AttendanceDAO extends AbstractDAO {
 			if (affectedRows == 0) {
 				throw new DAOException(
 						"Creating Attendance failed, no rows affected.");
-			}
-			else return true;
+			} else
+				return true;
 
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		}
 	}
-	
+
 	public AttendanceDAO(MyConnection con) {
 
 		super(con);

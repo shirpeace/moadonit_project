@@ -225,12 +225,13 @@ public class PupilRegistrationController extends HttpServlet implements
 
 	private String getRegType(int type) {
 
-		if (type == 0)
+		if (type == 1)
 			return "לא רשום";
-		else if (type == 1)
+		else if (type == 2)
 			return "מועדונית";
-		else
+		else if (type == 3)
 			return "אוכל בלבד";
+		return "";
 	}
 
 	/**

@@ -244,45 +244,45 @@
 														<label for="action">יום ראשון</label> <select
 															class="form-control " id="sunday" name="sunday"
 															 >
-															<option value="2">לא רשום</option>
-															<option value="1">מועדונית</option>
-															<option value="2">אוכל בלבד</option>
+															<option value="1">לא רשום</option>
+															<option value="2">מועדונית</option>
+															<option value="3">אוכל בלבד</option>
 														</select>
 													</div>
 													<div class="form-group col-lg-2">
 														<label for="action">יום שני</label> <select
 															class="form-control " id="monday" name="monday"
 															 >
-															<option value="2">לא רשום</option>
-															<option value="1">מועדונית</option>
-															<option value="2">אוכל בלבד</option>
+															<option value="1">לא רשום</option>
+															<option value="2">מועדונית</option>
+															<option value="3">אוכל בלבד</option>
 														</select>
 													</div>
 													<div class="form-group col-lg-2">
 														<label for="action">יום שלישי</label> <select
 															class="form-control " id="tuesday" name="tuesday"
 															 >
-															<option value="2">לא רשום</option>
-															<option value="1">מועדונית</option>
-															<option value="2">אוכל בלבד</option>
+															<option value="1">לא רשום</option>
+															<option value="2">מועדונית</option>
+															<option value="3">אוכל בלבד</option>
 														</select>
 													</div>
 													<div class="form-group col-lg-2">
 														<label for="action">יום רביעי</label> <select
 															class="form-control " id="wednesday" name="wednesday"
 															 >
-															<option value="2">לא רשום</option>
-															<option value="1">מועדונית</option>
-															<option value="2">אוכל בלבד</option>
+															<option value="1">לא רשום</option>
+															<option value="2">מועדונית</option>
+															<option value="3">אוכל בלבד</option>
 														</select>
 													</div>
 													<div class="form-group col-lg-2">
 														<label for="action">יום חמישי</label> <select
 															class="form-control " id="thursday" name="thursday"
 															 >
-															<option value="2">לא רשום</option>
-															<option value="1">מועדונית</option>
-															<option value="2">אוכל בלבד</option>
+															<option value="1">לא רשום</option>
+															<option value="2">מועדונית</option>
+															<option value="3">אוכל בלבד</option>
 														</select>
 													</div>
 													
@@ -395,9 +395,7 @@
 				var form = $("#regform");
 				if (form.valid()){
 					result = saveRegistraion();
-					if (result) {
-						loadWeekGrid(pupilID);
-						loadRegistrationGrid(pupilID); 
+					if (result) {						
 						bootbox.alert("נתונים נשמרו בהצלחה", function() {			        				
 			        	});
 					}

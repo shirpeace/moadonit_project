@@ -23,6 +23,11 @@ public class Attendance implements Serializable {
 	@Column(name="rec_type")
 	private int recType;
 
+	//bi-directional many-to-one association to Activity
+	@ManyToOne
+	@JoinColumn(name="activityNum")
+	private Activity tblActivity;
+
 	//bi-directional many-to-one association to Pupil
 	@ManyToOne
 	@JoinColumn(name="pupilID")
@@ -32,11 +37,6 @@ public class Attendance implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="activeYear")
 	private SchoolYear tblSchoolYear;
-
-	//bi-directional many-to-one association to Activity
-	@ManyToOne
-	@JoinColumn(name="activityNum")
-	private Activity tblActivity;
 
 	public Attendance() {
 	}
@@ -65,6 +65,14 @@ public class Attendance implements Serializable {
 		this.recType = recType;
 	}
 
+	public Activity getTblActivity() {
+		return this.tblActivity;
+	}
+
+	public void setTblActivity(Activity tblActivity) {
+		this.tblActivity = tblActivity;
+	}
+
 	public Pupil getTblPupil() {
 		return this.tblPupil;
 	}
@@ -79,14 +87,6 @@ public class Attendance implements Serializable {
 
 	public void setTblSchoolYear(SchoolYear tblSchoolYear) {
 		this.tblSchoolYear = tblSchoolYear;
-	}
-
-	public Activity getTblActivity() {
-		return this.tblActivity;
-	}
-
-	public void setTblActivity(Activity tblActivity) {
-		this.tblActivity = tblActivity;
 	}
 
 }

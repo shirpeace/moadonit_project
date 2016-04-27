@@ -35,13 +35,13 @@ public class SchoolYear implements Serializable {
 	@OneToMany(mappedBy="tblSchoolYear")
 	private List<GradePupil> tblGradePupils;
 
-	//bi-directional many-to-one association to GradeTeacher
-	@OneToMany(mappedBy="tblSchoolYear")
-	private List<GradeTeacher> tblGradeTeachers;
-
 	//bi-directional many-to-one association to RegToMoadonit
 	@OneToMany(mappedBy="tblSchoolYear")
 	private List<RegToMoadonit> tblRegToMoadonits;
+
+	//bi-directional many-to-one association to GradeInYear
+	@OneToMany(mappedBy="tblSchoolYear")
+	private List<GradeInYear> tblGradeInYears;
 
 	public SchoolYear() {
 	}
@@ -122,28 +122,6 @@ public class SchoolYear implements Serializable {
 		return tblGradePupil;
 	}
 
-	public List<GradeTeacher> getTblGradeTeachers() {
-		return this.tblGradeTeachers;
-	}
-
-	public void setTblGradeTeachers(List<GradeTeacher> tblGradeTeachers) {
-		this.tblGradeTeachers = tblGradeTeachers;
-	}
-
-	public GradeTeacher addTblGradeTeacher(GradeTeacher tblGradeTeacher) {
-		getTblGradeTeachers().add(tblGradeTeacher);
-		tblGradeTeacher.setTblSchoolYear(this);
-
-		return tblGradeTeacher;
-	}
-
-	public GradeTeacher removeTblGradeTeacher(GradeTeacher tblGradeTeacher) {
-		getTblGradeTeachers().remove(tblGradeTeacher);
-		tblGradeTeacher.setTblSchoolYear(null);
-
-		return tblGradeTeacher;
-	}
-
 	public List<RegToMoadonit> getTblRegToMoadonits() {
 		return this.tblRegToMoadonits;
 	}
@@ -164,6 +142,28 @@ public class SchoolYear implements Serializable {
 		tblRegToMoadonit.setTblSchoolYear(null);
 
 		return tblRegToMoadonit;
+	}
+
+	public List<GradeInYear> getTblGradeInYears() {
+		return this.tblGradeInYears;
+	}
+
+	public void setTblGradeInYears(List<GradeInYear> tblGradeInYears) {
+		this.tblGradeInYears = tblGradeInYears;
+	}
+
+	public GradeInYear addTblGradeInYear(GradeInYear tblGradeInYear) {
+		getTblGradeInYears().add(tblGradeInYear);
+		tblGradeInYear.setTblSchoolYear(this);
+
+		return tblGradeInYear;
+	}
+
+	public GradeInYear removeTblGradeInYear(GradeInYear tblGradeInYear) {
+		getTblGradeInYears().remove(tblGradeInYear);
+		tblGradeInYear.setTblSchoolYear(null);
+
+		return tblGradeInYear;
 	}
 
 }
