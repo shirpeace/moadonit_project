@@ -378,6 +378,9 @@
 			
 			loadRegistrationGrid(pupilID); 
 			
+			//Test grid
+			loadTestGrid(pupilID); 
+			
 			if(selectedLi == 1)
 				$('#scheduleLink').parent().addClass('active');
 			else if(selectedLi == 2)

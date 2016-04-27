@@ -223,13 +223,16 @@ function loadRegistrationGrid(pupilID) {
 					}
 				},
 				colModel : [
+				            
 						{
 							name : "startDate",
 							index : 'startDate',
 							sorttype : "date",
 							editable : true,
-							// formatter:'date', formatoptions: {srcformat: 'U',
-							// newformat:'dd/mm/yyyy'}/*,
+							datefmt: 'd-M-Y',
+							 /*formatter:'date', formatoptions: {srcformat: 'U',
+							 newformat:'dd/mm/yyyy'},*/
+							
 							formatter : function(cellValue, opts, rwd) {
 								if (cellValue) {
 									return $.fn.fmatter.call(this, "date",
@@ -242,9 +245,9 @@ function loadRegistrationGrid(pupilID) {
 							
 							name : 'sunday',
 							index : 'sunday',
-							/*edittype : "select",
-							formatter : 'select',
-							editoptions : regoptions*/
+							edittype : "select",
+							/*formatter : 'select',*/
+							/*editoptions : regoptions*/
 						}, {
 							
 							name : 'monday',
@@ -291,10 +294,10 @@ function loadRegistrationGrid(pupilID) {
 				 * jQuery(this).getRowData(rowId); var pupilID = rowData.id;
 				 * window.location.href =
 				 * "pupil_card_view.jsp?pupil="+pupilID+""; },
-				 */
+				 
 				jsonReader : {
 					repeatitems : false,
-				},
+				},*/
 				/* editurl : "FullPupilCardController", */
 				recreateFilter : true,
 				pgbuttons : false, // disable page control like next, back
@@ -331,6 +334,7 @@ function loadRegistrationGrid(pupilID) {
 	 */
 
 }
+
 
 function saveRegistraion() {
 
