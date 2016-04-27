@@ -160,6 +160,7 @@
                             <div class="table-responsive col-lg-10">
                                     <table class="table table-bordered table-hover table-striped" id="list">
                                 
+                                
 										<tr>
 											<td ></td>
 										</tr>
