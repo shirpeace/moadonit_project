@@ -23,7 +23,7 @@ function loadPupilSearch() {
       }); 
 	loadGrid();
 	$("#resetBtn").click(function() {
-		var grid = $("#list");
+		var grid = $("#contact");
 		grid.jqGrid('setGridParam',{search:false});
 		var postData = grid.jqGrid('getGridParam','postData');
 		$.extend(postData,{filters:""});
@@ -33,11 +33,11 @@ function loadPupilSearch() {
 	});
 }
 function loadGrid(){
-	  $("#list").jqGrid({
-          url : "FullPupilCardController?action=pupilSearch",
+	  $("#contact").jqGrid({
+          url : "FullPupilCardController?action=contactPage",
           datatype : "json",
           mtype : 'POST',
-          colNames : ['מספר','שם פרטי' , 'שם משפחה' , 'מגדר', 'כיתה', 'רשום'],
+          colNames : ['מספר','שם פרטי' , 'שם משפחה' , 'מגדר', 'כיתה', 'סלולר תלמיד', 'טלפון בבית', 'שם ההורה', 'טלפון','שם ההורה','טלפון'],
           colModel : [ {
                   name : 'id',
                   index : 'id',
@@ -46,37 +46,59 @@ function loadGrid(){
           }, {
                   name : 'firstName',
                   index : 'firstName',
-                  width : 150,
+                  width : 80,
                   editable : true
           }, {
                   name : 'lastName',
                   index : 'lastName',
-                  width : 150,
+                  width : 80,
                   editable : true
           }, {
                   name : 'gender',
                   index : 'gender',
-                  width : 100,
+                  width : 60,
                   editable : true,
                   stype: "select",
                   searchoptions: { value: ":;1:בן;2:בת"}
           }, {
                   name : 'gradeName',
                   index : 'gradeName',
-                  width : 100,
+                  width : 60,
                   editable : true,
                   stype: "select",
                   searchoptions:  grades
           }, {
-              name : 'isReg', 
-              index : 'isReg',
+              name : 'pupilCell', 
+              index : 'pupilCell',
               width : 100,
               editable : false,
-              stype: "select",
-              searchoptions: { value: ":;1:רשום;2:לא רשום"},
-              formatter: "checkbox",
+          }, {
+              name : 'homePhone', 
+              index : 'homePhone',
+              width : 100,
+              editable : false
+          }, {
+              name : 'p1Name', 
+              index : 'p1Name',
+              width : 100,
+              editable : false
+          }, {
+              name : 'p1Cell', 
+              index : 'p1Cell',
+              width : 100,
+              editable : false
+          }, {
+              name : 'p2Name', 
+              index : 'p2Name',
+              width : 100,
+              editable : false
+          }, {
+              name : 'p2Cell', 
+              index : 'p2Cell',
+              width : 100,
+              editable : false
           } ],
-          pager : '#pager',
+          pager : '#cont_page',
           rowNum : 30,
           rowList : [ ],
           sortname : 'gradeName',
@@ -102,7 +124,7 @@ function loadGrid(){
           /*viewrecords: false*/
           
   });
-  jQuery("#list").jqGrid('navGrid', '#pager', {
+  jQuery("#contact").jqGrid('navGrid', '#cont_page', {
           edit : false,
           add : false,
           del : false,
@@ -111,7 +133,7 @@ function loadGrid(){
   });
   
 
-  jQuery("#list").jqGrid('filterToolbar',{autosearch:true/*, stringResult: true*/});
+  jQuery("#contact").jqGrid('filterToolbar',{autosearch:true/*, stringResult: true*/});
   
 
 }	 	

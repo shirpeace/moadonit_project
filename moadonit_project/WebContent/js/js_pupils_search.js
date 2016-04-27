@@ -77,7 +77,7 @@ function loadGrid(){
               formatter: "checkbox",
           } ],
           pager : '#pager',
-          rowNum : 30,
+          rowNum : 50,
           rowList : [ ],
           sortname : 'gradeName',
           /*scroll: true,*/
@@ -97,9 +97,9 @@ function loadGrid(){
           recreateFilter:true,
           
           rowList: [],        // disable page size dropdown
-          pgbuttons: false,     // disable page control like next, back button
-          pgtext: null         // disable pager text like 'Page 0 of 10'
-          /*viewrecords: false*/
+          pgbuttons: true,     // disable page control like next, back button
+          /*pgtext: null, */        // disable pager text like 'Page 0 of 10'
+          viewrecords: true
           
   });
   jQuery("#list").jqGrid('navGrid', '#pager', {

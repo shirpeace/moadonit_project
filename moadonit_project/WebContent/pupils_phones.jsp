@@ -8,7 +8,7 @@
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="he">
 
 <head>
 
@@ -38,8 +38,7 @@
 	%> 
 
     <title>מועדונית</title>
-
-    <!-- Bootstrap Core CSS -->
+  <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Bootstrap Core CSS RTL-->
@@ -50,10 +49,14 @@
     <link href="css/sb-admin-rtl.css" rel="stylesheet">
 
     <!-- Morris Charts CSS -->
-    <link href="css/plugins/morris.css" rel="stylesheet">
+  <!--   <link href="css/plugins/morris.css" rel="stylesheet"> -->
 
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    <!-- jqgrid style -->
+    <link rel="stylesheet" href="resources/jquery-ui-1.11.4.custom/jquery-ui.css">
+	<link rel="stylesheet" href="css/ui.jqgrid.css">
 	
 	
 	<script src="js/jquery.js"></script>
@@ -141,100 +144,33 @@
                 </div>
                 <!-- /.row -->
 
-               <!--  <div class="row">
-                    <div class="col-lg-12">
-                        <div class="alert alert-info alert-dismissable">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                            <i class="fa fa-info-circle"></i>  <strong>Like SB Admin?</strong> Try out <a href="http://startbootstrap.com/template-overviews/sb-admin-2" class="alert-link">SB Admin 2</a> for additional features!
-                        </div>
-                    </div>
-                </div> -->
-                <!-- /.row -->
-
-                <div class="col-lg-12">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title"><i class="fa fa-info fa-fw"></i> הוראות למשתמש</h3>
-                            </div>
-                            <div class="panel-body">
-                            <div class="table-responsive col-lg-10">
-                                    <table class="table table-bordered table-hover table-striped" id="list">
-                                
-                                
-										<tr>
-											<td ></td>
-										</tr>
-									</table>
-								
-								<div id="pager"></div>
-                                
-                            </div>
-                                <!-- <div class="table-responsive">
-                                    <table class="table table-bordered table-hover table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>שם מלא</th>
-                                                <th>טלפון בבית</th>
-                                                <th>סלורי</th>
-                                                <th>הורה 1</th>
-                                                <th>הורה2</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>3326</td>
-                                                <td>10/21/2013</td>
-                                                <td>3:29 PM</td>
-                                                <td>$321.33</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3325</td>
-                                                <td>10/21/2013</td>
-                                                <td>3:20 PM</td>
-                                                <td>$234.34</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3324</td>
-                                                <td>10/21/2013</td>
-                                                <td>3:03 PM</td>
-                                                <td>$724.17</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3323</td>
-                                                <td>10/21/2013</td>
-                                                <td>3:00 PM</td>
-                                                <td>$23.71</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3322</td>
-                                                <td>10/21/2013</td>
-                                                <td>2:49 PM</td>
-                                                <td>$8345.23</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3321</td>
-                                                <td>10/21/2013</td>
-                                                <td>2:23 PM</td>
-                                                <td>$245.12</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3320</td>
-                                                <td>10/21/2013</td>
-                                                <td>2:15 PM</td>
-                                                <td>$5663.54</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3319</td>
-                                                <td>10/21/2013</td>
-                                                <td>2:13 PM</td>
-                                                <td>$943.45</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div> -->
-                            </div>
-                        </div>
-                    </div>
+                                <div class="col-lg-12">
+			                        <div class="panel panel-default">
+			                            <div class="panel-heading">
+			                                <h3 class="panel-title pull-right"><i class="fa fa-info fa-fw"></i> כל התלמידים</h3>
+			                                <button id="resetBtn" class="pull-left">נקה חיפוש</button>
+			                                <div class="clearfix"></div>
+			                            </div>
+			                            <div class="panel-body">
+			                           
+			                               <!--  <div class="text-right">
+			                                    <a href="#">View All Transactions <i class="fa fa-arrow-circle-right"></i></a>
+			                                </div> -->
+			                                <div class="table-responsive col-lg-12">
+			                                    <table class="table table-bordered table-hover table-striped" id="contact">
+			                                
+													<tr>
+														<td ></td>
+													</tr>
+												</table>
+											
+											<div id="cont_page"></div>
+			                                
+			                            </div>
+										
+									</div>
+								</div>
+			            </div>
             </div>
             <!-- /.container-fluid -->
 
