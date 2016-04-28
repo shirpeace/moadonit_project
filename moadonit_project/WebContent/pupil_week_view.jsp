@@ -65,7 +65,8 @@
 <!-- Bootstrap Core JavaScript -->
 <script src="js/bootstrap.min.js"></script>
 <script src="js/i18n/grid.locale-he.js"></script>
-<script src="js/jquery.jqGrid.min.js"></script>
+<script src="js/Testjquery.jqGrid.min.js"></script>
+<!-- <script src="js/jquery.jqGrid.min.js"></script> -->
 
 <!-- bootbox code -->
 <script src="js/bootbox.js"></script>
@@ -377,10 +378,7 @@
 			loadWeekGrid(pupilID);
 			
 			loadRegistrationGrid(pupilID); 
-			
-			//Test grid
-			loadTestGrid(pupilID); 
-			
+						
 			if(selectedLi == 1)
 				$('#scheduleLink').parent().addClass('active');
 			else if(selectedLi == 2)

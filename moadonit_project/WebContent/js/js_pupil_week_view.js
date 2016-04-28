@@ -170,6 +170,7 @@ function loadRegistrationGrid(pupilID) {
 		value : "1:לא רשום;2:מועדונית;3:אוכל בלבד"
 	}, lastSelection = -1;
 
+	
 	$("#listRegistration").jqGrid(
 			{
 				url : "PupilRegistration?action=getRegistration&pupilID="
@@ -185,6 +186,22 @@ function loadRegistrationGrid(pupilID) {
 					} else {
 						$("#listRegistrationPager div.ui-paging-info").hide();
 					}
+					
+					var ids = $("#listRegistration").jqGrid('getDataIDs');
+					for (var i = 0; i < ids.length; i++) 
+					{
+					    var rowId = ids[i];
+					    var rowData = $('#listRegistration').jqGrid ('getRowData', rowId);
+
+					    var d = getDateFromValue(rowData.startDate);
+						if (d && currentDate) {
+							if (d.getTime() < currentDate.getTime()) {
+								$('#jEditButton_'+rowId).hide();
+								$('#jDeleteButton_'+rowId).hide();
+							}
+						}
+					}
+					
 				},
 				rowattr : function(rd) {
 
@@ -194,17 +211,18 @@ function loadRegistrationGrid(pupilID) {
 																	// registration
 							return {
 								/*"class" : 'not-editable-row',*/
-								"style" : "background:#7697B7;"
+								"style" : "background:#7697B7;","data-isHistory": false
 							};
 						} else if (d.getTime() === currentDate.getTime()) { // current
 																			// registration
 							return {
-								"style" : "background:#8BB5F2;"
+								"style" : "background:#8BB5F2;","data-isHistory": false
 							};
 						} else { // history registration
-						return {
+					
+							return {
 								"class" : 'not-editable-row',
-								"style" : "background:#9E9F9F;"
+								"style" : "background:#9E9F9F;","data-isHistory": true
 							};
 						}
 
@@ -213,15 +231,32 @@ function loadRegistrationGrid(pupilID) {
 				loadError : function(xhr, status, error) {
 					alert("complete loadError");
 				},
-
-				ondblClickRow : function(id) {
+				onSelectRow: function(id) { 
+					if (id && id !== lastSelection) {
+						var grid = $("#listRegistration");
+						grid.jqGrid('restoreRow', lastSelection);
+						var isCurrentHistory = $('#gview_listRegistration div #'+ id).attr('data-isHistory');
+						var islastSelectHistory = $('#gview_listRegistration div #'+ lastSelection).attr('data-isHistory');
+						
+						if (islastSelectHistory === 'false') {
+							$('#jEditButton_'+lastSelection).show();
+							$('#jDeleteButton_'+lastSelection).show();
+							$('#jSaveButton_'+lastSelection).hide();
+							$('#jCancelButton_'+lastSelection).hide();
+						}
+						
+						//grid.jqGrid('editRow', id, {keys : true});
+						lastSelection = id;
+					}
+		        },
+				/*ondblClickRow : function(id) {
 					if (id && id !== lastSelection) {
 						var grid = $("#listRegistration");
 						grid.jqGrid('restoreRow', lastSelection);
 						grid.jqGrid('editRow', id, {keys : true});
 						lastSelection = id;
 					}
-				},
+				},*/
 				colModel : [
 				            
 						{
@@ -229,52 +264,102 @@ function loadRegistrationGrid(pupilID) {
 							index : 'startDate',
 							sorttype : "date",
 							editable : true,
-							datefmt: 'd-M-Y',
+							editoptions: {
+		                            size: 20,
+		                            dataInit: function (el) {
+		                                $(el).datepicker({
+		                				    format: "dd/mm/yyyy",
+		                				    language: "he" ,
+		                				     startDate: "today",
+		                				    maxViewMode: 0,
+		                				    minViewMode: 0,
+		                				    todayBtn: true,
+		                				    keyboardNavigation: false,
+		                				    daysOfWeekDisabled: "5,6",
+		                				    todayHighlight: true,
+		                				    toggleActive: true 
+		                				}); 
+		                            },
+		                            defaultValue: function () {
+		                                var currentTime = new Date();
+		                                var month = parseInt(currentTime.getMonth() + 1);
+		                                month = month <= 9 ? "0" + month : month;
+		                                var day = currentTime.getDate();
+		                                day = day <= 9 ? "0" + day : day;
+		                                var year = currentTime.getFullYear();
+		                                return day + "/" + month + "/" + year;
+		                            }
+							 },
 							 /*formatter:'date', formatoptions: {srcformat: 'U',
 							 newformat:'dd/mm/yyyy'},*/
-							
-							formatter : function(cellValue, opts, rwd) {
+							/*formatter: function (cellvalue, options, rowObject) {
 								if (cellValue) {
-									return $.fn.fmatter.call(this, "date",
-											new Date(cellValue), opts, rwd);
+									var d = new Date(cellValue);
+									$.fn.fmatter.call(this, "date", d, options, rowObject);
+								} else {
+									return '';
+								}
+												               
+				            }
+							,*/
+							formatter : function (cellValue, opts, rwd) {								
+								if (cellValue) {
+									 getDateFromValue(cellValue);
+									
+									var d = $.fn.fmatter.call(this, "date",
+											getDateFromValue(cellValue), opts, rwd);
+									return d;
 								} else {
 									return '';
 								}
 							}
+				            , formatoptions: { newformat: "d/m/Y" },
 						}, {
 							
 							name : 'sunday',
 							index : 'sunday',
 							edittype : "select",
-							/*formatter : 'select',*/
-							/*editoptions : regoptions*/
+							editable : true,							
+							editoptions : regoptions
+							
+							
 						}, {
 							
 							name : 'monday',
 							index : 'monday',
-							
+							edittype : "select",
+							editable : true,
+							editoptions : regoptions
 
 						}, {
 							
 							name : 'tuesday',
 							index : 'tuesday',
-							
+							edittype : "select",
+							editable : true,
+							editoptions : regoptions
 
 						}, {
 							
 							name : 'wednesday',
 							index : 'wednesday',
-							
+							edittype : "select",
+							editable : true,
+							editoptions : regoptions
 						}, {
 							
 							name : 'thursday',
 							index : 'thursday',
+							edittype : "select",
+							editable : true,
+							editoptions : regoptions
 							
-						},{name : 'actions', index: 'actions', formatter:'actions',
+						},
+						{name : 'actions', index: 'actions', formatter:'actions', align: "center",							
 						    formatoptions: {
 						        keys: true,
-						        editbutton: false,
-						        delOptions: { url: "PupilRegistration?action=getRegistration&pupilID="+ pupilID }
+						        editbutton: true,
+						        delOptions: { url: "PupilRegistration?action=delete&pupilID="+ pupilID }
 						        }},
 						        ],
 				pager : '#listRegistrationPager',
@@ -283,21 +368,15 @@ function loadRegistrationGrid(pupilID) {
 				rowNum : 30,
 				rowList : [],
 				sortname : 'sunday',
-				/* scroll: true, */
 				direction : "rtl",
 				viewrecords : true,
 				gridview : true,
 				height : "100%",
 				width : "100%",
-				/*
-				 * ondblClickRow: function(rowId) { var rowData =
-				 * jQuery(this).getRowData(rowId); var pupilID = rowData.id;
-				 * window.location.href =
-				 * "pupil_card_view.jsp?pupil="+pupilID+""; },
-				 
+				
 				jsonReader : {
 					repeatitems : false,
-				},*/
+				},
 				/* editurl : "FullPupilCardController", */
 				recreateFilter : true,
 				pgbuttons : false, // disable page control like next, back
@@ -335,6 +414,17 @@ function loadRegistrationGrid(pupilID) {
 
 }
 
+function getDateFromValue(value){
+	if (typeof value === 'string') {
+		var arr = value.split("/");
+		var d = new Date(arr[2], arr[1] - 1, arr[0]);
+		return d;
+	}else if(typeof value === 'number'){
+		var d = new Date(value);
+		return d;
+	}
+	
+}
 
 function saveRegistraion() {
 
