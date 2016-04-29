@@ -61,8 +61,8 @@ public class RegToMoadonitDAO extends AbstractDAO {
         		
         ) {
             int affectedRows = statement.executeUpdate();
-            if (affectedRows == 0) {
-                throw new DAOException("Updating Row failed, no rows affected.");
+            if (affectedRows > 1) {
+                throw new DAOException("Updating Row was not currect , " + affectedRows + " rows affected.");
             }
             
             return true;

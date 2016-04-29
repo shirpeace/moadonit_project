@@ -249,6 +249,7 @@ a.g-menu-item, a.soptclass, a.clearsearchclass { cursor: pointer; }
 .ui-jqgrid .ui-jqgrid-view textarea,
 .ui-jqgrid .ui-jqgrid-view button {
     font-size: 11px;
+    height: 30px; /* matan  */
 }
 .ui-jqgrid .ui-scroll-popup {width: 95px;}
 .ui-search-table select,

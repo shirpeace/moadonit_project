@@ -75,7 +75,7 @@ function loadWeekGrid(pupilID) {
 							}
 						},
 						loadError : function(xhr, status, error) {
-							alert("complete loadError");
+							/*alert("complete loadError");*/
 						},
 						colModel : [
 								{
@@ -180,14 +180,7 @@ function loadRegistrationGrid(pupilID) {
 	var regoptions = {	value : "1:לא רשום;2:מועדונית;3:אוכל בלבד"	}, lastSelection = -1, grid =$("#listRegistration"),
 	myDelOptions = {
 			 rowData : {},
-			 /* errorfunc: function (rowID, response) {
-		          
-				  $(this).restoreAfterErorr = false;
-					$.jgrid.info_dialog($.jgrid.errors.errcap,'<div class="ui-state-error">'+
-					response.responseText +'</div>', $.jgrid.edit.bClose,{buttonalign:'right'});
-		            lastSelectedRow = rowID;
-		            return true;
-		        },*/
+			
 			 onClose : function (rowID, response) {
 				 
 		        },
@@ -251,8 +244,7 @@ function loadRegistrationGrid(pupilID) {
 
                 return {}; // you can return additional data which will be sent to the server
                 //return true;
-            },
-            /*processing:true*/
+            },            
         };
 
 	$("#listRegistration").jqGrid(
@@ -268,10 +260,10 @@ function loadRegistrationGrid(pupilID) {
 					if (parseInt(data.records, 10) == 0) {
 						$("#listRegistrationPager div.ui-paging-info").show();
 					} else {
-						$("#listRegistrationPager div.ui-paging-info").hide();
+						//$("#listRegistrationPager div.ui-paging-info").hide();
 					}
-					
-					/*centerForm($("#delmod"+grid[0].id));*/
+							
+					/* START hide edit/delete buttons for history records */
 					var ids = $("#listRegistration").jqGrid('getDataIDs');
 					for (var i = 0; i < ids.length; i++) 
 					{
@@ -286,7 +278,7 @@ function loadRegistrationGrid(pupilID) {
 							}
 						}
 					}
-					
+					/*  END edit/delete buttons for history records */
 				},
 				rowattr : function(rd) {
 
@@ -429,15 +421,12 @@ function loadRegistrationGrid(pupilID) {
 						        editbutton: true,
 						        onEdit:function(rowid) {
 		                            //do somethinf if you need on edit button click
-						        	alert("on edit");
+						        	
 		                         },								
 		                         onSuccess:function(jqXHR) {
 		                             // the function will be used as "succesfunc" parameter of editRow function
 		                             // (see http://www.trirand.com/jqgridwiki/doku.php?id=wiki:inline_editing#editrow)
-		                             alert("in onSuccess used only for remote editing:"+
-		                                   "\nresponseText="+jqXHR.responseText+
-		                                   "\n\nWe can verify the server response and return false in case of"+
-		                                   " error response. return true confirm that the response is successful");
+		                        	
 		                             // we can verify the server response and interpret it do as an error
 		                             // in the case we should return false. In the case onError will be called
 		                             return true;
@@ -447,14 +436,17 @@ function loadRegistrationGrid(pupilID) {
 		                             // (see http://www.trirand.com/jqgridwiki/doku.php?id=wiki:inline_editing#editrow)
 		                             // and saveRow function
 		                             // (see http://www.trirand.com/jqgridwiki/doku.php?id=wiki:inline_editing#saverow)
-		                             alert("in onError used only for remote editing:"+
+		                        	 bootbox.alert("שגיאה בשמירת הנתונים, נא בדוק את הערכים ונסה שוב.",
+		                 					function() {
+		                 					});
+		                            /* alert("in onError used only for remote editing:"+
 		                                   "\nresponseText="+jqXHR.responseText+
 		                                   "\nstatus="+jqXHR.status+
 		                                   "\nstatusText"+jqXHR.statusText+
-		                                   "\n\nWe don't need return anything");
+		                                   "\n\nWe don't need return anything");*/
 		                         },
 		                         afterSave:function(rowid) {
-		                             alert("in afterSave (Submit): rowid="+rowid+"\nWe don't need return anything");
+		                             /*alert("in afterSave (Submit): rowid="+rowid+"\nWe don't need return anything");*/
 		                         },
 		                         afterRestore:function(rowid) {
 		                             

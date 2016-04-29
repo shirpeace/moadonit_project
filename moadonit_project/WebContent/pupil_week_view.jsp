@@ -55,9 +55,9 @@
 	type="text/css">
 <link href="css/datepicker.css" rel="stylesheet">
 <!-- jqgrid style -->
-<link rel="stylesheet"	href="resources/jquery-ui-1.11.4.custom/jquery-ui.css">
-<!-- <link rel="stylesheet" href="css/ui.jqgrid.css"> --> 
- <link rel="stylesheet" href="css/ui.jqgrid-bootstrap.css">
+ <link rel="stylesheet"	href="resources/jquery-ui-1.11.4.custom/jquery-ui.css">
+ <link rel="stylesheet" href="css/ui.jqgrid.css">
+<link rel="stylesheet" href="css/ui.jqgrid-bootstrap-ui.css"> 
 
 <!-- jQuery -->
 <script src="js/jquery.js"></script>
@@ -85,6 +85,13 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+<style type="text/css">
+.ui-jqgrid .ui-jqgrid-view, .ui-jqgrid .ui-jqgrid-pager {
+    z-index: 9;
+}
+
+</style>
+
 </head>
 
 <body>

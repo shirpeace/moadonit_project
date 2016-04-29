@@ -17,7 +17,7 @@ var currentUserId =	 '<%=session.getAttribute("userid")%>';
 /*************************************************/
 
 /* action to update/insert pupil*/
-
+	
 function savePupilCardData(action,forward){
 		    
 	    
