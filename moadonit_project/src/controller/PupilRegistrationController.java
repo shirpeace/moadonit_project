@@ -23,6 +23,7 @@ import util.DAOUtil;
 import model.FullPupilCard;
 import model.RegToMoadonit;
 import model.RegToMoadonitPK;
+import model.RegType;
 import model.User;
 import dao.FullPupilCardDAO;
 import dao.RegToMoadonitDAO;
@@ -57,7 +58,7 @@ public class PupilRegistrationController extends HttpServlet implements
 		// TODO Auto-generated method stub
 
 		checkConnection(req, resp);
-
+		this.regDAO = new RegToMoadonitDAO(con);
 		action = req.getParameter("action");
 
 		this.reg = new RegToMoadonit();
@@ -152,17 +153,134 @@ public class PupilRegistrationController extends HttpServlet implements
 				resp.setContentType("application/json");
 				resp.setCharacterEncoding("UTF-8");
 				resp.getWriter().print(resultToClient);
+			}else if (action.equals("edit")) {
+				
+				boolean r =  editRegistration(req, resp);
+				
+				if (r) {
+					resultToClient.put("msg", 1);
+					resultToClient.put("result", "נתונים נשמרו בהצלחה");
+				} else {
+					resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+					resultToClient.put("msg", 0);
+					resultToClient
+							.put("result", "שגיאה בשמירת הנתונים");
+				}
+				
+				resp.setContentType("application/json");
+				resp.setCharacterEncoding("UTF-8");
+				resp.getWriter().print(resultToClient);
+				
+			}else if (action.equals("delete")) {
+				
+				boolean r =  deleteRegistration(req, resp);
+				
+				if (r) {
+					resultToClient.put("msg", 1);
+					resultToClient.put("result", "רשומה נמחקה בהצלחה");
+				} else {
+					resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+					resultToClient.put("msg", 0);
+					resultToClient
+							.put("result", "שגיאה במחיקת הנתונים");
+				}
+				
+				resultToClient.put("msg", 1);
+				resultToClient.put("result", "רשומה נמחקה בהצלחה");
+				
+				resp.setContentType("application/json");
+				resp.setCharacterEncoding("UTF-8");
+				resp.getWriter().print(resultToClient);
+				
 			}
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			resp.setContentType("application/json");
+			resp.setCharacterEncoding("UTF-8");
+
+			resultToClient.put("msg", 0);
+			resultToClient.put("result", null);
+			resp.getWriter().print(resultToClient);
+			
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 
+			resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			resp.setContentType("application/json");
+			resp.setCharacterEncoding("UTF-8");
+
+			resultToClient.put("msg", 0);
+			resultToClient.put("result", null);
+			resp.getWriter().print(resultToClient);
+			
+		}
+	}
+	private boolean deleteRegistration(HttpServletRequest req,
+			HttpServletResponse resp) throws IOException, SQLException {
+		// TODO Auto-generated method stub
+		boolean r = false;
+		RegToMoadonit regToUpdate = new RegToMoadonit();
+		
+		if (req.getSession().getAttribute("userid") != null) {
+			JSONObject user = (JSONObject) req.getSession()
+					.getAttribute("userid");
+			User u = new User();
+			u = (User) DAOUtil.getObjectFromJson(user.toString(), u.getClass());
+
+			regToUpdate = (RegToMoadonit) DAOUtil.getObjectFromJson(req.getParameter("rtm"), regToUpdate.getClass());
+			regToUpdate.setTblUser(u);
+			
+			this.con.getConnection().setAutoCommit(false);
+			r = this.regDAO.delete(regToUpdate);
+			if (r) {
+				this.con.getConnection().commit();
+			}
+			
+			this.con.getConnection().setAutoCommit(true);
+			
+			return r;
+			
+		}
+		else{
+			return false;
 		}
 	}
 
+	private boolean editRegistration(HttpServletRequest req,
+			HttpServletResponse resp) throws IOException, SQLException {
+		boolean r = false;
+		// * transaction block start *//
+		RegToMoadonit regToUpdate = new RegToMoadonit();
+		if (req.getSession().getAttribute("userid") != null) {
+			JSONObject user = (JSONObject) req.getSession()
+					.getAttribute("userid");
+			User u = new User();
+			u = (User) DAOUtil.getObjectFromJson(user.toString(), u.getClass());
+
+			regToUpdate = (RegToMoadonit) DAOUtil.getObjectFromJson(req.getParameter("rtm"), regToUpdate.getClass());
+			regToUpdate.setTblUser(u);
+			
+			this.con.getConnection().setAutoCommit(false);
+			r = this.regDAO.update(regToUpdate);
+			if (r) {
+				this.con.getConnection().commit();
+			}
+			
+			this.con.getConnection().setAutoCommit(true);
+			
+			return r;
+			
+		}
+		else{
+			return false;
+		}
+		
+		
+	}
 	private boolean addRegistration(HttpServletRequest req,
 			HttpServletResponse resp) throws IOException, SQLException {
 		// TODO Auto-generated method stub

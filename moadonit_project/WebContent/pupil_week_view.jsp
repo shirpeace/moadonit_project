@@ -55,9 +55,9 @@
 	type="text/css">
 <link href="css/datepicker.css" rel="stylesheet">
 <!-- jqgrid style -->
-<link rel="stylesheet"
-	href="resources/jquery-ui-1.11.4.custom/jquery-ui.css">
-<link rel="stylesheet" href="css/ui.jqgrid.css">
+<link rel="stylesheet"	href="resources/jquery-ui-1.11.4.custom/jquery-ui.css">
+<!-- <link rel="stylesheet" href="css/ui.jqgrid.css"> --> 
+ <link rel="stylesheet" href="css/ui.jqgrid-bootstrap.css">
 
 <!-- jQuery -->
 <script src="js/jquery.js"></script>
@@ -65,8 +65,7 @@
 <!-- Bootstrap Core JavaScript -->
 <script src="js/bootstrap.min.js"></script>
 <script src="js/i18n/grid.locale-he.js"></script>
-<script src="js/Testjquery.jqGrid.min.js"></script>
-<!-- <script src="js/jquery.jqGrid.min.js"></script> -->
+ <script src="js/jquery.jqGrid.min.js"></script>
 
 <!-- bootbox code -->
 <script src="js/bootbox.js"></script>

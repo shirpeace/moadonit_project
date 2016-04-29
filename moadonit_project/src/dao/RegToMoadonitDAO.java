@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import controller.MyConnection;
+import model.Pupil;
 import model.RegSource;
 import model.RegToMoadonit;
 import model.RegToMoadonitPK;
@@ -34,6 +35,42 @@ public class RegToMoadonitDAO extends AbstractDAO {
 	private String getActiveRegInPeriod = "{call ms2016.getActiveRegInPeriodTry (?)}";
 	private String getAllRegsForPupil = "{ call ms2016.get_Regs_For_Pupils( ? , ? ) }";
 	private String getActiveRegForPupil = "{ call ms2016.getActiveRegByPupilId( ? ) }";
+	private String update = "{ call ms2016.updateRegToMoadonitForPupil(?,? ,? , ?,? , ?, ?, ?) }";
+	private String delete = "DELETE FROM tbl_reg_to_moadonit where pupilNum = ? and startDate = ? and activeYear =  ms2016.get_currentYearID()";
+	public boolean update(RegToMoadonit regToUpdate) throws DAOException {
+        if (regToUpdate.getId() == null) {
+            throw new IllegalArgumentException("Row is not created yet, the Registration ID is null.");
+        }
+
+        Object[] values = { 
+        		
+        		regToUpdate.getTblRegType1().getTypeNum(),
+        		regToUpdate.getTblRegType2().getTypeNum(),
+        		regToUpdate.getTblRegType3().getTypeNum(),
+        		regToUpdate.getTblRegType4().getTypeNum(),
+        		regToUpdate.getTblRegType5().getTypeNum(),
+        		regToUpdate.getId().getPupilNum(),
+        		regToUpdate.getTblUser().getUserID(),
+        		regToUpdate.getId().getStartDate()
+				
+
+		};
+
+        try (
+        		PreparedStatement statement = DAOUtil.prepareCallbackStatement(this.con.getConnection(), update,values);
+        		
+        ) {
+            int affectedRows = statement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new DAOException("Updating Row failed, no rows affected.");
+            }
+            
+            return true;
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
+    }
+	
 	public List<RegToMoadonit> selectAll(int id, int future)
 			throws IllegalArgumentException, DAOException {
 		List<RegToMoadonit> list = new ArrayList<>();
@@ -203,5 +240,35 @@ public class RegToMoadonitDAO extends AbstractDAO {
 				
 
 				return rtm;
+	}
+
+	public boolean delete(RegToMoadonit regToUpdate) throws IllegalArgumentException, DAOException {
+		// TODO Auto-generated method stub
+		 if (regToUpdate.getId() == null) {
+	            throw new IllegalArgumentException("cant delete row, the Registration ID is null.");
+	        }
+
+	        Object[] values = { 
+	        		//pk of row
+	        		regToUpdate.getId().getPupilNum(),
+	        		regToUpdate.getId().getStartDate()
+					
+
+			};
+
+		        try (
+		        		PreparedStatement statement = DAOUtil.prepareStatement(
+		        				this.con.getConnection(), delete , false, values);        		        
+		        ) {
+		            int affectedRows = statement.executeUpdate();
+		            if (affectedRows == 0) {
+		                throw new DAOException("Deleting registration failed, no rows affected.");		                
+		            } else {
+		            	regToUpdate.setId(null);
+		            	return true;
+		            }
+		        } catch (SQLException e) {
+		            throw new DAOException(e);
+		        }		        
 	}
 }

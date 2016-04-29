@@ -5,6 +5,9 @@
 $.extend($.jgrid.ajaxOptions, {
 	async : false
 });
+/*$.jgrid.defaults.width = 780;*/
+$.jgrid.defaults.responsive = true;
+$.jgrid.defaults.styleUI = 'Bootstrap';
 var currentDate;
 /** ********************************************** */
 // TODO //* START PAGE FUNCTIONS */
@@ -65,6 +68,7 @@ function loadWeekGrid(pupilID) {
 						},
 						loadComplete : function(data) {
 							if (parseInt(data.records, 10) == 0) {
+								currentDate = new Date(); //default date is today if there are no rows in this grid 
 								$("#pager div.ui-paging-info").show();
 							} else {
 								$("#pager div.ui-paging-info").hide();
@@ -130,6 +134,7 @@ function loadWeekGrid(pupilID) {
 						gridview : true,
 						height : "100%",
 						width : "100%",
+						loadui:"block",
 						/*
 						 * ondblClickRow: function(rowId) { var rowData =
 						 * jQuery(this).getRowData(rowId); var pupilID =
@@ -163,23 +168,102 @@ function loadWeekGrid(pupilID) {
 
 }
 
+function centerForm ($form, grid) {
+    $form.closest('div.ui-jqdialog').position({
+        my: "center",
+        of: grid.closest('div.ui-jqgrid')
+    });
+}
 
 function loadRegistrationGrid(pupilID) {
 
-	var regoptions = {
-		value : "1:לא רשום;2:מועדונית;3:אוכל בלבד"
-	}, lastSelection = -1;
+	var regoptions = {	value : "1:לא רשום;2:מועדונית;3:אוכל בלבד"	}, lastSelection = -1, grid =$("#listRegistration"),
+	myDelOptions = {
+			 rowData : {},
+			 /* errorfunc: function (rowID, response) {
+		          
+				  $(this).restoreAfterErorr = false;
+					$.jgrid.info_dialog($.jgrid.errors.errcap,'<div class="ui-state-error">'+
+					response.responseText +'</div>', $.jgrid.edit.bClose,{buttonalign:'right'});
+		            lastSelectedRow = rowID;
+		            return true;
+		        },*/
+			 onClose : function (rowID, response) {
+				 
+		        },
+			 errorTextFormat: function (response) {
+				 
+				 	$(this).restoreAfterErorr = false;
+				 	var overlay = $('body > div.ui-widget-overlay'); //.is(":visible");
+					 if (overlay.is(":visible")) {
+						 overlay.remove();	
+						 $('#delmodlistRegistration').remove();
+						 
+					}
+				 	bootbox.alert("שגיאה במחיקת רשומה. נא נסה שוב.",
+							function() {
+					});
+				 				
+		            return true;
+		           
+			       
+			    },
+			   afterSubmit: function (response, postdata) {
+				   response = $.parseJSON(response.responseText);
+				   // delete row
+	                grid.delRowData(rowData.id);
+	                bootbox.alert("רשומה נמחקה בהצלחה",
+							function() {
+					});
+			        
+				   console.log(response);
+			        return [true, "success"];
+			    },
+			    afterComplete: function (response, postdata, formid) {
+			    	response = $.parseJSON(response.responseText);
+			       
+			    },
+		  	serializeDelData: function(postdata) { 
+				return { rtm : JSON.stringify(createPostData(pupilID, rowData,false))  } ;
+	        },
+	       
+            onclickSubmit: function(rp_ge, rowid) {
+                // we can use onclickSubmit function as "onclick" on "Delete" button
+               
+                rowData = $(this).jqGrid("getRowData", rowid);
+                $.extend(rowData, {id: rowid});
+                var d = getDateFromValue( rowData.startDate);
+                rp_ge.url = "PupilRegistration?" + $.param({
+                	action: "delete",
+                	pupilID: pupilID,
+                    startDate : d.getTime(),
+                });
+               /* // delete row
+                grid.delRowData(rowid);*/
+               
+                $("#delmod"+grid[0].id).hide();
 
-	
+               /* if (grid[0].p.lastpage > 1) {
+                    // reload grid to make the row from the next page visable.
+                    // TODO: deleting the last row from the last page which number is higher as 1
+                    grid.trigger("reloadGrid", [{page:grid[0].p.page}]);
+                }*/
+
+                return {}; // you can return additional data which will be sent to the server
+                //return true;
+            },
+            /*processing:true*/
+        };
+
 	$("#listRegistration").jqGrid(
 			{
 				url : "PupilRegistration?action=getRegistration&pupilID="
 						+ pupilID,
 				datatype : "json",
 				mtype : 'POST',
-				editurl : "PupilRegistration?action=edit",
+				editurl : "PupilRegistration?action=edit&pupilID="+ pupilID,
 				colNames : [ 'תאריך התחלה', 'יום ראשון', 'יום שני',
-						'יום שלישי', 'יום רביעי', 'יום חמישי' ,'X'],
+						'יום שלישי', 'יום רביעי', 'יום חמישי' ,'X'],					
 				loadComplete : function(data) {
 					if (parseInt(data.records, 10) == 0) {
 						$("#listRegistrationPager div.ui-paging-info").show();
@@ -187,6 +271,7 @@ function loadRegistrationGrid(pupilID) {
 						$("#listRegistrationPager div.ui-paging-info").hide();
 					}
 					
+					/*centerForm($("#delmod"+grid[0].id));*/
 					var ids = $("#listRegistration").jqGrid('getDataIDs');
 					for (var i = 0; i < ids.length; i++) 
 					{
@@ -222,20 +307,24 @@ function loadRegistrationGrid(pupilID) {
 					
 							return {
 								"class" : 'not-editable-row',
-								"style" : "background:#9E9F9F;","data-isHistory": true
+								"style" : "background:#9E9F9F;",
+								"data-isHistory": true
 							};
 						}
 
 					}
 				},
-				loadError : function(xhr, status, error) {
-					alert("complete loadError");
-				},
+				loadError : function(xhr,st,err) {
+					alert("Type: "+st+"; Response: "+ xhr.status + " "+xhr.statusText);
+			    },				
+				serializeRowData: function(postdata) { 
+					return { rtm : JSON.stringify(createPostData(pupilID, postdata,true))  } ;
+		        },
+		      
 				onSelectRow: function(id) { 
 					if (id && id !== lastSelection) {
 						var grid = $("#listRegistration");
-						grid.jqGrid('restoreRow', lastSelection);
-						var isCurrentHistory = $('#gview_listRegistration div #'+ id).attr('data-isHistory');
+						grid.jqGrid('restoreRow', lastSelection);						
 						var islastSelectHistory = $('#gview_listRegistration div #'+ lastSelection).attr('data-isHistory');
 						
 						if (islastSelectHistory === 'false') {
@@ -244,21 +333,11 @@ function loadRegistrationGrid(pupilID) {
 							$('#jSaveButton_'+lastSelection).hide();
 							$('#jCancelButton_'+lastSelection).hide();
 						}
-						
-						//grid.jqGrid('editRow', id, {keys : true});
+											
 						lastSelection = id;
 					}
 		        },
-				/*ondblClickRow : function(id) {
-					if (id && id !== lastSelection) {
-						var grid = $("#listRegistration");
-						grid.jqGrid('restoreRow', lastSelection);
-						grid.jqGrid('editRow', id, {keys : true});
-						lastSelection = id;
-					}
-				},*/
-				colModel : [
-				            
+				colModel : [				           
 						{
 							name : "startDate",
 							index : 'startDate',
@@ -270,7 +349,7 @@ function loadRegistrationGrid(pupilID) {
 		                                $(el).datepicker({
 		                				    format: "dd/mm/yyyy",
 		                				    language: "he" ,
-		                				     startDate: "today",
+		                				    startDate: "today",
 		                				    maxViewMode: 0,
 		                				    minViewMode: 0,
 		                				    todayBtn: true,
@@ -290,18 +369,7 @@ function loadRegistrationGrid(pupilID) {
 		                                return day + "/" + month + "/" + year;
 		                            }
 							 },
-							 /*formatter:'date', formatoptions: {srcformat: 'U',
-							 newformat:'dd/mm/yyyy'},*/
-							/*formatter: function (cellvalue, options, rowObject) {
-								if (cellValue) {
-									var d = new Date(cellValue);
-									$.fn.fmatter.call(this, "date", d, options, rowObject);
-								} else {
-									return '';
-								}
-												               
-				            }
-							,*/
+	
 							formatter : function (cellValue, opts, rwd) {								
 								if (cellValue) {
 									 getDateFromValue(cellValue);
@@ -355,11 +423,43 @@ function loadRegistrationGrid(pupilID) {
 							editoptions : regoptions
 							
 						},
-						{name : 'actions', index: 'actions', formatter:'actions', align: "center",							
+						{name : 'actions', index: 'actions', formatter:'actions', align: "center",	sortable:false,formatter:'actions',						
 						    formatoptions: {
 						        keys: true,
 						        editbutton: true,
-						        delOptions: { url: "PupilRegistration?action=delete&pupilID="+ pupilID }
+						        onEdit:function(rowid) {
+		                            //do somethinf if you need on edit button click
+						        	alert("on edit");
+		                         },								
+		                         onSuccess:function(jqXHR) {
+		                             // the function will be used as "succesfunc" parameter of editRow function
+		                             // (see http://www.trirand.com/jqgridwiki/doku.php?id=wiki:inline_editing#editrow)
+		                             alert("in onSuccess used only for remote editing:"+
+		                                   "\nresponseText="+jqXHR.responseText+
+		                                   "\n\nWe can verify the server response and return false in case of"+
+		                                   " error response. return true confirm that the response is successful");
+		                             // we can verify the server response and interpret it do as an error
+		                             // in the case we should return false. In the case onError will be called
+		                             return true;
+		                         },
+		                         onError:function(rowid, jqXHR, textStatus) {
+		                             // the function will be used as "errorfunc" parameter of editRow function
+		                             // (see http://www.trirand.com/jqgridwiki/doku.php?id=wiki:inline_editing#editrow)
+		                             // and saveRow function
+		                             // (see http://www.trirand.com/jqgridwiki/doku.php?id=wiki:inline_editing#saverow)
+		                             alert("in onError used only for remote editing:"+
+		                                   "\nresponseText="+jqXHR.responseText+
+		                                   "\nstatus="+jqXHR.status+
+		                                   "\nstatusText"+jqXHR.statusText+
+		                                   "\n\nWe don't need return anything");
+		                         },
+		                         afterSave:function(rowid) {
+		                             alert("in afterSave (Submit): rowid="+rowid+"\nWe don't need return anything");
+		                         },
+		                         afterRestore:function(rowid) {
+		                             
+		                         },		                         
+						        delOptions: myDelOptions /*{ url: "PupilRegistration?action=delete&pupilID="+ pupilID }*/
 						        }},
 						        ],
 				pager : '#listRegistrationPager',
@@ -414,6 +514,54 @@ function loadRegistrationGrid(pupilID) {
 
 }
 
+/**
+ * create the data to be sent to edit function on server
+ * @param pupilID
+ * @param dateVal 
+ * @param rowData from grid edit row
+ * @returns { json objectc } - regToMoadonit data
+ */
+function createPostData(pupilID, rowData,isEdit){
+	
+	var rtm = new Object();
+	
+	var mydate = getDateFromValue( rowData.startDate);
+	rtm.id = {
+		startDate : mydate,
+		pupilNum : pupilID
+	}; // pk
+	if (isEdit) {
+			rtm.tblRegType1 = {
+				typeNum : rowData.sunday
+			};
+			rtm.tblRegType2 = {
+				typeNum : rowData.monday
+			};
+			rtm.tblRegType3 = {
+				typeNum : rowData.tuesday
+			};
+			rtm.tblRegType4 = {
+				typeNum :rowData.wednesday
+			};
+			rtm.tblRegType5 = {
+				typeNum : rowData.thursday
+			};
+	}
+	
+	rtm.registerDate = new Date();
+	/* rtm.writenBy = currentUserId; */
+	rtm.tblRegSource = {
+		sourceNum : $('#reason').val()
+	};
+
+	return rtm;
+}
+/**
+ * the value to convert to date , if value is a milliseconds number , create an date from it.
+ * if vlaue is string, build date from it.
+ * @param value
+ * @returns {Date}
+ */
 function getDateFromValue(value){
 	if (typeof value === 'string') {
 		var arr = value.split("/");

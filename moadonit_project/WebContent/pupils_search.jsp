@@ -56,8 +56,8 @@
     
     <!-- jqgrid style -->
     <link rel="stylesheet" href="resources/jquery-ui-1.11.4.custom/jquery-ui.css">
-	<link rel="stylesheet" href="css/ui.jqgrid.css">
-	
+	 <link rel="stylesheet" href="css/ui.jqgrid.css"> 
+
 	
 	<script src="js/jquery.js"></script>
 	<script src="js/jquery-ui.js"></script>
@@ -155,7 +155,7 @@
                                     <a href="#">View All Transactions <i class="fa fa-arrow-circle-right"></i></a>
                                 </div> -->
                                 <div class="table-responsive col-lg-10">
-                                    <table class="table table-bordered table-hover table-striped" id="list">
+                                    <table class="table table-bordered table-hover table-striped" id="list" style="height: 50px">
                                 
 										<tr>
 											<td ></td>
