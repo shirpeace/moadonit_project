@@ -238,8 +238,9 @@
 					<div class="col-lg-10">
 						<div class="panel panel-default">
 							<div class="panel-heading">								
-								<a href="#editReg" data-toggle="collapse"
-									data-target="#editReg">עריכת הרישום <i
+								<a href="#" id="regHeaderlink">
+								<!-- <a href="#editReg" data-toggle="collapse" data-target="#editReg" -->
+									עריכת הרישום <i
 									class="fa fa-arrow-circle-down"></i></a>
 
 							</div>
@@ -318,7 +319,7 @@
 												</div>
 											</form>
 									</div>
-								
+								<div id="endP"></div>
 							</div>
 						</div>
 					</div>
@@ -358,6 +359,15 @@
 	%>
 
 	<script type="text/javascript">
+	function goToByScroll(id){
+        // Reove "link" from the ID
+      id = id.replace("link", "");
+        // Scroll
+      $('html,body').animate({
+          scrollTop: $("#"+id).offset().top},
+          'slow');
+  }
+	
 		$(function() {
 
 			$('#detailsLink').attr('href','pupil_card_view.jsp?li=0&pupil=' + pupilID);
@@ -384,11 +394,14 @@
 			loadWeekGrid(pupilID);
 			
 			loadRegistrationGrid(pupilID); 
-						
+					
 			if(selectedLi == 1)
 				$('#scheduleLink').parent().addClass('active');
-			else if(selectedLi == 2)
+			else if(selectedLi == 2){
 				$('#regLink').parent().addClass('active');
+				
+		        goToByScroll('endP');   
+			}
 			
 			if (reg != undefined && reg ==1 ) {
 				
@@ -409,6 +422,25 @@
 				}
 				
 			});
+			
+			
+			$('#regHeaderlink').click(function(e) {
+				 e.preventDefault(); 
+				 $("#editReg").slideToggle(100, function () {
+					 goToByScroll('endP');
+				    }); 
+			});
+			
+			$('#regLink').click(function(e) {
+				 e.preventDefault(); 
+				 $('#regLink').parent().addClass('active');
+				 $('#scheduleLink').parent().removeClass('active');
+				 $("#editReg").show(100, function () {
+					 goToByScroll('endP');
+				    }); 
+				
+			});
+			
 			
 			 /* set the validattion for form */
 			var validator = $("#regform").validate({
