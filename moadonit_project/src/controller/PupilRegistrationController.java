@@ -3,6 +3,9 @@ package controller;
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -217,6 +220,9 @@ public class PupilRegistrationController extends HttpServlet implements
 			resultToClient.put("result", null);
 			resp.getWriter().print(resultToClient);
 			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	private boolean deleteRegistration(HttpServletRequest req,
@@ -251,7 +257,7 @@ public class PupilRegistrationController extends HttpServlet implements
 	}
 
 	private boolean editRegistration(HttpServletRequest req,
-			HttpServletResponse resp) throws IOException, SQLException {
+			HttpServletResponse resp) throws IOException, SQLException, ParseException {
 		boolean r = false;
 		// * transaction block start *//
 		RegToMoadonit regToUpdate = new RegToMoadonit();
@@ -265,7 +271,9 @@ public class PupilRegistrationController extends HttpServlet implements
 			regToUpdate.setTblUser(u);
 			
 			this.con.getConnection().setAutoCommit(false);
-			r = this.regDAO.update(regToUpdate);
+			long milliSeconds= Long.parseLong(req.getParameter("_oldDateVal"));
+			Date date =  new Date(milliSeconds);
+			r = this.regDAO.update(regToUpdate,date);
 			if (r) {
 				this.con.getConnection().commit();
 			}

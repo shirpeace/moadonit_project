@@ -35,9 +35,9 @@ public class RegToMoadonitDAO extends AbstractDAO {
 	private String getActiveRegInPeriod = "{call ms2016.getActiveRegInPeriodTry (?)}";
 	private String getAllRegsForPupil = "{ call ms2016.get_Regs_For_Pupils( ? , ? ) }";
 	private String getActiveRegForPupil = "{ call ms2016.getActiveRegByPupilId( ? ) }";
-	private String update = "{ call ms2016.updateRegToMoadonitForPupil(?,? ,? , ?,? , ?, ?, ?) }";
+	private String update = "{ call ms2016.updateRegToMoadonitForPupil(?,? ,? , ?,? , ?, ?, ?,?) }";
 	private String delete = "DELETE FROM tbl_reg_to_moadonit where pupilNum = ? and startDate = ? and activeYear =  ms2016.get_currentYearID()";
-	public boolean update(RegToMoadonit regToUpdate) throws DAOException {
+	public boolean update(RegToMoadonit regToUpdate, Date oldDate) throws DAOException {
         if (regToUpdate.getId() == null) {
             throw new IllegalArgumentException("Row is not created yet, the Registration ID is null.");
         }
@@ -51,7 +51,8 @@ public class RegToMoadonitDAO extends AbstractDAO {
         		regToUpdate.getTblRegType5().getTypeNum(),
         		regToUpdate.getId().getPupilNum(),
         		regToUpdate.getTblUser().getUserID(),
-        		regToUpdate.getId().getStartDate()
+        		regToUpdate.getId().getStartDate(),
+        		oldDate
 				
 
 		};

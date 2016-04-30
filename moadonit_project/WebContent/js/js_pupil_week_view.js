@@ -177,7 +177,7 @@ function centerForm ($form, grid) {
 
 function loadRegistrationGrid(pupilID) {
 
-	var regoptions = {	value : "1:לא רשום;2:מועדונית;3:אוכל בלבד"	}, lastSelection = -1, grid =$("#listRegistration"),
+	var regoptions = {	value : "1:לא רשום;2:מועדונית;3:אוכל בלבד"	},oldDateVal = new Date(), lastSelection = -1, grid =$("#listRegistration"),
 	myDelOptions = {
 			 rowData : {},
 			
@@ -255,7 +255,7 @@ function loadRegistrationGrid(pupilID) {
 				mtype : 'POST',
 				editurl : "PupilRegistration?action=edit&pupilID="+ pupilID,
 				colNames : [ 'תאריך התחלה', 'יום ראשון', 'יום שני',
-						'יום שלישי', 'יום רביעי', 'יום חמישי' ,'X'],					
+						'יום שלישי', 'יום רביעי', 'יום חמישי' ,'פעולה'],					
 				loadComplete : function(data) {
 					if (parseInt(data.records, 10) == 0) {
 						$("#listRegistrationPager div.ui-paging-info").show();
@@ -282,6 +282,7 @@ function loadRegistrationGrid(pupilID) {
 				},
 				rowattr : function(rd) {
 
+					// set the style and editable of the row 
 					if (rd.startDate && currentDate) {
 						var d = new Date(rd.startDate);
 						if (d.getTime() > currentDate.getTime()) { // future
@@ -310,7 +311,7 @@ function loadRegistrationGrid(pupilID) {
 					alert("Type: "+st+"; Response: "+ xhr.status + " "+xhr.statusText);
 			    },				
 				serializeRowData: function(postdata) { 
-					return { rtm : JSON.stringify(createPostData(pupilID, postdata,true))  } ;
+					return { rtm : JSON.stringify(createPostData(pupilID, postdata,true)), _oldDateVal: oldDateVal.getTime()  } ;
 		        },
 		      
 				onSelectRow: function(id) { 
@@ -422,6 +423,11 @@ function loadRegistrationGrid(pupilID) {
 						        onEdit:function(rowid) {
 		                            //do somethinf if you need on edit button click
 						        	
+						        	// get html content of cell
+						        	var cellContent = $(this).getCell(rowid,'startDate'); 
+						        	// convert it to a datePicker and get value of the cell
+						        	var oldDate = $( '#'+$(cellContent).attr('id') ).datepicker( "getDate" );
+						        	oldDateVal = oldDate;
 		                         },								
 		                         onSuccess:function(jqXHR) {
 		                             // the function will be used as "succesfunc" parameter of editRow function
