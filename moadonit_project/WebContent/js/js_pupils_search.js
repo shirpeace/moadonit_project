@@ -1,4 +1,4 @@
-var grades;  
+var grades;
 function loadPupilSearch() {
 	$.ajax({
   		async: false,
@@ -99,6 +99,7 @@ function loadGrid(){
           rowList: [],        // disable page size dropdown
           pgbuttons: true,     // disable page control like next, back button
           /*pgtext: null, */        // disable pager text like 'Page 0 of 10'
+          loadui:"block",
           viewrecords: true
           
   });

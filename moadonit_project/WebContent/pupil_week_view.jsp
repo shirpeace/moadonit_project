@@ -55,9 +55,9 @@
 	type="text/css">
 <link href="css/datepicker.css" rel="stylesheet">
 <!-- jqgrid style -->
-<link rel="stylesheet"
-	href="resources/jquery-ui-1.11.4.custom/jquery-ui.css">
-<link rel="stylesheet" href="css/ui.jqgrid.css">
+ <link rel="stylesheet"	href="resources/jquery-ui-1.11.4.custom/jquery-ui.css">
+ <link rel="stylesheet" href="css/ui.jqgrid.css">
+<link rel="stylesheet" href="css/ui.jqgrid-bootstrap-ui.css"> 
 
 <!-- jQuery -->
 <script src="js/jquery.js"></script>
@@ -65,7 +65,7 @@
 <!-- Bootstrap Core JavaScript -->
 <script src="js/bootstrap.min.js"></script>
 <script src="js/i18n/grid.locale-he.js"></script>
-<script src="js/jquery.jqGrid.min.js"></script>
+ <script src="js/jquery.jqGrid.min.js"></script>
 
 <!-- bootbox code -->
 <script src="js/bootbox.js"></script>
@@ -85,6 +85,13 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+<style type="text/css">
+.ui-jqgrid .ui-jqgrid-view, .ui-jqgrid .ui-jqgrid-pager {
+    z-index: 9;
+}
+
+</style>
+
 </head>
 
 <body>
@@ -231,8 +238,9 @@
 					<div class="col-lg-10">
 						<div class="panel panel-default">
 							<div class="panel-heading">								
-								<a href="#editReg" data-toggle="collapse"
-									data-target="#editReg">עריכת הרישום <i
+								<a href="#" id="regHeaderlink">
+								<!-- <a href="#editReg" data-toggle="collapse" data-target="#editReg" -->
+									עריכת הרישום <i
 									class="fa fa-arrow-circle-down"></i></a>
 
 							</div>
@@ -311,7 +319,7 @@
 												</div>
 											</form>
 									</div>
-								
+								<div id="endP"></div>
 							</div>
 						</div>
 					</div>
@@ -351,6 +359,15 @@
 	%>
 
 	<script type="text/javascript">
+	function goToByScroll(id){
+        // Reove "link" from the ID
+      id = id.replace("link", "");
+        // Scroll
+      $('html,body').animate({
+          scrollTop: $("#"+id).offset().top},
+          'slow');
+  }
+	
 		$(function() {
 
 			$('#detailsLink').attr('href','pupil_card_view.jsp?li=0&pupil=' + pupilID);
@@ -377,14 +394,14 @@
 			loadWeekGrid(pupilID);
 			
 			loadRegistrationGrid(pupilID); 
-			
-			//Test grid
-			loadTestGrid(pupilID); 
-			
+					
 			if(selectedLi == 1)
 				$('#scheduleLink').parent().addClass('active');
-			else if(selectedLi == 2)
+			else if(selectedLi == 2){
 				$('#regLink').parent().addClass('active');
+				
+		        goToByScroll('endP');   
+			}
 			
 			if (reg != undefined && reg ==1 ) {
 				
@@ -405,6 +422,25 @@
 				}
 				
 			});
+			
+			
+			$('#regHeaderlink').click(function(e) {
+				 e.preventDefault(); 
+				 $("#editReg").slideToggle(100, function () {
+					 goToByScroll('endP');
+				    }); 
+			});
+			
+			$('#regLink').click(function(e) {
+				 e.preventDefault(); 
+				 $('#regLink').parent().addClass('active');
+				 $('#scheduleLink').parent().removeClass('active');
+				 $("#editReg").show(100, function () {
+					 goToByScroll('endP');
+				    }); 
+				
+			});
+			
 			
 			 /* set the validattion for form */
 			var validator = $("#regform").validate({

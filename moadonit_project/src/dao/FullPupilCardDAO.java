@@ -16,6 +16,7 @@ public class FullPupilCardDAO extends AbstractDAO {
 	private String select = "SELECT * FROM fullPupilCard where pupilNum = ?";
 	private String selectAll = "SELECT * FROM fullPupilCard ";
 	private String selectSearch = "SELECT * FROM fullPupilCard where firstName = ?";
+	private String selectFilter = "{ CALL ms2016.getFullPupilByParam (?, ?) }";
 	/**
 	 * 
 	 */
@@ -105,6 +106,7 @@ public class FullPupilCardDAO extends AbstractDAO {
 	public List<FullPupilCard> selectSearch(String sind, String sord,String fName,String lName,String gend,String grade,String isReg) {
 		List<FullPupilCard> list = new ArrayList<>();
 		String stat = selectAll;
+		int withRegPupil = 0;
 		if(fName!=null ||lName!=null || gend!=null   || (grade!=null && !grade.equals(" "))  || isReg!=null){
 			stat+=" where ";
 			if(fName!=null){
@@ -120,12 +122,18 @@ public class FullPupilCardDAO extends AbstractDAO {
 				stat+="gradeID =" +grade +" and ";
 			}
 			if(isReg!=null){
-				if(isReg.equals("1"))
-					stat+="regPupilNum is not null";
-				else
-					stat+="regPupilNum is null";
-			}else
+				if(isReg.equals("1")){
+					//stat+="regPupilNum is not null";
+					withRegPupil = 1; //-- get only registered pupil
+				}
+				else{
+					//stat+="regPupilNum is null";
+					withRegPupil = 2; //-- get only non registered pupil
+				}
+			}else{
 				stat = stat.substring(0, stat.length()-4);
+				withRegPupil = 0; //-- get all pupil    
+			}
 		}
 		///
 		/*this.regToMoadonitDAO = new RegToMoadonitDAO(con);
@@ -140,8 +148,8 @@ public class FullPupilCardDAO extends AbstractDAO {
 				reg = true;
 		}*/
 		///
-		
-		try (PreparedStatement statement = DAOUtil.prepareStatement(this.con.getConnection(), stat , false); 
+		Object[] values = {   stat, withRegPupil };
+		try (PreparedStatement statement = DAOUtil.prepareCallbackStatement(this.con.getConnection(), selectFilter ,values);
 						ResultSet resultSet = statement.executeQuery();) {
 
 			while (resultSet.next()) {
