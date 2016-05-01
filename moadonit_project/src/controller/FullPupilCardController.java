@@ -610,6 +610,7 @@ protected void getPupilList(JSONArray jsonResult){
 			gend="בן";
 		else
 			if(pupil.getGender()==2)
+				
 				gend="בת";
 			else
 				gend=" ";

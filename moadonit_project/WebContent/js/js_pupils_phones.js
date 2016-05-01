@@ -37,13 +37,17 @@ function loadGrid(){
           url : "FullPupilCardController?action=contactPage",
           datatype : "json",
           mtype : 'POST',
-          colNames : ['מספר','שם פרטי' , 'שם משפחה' , 'מגדר', 'כיתה', 'סלולר תלמיד', 'טלפון בבית', 'שם ההורה', 'טלפון','שם ההורה','טלפון'],
+          colNames : ['מספר','רשום','שם פרטי' , 'שם משפחה' , 'מגדר', 'כיתה', 'סלולר תלמיד', 'טלפון בבית', 'שם ההורה', 'טלפון','שם ההורה','טלפון'],
           colModel : [ {
                   name : 'id',
                   index : 'id',
-                  width : 100,
-                  hidden: true
+                  hidden: false
           }, {
+	              name : 'isReg',
+	              index : 'isReg',
+	              width : 60,
+	              editable : false
+	      }, {
                   name : 'firstName',
                   index : 'firstName',
                   width : 80,
@@ -52,19 +56,19 @@ function loadGrid(){
                   name : 'lastName',
                   index : 'lastName',
                   width : 80,
-                  editable : true
+                  editable : false
           }, {
                   name : 'gender',
                   index : 'gender',
                   width : 60,
-                  editable : true,
+                  editable : false,
                   stype: "select",
                   searchoptions: { value: ":;1:בן;2:בת"}
           }, {
                   name : 'gradeName',
                   index : 'gradeName',
                   width : 60,
-                  editable : true,
+                  editable : false,
                   stype: "select",
                   searchoptions:  grades
           }, {
