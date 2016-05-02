@@ -615,17 +615,12 @@ protected void getPupilList(JSONArray jsonResult){
 			else
 				gend=" ";
 		/// delete this part after fixing sp
-		this.regToMoadonitDAO = new RegToMoadonitDAO(con);
-		List<RegToMoadonit> active = regToMoadonitDAO.getActiveRegForPupil(pupil.getPupilNum());
-		Boolean reg = false;
-		if(!active.isEmpty()){
-			RegToMoadonit r = active.get(0);
-			if(r.getTblRegType1().getTypeNum()==1 && r.getTblRegType2().getTypeNum()==1 && r.getTblRegType3().getTypeNum()==1 && 
-					r.getTblRegType4().getTypeNum()==1 && r.getTblRegType5().getTypeNum()==1 )
-				reg = false;
-			else
-				reg = true;
-		}
+	/*	this.regToMoadonitDAO = new RegToMoadonitDAO(con);
+		List<RegToMoadonit> active = regToMoadonitDAO.getActiveRegForPupil(pupil.getPupilNum());*/
+		Boolean reg;
+		if( pupil.getRegPupilNum() == 0){
+			reg = false;
+		}else reg = true;
 		
 		JSONObject user = new JSONObject();
 		user.put("id",pupil.getPupilNum());
@@ -657,6 +652,7 @@ protected void getContactList(JSONArray jsonResult){
 		
 		JSONObject user = new JSONObject();
 		user.put("id",pupil.getPupilNum());
+		user.put("isReg",reg);
 		user.put("firstName",pupil.getFirstName());
 		user.put("lastName",pupil.getLastName());
 		user.put("gender",gend);

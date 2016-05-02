@@ -41,12 +41,15 @@ function loadGrid(){
           colModel : [ {
                   name : 'id',
                   index : 'id',
-                  hidden: false
+                  hidden: true
           }, {
 	              name : 'isReg',
 	              index : 'isReg',
 	              width : 60,
-	              editable : false
+	              editable : false,
+	              stype: "select",
+	              searchoptions: { value: ":;1:רשום;2:לא רשום"},
+	              formatter: "checkbox"
 	      }, {
                   name : 'firstName',
                   index : 'firstName',
