@@ -33,11 +33,12 @@ function loadPupilSearch() {
 	});
 }
 function loadGrid(){
+	
 	  $("#list").jqGrid({
           url : "FullPupilCardController?action=pupilSearch",
           datatype : "json",
           mtype : 'POST',
-          colNames : ['מספר','שם פרטי' , 'שם משפחה' , 'מגדר', 'כיתה', 'רשום'],
+          colNames : ['מספר','שם פרטי' , 'שם משפחה' , 'מגדר', 'כיתה', 'רשום'],         
           colModel : [ {
                   name : 'id',
                   index : 'id',
@@ -67,7 +68,8 @@ function loadGrid(){
                   editable : true,
                   stype: "select",
                   searchoptions:  grades
-          }, {
+          }
+         , {
               name : 'isReg', 
               index : 'isReg',
               width : 100,
@@ -75,7 +77,8 @@ function loadGrid(){
               stype: "select",
               searchoptions: { value: ":;1:רשום;2:לא רשום"},
               formatter: "checkbox",
-          } ],
+          } 
+          ],
           pager : '#pager',
           rowNum : 50,
           rowList : [ ],

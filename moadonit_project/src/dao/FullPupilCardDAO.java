@@ -165,11 +165,12 @@ public class FullPupilCardDAO extends AbstractDAO {
 	}
 	
 	public List<FullPupilCard> selectSearch(String sind, String sord,String fName,String lName,String gend,String grade,
-							String pupilCell, String homePhone,String p1name,String p1cell,String p2name,String p2cell) {
+							String pupilCell, String homePhone,String p1name,String p1cell,String p2name,String p2cell,String isReg) {
 		List<FullPupilCard> list = new ArrayList<>();
 		String stat = selectAll;
+		int withRegPupil = 0;
 		if(fName!=null ||lName!=null || gend!=null   || (grade!=null && !grade.equals(" "))  || pupilCell!=null|| 
-				homePhone!=null|| p1name!=null|| p1cell!=null|| p2name!=null|| p2cell!=null){
+				homePhone!=null|| p1name!=null|| p1cell!=null|| p2name!=null|| p2cell!=null || isReg!=null){
 			stat+=" where ";
 			if(fName!=null){
 				stat+="firstName LIKE '%" +fName +"%' and ";
@@ -201,12 +202,26 @@ public class FullPupilCardDAO extends AbstractDAO {
 			if(p2cell!=null){
 				stat+="p2cell LIKE '%" +p2cell +"%' and ";
 			}
-			else
+			if(isReg!=null){
+				if(isReg.equals("1")){
+					//stat+="regPupilNum is not null";
+					withRegPupil = 1; //-- get only registered pupil
+				}
+				else{
+					//stat+="regPupilNum is null";
+					withRegPupil = 2; //-- get only non registered pupil
+				}
+			}else{
 				stat = stat.substring(0, stat.length()-4);
+				withRegPupil = 0; //-- get all pupil    
+			}
+			/*else
+				stat = stat.substring(0, stat.length()-4);*/
 		}
 		
-		
-		try (PreparedStatement statement = DAOUtil.prepareStatement(this.con.getConnection(), stat , false); ResultSet resultSet = statement.executeQuery();) {
+		Object[] values = {   stat, withRegPupil };
+		try (PreparedStatement statement = DAOUtil.prepareCallbackStatement(this.con.getConnection(), selectFilter ,values);
+						ResultSet resultSet = statement.executeQuery();) {
 
 			while (resultSet.next()) {
 				FullPupilCard p = map(resultSet);
@@ -218,6 +233,18 @@ public class FullPupilCardDAO extends AbstractDAO {
 		}
 
 		return list;
+		/*try (PreparedStatement statement = DAOUtil.prepareStatement(this.con.getConnection(), stat , false); ResultSet resultSet = statement.executeQuery();) {
+
+			while (resultSet.next()) {
+				FullPupilCard p = map(resultSet);
+				list.add(p);
+			}
+
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+
+		return list; */
 	}
 
 }

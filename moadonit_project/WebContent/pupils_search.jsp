@@ -146,6 +146,13 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h3 class="panel-title pull-right"><i class="fa fa-info fa-fw"></i> כל התלמידים</h3>
+                                <!-- <label for="isReg" class="pull-left" >רשום</label> <select
+															class="form-control pull-left col-lg-1"  id="isReg" name="sunday"
+															 >
+															<option value="0"></option>
+															<option value="1">רשום</option>
+															<option value="2">לא רשום</option>
+														</select> -->
                                 <button id="resetBtn" class="pull-left">נקה חיפוש</button>
                                 <div class="clearfix"></div>
                             </div>
@@ -163,7 +170,7 @@
 									</table>
 								
 								<div id="pager"></div>
-                                
+                             
                             </div>
 							
 						</div>

@@ -596,7 +596,7 @@ public class FullPupilCardController extends HttpServlet implements
 	private List<FullPupilCard> searchContactList(HttpServletRequest req, HttpServletResponse resp) {
 		List<FullPupilCard> pupils = new ArrayList<>();
 		pupils = this.fullPupilDao.selectSearch(req.getParameter("sidx"), req.getParameter("sord"),req.getParameter("firstName"),req.getParameter("lastName"),req.getParameter("gender"),req.getParameter("gradeName")
-						,req.getParameter("pupilCell"),req.getParameter("homePhone"),req.getParameter("p1Name"),req.getParameter("p1Cell"),req.getParameter("p2Name"),req.getParameter("p2Cell"));
+						,req.getParameter("pupilCell"),req.getParameter("homePhone"),req.getParameter("p1Name"),req.getParameter("p1Cell"),req.getParameter("p2Name"),req.getParameter("p2Cell"),req.getParameter("isReg"));
 
 		return pupils;
 	}
