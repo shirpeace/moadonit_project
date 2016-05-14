@@ -34,9 +34,19 @@ public class Pupil implements Serializable {
 	@OneToMany(mappedBy="tblPupil")
 	private List<Attendance> tblAttendances;
 
-	//bi-directional many-to-one association to GradePupil
-	@OneToMany(mappedBy="tblPupil")
-	private List<GradePupil> tblGradePupils;
+	//bi-directional many-to-many association to GradeInYear
+	@ManyToMany
+	@JoinTable(
+		name="tbl_grade_pupil"
+		, joinColumns={
+			@JoinColumn(name="pupilNum")
+			}
+		, inverseJoinColumns={
+			@JoinColumn(name="gradeID", referencedColumnName="gradeID"),
+			@JoinColumn(name="yearID", referencedColumnName="yearID")
+			}
+		)
+	private List<GradeInYear> tblGradeInYears;
 
 	//bi-directional many-to-one association to OneTimeReg
 	@OneToMany(mappedBy="tblPupil")
@@ -52,23 +62,13 @@ public class Pupil implements Serializable {
 	@JoinColumn(name="gender")
 	private GenderRef tblGenderRef;
 
+	//bi-directional many-to-one association to PupilActivity
+	@OneToMany(mappedBy="tblPupil")
+	private List<PupilActivity> tblPupilActivities;
+
 	//bi-directional one-to-one association to RegisterPupil
 	@OneToOne(mappedBy="tblPupil")
 	private RegisterPupil tblRegisterPupil;
-
-	//bi-directional many-to-many association to GradeInYear
-	@ManyToMany
-	@JoinTable(
-		name="tbl_grade_pupil"
-		, joinColumns={
-			@JoinColumn(name="pupilNum")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="gradeID", referencedColumnName="gradeID"),
-			@JoinColumn(name="yearID", referencedColumnName="yearID")
-			}
-		)
-	private List<GradeInYear> tblGradeInYears;
 
 	public Pupil() {
 	}
@@ -143,26 +143,12 @@ public class Pupil implements Serializable {
 		return tblAttendance;
 	}
 
-	public List<GradePupil> getTblGradePupils() {
-		return this.tblGradePupils;
+	public List<GradeInYear> getTblGradeInYears() {
+		return this.tblGradeInYears;
 	}
 
-	public void setTblGradePupils(List<GradePupil> tblGradePupils) {
-		this.tblGradePupils = tblGradePupils;
-	}
-
-	public GradePupil addTblGradePupil(GradePupil tblGradePupil) {
-		getTblGradePupils().add(tblGradePupil);
-		tblGradePupil.setTblPupil(this);
-
-		return tblGradePupil;
-	}
-
-	public GradePupil removeTblGradePupil(GradePupil tblGradePupil) {
-		getTblGradePupils().remove(tblGradePupil);
-		tblGradePupil.setTblPupil(null);
-
-		return tblGradePupil;
+	public void setTblGradeInYears(List<GradeInYear> tblGradeInYears) {
+		this.tblGradeInYears = tblGradeInYears;
 	}
 
 	public List<OneTimeReg> getTblOneTimeRegs() {
@@ -203,6 +189,28 @@ public class Pupil implements Serializable {
 		this.tblGenderRef = tblGenderRef;
 	}
 
+	public List<PupilActivity> getTblPupilActivities() {
+		return this.tblPupilActivities;
+	}
+
+	public void setTblPupilActivities(List<PupilActivity> tblPupilActivities) {
+		this.tblPupilActivities = tblPupilActivities;
+	}
+
+	public PupilActivity addTblPupilActivity(PupilActivity tblPupilActivity) {
+		getTblPupilActivities().add(tblPupilActivity);
+		tblPupilActivity.setTblPupil(this);
+
+		return tblPupilActivity;
+	}
+
+	public PupilActivity removeTblPupilActivity(PupilActivity tblPupilActivity) {
+		getTblPupilActivities().remove(tblPupilActivity);
+		tblPupilActivity.setTblPupil(null);
+
+		return tblPupilActivity;
+	}
+
 	public RegisterPupil getTblRegisterPupil() {
 		return this.tblRegisterPupil;
 	}
@@ -211,12 +219,15 @@ public class Pupil implements Serializable {
 		this.tblRegisterPupil = tblRegisterPupil;
 	}
 
-	public List<GradeInYear> getTblGradeInYears() {
-		return this.tblGradeInYears;
+	//bi-directional many-to-one association to GradePupil
+	@OneToMany(mappedBy="tblPupil")
+	private List<GradePupil> tblGradePupils;
+
+		public List<GradePupil> getTblGradePupils() {
+		return tblGradePupils;
 	}
 
-	public void setTblGradeInYears(List<GradeInYear> tblGradeInYears) {
-		this.tblGradeInYears = tblGradeInYears;
+	public void setTblGradePupils(List<GradePupil> tblGradePupils) {
+		this.tblGradePupils = tblGradePupils;
 	}
-
 }

@@ -1,0 +1,25 @@
+1. persistence.xml
+=================
+Comment -> FullPupilCard class >> <!-- 		<class>model.FullPupilCard</class> -->
+
+2. class FullPupilCard
+===================
+remove @entity notation
+
+3. class Pupil
+===========
+ADD this lines
+
+//bi-directional many-to-one association to GradePupil
+@OneToMany(mappedBy="tblPupil")
+private List<GradePupil> tblGradePupils;
+
+	public List<GradePupil> getTblGradePupils() {
+	return tblGradePupils;
+}
+
+public void setTblGradePupils(List<GradePupil> tblGradePupils) {
+	this.tblGradePupils = tblGradePupils;
+}
+
+  

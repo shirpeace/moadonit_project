@@ -18,11 +18,9 @@ public class GradeCode implements Serializable {
 	@Id
 	private int gradeID;
 
-	private String gradeName;
+	private String gradeColor;
 
-	//bi-directional many-to-one association to GradePupil
-	@OneToMany(mappedBy="tblGradeCode")
-	private List<GradePupil> tblGradePupils;
+	private String gradeName;
 
 	//bi-directional many-to-one association to GradeInYear
 	@OneToMany(mappedBy="tblGradeCode")
@@ -39,34 +37,20 @@ public class GradeCode implements Serializable {
 		this.gradeID = gradeID;
 	}
 
+	public String getGradeColor() {
+		return this.gradeColor;
+	}
+
+	public void setGradeColor(String gradeColor) {
+		this.gradeColor = gradeColor;
+	}
+
 	public String getGradeName() {
 		return this.gradeName;
 	}
 
 	public void setGradeName(String gradeName) {
 		this.gradeName = gradeName;
-	}
-
-	public List<GradePupil> getTblGradePupils() {
-		return this.tblGradePupils;
-	}
-
-	public void setTblGradePupils(List<GradePupil> tblGradePupils) {
-		this.tblGradePupils = tblGradePupils;
-	}
-
-	public GradePupil addTblGradePupil(GradePupil tblGradePupil) {
-		getTblGradePupils().add(tblGradePupil);
-		tblGradePupil.setTblGradeCode(this);
-
-		return tblGradePupil;
-	}
-
-	public GradePupil removeTblGradePupil(GradePupil tblGradePupil) {
-		getTblGradePupils().remove(tblGradePupil);
-		tblGradePupil.setTblGradeCode(null);
-
-		return tblGradePupil;
 	}
 
 	public List<GradeInYear> getTblGradeInYears() {

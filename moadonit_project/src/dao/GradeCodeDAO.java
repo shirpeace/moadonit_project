@@ -75,6 +75,7 @@ public class GradeCodeDAO extends AbstractDAO {
 		GradeCode g = new GradeCode();
 		g.setGradeID(resultSet.getInt("gradeID"));
 		g.setGradeName((resultSet.getString("gradeName")));
+		g.setGradeColor(resultSet.getString("gradeColor"));
 		return g;
 	}
 

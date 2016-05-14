@@ -58,6 +58,7 @@
 <link rel="stylesheet"
 	href="resources/jquery-ui-1.11.4.custom/jquery-ui.css">
 <link rel="stylesheet" href="css/ui.jqgrid.css">
+<link rel="stylesheet" href="css/jquery.timepicker.css">
 
 
 <script src="js/jquery.js"></script>
@@ -69,11 +70,9 @@
 
 <script src="js/jquery.jqGrid.min.js"></script>
 
+<script src="js/jquery.timepicker.min.js"></script>
 
-<script src="js/js_pupils_search.js"></script>
-
-<script src="js/jquery.fileDownload.js"></script>
-
+<script src="js/js_course_search.js"></script>
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
@@ -105,12 +104,12 @@
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav side-nav">
 					<li><a href="" style="font-size: 120%; pointer-events: none;">
-							<i class="fa fa-fw fa-users"></i> תלמידים
+							<i class="fa fa-fw fa-futbol-o"></i> חוגים
 					</a> <br></li>
 					<li class="active"><a href="pupils_search.jsp"><i
 							class="fa fa-fw fa-search"></i> חיפוש</a></li>
 					<li><a href="pupils_phones.jsp"><i
-							class="fa fa-fw fa-phone"></i> דפי קשר</a></li>
+							class="fa fa-fw fa-phone"></i>מורי חוגים</a></li>
 					<li><a href="pupil_add.jsp"><i class="fa fa-fw fa-edit"></i>
 							הוספת חדש</a></li>
 				</ul>
@@ -128,12 +127,12 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<h1 class="page-header">
-							חיפוש תלמידים <small></small>
+							 חוגים <small></small>
 						</h1>
 						<ol class="breadcrumb">
 							<li><a href="dashboard.jsp"><i class="fa fa-home"></i>
 									ראשי</a></li>
-							<li class="active"><i class="fa fa-users"></i> תלמידים</li>
+							<li class="active"><i class="fa fa-futbol-o"></i> חוגים</li>
 						</ol>
 					</div>
 				</div>
@@ -144,7 +143,7 @@
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h3 class="panel-title pull-right">
-								<i class="fa fa-info fa-fw"></i> כל התלמידים
+								<i class="fa fa-info fa-fw"></i> כל החוגים
 							</h3>
 							<!-- <label for="isReg" class="pull-left" >רשום</label> <select
 															class="form-control pull-left col-lg-1"  id="isReg" name="sunday"
@@ -175,9 +174,10 @@
 							<!--  <div class="text-right">
                                     <a href="#">View All Transactions <i class="fa fa-arrow-circle-right"></i></a>
                                 </div> -->
-							<div class="table-responsive col-lg-10">
+                                
+							<div class=" col-lg-12">
 								<table class="table table-bordered table-hover table-striped"
-									id="list" >
+									id="list" style="height: 50px">
 
 									<tr>
 										<td></td>
@@ -224,9 +224,8 @@
 	<script type="text/javascript">
 		/* var currentUserId =	 '${p.pupilNum}' */
 		jQuery(document).ready(function() {
-			var pupilID;
-			loadPupilSearch();
-			
+			var actID;
+			loadCourseSearch();
 		});
 	</script>
 

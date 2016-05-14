@@ -28,7 +28,12 @@
 		<class>model.RegisterPupil</class>
 		<class>model.Room</class>
 		<class>model.SchoolYear</class>
-		<class>model.User</class>
+		<class>model.User</class>		
+		<class>model.Course</class>
+		<class>model.CourseTeacher</class>
+		<class>model.Staff</class>
+		<class>model.PupilActivity</class>
+		<class>model.PupilActivityPK</class>
 <!-- 		<class>model.GradeTeacher</class>
 		<class>model.GradeTeacherPK</class> -->
 <!-- 		<class>model.FullPupilCard</class> -->
