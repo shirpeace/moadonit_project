@@ -33,15 +33,15 @@
 			<attribute name="owner.project.facets" value="jpt.jpa"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Matan/git/moadonit_peoject/moadonit_project/WebContent/WEB-INF/lib/htmlToPDF-1.0.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Matan/git/moadonit_peoject/moadonit_project/WebContent/WEB-INF/lib/itextpdf-5.5.9.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Matan/git/moadonit_peoject/moadonit_project/WebContent/WEB-INF/lib/itextpdf-5.5.9-javadoc.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Matan/git/moadonit_peoject/moadonit_project/WebContent/WEB-INF/lib/itext-pdfa-5.5.9.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Matan/git/moadonit_peoject/moadonit_project/WebContent/WEB-INF/lib/itext-pdfa-5.5.9-javadoc.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Matan/git/moadonit_peoject/moadonit_project/WebContent/WEB-INF/lib/itext-xtra-5.5.9.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Matan/git/moadonit_peoject/moadonit_project/WebContent/WEB-INF/lib/itext-xtra-5.5.9-javadoc.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Matan/git/moadonit_peoject/moadonit_project/WebContent/WEB-INF/lib/xmlworker-5.5.9.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Matan/git/moadonit_peoject/moadonit_project/WebContent/WEB-INF/lib/xmlworker-5.5.9-javadoc.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Matan/git/moadonit_peoject/moadonit_project/WebContent/WEB-INF/lib/itext-2.1.0.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/htmlToPDF-1.0.0.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/itext-2.1.0.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/itext-pdfa-5.5.9-javadoc.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/itext-pdfa-5.5.9.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/itext-xtra-5.5.9-javadoc.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/itext-xtra-5.5.9.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/itextpdf-5.5.9-javadoc.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/itextpdf-5.5.9.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/xmlworker-5.5.9-javadoc.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/xmlworker-5.5.9.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
