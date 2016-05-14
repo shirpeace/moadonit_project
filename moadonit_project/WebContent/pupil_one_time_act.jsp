@@ -46,6 +46,8 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
     <script src="js/bootbox.js"></script> 
+    <script src="js/i18n/grid.locale-he.js"></script>
+ 	<script src="js/jquery.jqGrid.min.js"></script>
     <script src="js/js_pupil_one_time_act.js"></script> 
 
     <script src="js/bootstrap-datepicker.js"></script> 
@@ -65,14 +67,11 @@
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
-    
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+	<!-- jqgrid style -->
+	 <link rel="stylesheet"	href="resources/jquery-ui-1.11.4.custom/jquery-ui.css">
+	 <link rel="stylesheet" href="css/ui.jqgrid.css">
+	<link rel="stylesheet" href="css/ui.jqgrid-bootstrap-ui.css"> 
+    <link href="css/mycss.css" rel="stylesheet">
 
 </head>
 
@@ -99,17 +98,14 @@
                         <a href="" style="font-size: 120%; pointer-events: none;"> <i class="fa fa-fw fa-user"></i> כרטיס תלמיד</a>
                         <br>
                      </li> 
-                     <li>
-                        <a id="detailsLink" href= "pupil_card_view.jsp"><i class="fa fa-fw fa-list-alt"></i> פרטים אישיים</a>
-                     </li> 
-                     <li>
-                        <a id="scheduleLink" href= "pupil_week_view.jsp"><i class="fa fa-fw fa-th"></i> תכנית שבועית</a>
-                     </li>
-                     <li>
-                        <a id="regLink" href= "pupil_week_view.jsp"><i class="fa fa-fw fa-edit"></i> עריכת רישום</a>
-                     </li> 
-                     <li class="active">
-                        <a href= "pupil_one_time_act.jsp"><i class="fa fa-fw fa-plus-square-o"></i> פעילות חד פעמית</a>
+                     <li><a href="pupil_card_view.jsp" id="detailsLink" ><i
+							class="fa fa-fw fa-list-alt" ></i> פרטים אישיים</a></li>
+					<li><a href="pupil_week_view.jsp" id="scheduleLink"><i
+							class="fa fa-fw fa-th"></i> תכנית שבועית</a></li>
+					<li><a href="pupil_week_view.jsp" id="regLink"><i
+							class="fa fa-fw fa-edit"></i> עריכת רישום</a></li>
+					<li>
+                        <a href= "pupil_one_time_act.jsp" id="oneTimeLink"><i class="fa fa-fw fa-plus-square-o"></i> פעילות חד פעמית</a>
                      </li>  
                 </ul>
             </div>
@@ -145,34 +141,26 @@
                 </div>
                 <!-- /.row -->
 
-                <div >
-					<!-- <div class="col-lg-2">
-					</div> -->
-	                <div class="col-lg-12">
+                <div  class="row">
+					<div class="col-lg-1"></div>
+	                <div class="col-lg-8">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h3 class="panel-title"><i class="fa fa-info fa-fw"></i> בחר תאריך וסוג רישום ולחץ שמור</h3>
+                                <h3 class="panel-title"><i class="fa fa-info fa-fw"></i> צור רישום חד פעמי</h3>
                             </div>
                             <div class="panel-body">
                                 <div class="text-right">
                                 	<form >
 										<div class="row">
-											<div class="form-group col-lg-3">
-												<label for="action">ברצוני</label>
-												<select class="form-control " id="action" name="action" onchange="actionChanged()">
-													<option value="1">לרשום את התלמיד</option>
-													<option value="2">לבטל רישום</option>
-												</select>
-											</div>
-											
-											<div class="form-group col-lg-2" id="typeDiv">
-												<label for="type">סוג הרישום</label>
+											<div class="form-group col-lg-4" id="typeDiv">
+												<label for="type">ברצוני לרשום את התלמיד ל</label> 
 												<select class="form-control " id="type" name="type">
-													<option value="1">מועדונית</option>
-													<option value="2">אוכל בלבד</option>
+													<option value="1"></option>
+													<option value="2">מועדונית</option>
+													<option value="3">אוכל בלבד</option>
 												</select>
 											</div>
-											<div class="form-group  col-lg-2">
+											<div class="form-group  col-lg-4">
 												<label for="datePick"> בתאריך</label>
 												<input  type="text" class="form-control" id="datePick">
 											</div>
@@ -189,6 +177,38 @@
                         </div>
                     </div>
             	</div>
+            	
+            	<!-- /.row -->
+            	
+            	<div class="row">
+
+
+					
+					<div class="col-lg-1"></div>
+					<div class="col-lg-8">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									 רישום חד פעמי קודם
+								</h3>
+							</div>
+							<div class="panel-body">
+								<div class="table-responsive col-lg-12">
+									<table class="table table-bordered table-hover table-striped"
+										id="listRegistration">
+
+										<tr>
+											<td></td>
+										</tr>
+									</table>
+ 
+									<div id="listRegistrationPager"></div> 
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
             </div>
 
         <!-- /#page-wrapper -->
@@ -217,25 +237,8 @@
 	<script type="text/javascript">
 		var dataString = 'id='+ pupilID + '&action=' + "get";
 		var pupilData;
+	
 		
-		$('#detailsLink').attr('href','pupil_card_view.jsp?li=0&pupil=' + pupilID);
-		$('#scheduleLink').attr('href','pupil_week_view.jsp?li=1&pupil=' + pupilID);
-		$('#regLink').attr('href','pupil_week_view.jsp?li=2&pupil=' + pupilID);
-		
-		loadPupilOneAct(dataString);			
-
-		 $('#datePick').datepicker({
-		    format: "dd/mm/yyyy",
-		    language: "he" ,
-		     startDate: "today",
-		    maxViewMode: 0,
-		    minViewMode: 0,
-		    todayBtn: true,
-		    keyboardNavigation: false,
-		    daysOfWeekDisabled: "5,6",
-		    todayHighlight: true,
-		    toggleActive: true 
-		}); 
 	</script>
 		
 </body>

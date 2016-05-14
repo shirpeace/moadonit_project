@@ -642,3 +642,111 @@ function saveRegistraion() {
 	return result;
 
 }
+
+function goToByScroll(id){
+    // Reove "link" from the ID
+  id = id.replace("link", "");
+    // Scroll
+  $('html,body').animate({
+      scrollTop: $("#"+id).offset().top},
+      'slow');
+}
+
+	$(function() {
+
+		$('#detailsLink').attr('href','pupil_card_view.jsp?li=0&pupil=' + pupilID);
+		$('#scheduleLink').attr('href','pupil_week_view.jsp?li=1&pupil=' + pupilID);
+		$('#regLink').attr('href','pupil_week_view.jsp?reg=1&li=2&pupil=' + pupilID);
+		$('#oneTimeLink').attr('href', 'pupil_one_time_act.jsp?li=3&pupil=' + pupilID);
+		
+		var dataString = 'id='+ pupilID + '&action=' + "get";
+		loadPupilCard(dataString);
+		
+		 $('#datePick').datepicker({
+			    format: "dd/mm/yyyy",
+			    language: "he" ,
+			     startDate: "today",
+			    maxViewMode: 0,
+			    minViewMode: 0,
+			    todayBtn: true,
+			    keyboardNavigation: false,
+			    daysOfWeekDisabled: "5,6",
+			    todayHighlight: true,
+			    toggleActive: true 
+			}); 
+		 
+		loadWeekGrid(pupilID);
+		
+		loadRegistrationGrid(pupilID); 
+				
+		if(selectedLi == 1)
+			$('#scheduleLink').parent().addClass('active');
+		else if(selectedLi == 2){
+			$('#regLink').parent().addClass('active');
+			
+	        goToByScroll('endP');   
+		}
+		
+		if (reg != undefined && reg ==1 ) {
+			
+			$("#editReg").slideToggle(100, function () {
+
+		    }); 
+		}
+		
+		$('#btnSave').click(function() {
+			var result;
+			var form = $("#regform");
+			if (form.valid()){
+				result = saveRegistraion();
+				if (result) {						
+					bootbox.alert("נתונים נשמרו בהצלחה", function() {			        				
+		        	});
+				}
+			}
+			
+		});
+		
+		
+		$('#regHeaderlink').click(function(e) {
+			 e.preventDefault(); 
+			 $("#editReg").slideToggle(100, function () {
+				 goToByScroll('endP');
+			    }); 
+		});
+		
+		$('#regLink').click(function(e) {
+			 e.preventDefault(); 
+			 $('#regLink').parent().addClass('active');
+			 $('#scheduleLink').parent().removeClass('active');
+			 $("#editReg").show(100, function () {
+				 goToByScroll('endP');
+			    }); 
+			
+		});
+		
+		
+		 /* set the validattion for form */
+		var validator = $("#regform").validate({
+			
+			errorPlacement: function(error, element) {
+				// Append error within linked label					
+				error.css("color", "red");				
+				$( element )
+					.closest( "form" )
+						.find( "label[for='" + element.attr( "id" ) + "']" )
+							.append(  error );
+			},
+			rules: {   
+				
+				// set a rule to inputs
+				// input must have name and id attr' and with same value !!!
+				datePick : {  
+					required: true
+					
+					}
+				
+			}			
+		});
+		
+	});

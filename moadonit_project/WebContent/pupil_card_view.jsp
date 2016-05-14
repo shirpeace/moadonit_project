@@ -172,13 +172,14 @@
 					<div class="row" style="border-bottom: 1px solid #a6b7bd">
 						<div class="col-lg-12">
 							<div class="col-lg-3">
-								<div class="form-group">
-									<label for="fName">שם פרטי</label> <input type="text" 
-										class="form-control input-sm" name="fName"  id="fName" placeholder="שם">
-								</div>
+								
 								<div class="form-group">
 									<label for="lName">שם משפחה</label> <input type="text"
 										class="form-control input-sm" id="lName" name="lName"  placeholder="משפחה" >
+								</div>
+								<div class="form-group">
+									<label for="fName">שם פרטי</label> <input type="text" 
+										class="form-control input-sm" name="fName"  id="fName" placeholder="שם">
 								</div>
 								<div class="form-group">
 									<label for="cell">טלפון נייד תלמיד</label> <input type="text"
@@ -246,6 +247,10 @@
 									<label for="ethi">אתיופי</label> <input type="checkbox"
 										id="ethi" name="ethi" >
 								</div>
+								<div class="checkbox ">
+									<label for="divorce">הורים גרושים</label> <input type="checkbox"
+										id="divorce" name="divorce" >
+								</div>
 								<div class="checkbox">
 									<label for="staff">ילד סגל</label> <input type="checkbox"
 										id="staff" name="staff" >
@@ -283,7 +288,17 @@
 						<div class="col-lg-12">	
 						<h3>פרטי התקשרות</h3>					
 							<div class="col-lg-3">
-								
+								<div class="form-group">
+									<label for="p1relat">קרבה</label>
+									<select class="form-control input-sm"
+										id="p1relat" name="p1relat" >
+										<option value="1" selected="selected">אמא</option>
+										<option value="2">אבא</option>
+										<option value="3">אח</option>
+										<option value="4">אחות</option>
+										<option value="5">אחר</option>
+									</select>
+								</div>
 								<div class="form-group">
 									<label for="p1fName">שם ההורה</label> <input type="text"
 										class="form-control input-sm" id="p1fName" name="p1fName" placeholder="שם">
@@ -300,21 +315,21 @@
 									<label for="p1mail">אימייל</label> <input type="text"
 										class="form-control input-sm" id="p1mail" name="p1mail"  placeholder="אימייל">
 								</div>
+								
+							</div>
+			<!-- row 2 col 2 -->
+							<div class="col-lg-3">
 								<div class="form-group">
-									<label for="p1relat">קרבה</label>
+									<label for="p2relat">קרבה</label>
 									<select class="form-control input-sm"
-										id="p1relat" name="p1relat" >
-										<option value="1" selected="selected">אמא</option>
-										<option value="2">אבא</option>
+										id="p2relat" name="p2relat" >
+										<option value="1">אמא</option>
+										<option value="2" selected="selected">אבא</option>
 										<option value="3">אח</option>
 										<option value="4">אחות</option>
 										<option value="5">אחר</option>
 									</select>
 								</div>
-							</div>
-			<!-- row 2 col 2 -->
-							<div class="col-lg-3">
-								
 								<div class="form-group">
 									<label for="p2fName">שם ההורה</label> <input type="text"
 										class="form-control input-sm" id="p2fName" name="p2fName" placeholder="שם">
@@ -331,17 +346,7 @@
 									<label for="p2mail">אימייל</label> <input type="text"
 										class="form-control input-sm" id="p2mail" name="p2mail" placeholder="אימייל">
 								</div>
-								<div class="form-group">
-									<label for="p2relat">קרבה</label>
-									<select class="form-control input-sm"
-										id="p2relat" name="p2relat" >
-										<option value="1">אמא</option>
-										<option value="2" selected="selected">אבא</option>
-										<option value="3">אח</option>
-										<option value="4">אחות</option>
-										<option value="5">אחר</option>
-									</select>
-								</div>
+								
 							</div>
 
 			<!-- row 2 col 3 -->
@@ -439,7 +444,7 @@
 			$('#detailsLink').attr('href','pupil_card_view.jsp?li=0&pupil=' + pupilID);
 			$('#scheduleLink').attr('href','pupil_week_view.jsp?li=1&pupil=' + pupilID);
 			$('#regLink').attr('href','pupil_week_view.jsp?li=2&pupil=' + pupilID);
-			$('#oneTimeLink').attr('href','pupil_week_view.jsp?li=3&pupil=' + pupilID);
+			$('#oneTimeLink').attr('href','pupil_one_time_act.jsp?li=3&pupil=' + pupilID);
 			
 			
 			var dataString = 'id='+ pupilID + '&action=' + "get";

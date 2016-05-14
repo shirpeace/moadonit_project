@@ -125,8 +125,8 @@
                            
                             <a href="#">
                                 <div class="panel-footer">
-                                    <span class="pull-right">רישום לחוגים </span>
-                                    <span class="pull-left"><i class="fa  fa-pencil-square-o fa-5x"></i></span>
+                                    <span class="pull-right">חוגים </span>
+                                    <span class="pull-left"><i class="fa  fa-futbol-o fa-5x"></i></span>
                                     <div class="clearfix"></div>
                                 </div>
                             </a>

@@ -24,11 +24,13 @@ import org.json.simple.JSONObject;
 
 import util.DAOUtil;
 import model.FullPupilCard;
+import model.OneTimeReg;
 import model.RegToMoadonit;
 import model.RegToMoadonitPK;
 import model.RegType;
 import model.User;
 import dao.FullPupilCardDAO;
+import dao.OneTimeRegDao;
 import dao.RegToMoadonitDAO;
 
 @WebServlet("/PupilRegistration")
@@ -44,7 +46,9 @@ public class PupilRegistrationController extends HttpServlet implements
 	RegToMoadonitPK pkReg;
 	JSONObject resultToClient = new JSONObject();
 	List<RegToMoadonit> pupilRegList = null;
+	List<OneTimeReg> listOneTimeReg = null;
 	RegToMoadonitDAO regDAO;
+	OneTimeRegDao oneTimesDAO;
 	private String action;
 
 	@Override
@@ -70,7 +74,7 @@ public class PupilRegistrationController extends HttpServlet implements
 
 		try {
 			if (action.equals("getRegistration")
-					|| action.equals("getWeekGrid")) {
+					|| action.equals("getWeekGrid")) { 
 
 				if (action.equals("getRegistration"))
 					this.pupilRegList = getRegistration(req, resp,1);
@@ -195,8 +199,83 @@ public class PupilRegistrationController extends HttpServlet implements
 				resp.setCharacterEncoding("UTF-8");
 				resp.getWriter().print(resultToClient);
 				
-			}
+			} else if (action.equals("getOneTimeReg")) { /*Shir */
+				this.listOneTimeReg = getOneTimeReg(req, resp);
+				registrationData = new JSONArray();
+				if (!listOneTimeReg.isEmpty()) {
+					this.getOneTimeJson(registrationData);
+					
+					if (!registrationData.isEmpty()) {
 
+						jsonResponse = registrationData.toJSONString();
+						jsonResponse = "{\"page\":1,\"total\":\"1\",\"records\":"
+								+ listOneTimeReg.size()
+								+ ",\"rows\":"
+								+ jsonResponse + "}";
+
+						resp.setContentType("application/json");
+						resp.setCharacterEncoding("UTF-8");
+						resp.getWriter().print(jsonResponse);
+
+					} else {
+
+						resp.setContentType("application/json");
+						resp.setCharacterEncoding("UTF-8");
+						jsonResponse = "{\"page\":0,\"total\":\"0\",\"records\":"
+								+ 0 + ",\"rows\":" + jsonResponse + "}";
+						resp.getWriter().print(jsonResponse);
+					}
+				} else {
+					resp.setContentType("application/json");
+					resp.setCharacterEncoding("UTF-8");
+					jsonResponse = registrationData.toJSONString();
+					jsonResponse = "{\"page\":0,\"total\":\"0\",\"records\":"
+							+ 0 + ",\"rows\":" + jsonResponse + "}";
+					resp.getWriter().print(jsonResponse);
+				}
+			} else if (action.equals("saveOneTime")) { /*Shir */
+				/////////////////////////
+				System.out.println(req.getParameter("oneTimeReg"));
+//				S/*tring rtm = req.getParameter("rtm");
+//				this.reg = (RegToMoadonit) DAOUtil.getObjectFromJson(rtm,
+//						this.reg.getClass());
+//				if (req.getSession().getAttribute("userid") != null) {
+//					JSONObject user = (JSONObject) req.getSession()
+//							.getAttribute("userid");
+//					User u = new User();
+//					u = (User) DAOUtil.getObjectFromJson(user.toString(), u.getClass());
+//					
+//					this.reg.setTblUser(u);
+//
+//					if (this.regDAO.checkPk(this.reg)) {
+//
+//						resultToClient.put("msg", 0);
+//						resultToClient.put("result","לתלמיד זה כבר קיים רישום בתאריך הספציפי");
+//					} else {
+//
+//						boolean r = addRegistration(req, resp);
+//						if (r) {
+//							resultToClient.put("msg", 1);
+//							resultToClient.put("result", null);
+//						} else {
+//							resultToClient.put("msg", 0);
+//							resultToClient
+//									.put("result", "שגיאה בשמירת הנתונים");
+//						}
+//					}				
+//
+//				}else{
+//					resultToClient.put("msg", 0);
+//					resultToClient.put("result", "שגיאה בשמירת הנתונים");				
+//				}
+//
+//				resp.setContentType("application/json");
+//				resp.setCharacterEncoding("UTF-8");
+//				resp.getWrit*/er().print(resultToClient);
+				
+				////////////////////
+				
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -225,6 +304,8 @@ public class PupilRegistrationController extends HttpServlet implements
 			e.printStackTrace();
 		}
 	}
+	
+
 	private boolean deleteRegistration(HttpServletRequest req,
 			HttpServletResponse resp) throws IOException, SQLException {
 		// TODO Auto-generated method stub
@@ -352,6 +433,36 @@ public class PupilRegistrationController extends HttpServlet implements
 
 		}
 
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected void getOneTimeJson(JSONArray registrationData) { /*Shir */
+
+	// get data for for registration
+
+			for (OneTimeReg oneTimes : this.listOneTimeReg) {
+				JSONObject user = new JSONObject();
+
+				user.put("regDate", oneTimes.getId().getSpecificDate().getTime());
+				user.put("regType", getRegType(Integer.parseInt(oneTimes.getRegType()))); //why regtype is not an int?
+								
+				registrationData.add(user);
+
+			
+
+		}
+
+	}
+	private List<OneTimeReg> getOneTimeReg(HttpServletRequest req, /*Shir */
+			HttpServletResponse resp) {
+		List<OneTimeReg> oneTimes = new ArrayList<>();
+
+		int pupilID = Integer.parseInt(req.getParameter("pupilID"));
+		// dao
+		this.oneTimesDAO = new OneTimeRegDao(con);
+		oneTimes = oneTimesDAO.select(pupilID);
+
+		return oneTimes;
 	}
 
 	private String getRegType(int type) {
