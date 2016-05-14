@@ -22,6 +22,10 @@ public class User implements Serializable {
 
 	private String userName;
 
+	//bi-directional many-to-one association to PupilActivity
+	@OneToMany(mappedBy="tblUser")
+	private List<PupilActivity> tblPupilActivities;
+
 	//bi-directional many-to-one association to RegToMoadonit
 	@OneToMany(mappedBy="tblUser")
 	private List<RegToMoadonit> tblRegToMoadonits;
@@ -51,6 +55,28 @@ public class User implements Serializable {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public List<PupilActivity> getTblPupilActivities() {
+		return this.tblPupilActivities;
+	}
+
+	public void setTblPupilActivities(List<PupilActivity> tblPupilActivities) {
+		this.tblPupilActivities = tblPupilActivities;
+	}
+
+	public PupilActivity addTblPupilActivity(PupilActivity tblPupilActivity) {
+		getTblPupilActivities().add(tblPupilActivity);
+		tblPupilActivity.setTblUser(this);
+
+		return tblPupilActivity;
+	}
+
+	public PupilActivity removeTblPupilActivity(PupilActivity tblPupilActivity) {
+		getTblPupilActivities().remove(tblPupilActivity);
+		tblPupilActivity.setTblUser(null);
+
+		return tblPupilActivity;
 	}
 
 	public List<RegToMoadonit> getTblRegToMoadonits() {

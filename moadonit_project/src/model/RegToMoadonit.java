@@ -19,7 +19,20 @@ public class RegToMoadonit implements Serializable {
 	private RegToMoadonitPK id;
 
 	@Temporal(TemporalType.DATE)
+	private Date endDate;
+
+	@Temporal(TemporalType.DATE)
 	private Date registerDate;
+
+	//bi-directional many-to-one association to Activity
+	@ManyToOne
+	@JoinColumn(name="activityNum")
+	private Activity tblActivity;
+
+	//bi-directional many-to-one association to RegisterPupil
+	@ManyToOne
+	@JoinColumn(name="pupilNum")
+	private RegisterPupil tblRegisterPupil;
 
 	//bi-directional many-to-one association to RegSource
 	@ManyToOne
@@ -51,11 +64,6 @@ public class RegToMoadonit implements Serializable {
 	@JoinColumn(name="thursday_")
 	private RegType tblRegType5;
 
-	//bi-directional many-to-one association to RegisterPupil
-	@ManyToOne
-	@JoinColumn(name="pupilNum")
-	private RegisterPupil tblRegisterPupil;
-
 	//bi-directional many-to-one association to SchoolYear
 	@ManyToOne
 	@JoinColumn(name="activeYear")
@@ -77,12 +85,36 @@ public class RegToMoadonit implements Serializable {
 		this.id = id;
 	}
 
+	public Date getEndDate() {
+		return this.endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
 	public Date getRegisterDate() {
 		return this.registerDate;
 	}
 
 	public void setRegisterDate(Date registerDate) {
 		this.registerDate = registerDate;
+	}
+
+	public Activity getTblActivity() {
+		return this.tblActivity;
+	}
+
+	public void setTblActivity(Activity tblActivity) {
+		this.tblActivity = tblActivity;
+	}
+
+	public RegisterPupil getTblRegisterPupil() {
+		return this.tblRegisterPupil;
+	}
+
+	public void setTblRegisterPupil(RegisterPupil tblRegisterPupil) {
+		this.tblRegisterPupil = tblRegisterPupil;
 	}
 
 	public RegSource getTblRegSource() {
@@ -131,14 +163,6 @@ public class RegToMoadonit implements Serializable {
 
 	public void setTblRegType5(RegType tblRegType5) {
 		this.tblRegType5 = tblRegType5;
-	}
-
-	public RegisterPupil getTblRegisterPupil() {
-		return this.tblRegisterPupil;
-	}
-
-	public void setTblRegisterPupil(RegisterPupil tblRegisterPupil) {
-		this.tblRegisterPupil = tblRegisterPupil;
 	}
 
 	public SchoolYear getTblSchoolYear() {

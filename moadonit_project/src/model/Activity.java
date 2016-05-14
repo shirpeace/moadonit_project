@@ -2,6 +2,7 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.sql.Time;
 import java.util.List;
 
 
@@ -20,11 +21,42 @@ public class Activity implements Serializable {
 
 	private String activityName;
 
-	private int activityType;
+	private Time endTime;
+
+	private Time startTime;
+
+	private String weekDay;
+
+	//bi-directional many-to-one association to Staff
+	@ManyToOne
+	@JoinColumn(name="responsibleStaff")
+	private Staff tblStaff;
+
+	//bi-directional many-to-one association to SchoolYear
+	@ManyToOne
+	@JoinColumn(name="schoolYear")
+	private SchoolYear tblSchoolYear;
+
+	//bi-directional many-to-one association to ActivityType
+	@ManyToOne
+	@JoinColumn(name="activityType")
+	private ActivityType tblActivityType;
 
 	//bi-directional many-to-one association to Attendance
 	@OneToMany(mappedBy="tblActivity")
 	private List<Attendance> tblAttendances;
+
+	//bi-directional one-to-one association to Course
+	@OneToOne(mappedBy="tblActivity")
+	private Course tblCourse;
+
+	//bi-directional many-to-one association to PupilActivity
+	@OneToMany(mappedBy="tblActivity")
+	private List<PupilActivity> tblPupilActivities;
+
+	//bi-directional many-to-one association to RegToMoadonit
+	@OneToMany(mappedBy="tblActivity")
+	private List<RegToMoadonit> tblRegToMoadonits;
 
 	public Activity() {
 	}
@@ -45,12 +77,52 @@ public class Activity implements Serializable {
 		this.activityName = activityName;
 	}
 
-	public int getActivityType() {
-		return this.activityType;
+	public Time getEndTime() {
+		return this.endTime;
 	}
 
-	public void setActivityType(int activityType) {
-		this.activityType = activityType;
+	public void setEndTime(Time endTime) {
+		this.endTime = endTime;
+	}
+
+	public Time getStartTime() {
+		return this.startTime;
+	}
+
+	public void setStartTime(Time startTime) {
+		this.startTime = startTime;
+	}
+
+	public String getWeekDay() {
+		return this.weekDay;
+	}
+
+	public void setWeekDay(String weekDay) {
+		this.weekDay = weekDay;
+	}
+
+	public Staff getTblStaff() {
+		return this.tblStaff;
+	}
+
+	public void setTblStaff(Staff tblStaff) {
+		this.tblStaff = tblStaff;
+	}
+
+	public SchoolYear getTblSchoolYear() {
+		return this.tblSchoolYear;
+	}
+
+	public void setTblSchoolYear(SchoolYear tblSchoolYear) {
+		this.tblSchoolYear = tblSchoolYear;
+	}
+
+	public ActivityType getTblActivityType() {
+		return this.tblActivityType;
+	}
+
+	public void setTblActivityType(ActivityType tblActivityType) {
+		this.tblActivityType = tblActivityType;
 	}
 
 	public List<Attendance> getTblAttendances() {
@@ -73,6 +145,58 @@ public class Activity implements Serializable {
 		tblAttendance.setTblActivity(null);
 
 		return tblAttendance;
+	}
+
+	public Course getTblCourse() {
+		return this.tblCourse;
+	}
+
+	public void setTblCourse(Course tblCourse) {
+		this.tblCourse = tblCourse;
+	}
+
+	public List<PupilActivity> getTblPupilActivities() {
+		return this.tblPupilActivities;
+	}
+
+	public void setTblPupilActivities(List<PupilActivity> tblPupilActivities) {
+		this.tblPupilActivities = tblPupilActivities;
+	}
+
+	public PupilActivity addTblPupilActivity(PupilActivity tblPupilActivity) {
+		getTblPupilActivities().add(tblPupilActivity);
+		tblPupilActivity.setTblActivity(this);
+
+		return tblPupilActivity;
+	}
+
+	public PupilActivity removeTblPupilActivity(PupilActivity tblPupilActivity) {
+		getTblPupilActivities().remove(tblPupilActivity);
+		tblPupilActivity.setTblActivity(null);
+
+		return tblPupilActivity;
+	}
+
+	public List<RegToMoadonit> getTblRegToMoadonits() {
+		return this.tblRegToMoadonits;
+	}
+
+	public void setTblRegToMoadonits(List<RegToMoadonit> tblRegToMoadonits) {
+		this.tblRegToMoadonits = tblRegToMoadonits;
+	}
+
+	public RegToMoadonit addTblRegToMoadonit(RegToMoadonit tblRegToMoadonit) {
+		getTblRegToMoadonits().add(tblRegToMoadonit);
+		tblRegToMoadonit.setTblActivity(this);
+
+		return tblRegToMoadonit;
+	}
+
+	public RegToMoadonit removeTblRegToMoadonit(RegToMoadonit tblRegToMoadonit) {
+		getTblRegToMoadonits().remove(tblRegToMoadonit);
+		tblRegToMoadonit.setTblActivity(null);
+
+		return tblRegToMoadonit;
 	}
 
 }

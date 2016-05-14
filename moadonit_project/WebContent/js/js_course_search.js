@@ -1,27 +1,7 @@
 var grades;
 var gridSelectedGrade;
-function loadPupilSearch() {
-	$.ajax({
-  		async: false,
-		type: 'GET',
-		datatype: 'json',
-        url: "FullPupilCardController?action=getGrades",
-        
-        success: function(data) {
-        	if(data != undefined){
-        		grades=data;
-        		console.log("grades"+grades);
-        	}
-        	else
-        		console.log("no data");
-        },
-        error: function(e) {
-        	console.log("error loading grades");
-        	
-			
-        }
-        
-      }); 
+function loadCourseSearch() {
+	
 	loadGrid();
 	$("#resetBtn").click(function() {
 		var grid = $("#list");
@@ -36,100 +16,132 @@ function loadPupilSearch() {
 function loadGrid(){
 	
 	  $("#list").jqGrid({
-          url : "FullPupilCardController?action=pupilSearch",
+          url : "ActivityController?action=getCourses&activityNum=0",
           datatype : "json",
           mtype : 'POST',
-          colNames : ['מספר','שם פרטי' , 'שם משפחה' , 'מגדר', 'כיתה', 'רשום'],         
+          colNames : ['מספר','סוג פעילות' , 'שם החוג' ,'שם המורה', 'יום בשבוע', 'שעת התחלה', 'שעת סיום','מחיר לחודש' ,'תשלום חומרים' ,'סוג החוג' ],         
           colModel : [ {
-                  name : 'id',
-                  index : 'id',
+                  name : 'activityNum',
+                  index : 'activityNum',
                   width : 100,
                   hidden: true
-          }, {
-                  name : 'firstName',
-                  index : 'firstName',
+          },
+          {
+                  name : 'activityType',
+                  index : 'activityType',
                   width : 150,
-                  editable : true
+                  hidden: true
           }, {
-                  name : 'lastName',
-                  index : 'lastName',
-                  width : 150,
-                  editable : true
-          }, {
-                  name : 'gender',
-                  index : 'gender',
+                  name : 'activityName',
+                  index : 'activityName',
                   width : 100,
+                  editable : true
+          },
+           {
+              name : 'firstName', 
+              index : 'firstName',
+              width : 100,
+              
+          }, {
+                  name : 'weekDay',
+                  index : 'weekDay',
+                  width : 60,
                   editable : true,
                   stype: "select",
-                  searchoptions: { value: ":;1:בן;2:בת"}
+                  searchoptions: { value: " : ;א:א;ב:ב;ג:ג;ד:ד;ה:ה;ו:ו"}
           }, {
-                  name : 'gradeName',
-                  index : 'gradeName',
-                  width : 100,
-                  editable : true,
-                  stype: "select",                  
-                  searchoptions: {
-                	  		dataUrl: "FullPupilCardController?action=getGrades",
-							buildSelect : function (data) {
-                	  		var codes, i, l, code, prop; 
-                	  		
-                	  		var s = '<select id="gradeSelect" >', codes, i, l, code, prop;
-                            if (data ) {
-                                codes = data.value.split(';');
-                                for (i = 0, l = codes.length; i < l; i++) {
-                                    code = codes[i];
-                                    // enumerate properties of code object
-                                    for (prop in code) {
-                                        if (code.hasOwnProperty(prop)) {
-                                        	var op = code.split(':');
-                                        	if(op[0] == ' '){
-                                        		//FFFFFF
-                                        		s += '<option style="background-color:#FFFFFF" value="' + op[0] + '">' + op[1] + '</option>';
-                                                break; // we need only the first property
-                                        	}
-                                        	else{
-                                        		s += '<option style="background-color:'+ op[2]+'" value="' + op[0] + '">' + op[1] + '</option>';
-                                                break; // we need only the first property
-                                        	}
-                                            
-                                        }
-                                    }
-                                }
-                            }
-                            
-                           
-                            return s + "</select>";
-                		  }
-                  }// grades
+                  name : 'startTime',
+                  index : 'startTime',
+                  width : 90,
+                  searchoptions: { 
+                	  dataInit: function (element) {
+                		
+                          $(element).timepicker({
+          				    
+          				    closeOnWindowScroll : true,
+          				    disableTextInput: true,
+          				    step: 15,
+          				    timeFormat : 'H:i',
+          				    maxTime : '17:00',
+          				    minTime : '12:30'
+          				});
+                      } ,
+                      //sopt: ["ge","le","eq"]
+                	  
+                  }
+                        
+                 
           }
          , {
-              name : 'isReg', 
-              index : 'isReg',
-              width : 100,
-              editable : false,
-              stype: "select",
-              searchoptions: { value: ":;1:רשום;2:לא רשום"},
-              formatter: "checkbox",
+              name : 'endTime', 
+              index : 'endTime',
+              width : 90,
+              searchoptions: { 
+            	  dataInit: function (element) {
+            		
+                      $(element).timepicker({
+      				    
+      				    closeOnWindowScroll : true,
+      				    disableTextInput: true,
+      				    step: 15,
+      				    timeFormat : 'H:i',
+      				    maxTime : '17:00',
+      				    minTime : '12:30'
+      				});
+                  } ,
+                  //sopt: ["ge","le","eq"]
+            	  
+              }
           } 
+         , {
+             name : 'pricePerMonth', 
+             index : 'pricePerMonth',
+             width : 100,
+             formatter: currencyFmatter,
+             unformat:unformatCurrency
+         }
+         , {
+             name : 'extraPrice', 
+             index : 'extraPrice',
+             width : 100,
+             formatter: currencyFmatter,
+             unformat:unformatCurrency
+         }
+         , {
+             name : 'regularOrPrivate', 
+             index : 'regularOrPrivate',
+             width : 100,
+             stype: "select",
+             searchoptions: { value: " : ;רגיל:רגיל;מיוחד:מיוחד"}
+         }
+         
           ],
+          loadComplete : function(data) {
+				
+			},
+			loadError : function(xhr, status, error) {
+				/*alert("complete loadError");*/
+			},
+			
           pager : '#pager',
           rowNum : 50,
           rowList : [ ],
-          sortname : 'gradeName',
+          sortname : 'activityName',
           /*scroll: true,*/
           direction:"rtl",
           viewrecords : true,
           gridview : true,
           height: "100%",
-          ondblClickRow: function(rowId) {
+          width: "100%",
+          ondblClickRow: function(rowId) { debugger;
               var rowData = jQuery(this).getRowData(rowId); 
-              var pupilID = rowData.id;
-              window.location.href = "pupil_card_view.jsp?pupil="+pupilID+"";
+              var actID = rowData.activityNum;
+              window.location.href = "course_card_view.jsp?activityNum="+actID+"";
           },
           jsonReader : {
                   repeatitems : false,
           },
-          editurl : "FullPupilCardController",
+          
           recreateFilter:true,
           
           rowList: [],        // disable page size dropdown
@@ -158,6 +170,16 @@ function loadGrid(){
   
 
 }	
+function currencyFmatter (cellvalue, options, rowObject)
+{
+ 
+   return cellvalue + " ש\"ח";
+}
+function  unformatCurrency (cellvalue, options)
+{
+ 
+   return cellvalue.replace(" ש\"ח","");
+}
 
 function onGradeChange(elem){
 

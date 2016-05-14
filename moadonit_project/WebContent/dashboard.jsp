@@ -123,7 +123,7 @@
                     <div class="col-lg-3 col-md-6">
                         <div class="panel panel-green">
                            
-                            <a href="#">
+                            <a href="course_search.jsp">
                                 <div class="panel-footer">
                                     <span class="pull-right">רישום לחוגים </span>
                                     <span class="pull-left"><i class="fa  fa-pencil-square-o fa-5x"></i></span>

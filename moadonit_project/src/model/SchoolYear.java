@@ -27,21 +27,21 @@ public class SchoolYear implements Serializable {
 
 	private String yearName;
 
+	//bi-directional many-to-one association to Activity
+	@OneToMany(mappedBy="tblSchoolYear")
+	private List<Activity> tblActivities;
+
 	//bi-directional many-to-one association to Attendance
 	@OneToMany(mappedBy="tblSchoolYear")
 	private List<Attendance> tblAttendances;
 
-	//bi-directional many-to-one association to GradePupil
+	//bi-directional many-to-one association to GradeInYear
 	@OneToMany(mappedBy="tblSchoolYear")
-	private List<GradePupil> tblGradePupils;
+	private List<GradeInYear> tblGradeInYears;
 
 	//bi-directional many-to-one association to RegToMoadonit
 	@OneToMany(mappedBy="tblSchoolYear")
 	private List<RegToMoadonit> tblRegToMoadonits;
-
-	//bi-directional many-to-one association to GradeInYear
-	@OneToMany(mappedBy="tblSchoolYear")
-	private List<GradeInYear> tblGradeInYears;
 
 	public SchoolYear() {
 	}
@@ -78,6 +78,28 @@ public class SchoolYear implements Serializable {
 		this.yearName = yearName;
 	}
 
+	public List<Activity> getTblActivities() {
+		return this.tblActivities;
+	}
+
+	public void setTblActivities(List<Activity> tblActivities) {
+		this.tblActivities = tblActivities;
+	}
+
+	public Activity addTblActivity(Activity tblActivity) {
+		getTblActivities().add(tblActivity);
+		tblActivity.setTblSchoolYear(this);
+
+		return tblActivity;
+	}
+
+	public Activity removeTblActivity(Activity tblActivity) {
+		getTblActivities().remove(tblActivity);
+		tblActivity.setTblSchoolYear(null);
+
+		return tblActivity;
+	}
+
 	public List<Attendance> getTblAttendances() {
 		return this.tblAttendances;
 	}
@@ -100,26 +122,26 @@ public class SchoolYear implements Serializable {
 		return tblAttendance;
 	}
 
-	public List<GradePupil> getTblGradePupils() {
-		return this.tblGradePupils;
+	public List<GradeInYear> getTblGradeInYears() {
+		return this.tblGradeInYears;
 	}
 
-	public void setTblGradePupils(List<GradePupil> tblGradePupils) {
-		this.tblGradePupils = tblGradePupils;
+	public void setTblGradeInYears(List<GradeInYear> tblGradeInYears) {
+		this.tblGradeInYears = tblGradeInYears;
 	}
 
-	public GradePupil addTblGradePupil(GradePupil tblGradePupil) {
-		getTblGradePupils().add(tblGradePupil);
-		tblGradePupil.setTblSchoolYear(this);
+	public GradeInYear addTblGradeInYear(GradeInYear tblGradeInYear) {
+		getTblGradeInYears().add(tblGradeInYear);
+		tblGradeInYear.setTblSchoolYear(this);
 
-		return tblGradePupil;
+		return tblGradeInYear;
 	}
 
-	public GradePupil removeTblGradePupil(GradePupil tblGradePupil) {
-		getTblGradePupils().remove(tblGradePupil);
-		tblGradePupil.setTblSchoolYear(null);
+	public GradeInYear removeTblGradeInYear(GradeInYear tblGradeInYear) {
+		getTblGradeInYears().remove(tblGradeInYear);
+		tblGradeInYear.setTblSchoolYear(null);
 
-		return tblGradePupil;
+		return tblGradeInYear;
 	}
 
 	public List<RegToMoadonit> getTblRegToMoadonits() {
@@ -142,28 +164,6 @@ public class SchoolYear implements Serializable {
 		tblRegToMoadonit.setTblSchoolYear(null);
 
 		return tblRegToMoadonit;
-	}
-
-	public List<GradeInYear> getTblGradeInYears() {
-		return this.tblGradeInYears;
-	}
-
-	public void setTblGradeInYears(List<GradeInYear> tblGradeInYears) {
-		this.tblGradeInYears = tblGradeInYears;
-	}
-
-	public GradeInYear addTblGradeInYear(GradeInYear tblGradeInYear) {
-		getTblGradeInYears().add(tblGradeInYear);
-		tblGradeInYear.setTblSchoolYear(this);
-
-		return tblGradeInYear;
-	}
-
-	public GradeInYear removeTblGradeInYear(GradeInYear tblGradeInYear) {
-		getTblGradeInYears().remove(tblGradeInYear);
-		tblGradeInYear.setTblSchoolYear(null);
-
-		return tblGradeInYear;
 	}
 
 }

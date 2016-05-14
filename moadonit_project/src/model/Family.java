@@ -18,6 +18,8 @@ public class Family implements Serializable {
 	@Id
 	private int familyID;
 
+	private int areDivorced;
+
 	private String homeAddress;
 
 	private String homePhoneNum;
@@ -45,6 +47,14 @@ public class Family implements Serializable {
 
 	public void setFamilyID(int familyID) {
 		this.familyID = familyID;
+	}
+
+	public int getAreDivorced() {
+		return this.areDivorced;
+	}
+
+	public void setAreDivorced(int areDivorced) {
+		this.areDivorced = areDivorced;
 	}
 
 	public String getHomeAddress() {

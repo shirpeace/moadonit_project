@@ -5,7 +5,7 @@
 
 /*   the current user the us logged if to the system */
 var currentUserId =	 '<%=session.getAttribute("userid")%>';	
-
+var gradeData;
 // define state for the editable page
 	var state = {
 	    EDIT: 0,
@@ -17,7 +17,30 @@ var currentUserId =	 '<%=session.getAttribute("userid")%>';
 /*************************************************/
 
 /* action to update/insert pupil*/
-	
+function loadGrades()
+{
+	$.ajax({
+  		async: false,
+		type: 'GET',
+		datatype: 'json',
+        url: "FullPupilCardController?action=getGrades",
+        
+        success: function(data) {
+        	if(data != undefined){
+        		gradeData=data;
+        		console.log("grades"+gradeData);
+        	}
+        	else
+        		console.log("no data for gradeData");
+        },
+        error: function(e) {
+        	console.log("error loading gradeData");
+
+        }
+        
+      }); 	
+}
+
 function savePupilCardData(action,forward){
 		    
 	    

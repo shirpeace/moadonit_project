@@ -9,10 +9,11 @@ import java.util.Date;
  * The persistent class for the fullPupilCard database table.
  * 
  */
-
 @NamedQuery(name="FullPupilCard.findAll", query="SELECT f FROM FullPupilCard f")
 public class FullPupilCard implements Serializable {
 	private static final long serialVersionUID = 1L;
+
+	private int areDivorced;
 
 	@Temporal(TemporalType.DATE)
 	private Date birthDate;
@@ -80,6 +81,14 @@ public class FullPupilCard implements Serializable {
 	private String staffChild;
 
 	public FullPupilCard() {
+	}
+
+	public int getAreDivorced() {
+		return this.areDivorced;
+	}
+
+	public void setAreDivorced(int areDivorced) {
+		this.areDivorced = areDivorced;
 	}
 
 	public Date getBirthDate() {
