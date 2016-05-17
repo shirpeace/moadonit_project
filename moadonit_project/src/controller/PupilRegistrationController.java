@@ -43,6 +43,7 @@ public class PupilRegistrationController extends HttpServlet implements
 	private static final long serialVersionUID = 1L;
 	MyConnection con = null;
 	RegToMoadonit reg;
+	OneTimeReg oneTime;
 	RegToMoadonitPK pkReg;
 	JSONObject resultToClient = new JSONObject();
 	List<RegToMoadonit> pupilRegList = null;
@@ -235,43 +236,31 @@ public class PupilRegistrationController extends HttpServlet implements
 				}
 			} else if (action.equals("saveOneTime")) { /*Shir */
 				/////////////////////////
-				System.out.println(req.getParameter("oneTimeReg"));
-//				S/*tring rtm = req.getParameter("rtm");
-//				this.reg = (RegToMoadonit) DAOUtil.getObjectFromJson(rtm,
-//						this.reg.getClass());
-//				if (req.getSession().getAttribute("userid") != null) {
-//					JSONObject user = (JSONObject) req.getSession()
-//							.getAttribute("userid");
-//					User u = new User();
-//					u = (User) DAOUtil.getObjectFromJson(user.toString(), u.getClass());
-//					
-//					this.reg.setTblUser(u);
-//
-//					if (this.regDAO.checkPk(this.reg)) {
-//
-//						resultToClient.put("msg", 0);
-//						resultToClient.put("result","לתלמיד זה כבר קיים רישום בתאריך הספציפי");
-//					} else {
-//
-//						boolean r = addRegistration(req, resp);
-//						if (r) {
-//							resultToClient.put("msg", 1);
-//							resultToClient.put("result", null);
-//						} else {
-//							resultToClient.put("msg", 0);
-//							resultToClient
-//									.put("result", "שגיאה בשמירת הנתונים");
-//						}
-//					}				
-//
-//				}else{
-//					resultToClient.put("msg", 0);
-//					resultToClient.put("result", "שגיאה בשמירת הנתונים");				
-//				}
-//
-//				resp.setContentType("application/json");
-//				resp.setCharacterEncoding("UTF-8");
-//				resp.getWrit*/er().print(resultToClient);
+			
+				String otr = req.getParameter("oneTimeReg");
+				this.oneTime = (OneTimeReg) DAOUtil.getObjectFromJson(otr,
+						this.oneTime.getClass());
+
+					if (this.regDAO.checkPk(this.oneTime)) {
+
+						resultToClient.put("msg", 0);
+						resultToClient.put("result","לתלמיד זה כבר קיים רישום בתאריך הספציפי");
+					} else {
+
+						boolean r = addOneTimeReg(req, resp);
+						if (r) {
+							resultToClient.put("msg", 1);
+							resultToClient.put("result", null);
+						} else {
+							resultToClient.put("msg", 0);
+							resultToClient
+									.put("result", "שגיאה בשמירת הנתונים");
+						}
+					}				
+
+				resp.setContentType("application/json");
+				resp.setCharacterEncoding("UTF-8");
+				resp.getWriter().print(resultToClient);
 				
 				////////////////////
 				
@@ -384,6 +373,15 @@ public class PupilRegistrationController extends HttpServlet implements
 
 	}
 
+	private boolean addOneTimeReg(HttpServletRequest req,
+			HttpServletResponse resp) throws IOException, SQLException {
+		boolean r = false;
+
+		r = this.regDAO.insertOTR(this.oneTime);
+		return r;
+
+	}
+	
 	protected List<RegToMoadonit> getRegistration(HttpServletRequest req,
 			HttpServletResponse resp , int future) throws IOException, SQLException {
 
@@ -438,7 +436,7 @@ public class PupilRegistrationController extends HttpServlet implements
 	@SuppressWarnings("unchecked")
 	protected void getOneTimeJson(JSONArray registrationData) { /*Shir */
 
-	// get data for for registration
+	// get data for registration
 
 			for (OneTimeReg oneTimes : this.listOneTimeReg) {
 				JSONObject user = new JSONObject();
