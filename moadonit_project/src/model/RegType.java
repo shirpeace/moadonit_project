@@ -20,6 +20,10 @@ public class RegType implements Serializable {
 
 	private String type;
 
+	//bi-directional many-to-one association to OneTimeReg
+	@OneToMany(mappedBy="tblRegType")
+	private List<OneTimeReg> tblOneTimeRegs;
+
 	//bi-directional many-to-one association to RegToMoadonit
 	@OneToMany(mappedBy="tblRegType1")
 	private List<RegToMoadonit> tblRegToMoadonits1;
@@ -57,6 +61,28 @@ public class RegType implements Serializable {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public List<OneTimeReg> getTblOneTimeRegs() {
+		return this.tblOneTimeRegs;
+	}
+
+	public void setTblOneTimeRegs(List<OneTimeReg> tblOneTimeRegs) {
+		this.tblOneTimeRegs = tblOneTimeRegs;
+	}
+
+	public OneTimeReg addTblOneTimeReg(OneTimeReg tblOneTimeReg) {
+		getTblOneTimeRegs().add(tblOneTimeReg);
+		tblOneTimeReg.setTblRegType(this);
+
+		return tblOneTimeReg;
+	}
+
+	public OneTimeReg removeTblOneTimeReg(OneTimeReg tblOneTimeReg) {
+		getTblOneTimeRegs().remove(tblOneTimeReg);
+		tblOneTimeReg.setTblRegType(null);
+
+		return tblOneTimeReg;
 	}
 
 	public List<RegToMoadonit> getTblRegToMoadonits1() {

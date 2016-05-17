@@ -187,7 +187,67 @@ public class FullPupilCardController extends HttpServlet implements
 				resp.getWriter().print(resultToClient);
 
 			}
+			//
+			else if (action.equals("SelectPupilNotInActivity")) {
+				
+				String search = req.getParameter("_search");
+				if (search.equals("true")) {
+					 // on filtering popup window 
+					pupilList = fillterPupilNotInActivity(req, resp);
+					JSONArray jsonPupilList = new JSONArray();
+					getPupilList(jsonPupilList);
 
+					if (!jsonPupilList.isEmpty()) {
+
+						String jsonResponse = jsonPupilList.toJSONString();
+						jsonResponse = "{\"page\":1,\"total\":\"1\",\"records\":"
+								+ pupilList.size()
+								+ ",\"rows\":"
+								+ jsonResponse + "}";
+
+						resp.setContentType("application/json");
+						resp.setCharacterEncoding("UTF-8");
+						resp.getWriter().print(jsonResponse);
+
+					} else {
+
+						resp.setContentType("application/json");
+						resp.setCharacterEncoding("UTF-8");
+						resultToClient.put("msg", 0);
+						resultToClient.put("result", "לא נמצאו נתונים");
+						resp.getWriter().print(resultToClient);
+					}
+
+				}
+
+				else { // on pop up search page load
+					
+					pupilList = SelectPupilNotInActivity(req, resp);
+					JSONArray jsonPupilList = new JSONArray();
+					getPupilList(jsonPupilList);
+					if (!jsonPupilList.isEmpty()) {
+
+						String jsonResponse = jsonPupilList.toJSONString();
+						jsonResponse = "{\"page\":1,\"total\":\"1\",\"records\":"
+								+ pupilList.size()
+								+ ",\"rows\":"
+								+ jsonResponse + "}";
+
+						resp.setContentType("application/json");
+						resp.setCharacterEncoding("UTF-8");
+						resp.getWriter().print(jsonResponse);
+
+					} else {
+
+						resp.setContentType("application/json");
+						resp.setCharacterEncoding("UTF-8");
+						resultToClient.put("msg", 0);
+						resultToClient.put("result", "לא נמצאו נתונים");
+						resp.getWriter().print(resultToClient);
+					}
+				}
+				
+			}
 			else if (action.equals("pupilSearch")) {
 				// on searching
 				String search = req.getParameter("_search");
@@ -593,6 +653,28 @@ public class FullPupilCardController extends HttpServlet implements
 		return p;
 	}
 
+	protected List<FullPupilCard> SelectPupilNotInActivity(HttpServletRequest req,
+			HttpServletResponse resp) {
+		List<FullPupilCard> pupils = new ArrayList<>();
+		int activityNum = Integer.parseInt(req.getParameter("activityNum"));
+		pupils = this.fullPupilDao.SelectPupilNotInActivity(req.getParameter("sidx"),
+				req.getParameter("sord"), activityNum);
+
+		return pupils;
+	}
+	
+	private List<FullPupilCard> fillterPupilNotInActivity(HttpServletRequest req,
+			HttpServletResponse resp) {
+		List<FullPupilCard> pupils = new ArrayList<>();
+		int activityNum = Integer.parseInt(req.getParameter("activityNum"));
+		pupils = this.fullPupilDao.fillterPupilNotInActivity(req.getParameter("sidx"),
+				req.getParameter("sord"), req.getParameter("firstName"),
+				req.getParameter("lastName"), req.getParameter("gender"),
+				req.getParameter("gradeName"), req.getParameter("isReg"), activityNum);
+
+		return pupils;
+	}
+	
 	protected List<FullPupilCard> getFullPupilList(HttpServletRequest req,
 			HttpServletResponse resp) {
 		List<FullPupilCard> pupils = new ArrayList<>();

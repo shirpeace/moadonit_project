@@ -17,6 +17,7 @@ public class FullPupilCardDAO extends AbstractDAO {
 	private String selectAll = "SELECT * FROM fullPupilCard ";
 	private String selectSearch = "SELECT * FROM fullPupilCard where firstName = ?";
 	private String selectFilter = "{ CALL ms2016.getFullPupilByParam (?, ?) }";
+	private String SelectPupilNotInActivity = "SELECT * FROM fullPupilCard where pupilNum  NOT IN ( select pupilNum from tbl_pupil_activities where activityNum = ? )";
 	/**
 	 * 
 	 */
@@ -64,6 +65,26 @@ public class FullPupilCardDAO extends AbstractDAO {
 
 		return list;
 }
+	
+	public List<FullPupilCard> SelectPupilNotInActivity(String sind, String sord,int ActivityId) throws IllegalArgumentException, DAOException {
+		List<FullPupilCard> list = new ArrayList<>();
+		String stat = SelectPupilNotInActivity +" ORDER BY "+ sind +" "+ sord;
+		Object[] values = {   ActivityId };
+				//(where %s,fName=null?"firstName=fname":" ");
+		try (PreparedStatement statement = DAOUtil.prepareStatement(this.con.getConnection(), stat, false, values); ResultSet resultSet = statement.executeQuery();) {
+
+			while (resultSet.next()) {
+				FullPupilCard p = map(resultSet);
+				list.add(p);
+			}
+
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+
+		return list;
+}
+	
 
 	private FullPupilCard map(ResultSet resultSet) throws SQLException {
 		// TODO Auto-generated method stub
@@ -103,6 +124,67 @@ public class FullPupilCardDAO extends AbstractDAO {
 		return p;
 	}
 
+	public List<FullPupilCard> fillterPupilNotInActivity(String sind, String sord,String fName,String lName,String gend,String grade,String isReg, int activityNum) {
+		List<FullPupilCard> list = new ArrayList<>();
+		String stat = SelectPupilNotInActivity;
+		int withRegPupil = 0;
+		if(fName!=null ||lName!=null || gend!=null   || (grade!=null && !grade.equals(" "))  || isReg!=null){
+			stat+=" and ";
+			if(fName!=null){
+				stat+="firstName LIKE '%" +fName +"%' and ";
+			}
+			if(lName!=null){
+				stat+="lastName LIKE '%" +lName +"%' and ";
+			}
+			if(gend!=null){
+				stat+="gender =" +gend +" and ";
+			}
+			if(grade!=null && !grade.equals(" ")){
+				stat+="gradeID =" +grade +" and ";
+			}
+			if(isReg!=null){
+				if(isReg.equals("1")){
+					//stat+="regPupilNum is not null";
+					withRegPupil = 1; //-- get only registered pupil
+				}
+				else{
+					//stat+="regPupilNum is null";
+					withRegPupil = 2; //-- get only non registered pupil
+				}
+			}else{
+				stat = stat.substring(0, stat.length()-4);
+				withRegPupil = 0; //-- get all pupil    
+			}
+		}
+		///
+		/*this.regToMoadonitDAO = new RegToMoadonitDAO(con);
+		List<RegToMoadonit> active = regToMoadonitDAO.getActiveRegForPupil(pupil.getPupilNum());
+		Boolean reg = false;
+		if(!active.isEmpty()){
+			RegToMoadonit r = active.get(0);
+			if(r.getTblRegType1().getTypeNum()==1 && r.getTblRegType2().getTypeNum()==1 && r.getTblRegType3().getTypeNum()==1 && 
+					r.getTblRegType4().getTypeNum()==1 && r.getTblRegType5().getTypeNum()==1 )
+				reg = false;
+			else
+				reg = true;
+		}*/
+		///
+		Object[] values = {   activityNum };
+		try (PreparedStatement statement = DAOUtil.prepareStatement(this.con.getConnection(), stat ,false,values);
+						ResultSet resultSet = statement.executeQuery();) {
+
+			while (resultSet.next()) {
+				FullPupilCard p = map(resultSet);
+				list.add(p);
+			}
+
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+
+		return list;
+	}
+	
 	public List<FullPupilCard> selectSearch(String sind, String sord,String fName,String lName,String gend,String grade,String isReg) {
 		List<FullPupilCard> list = new ArrayList<>();
 		String stat = selectAll;

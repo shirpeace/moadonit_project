@@ -30,9 +30,9 @@ public class Staff implements Serializable {
 	@OneToMany(mappedBy="tblStaff")
 	private List<Activity> tblActivities;
 
-	//bi-directional one-to-one association to CourseTeacher
+	//bi-directional one-to-one association to Teacher
 	@OneToOne(mappedBy="tblStaff")
-	private CourseTeacher tblCourseTeacher;
+	private Teacher tblTeacher;
 
 	public Staff() {
 	}
@@ -99,12 +99,12 @@ public class Staff implements Serializable {
 		return tblActivity;
 	}
 
-	public CourseTeacher getTblCourseTeacher() {
-		return this.tblCourseTeacher;
+	public Teacher getTblTeacher() {
+		return this.tblTeacher;
 	}
 
-	public void setTblCourseTeacher(CourseTeacher tblCourseTeacher) {
-		this.tblCourseTeacher = tblCourseTeacher;
+	public void setTblTeacher(Teacher tblTeacher) {
+		this.tblTeacher = tblTeacher;
 	}
 
 }

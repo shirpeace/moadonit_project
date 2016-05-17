@@ -32,15 +32,15 @@ public class RegisterPupil implements Serializable {
 	@OneToMany(mappedBy="tblRegisterPupil")
 	private List<RegToMoadonit> tblRegToMoadonits;
 
-	//bi-directional one-to-one association to Pupil
-	@OneToOne
-	@JoinColumn(name="pupilNum")
-	private Pupil tblPupil;
-
 	//bi-directional many-to-one association to FoodType
 	@ManyToOne
 	@JoinColumn(name="foodType")
 	private FoodType tblFoodType;
+
+	//bi-directional one-to-one association to Pupil
+	@OneToOne
+	@JoinColumn(name="pupilNum")
+	private Pupil tblPupil;
 
 	public RegisterPupil() {
 	}
@@ -115,20 +115,20 @@ public class RegisterPupil implements Serializable {
 		return tblRegToMoadonit;
 	}
 
-	public Pupil getTblPupil() {
-		return this.tblPupil;
-	}
-
-	public void setTblPupil(Pupil tblPupil) {
-		this.tblPupil = tblPupil;
-	}
-
 	public FoodType getTblFoodType() {
 		return this.tblFoodType;
 	}
 
 	public void setTblFoodType(FoodType tblFoodType) {
 		this.tblFoodType = tblFoodType;
+	}
+
+	public Pupil getTblPupil() {
+		return this.tblPupil;
+	}
+
+	public void setTblPupil(Pupil tblPupil) {
+		this.tblPupil = tblPupil;
 	}
 
 }

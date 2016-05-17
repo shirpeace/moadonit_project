@@ -17,12 +17,20 @@ public class OneTimeReg implements Serializable {
 	@EmbeddedId
 	private OneTimeRegPK id;
 
-	private String regType;
-
 	//bi-directional many-to-one association to Pupil
 	@ManyToOne
 	@JoinColumn(name="pupilNum")
 	private Pupil tblPupil;
+
+	//bi-directional many-to-one association to RegType
+	@ManyToOne
+	@JoinColumn(name="regType")
+	private RegType tblRegType;
+
+	//bi-directional many-to-one association to SchoolYear
+	@ManyToOne
+	@JoinColumn(name="schoolYear")
+	private SchoolYear tblSchoolYear;
 
 	public OneTimeReg() {
 	}
@@ -35,20 +43,28 @@ public class OneTimeReg implements Serializable {
 		this.id = id;
 	}
 
-	public String getRegType() {
-		return this.regType;
-	}
-
-	public void setRegType(String regType) {
-		this.regType = regType;
-	}
-
 	public Pupil getTblPupil() {
 		return this.tblPupil;
 	}
 
 	public void setTblPupil(Pupil tblPupil) {
 		this.tblPupil = tblPupil;
+	}
+
+	public RegType getTblRegType() {
+		return this.tblRegType;
+	}
+
+	public void setTblRegType(RegType tblRegType) {
+		this.tblRegType = tblRegType;
+	}
+
+	public SchoolYear getTblSchoolYear() {
+		return this.tblSchoolYear;
+	}
+
+	public void setTblSchoolYear(SchoolYear tblSchoolYear) {
+		this.tblSchoolYear = tblSchoolYear;
 	}
 
 }

@@ -133,7 +133,7 @@ function loadGrid(){
           gridview : true,
           height: "100%",
           width: "100%",
-          ondblClickRow: function(rowId) { debugger;
+          ondblClickRow: function(rowId) { 
               var rowData = jQuery(this).getRowData(rowId); 
               var actID = rowData.activityNum;
               window.location.href = "course_card_view.jsp?activityNum="+actID+"";

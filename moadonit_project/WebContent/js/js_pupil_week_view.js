@@ -554,23 +554,7 @@ function createPostData(pupilID, rowData,isEdit){
 
 	return rtm;
 }
-/**
- * the value to convert to date , if value is a milliseconds number , create an date from it.
- * if vlaue is string, build date from it.
- * @param value
- * @returns {Date}
- */
-function getDateFromValue(value){
-	if (typeof value === 'string') {
-		var arr = value.split("/");
-		var d = new Date(arr[2], arr[1] - 1, arr[0]);
-		return d;
-	}else if(typeof value === 'number'){
-		var d = new Date(value);
-		return d;
-	}
-	
-}
+
 
 function saveRegistraion() {
 

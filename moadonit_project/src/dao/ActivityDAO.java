@@ -24,6 +24,7 @@ public class ActivityDAO extends AbstractDAO {
 
 	private String selectCourses = "{call ms2016.getCourses (?)}";
 	private String searchCoursesByParam = "{ call ms2016.searchCoursesByParam( ? , ? , ?, ? , ?, ?, ? , ?, ? ) }";
+
 	/**
 	 * getCourses
 	 */
@@ -74,6 +75,8 @@ public class ActivityDAO extends AbstractDAO {
 
 		return list;
 	}
+	
+	
 	
 	/**
 	 * Get courses/Course accocding to given id.

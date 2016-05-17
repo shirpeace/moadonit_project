@@ -444,7 +444,7 @@ public class PupilRegistrationController extends HttpServlet implements
 				JSONObject user = new JSONObject();
 
 				user.put("regDate", oneTimes.getId().getSpecificDate().getTime());
-				user.put("regType", getRegType(Integer.parseInt(oneTimes.getRegType()))); //why regtype is not an int?
+				//user.put("regType", getRegType(Integer.parseInt(oneTimes.getRegType()))); //why regtype is not an int?
 								
 				registrationData.add(user);
 

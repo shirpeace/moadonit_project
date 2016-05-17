@@ -39,6 +39,10 @@ public class SchoolYear implements Serializable {
 	@OneToMany(mappedBy="tblSchoolYear")
 	private List<GradeInYear> tblGradeInYears;
 
+	//bi-directional many-to-one association to OneTimeReg
+	@OneToMany(mappedBy="tblSchoolYear")
+	private List<OneTimeReg> tblOneTimeRegs;
+
 	//bi-directional many-to-one association to RegToMoadonit
 	@OneToMany(mappedBy="tblSchoolYear")
 	private List<RegToMoadonit> tblRegToMoadonits;
@@ -142,6 +146,28 @@ public class SchoolYear implements Serializable {
 		tblGradeInYear.setTblSchoolYear(null);
 
 		return tblGradeInYear;
+	}
+
+	public List<OneTimeReg> getTblOneTimeRegs() {
+		return this.tblOneTimeRegs;
+	}
+
+	public void setTblOneTimeRegs(List<OneTimeReg> tblOneTimeRegs) {
+		this.tblOneTimeRegs = tblOneTimeRegs;
+	}
+
+	public OneTimeReg addTblOneTimeReg(OneTimeReg tblOneTimeReg) {
+		getTblOneTimeRegs().add(tblOneTimeReg);
+		tblOneTimeReg.setTblSchoolYear(this);
+
+		return tblOneTimeReg;
+	}
+
+	public OneTimeReg removeTblOneTimeReg(OneTimeReg tblOneTimeReg) {
+		getTblOneTimeRegs().remove(tblOneTimeReg);
+		tblOneTimeReg.setTblSchoolYear(null);
+
+		return tblOneTimeReg;
 	}
 
 	public List<RegToMoadonit> getTblRegToMoadonits() {
