@@ -27,20 +27,20 @@ public class Activity implements Serializable {
 
 	private String weekDay;
 
-	//bi-directional many-to-one association to Staff
+	//bi-directional many-to-one association to ActivityType
 	@ManyToOne
-	@JoinColumn(name="responsibleStaff")
-	private Staff tblStaff;
+	@JoinColumn(name="activityType")
+	private ActivityType tblActivityType;
 
 	//bi-directional many-to-one association to SchoolYear
 	@ManyToOne
 	@JoinColumn(name="schoolYear")
 	private SchoolYear tblSchoolYear;
 
-	//bi-directional many-to-one association to ActivityType
+	//bi-directional many-to-one association to Staff
 	@ManyToOne
-	@JoinColumn(name="activityType")
-	private ActivityType tblActivityType;
+	@JoinColumn(name="responsibleStaff")
+	private Staff tblStaff;
 
 	//bi-directional many-to-one association to Attendance
 	@OneToMany(mappedBy="tblActivity")
@@ -101,12 +101,12 @@ public class Activity implements Serializable {
 		this.weekDay = weekDay;
 	}
 
-	public Staff getTblStaff() {
-		return this.tblStaff;
+	public ActivityType getTblActivityType() {
+		return this.tblActivityType;
 	}
 
-	public void setTblStaff(Staff tblStaff) {
-		this.tblStaff = tblStaff;
+	public void setTblActivityType(ActivityType tblActivityType) {
+		this.tblActivityType = tblActivityType;
 	}
 
 	public SchoolYear getTblSchoolYear() {
@@ -117,12 +117,12 @@ public class Activity implements Serializable {
 		this.tblSchoolYear = tblSchoolYear;
 	}
 
-	public ActivityType getTblActivityType() {
-		return this.tblActivityType;
+	public Staff getTblStaff() {
+		return this.tblStaff;
 	}
 
-	public void setTblActivityType(ActivityType tblActivityType) {
-		this.tblActivityType = tblActivityType;
+	public void setTblStaff(Staff tblStaff) {
+		this.tblStaff = tblStaff;
 	}
 
 	public List<Attendance> getTblAttendances() {

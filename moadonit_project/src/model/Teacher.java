@@ -5,13 +5,13 @@ import javax.persistence.*;
 
 
 /**
- * The persistent class for the tbl_course_teacher database table.
+ * The persistent class for the tbl_teacher database table.
  * 
  */
 @Entity
-@Table(name="tbl_course_teacher")
-@NamedQuery(name="CourseTeacher.findAll", query="SELECT c FROM CourseTeacher c")
-public class CourseTeacher implements Serializable {
+@Table(name="tbl_teacher")
+@NamedQuery(name="Teacher.findAll", query="SELECT t FROM Teacher t")
+public class Teacher implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -24,7 +24,7 @@ public class CourseTeacher implements Serializable {
 	@JoinColumn(name="staffID")
 	private Staff tblStaff;
 
-	public CourseTeacher() {
+	public Teacher() {
 	}
 
 	public int getStaffID() {

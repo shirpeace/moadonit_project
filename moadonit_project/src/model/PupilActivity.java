@@ -27,11 +27,6 @@ public class PupilActivity implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date startDate;
 
-	//bi-directional many-to-one association to User
-	@ManyToOne
-	@JoinColumn(name="writtenBy")
-	private User tblUser;
-
 	//bi-directional many-to-one association to Activity
 	@ManyToOne
 	@JoinColumn(name="activityNum")
@@ -41,6 +36,11 @@ public class PupilActivity implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="pupilNum")
 	private Pupil tblPupil;
+
+	//bi-directional many-to-one association to User
+	@ManyToOne
+	@JoinColumn(name="writtenBy")
+	private User tblUser;
 
 	public PupilActivity() {
 	}
@@ -77,14 +77,6 @@ public class PupilActivity implements Serializable {
 		this.startDate = startDate;
 	}
 
-	public User getTblUser() {
-		return this.tblUser;
-	}
-
-	public void setTblUser(User tblUser) {
-		this.tblUser = tblUser;
-	}
-
 	public Activity getTblActivity() {
 		return this.tblActivity;
 	}
@@ -99,6 +91,14 @@ public class PupilActivity implements Serializable {
 
 	public void setTblPupil(Pupil tblPupil) {
 		this.tblPupil = tblPupil;
+	}
+
+	public User getTblUser() {
+		return this.tblUser;
+	}
+
+	public void setTblUser(User tblUser) {
+		this.tblUser = tblUser;
 	}
 
 }

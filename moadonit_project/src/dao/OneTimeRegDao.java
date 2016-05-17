@@ -61,7 +61,7 @@ public class OneTimeRegDao extends AbstractDAO {
 		pk.setSpecificDate(resultSet.getDate("specificDate"));
 		
 		r.setId(pk);
-		r.setRegType(resultSet.getString("regType"));
+//		r.setRegType(resultSet.getString("regType"));
 //		r.setTblPupil((resultSet.getString("gradeName")));
 		return r;
 	}

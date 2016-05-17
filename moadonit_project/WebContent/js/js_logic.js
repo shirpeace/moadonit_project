@@ -15,6 +15,49 @@ var gradeData;
 /*************************************************/
 //TODO //*  START  PUPILADD PAGE FUNCTIONS       */
 /*************************************************/
+jQuery.fn.center = function(parent) {
+	    if (parent) {
+	        parent = this.parent();
+	    } else {
+	        parent = window;
+	    }
+	    this.css({
+	        "position": "absolute",
+	        "top": ((($(parent).height() - this.outerHeight()) / 2) + $(parent).scrollTop() + "px"),
+	        "left": ((($(parent).width() - this.outerWidth()) / 2) + $(parent).scrollLeft() + "px")
+	    });
+	return this;
+	}
+
+
+/**
+ * the value to convert to date , if value is a milliseconds number , create an date from it.
+ * if vlaue is string, build date from it.
+ * @param value
+ * @returns {Date}
+ */
+function getDateFromValue(value){
+	if (typeof value === 'string') {
+		var arr = value.split("/");
+		var d = new Date(arr[2], arr[1] - 1, arr[0]);
+		return d;
+	}else if(typeof value === 'number'){
+		var d = new Date(value);
+		return d;
+	}
+	
+}
+
+function formatDateInGrid(cellValue, opts, rwd) {
+	if (cellValue) {
+		return $.fn.fmatter.call(this,
+				"date",
+				new Date(cellValue), opts,
+				rwd);
+	} else {
+		return '';
+	}
+}
 
 /* action to update/insert pupil*/
 function loadGrades()
@@ -252,3 +295,5 @@ function FormChanges(form) {
 	return changed;
 
 }	
+
+	
