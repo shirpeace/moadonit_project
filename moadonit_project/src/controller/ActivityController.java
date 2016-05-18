@@ -28,6 +28,8 @@ import model.User;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
+
 import util.DAOUtil;
 import dao.ActivityDAO;
 import dao.PupilActivityDAO;
@@ -187,9 +189,9 @@ Serializable {
 			obj.put("activityNum", pa.getTblActivity().getActivityNum());
 			obj.put("activityName", pa.getTblActivity().getActivityName());
 			obj.put("pupilNum", pa.getTblPupil().getPupilNum());
-			obj.put("startDate", pa.getStartDate().toString());
-			obj.put("regDate", pa.getRegDate().toString());
-			obj.put("endDate", pa.getEndDate() == null ? null : pa.getEndDate().toString());
+			obj.put("startDate", pa.getStartDate().getTime());
+			obj.put("regDate", pa.getRegDate().getTime());
+			obj.put("endDate", pa.getEndDate() == null ? null : pa.getEndDate().getTime());
 			obj.put("firstName", pa.getTblPupil().getFirstName());
 			obj.put("lastName", pa.getTblPupil().getLastName());
 			result.add(obj);
@@ -277,6 +279,17 @@ Serializable {
 			}
 			else if (action.equals("editPupilInCourse")){
 				// 
+				boolean r = editPupilInCourse(req, resp);
+				resp.setContentType("application/json");
+				resp.setCharacterEncoding("UTF-8");
+				resp.getWriter().print(resultToClient);
+			}else if(action.equals("deletePupilActivity")){
+				
+				//
+				boolean r = deletePupilActivity(req, resp);
+				resp.setContentType("application/json");
+				resp.setCharacterEncoding("UTF-8");
+				resp.getWriter().print(resultToClient);
 			}
 			
 			//
@@ -285,6 +298,55 @@ Serializable {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	private boolean deletePupilActivity(HttpServletRequest req,
+			HttpServletResponse resp) {
+		// TODO Auto-generated method stub
+		this.pupilActDAO = new PupilActivityDAO(con);
+		PupilActivity pa = new PupilActivity();
+		pa = (PupilActivity)DAOUtil.getObjectFromJson(req.getParameter("pupilActivity"), pa.getClass());
+		boolean r  = this.pupilActDAO.delete(pa);	
+		if (r) {
+			resultToClient.put("msg", 1);
+			resultToClient.put("result", "רשומה נמחקה בהצלחה");
+			return true;
+		} else {
+			resultToClient.put("msg", 0);
+			resultToClient
+					.put("result", "שגיאה בשמירת הנתונים");
+			return false;
+		}
+		
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	private boolean editPupilInCourse(HttpServletRequest req,
+			HttpServletResponse resp) {
+		// TODO Auto-generated method stub
+		this.pupilActDAO = new PupilActivityDAO(con);
+		PupilActivity pa = new PupilActivity();
+		if (req.getSession().getAttribute("userid") != null) {
+			JSONObject user = (JSONObject) req.getSession()
+					.getAttribute("userid");
+			User u = new User();
+			u = (User) DAOUtil.getObjectFromJson(user.toString(), u.getClass());
+			pa = (PupilActivity)DAOUtil.getObjectFromJson(req.getParameter("pupilActivity"), pa.getClass());
+			pa.setTblUser(u);
+			boolean r  = this.pupilActDAO.update(pa);	
+			if (r) {
+				resultToClient.put("msg", 1);
+				resultToClient.put("result", "רישום נשמר בהצלחה");
+			} else {
+				resultToClient.put("msg", 0);
+				resultToClient
+						.put("result", "שגיאה בשמירת הנתונים");
+			}
+			return true;
+		}
+		
+		return false;
+	}
 	@SuppressWarnings("unchecked")
 	private boolean insertPupilActivity( HttpServletRequest req, HttpServletResponse resp) {
 		
@@ -341,6 +403,11 @@ Serializable {
 		SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
 		Date date = format.parse(startTime);*/
 		//Time t = new Time();
+		
+		/*********
+		 * NOT FINISHED
+		 * ******
+		 */
 		act = (Activity) DAOUtil.getObjectFromJson(activityData, Activity.class);
 		resultToClient.put("msg", 1);
 		resultToClient.put("result", act.getActivityNum());

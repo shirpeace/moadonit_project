@@ -17,7 +17,7 @@ public class FullPupilCardDAO extends AbstractDAO {
 	private String selectAll = "SELECT * FROM fullPupilCard ";
 	private String selectSearch = "SELECT * FROM fullPupilCard where firstName = ?";
 	private String selectFilter = "{ CALL ms2016.getFullPupilByParam (?, ?) }";
-	private String SelectPupilNotInActivity = "SELECT * FROM fullPupilCard where pupilNum  NOT IN ( select pupilNum from tbl_pupil_activities where activityNum = ? )";
+	private String SelectPupilNotInActivity = "SELECT * FROM fullPupilCard  where pupilNum  NOT IN ( select pupilNum from tbl_pupil_activities where activityNum = ? and CURDATE() <= endDate)";
 	/**
 	 * 
 	 */

@@ -5,6 +5,8 @@
 
 /*   the current user the us logged if to the system */
 var currentUserId =	 '<%=session.getAttribute("userid")%>';	
+//$.jgrid.defaults.responsive = true;
+//$.jgrid.defaults.styleUI = 'Bootstrap';
 var gradeData;
 // define state for the editable page
 	var state = {
@@ -32,28 +34,41 @@ jQuery.fn.center = function(parent) {
 
 /**
  * the value to convert to date , if value is a milliseconds number , create an date from it.
- * if vlaue is string, build date from it.
+ * if vlaue is string, build date from it. id value is empty string return null
  * @param value
  * @returns {Date}
  */
 function getDateFromValue(value){
-	if (typeof value === 'string') {
-		var arr = value.split("/");
+	if (typeof value === 'string' && value.trim().length > 0 ) {
+		var isArry = false;
+		var arr , deli = ['/','-',',']; 
+
+		for (var int = 0; int < deli.length && !isArry; int++) {
+			if (value.indexOf(deli[int]) > -1) {
+				arr = value.split(deli[int]);
+				if (arr.length == 3) {
+					isArry = true;
+				}
+			}
+		}
+		
 		var d = new Date(arr[2], arr[1] - 1, arr[0]);
 		return d;
 	}else if(typeof value === 'number'){
 		var d = new Date(value);
 		return d;
 	}
+	else{
+		return null;
+	}
 	
 }
 
 function formatDateInGrid(cellValue, opts, rwd) {
 	if (cellValue) {
-		return $.fn.fmatter.call(this,
-				"date",
-				new Date(cellValue), opts,
-				rwd);
+		var d = $.fn.fmatter.call(this, "date",
+				getDateFromValue(cellValue), opts, rwd);
+		return d;			
 	} else {
 		return '';
 	}
