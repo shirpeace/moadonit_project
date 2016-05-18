@@ -115,7 +115,7 @@ function loadhistoryRegsGrid(pupilID) {
 			       
 			    },
 		  	serializeDelData: function(postdata) { 
-				return { rtm : JSON.stringify(createPostData(pupilID, rowData,false))  } ;
+			//	return { rtm : JSON.stringify(createPostData(pupilID, rowData,false))  } ;
 	        },
 	       
             onclickSubmit: function(rp_ge, rowid) {
@@ -123,9 +123,9 @@ function loadhistoryRegsGrid(pupilID) {
                
                 rowData = $(this).jqGrid("getRowData", rowid);
                 $.extend(rowData, {id: rowid});
-                var d = getDateFromValue( rowData.startDate);
+                var d = getDateFromValue( rowData.regDate);
                 rp_ge.url = "PupilRegistration?" + $.param({
-                	action: "delete",
+                	action: "deleteOneTime",
                 	pupilID: pupilID,
                     regDate : d.getTime(), /* Shir variable name changed*/
                 });
@@ -152,7 +152,7 @@ function loadhistoryRegsGrid(pupilID) {
 				datatype : "json",
 				mtype : 'POST',
 				editurl : "PupilRegistration?action=oneTimeEdit&pupilID="+ pupilID,  /*Shir */
-				colNames : [ 'תאריך', 'סוג רישום', 'פעולה'],					
+				colNames : [ 'תאריך', 'סוג רישום', ''],					
 				loadComplete : function(data) {
 					if (parseInt(data.records, 10) == 0) {
 						$("#listRegistrationPager div.ui-paging-info").show();
@@ -292,7 +292,8 @@ function loadhistoryRegsGrid(pupilID) {
 							formatter:'actions',						
 						    formatoptions: {
 						        keys: true,
-						        editbutton: true,
+						        editbutton: false,
+						        
 						        onEdit:function(rowid) {
 		                            //do somethinf if you need on edit button click
 						        	

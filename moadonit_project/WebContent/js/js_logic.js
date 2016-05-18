@@ -32,7 +32,7 @@ jQuery.fn.center = function(parent) {
 
 /**
  * the value to convert to date , if value is a milliseconds number , create an date from it.
- * if vlaue is string, build date from it.
+ * if value is string, build date from it.
  * @param value
  * @returns {Date}
  */

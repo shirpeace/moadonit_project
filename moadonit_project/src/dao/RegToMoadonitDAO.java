@@ -31,17 +31,14 @@ public class RegToMoadonitDAO extends AbstractDAO {
 	private String insert = "INSERT INTO tbl_reg_to_moadonit "
 			+ "(pupilNum,registerDate,startDate,sunday_,monday_,tuesday_,wednesday_,thursday_,writenBy,source , activeYear )"
 			+ "VALUES(?,?,?,?,?,?,?,?,?,?, ms2016.get_currentYearID() );";
-	private String insertOTR = "INSERT INTO tbl_one_time_reg "
-			+ "(pupilNum,registerDate,startDate,sunday_,monday_,tuesday_,wednesday_,thursday_,writenBy,source , activeYear )"
-			+ "VALUES(?,?,?,?,?,?,?,?,?,?, ms2016.get_currentYearID() );";
 	private String checkRegToMoPK = "SELECT pupilNum, startDate FROM tbl_reg_to_moadonit where pupilNum = ? and startDate = ? and activeYear =  ms2016.get_currentYearID()";
 //	private String selectAll = "SELECT * FROM ms2016.tbl_reg_to_moadonit WHERE pupilNum = ? and  startdate <= CURDATE() and activeYear =  ms2016.get_currentYearID() order by startdate desc";
-	private String checkOneTimeRegPK = "SELECT pupilNum, startDate FROM tbl_one_time_reg where pupilNum = ? and startDate = ? and activeYear =  ms2016.get_currentYearID()";
 	private String getActiveRegInPeriod = "{call ms2016.getActiveRegInPeriodTry (?)}";
 	private String getAllRegsForPupil = "{ call ms2016.get_Regs_For_Pupils( ? , ? ) }";
 	private String getActiveRegForPupil = "{ call ms2016.getActiveRegByPupilId( ? ) }";
 	private String update = "{ call ms2016.updateRegToMoadonitForPupil(?,? ,? , ?,? , ?, ?, ?,?) }";
 	private String delete = "DELETE FROM tbl_reg_to_moadonit where pupilNum = ? and startDate = ? and activeYear =  ms2016.get_currentYearID()";
+
 	public boolean update(RegToMoadonit regToUpdate, Date oldDate) throws DAOException {
         if (regToUpdate.getId() == null) {
             throw new IllegalArgumentException("Row is not created yet, the Registration ID is null.");
@@ -125,31 +122,6 @@ public class RegToMoadonitDAO extends AbstractDAO {
 		return false;
 	}
 	
-	public boolean checkPk(OneTimeReg reg) {
-
-		if (reg.getId() == null) {
-			throw new IllegalArgumentException(
-					"Cant check RegToMoadonit , the PK is null.");
-		}
-
-		Object[] pk = { 
-				reg.getId().getPupilNum(),
-				DAOUtil.toSqlDate(reg.getId().getSpecificDate()) };
-		
-		try (PreparedStatement statement = DAOUtil.prepareStatement(
-				this.con.getConnection(), checkOneTimeRegPK, false, pk);
-				ResultSet resultSet = statement.executeQuery();) {
-
-			while (resultSet.next()) {
-				return true;
-			}
-
-		} catch (SQLException e) {
-			throw new DAOException(e);
-		}
-
-		return false;
-	}
 
 	public boolean insert(RegToMoadonit regToMo)
 			throws IllegalArgumentException, DAOException {
@@ -188,41 +160,6 @@ public class RegToMoadonitDAO extends AbstractDAO {
 		return result;
 	}
 
-	public boolean insertOTR(OneTimeReg reg)
-			throws IllegalArgumentException, DAOException {
-		boolean result = false;
-		if (reg.getId() == null) {
-			throw new IllegalArgumentException(
-					"Cant create OneTimeReg , the PK ID is not null.");
-		}
-
-		// (pupilNum,registerDate,startDate,sunday_,monday_,tuesday_,wednesday_,thursday_,writenBy,source)
-		Object[] values = { reg.getId().getPupilNum(),
-				DAOUtil.toSqlDate(reg.getId().getSpecificDate()),
-				reg.getRegType(), //maybe problem with string & int 
-				};
-
-		try (
-
-		PreparedStatement statement = DAOUtil.prepareStatement(
-				this.con.getConnection(), insertOTR, true, values);) {
-			int affectedRows = statement.executeUpdate();
-			result = true;
-
-			if (affectedRows == 0) {
-				result = false;
-				throw new DAOException(
-						"Creating OneTimeReg failed, no rows affected.");
-			}
-
-		} catch (SQLException e) {
-			result = false;
-			throw new DAOException(e);
-		}
-
-		return result;
-	}
-	
 	public List<RegToMoadonit> getActiveRegs(Date id)
 			throws IllegalArgumentException, DAOException {
 		List<RegToMoadonit> list = new ArrayList<>();
@@ -310,7 +247,7 @@ public class RegToMoadonitDAO extends AbstractDAO {
 	}
 
 	public boolean delete(RegToMoadonit regToUpdate) throws IllegalArgumentException, DAOException {
-		// TODO Auto-generated method stub
+	
 		 if (regToUpdate.getId() == null) {
 	            throw new IllegalArgumentException("cant delete row, the Registration ID is null.");
 	        }

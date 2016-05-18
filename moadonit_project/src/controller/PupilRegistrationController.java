@@ -25,6 +25,7 @@ import org.json.simple.JSONObject;
 import util.DAOUtil;
 import model.FullPupilCard;
 import model.OneTimeReg;
+import model.OneTimeRegPK;
 import model.RegToMoadonit;
 import model.RegToMoadonitPK;
 import model.RegType;
@@ -241,7 +242,7 @@ public class PupilRegistrationController extends HttpServlet implements
 				this.oneTime = (OneTimeReg) DAOUtil.getObjectFromJson(otr,
 						this.oneTime.getClass());
 
-					if (this.regDAO.checkPk(this.oneTime)) {
+					if (this.oneTimesDAO.checkPk(this.oneTime)) {
 
 						resultToClient.put("msg", 0);
 						resultToClient.put("result","לתלמיד זה כבר קיים רישום בתאריך הספציפי");
@@ -263,6 +264,27 @@ public class PupilRegistrationController extends HttpServlet implements
 				resp.getWriter().print(resultToClient);
 				
 				////////////////////
+				
+			}else if (action.equals("deleteOneTime")) {
+				
+				boolean r =  deleteOneTimeReg(req, resp);
+				
+				if (r) {
+					resultToClient.put("msg", 1);
+					resultToClient.put("result", "רשומה נמחקה בהצלחה");
+				} else {
+					resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+					resultToClient.put("msg", 0);
+					resultToClient
+							.put("result", "שגיאה במחיקת הנתונים");
+				}
+				
+				resultToClient.put("msg", 1);
+				resultToClient.put("result", "רשומה נמחקה בהצלחה");
+				
+				resp.setContentType("application/json");
+				resp.setCharacterEncoding("UTF-8");
+				resp.getWriter().print(resultToClient);
 				
 			}
 		} catch (SQLException e) {
@@ -326,6 +348,21 @@ public class PupilRegistrationController extends HttpServlet implements
 		}
 	}
 
+	private boolean deleteOneTimeReg(HttpServletRequest req,
+			HttpServletResponse resp) throws IOException, SQLException {
+		boolean r = false;
+		OneTimeReg regToDel = new OneTimeReg();
+		OneTimeRegPK pk = new OneTimeRegPK();
+		pk.setPupilNum(Integer.parseInt(req.getParameter("pupilID")));
+		
+		pk.setSpecificDate(new Date(Long.parseLong(req.getParameter("regDate"))));
+		regToDel.setId(pk);			
+			r = this.oneTimesDAO.delete(regToDel);
+					
+			return r;
+					
+	}
+	
 	private boolean editRegistration(HttpServletRequest req,
 			HttpServletResponse resp) throws IOException, SQLException, ParseException {
 		boolean r = false;
@@ -377,7 +414,7 @@ public class PupilRegistrationController extends HttpServlet implements
 			HttpServletResponse resp) throws IOException, SQLException {
 		boolean r = false;
 
-		r = this.regDAO.insertOTR(this.oneTime);
+		r = this.oneTimesDAO.insertOTR(this.oneTime);
 		return r;
 
 	}
@@ -442,7 +479,7 @@ public class PupilRegistrationController extends HttpServlet implements
 				JSONObject user = new JSONObject();
 
 				user.put("regDate", oneTimes.getId().getSpecificDate().getTime());
-				//user.put("regType", getRegType(Integer.parseInt(oneTimes.getRegType()))); //why regtype is not an int?
+				user.put("regType", getRegType(oneTimes.getTblRegType().getTypeNum()));
 								
 				registrationData.add(user);
 
