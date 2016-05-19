@@ -54,7 +54,8 @@ $(function() {
 	    keyboardNavigation: false,
 	    daysOfWeekDisabled: "5,6",
 	    todayHighlight: true,
-	    toggleActive: true 
+	    toggleActive: true ,
+	    
 	}); 
 	
 	$('#startDate').datepicker({
@@ -82,7 +83,7 @@ $(function() {
 	    todayHighlight: true,
 	    toggleActive: true 
 	}); 
-	
+
 	$('#extraPriceChk').click(function() {
 		var isChecked = this.checked;
 		if (isChecked) {
@@ -107,8 +108,7 @@ $(function() {
 	 */
 
 	var dataString = 'activityNum=' + activityNum + '&action=' + "getCourses";
-	loadCourseData(dataString);
-
+	loadCourseData(dataString);	
 	/* set the validattion for form */ 
 	 validator = $("#ajaxform").validate(
 			{
@@ -191,6 +191,8 @@ $(function() {
 	});
 
 	loadGrid('list');
+	getCurrentYearEndDate();
+	
 });
 
 function setCourseData(courseData) {
@@ -259,7 +261,7 @@ function loadCourseData(dataString) {
 		}
 
 	});
-
+	
 }
 
 function deletePupil(id) {
@@ -432,23 +434,23 @@ function setPageBtns() {
 
 function formEnable(form) {
 
-	 $("fieldset :input").prop("disabled", false); 
-	 $("fieldset :input").removeAttr('readonly');
-	 $("fieldset :checkbox").prop("disabled", false);
-	 $("fieldset :radio").prop("disabled", false);
+	 $("#ajaxform :input").prop("disabled", false); 
+	 $("#ajaxform :input").removeAttr('readonly');
+	 $("#ajaxform :checkbox").prop("disabled", false);
+	 $("#ajaxform :radio").prop("disabled", false);
 	 $("#viewModeBtn").hide();
 	 $("#editModeBtn").show();
-
+	 
 	/* $('#ajaxform').areYouSure( { message: "ישנם שינויים שלא נשמרו !"} ); */
 }
 
 function formDisable(form) {
 
-	$("fieldset :input").prop("disabled", true);
-	$("fieldset input").prop("disabled", false);
-	$("fieldset :input").attr('readonly', 'readonly');
-	$("fieldset :checkbox").prop("disabled", true);
-	$("fieldset :radio").prop("disabled", true);
+	$("#ajaxform :input").prop("disabled", true);
+	$("#ajaxform input").prop("disabled", false);
+	$("#ajaxform :input").attr('readonly', 'readonly');
+	$("#ajaxform :checkbox").prop("disabled", true);
+	$("#ajaxform :radio").prop("disabled", true);
 	$("#editModeBtn").hide();
 	$("#viewModeBtn").show();
 	
@@ -959,6 +961,15 @@ function AddSelectedPupil() {
 
 function loadPupilGrid() {
 
+	var date = new Date();
+	$("#regDate").datepicker("setDate" , date );
+	
+	var date = new Date(CurrentYearEndDate);
+	if (CurrentYearEndDate != null) {
+		$("#endDate").datepicker("setDate" , date );
+	}
+	
+	
 	if (popUp) {
 		var myGrid = jQuery("#listPopUp").jqGrid({
 			//prmNames: { page: null, rows: null, sort: null, order: null },

@@ -26,6 +26,7 @@ public class PupilActivityDAO extends AbstractDAO {
 	private String insertPupilActivity = "{ call ms2016.insertPupilActivity(?,?,?,?,?,?) }";
 	private String update = "{ call ms2016.updatePupilInCourse(?,? ,? , ?,? , ?) }";
 	private String delete = "DELETE FROM tbl_pupil_activities where pupilNum = ? and activityNum = ? ";
+	private String getCoursesByPupilNum = "{ call ms2016.getCoursesByPupilNum( ? ) } ";
 	/**
 	 * { call ms2016.insertPupilActivity(?,?,?,?,?,?) }
 	 */
@@ -61,14 +62,74 @@ public class PupilActivityDAO extends AbstractDAO {
 		return list;
 	}
 
+	/**
+	 * get courses of pupil
+	 * @param pupilID
+	 * @return List<Activity> of courses
+	 */
+	public List<Activity> getCoursesByPupilNum(int pupilID) {
+		// TODO Auto-generated method stub
+		List<Activity> list = new ArrayList<>();
+		try (PreparedStatement statement = DAOUtil
+				.prepareCallbackStatement(this.con.getConnection(),
+						getCoursesByPupilNum, new Object[] { pupilID });
+				ResultSet resultSet = statement.executeQuery();) {
+
+			while (resultSet.next()) {
+				Activity act = mapCourses(resultSet);
+				list.add(act);
+
+			}
+
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+
+		return list;
+	}
+	
+	/**
+	 * map a course data for pupil - to show in week gridview
+	 * @param resultSet
+	 * @return
+	 * @throws SQLException
+	 */
+	private Activity mapCourses(ResultSet resultSet) throws SQLException {
+		// TODO Auto-generated method stub
+		Activity act = new Activity();
+		ActivityType type = new ActivityType();
+		type.setTypeID(resultSet.getInt("activityType"));
+		
+		act.setTblActivityType(type);
+		act.setActivityName(resultSet.getString("activityName"));
+		act.setActivityNum(resultSet.getInt("activityNum"));		
+		act.setStartTime(resultSet.getTime("startTime"));
+		act.setEndTime(resultSet.getTime("endTime"));
+		act.setWeekDay(resultSet.getString("weekDay"));
+		
+		PupilActivity pa = new PupilActivity();
+		PupilActivityPK pk = new PupilActivityPK();
+		pk.setActivityNum(resultSet.getInt("activityNum"));
+		pk.setPupilNum(resultSet.getInt("pupilNum"));
+		pa.setId(pk);
+		pa.setStartDate(resultSet.getDate("startDate"));
+		
+		List<PupilActivity> list = new ArrayList<PupilActivity>();
+		list.add(pa);
+		
+		act.setTblPupilActivities(list);
+		
+		return act;
+	}
+
 	private PupilActivity mapPupilActivity(ResultSet resultSet)
 			throws SQLException {
 		// TODO Auto-generated method stub activityNum, activityName, pupilNum,
 		// startDate, regDate, endDate, firstName, lastName
 		PupilActivity pa = new PupilActivity();
 		PupilActivityPK pk = new PupilActivityPK();
-		pk.setActivityNum(1);
-		pk.setPupilNum(1);
+		pk.setActivityNum(resultSet.getInt("activityNum"));
+		pk.setPupilNum(resultSet.getInt("pupilNum"));
 		pa.setId(pk);
 
 		Activity act = new Activity();
@@ -189,5 +250,7 @@ public class PupilActivityDAO extends AbstractDAO {
 			throw new DAOException(e);
 		}
 	}
+
+
 
 }

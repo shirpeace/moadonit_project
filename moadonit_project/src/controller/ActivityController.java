@@ -136,6 +136,22 @@ Serializable {
 				}
 				
 			}
+			else if (action.equals("getCurrentYearEndDate")){
+				Date d = this.actDOA.getCurrentYearEndDate();
+				if (d != null) {
+					resp.setContentType("application/json");
+					resp.setCharacterEncoding("UTF-8");
+					resultToClient.put("msg", 1);
+					resultToClient.put("result", d.getTime());
+					resp.getWriter().print(resultToClient);
+				}else{
+					resp.setContentType("application/json");
+					resp.setCharacterEncoding("UTF-8");
+					resultToClient.put("msg", 0);
+					resultToClient.put("result", "לא נמצאו נתונים");
+					resp.getWriter().print(resultToClient);
+				}
+			}
 			//getPupilInCourse
 		} catch (Exception e) {
 			// TODO: handle exception

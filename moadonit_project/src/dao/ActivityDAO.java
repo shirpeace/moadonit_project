@@ -5,7 +5,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 
 import model.Activity;
 import model.ActivityType;
@@ -24,7 +27,7 @@ public class ActivityDAO extends AbstractDAO {
 
 	private String selectCourses = "{call ms2016.getCourses (?)}";
 	private String searchCoursesByParam = "{ call ms2016.searchCoursesByParam( ? , ? , ?, ? , ?, ?, ? , ?, ? ) }";
-
+	private String getCurrentYearEndDate = "select getCurrentYearEndDate() as endDate";
 	/**
 	 * getCourses
 	 */
@@ -147,6 +150,27 @@ public class ActivityDAO extends AbstractDAO {
 		//act.setTblStaff(null);		
 		
 		return act;
+	}
+
+
+
+	public Date getCurrentYearEndDate() {
+		// TODO Auto-generated method stub
+		Date date = null;
+		
+		try (PreparedStatement statement = DAOUtil.prepareStatement(
+				this.con.getConnection(), getCurrentYearEndDate, false, new Object[] { });
+				ResultSet resultSet = statement.executeQuery();) {
+
+			if (resultSet.next()) {
+				date = resultSet.getDate("endDate");
+			}
+
+			return date;
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}	
+
 	}
 
 }
