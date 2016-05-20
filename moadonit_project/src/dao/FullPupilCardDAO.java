@@ -155,6 +155,10 @@ public class FullPupilCardDAO extends AbstractDAO {
 				stat = stat.substring(0, stat.length()-4);
 				withRegPupil = 0; //-- get all pupil    
 			}
+			
+			if (stat.endsWith("and ")) {
+				stat = stat.substring(0, stat.length()-4);
+			}
 		}
 		///
 		/*this.regToMoadonitDAO = new RegToMoadonitDAO(con);

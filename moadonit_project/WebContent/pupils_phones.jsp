@@ -57,7 +57,7 @@
     <!-- jqgrid style -->
     <link rel="stylesheet" href="resources/jquery-ui-1.11.4.custom/jquery-ui.css">
 	<link rel="stylesheet" href="css/ui.jqgrid.css">
-	
+	<link href="css/mycss.css" rel="stylesheet">
 	
 	<script src="js/jquery.js"></script>
 	<script src="js/jquery-ui.js"></script>

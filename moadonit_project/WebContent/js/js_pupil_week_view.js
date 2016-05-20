@@ -8,6 +8,7 @@ $.extend($.jgrid.ajaxOptions, {
 /*$.jgrid.defaults.width = 780;*/
 
 var currentDate;
+
 /** ********************************************** */
 // TODO //* START PAGE FUNCTIONS */
 /** ********************************************** */
@@ -47,29 +48,42 @@ function loadPupilCard(dataString) {
 }
 
 function loadWeekGrid(pupilID) {
-	$("#list")
+	var grid = jQuery("#list");
+	var idx = 0;
+	grid
 			.jqGrid(
 					{
 						url : "PupilRegistration?action=getWeekGrid&pupilID="
 								+ pupilID,
 						datatype : "json",
 						mtype : 'POST',
-						colNames : [ '', '', 'יום ראשון', 'יום שני',
+						colNames : [ '','', '', 'יום ראשון', 'יום שני',
 								'יום שלישי', 'יום רביעי', 'יום חמישי' ],
 						ajaxGridOptions : {
 							async : false
 						},
 						rowattr : function(rd) {
-
-							if (rd.startDate) {
-								currentDate = new Date(rd.startDate);
+							if(idx == 0){
+								idx++;
+								//first row of grid
+								return {
+									/*"class" : 'not-editable-row',*/
+									"style" : "color:"+colors.presernt+";","data-isHistory": false
+								};
 							}
+							
+//							style="background:'+colors.presernt+'"
+							/*if (rd.startDate) {
+								currentDate = new Date(rd.startDate);
+							}*/
 						},
 						loadComplete : function(data) {
+							
 							if (parseInt(data.records, 10) == 0) {
 								currentDate = new Date(); //default date is today if there are no rows in this grid 
 								$("#pager div.ui-paging-info").show();
 							} else {
+								currentDate = new Date(data.rows[0].startDate); 
 								$("#pager div.ui-paging-info").hide();
 							}
 						},
@@ -78,9 +92,14 @@ function loadWeekGrid(pupilID) {
 						},
 						colModel : [
 								{
+									name : 'title',
+									index : 'title',
+									hidden : true,
+								},
+								{
 									name : 'type',
 									index : 'type',
-
+									title:false
 								},
 								{
 									name : "startDate",
@@ -103,23 +122,31 @@ function loadWeekGrid(pupilID) {
 								}, {
 									name : 'sunday',
 									index : 'sunday',
-
+									cellattr: formatCell,
+									title:false
 								}, {
 									name : 'monday',
 									index : 'monday',
+									cellattr: formatCell,
+									title:false
 
 								}, {
 									name : 'tuesday',
 									index : 'tuesday',
+									cellattr: formatCell,
+									title:false
 
 								}, {
 									name : 'wednesday',
 									index : 'wednesday',
-
+									cellattr: formatCell,
+									title:false
 								}, {
 									name : 'thursday',
 									index : 'thursday',
-
+									cellattr: formatCell,
+									title:false
+								
 								} ],
 						pager : '#pager',
 						autowidth : true,
@@ -167,6 +194,46 @@ function loadWeekGrid(pupilID) {
 
 }
 
+var COurseTime = [];
+
+function formatCell (rowId, val, rawObject, cm, rdata) {
+	
+	var arr ;
+	var titleObj = null;
+	//arr.push(cm.index);
+	titleObj = rawObject.title.split(";");
+	if (titleObj[0].length > 1 && val != "&#160;" && rawObject.title != "" ) {
+		
+		for (var int = 0; int < titleObj.length; int++) {
+			arr = titleObj[int].split(",");
+			if(arr[3] == cm.index){
+				var title = 'title="' + val;
+				var dd = new Intl.DateTimeFormat("he-IL").format(new Date(arr[2]));
+				title += '\nשעות: ' + arr[0] + ' - ' +arr[1] + "\nתאריך התחלה: " + dd.replaceAll(".","/");
+			}
+			
+			// var row = $('#list > tbody > tr')
+		}
+		
+		// var cell = row.cells[cell_index];
+		/*if(rowId != 1){
+			for (var int = 0; int < COurseTime.length; int++) {
+				for (var j = 0; j < COurseTime[int].length; j++) {
+					if (COurseTime[int][3] == cm.index) {
+						title += ' class="ui-state-error-text ui-state-error"';
+					}
+				}
+			}
+		}*/
+		
+		COurseTime.push(arr);
+		
+		return title += '"';
+	}
+
+	else 
+		return null;
+}
 function centerForm ($form, grid) {
     $form.closest('div.ui-jqdialog').position({
         my: "center",
@@ -271,7 +338,7 @@ function loadRegistrationGrid(pupilID) {
 
 					    var d = getDateFromValue(rowData.startDate);
 						if (d && currentDate) {
-							if (d.getTime() < currentDate.getTime()) {
+							if (d.getTime() <= currentDate.getTime()) { 
 								$('#jEditButton_'+rowId).hide();
 								$('#jDeleteButton_'+rowId).hide();
 							}
@@ -288,18 +355,18 @@ function loadRegistrationGrid(pupilID) {
 																	// registration
 							return {
 								/*"class" : 'not-editable-row',*/
-								"style" : "background:#7697B7;","data-isHistory": false
+								"style" : "background:"+colors.future+";","data-isHistory": false
 							};
 						} else if (d.getTime() === currentDate.getTime()) { // current
 																			// registration
 							return {
-								"style" : "background:#8BB5F2;","data-isHistory": false
+								"style" : "color:"+colors.presernt+";","data-isHistory": true
 							};
 						} else { // history registration
 					
 							return {
 								"class" : 'not-editable-row',
-								"style" : "background:#9E9F9F;",
+								/*"style" : "background:#9E9F9F;",*/
 								"data-isHistory": true
 							};
 						}

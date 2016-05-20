@@ -6,3 +6,17 @@
    text-align:right;
    margin-right:30px;
 }
+
+ .side-nav{
+	
+	width:140px;
+}
+
+.ui-jqgrid .ui-jqgrid-view, .ui-jqgrid .ui-jqgrid-pager {
+    z-index: 9;
+}
+
+#wrapper {
+    padding-right: 140px;
+}
+

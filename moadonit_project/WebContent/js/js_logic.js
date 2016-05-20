@@ -13,7 +13,12 @@ var gradeData;
 	    EDIT: 0,
 	    READ: 1,	    
 	};
-
+var CurrentYearEndDate = null;
+var colors  = {
+		future : '#ff9999',
+		presernt : '#3399ff'
+		
+};
 /*************************************************/
 //TODO //*  START  PUPILADD PAGE FUNCTIONS       */
 /*************************************************/
@@ -312,4 +317,34 @@ function FormChanges(form) {
 
 }	
 
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.split(search).join(replacement);
+};
+
+function getCurrentYearEndDate(){
 	
+	$.ajax({
+		async : false,
+		type : 'GET',
+		datatype : 'jsonp',
+		url : "ActivityController",
+		data : { action : "getCurrentYearEndDate"},
+		success : function(data) {
+			if (data != undefined) {
+				CurrentYearEndDate = data.result;
+
+			} else
+				console.log("no data");
+		},
+		error : function(e) {
+			console.log("some error");
+
+		}
+
+	});
+	
+	return CurrentYearEndDate;
+}
+/*var dd = new Intl.DateTimeFormat("he-IL").format(date);	   
+dd = dd.replaceAll(".", "/");*/

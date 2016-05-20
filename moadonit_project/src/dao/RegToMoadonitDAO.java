@@ -5,7 +5,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 
 import controller.MyConnection;
 import model.OneTimeReg;
@@ -181,6 +185,27 @@ public class RegToMoadonitDAO extends AbstractDAO {
 		return list;
 	}
 	
+	public Map<Integer,Object> getRegTypeCodes(){
+		
+		Map<Integer,Object> result = new HashMap<Integer, Object>();
+		try (PreparedStatement statement = DAOUtil.prepareStatement(this.con.getConnection(), "SELECT * FROM ms2016.tbl_reg_types" , false, new Object[]{});
+				ResultSet resultSet = statement.executeQuery();) {
+
+			while (resultSet.next()) {
+				int key = resultSet.getInt("typeNum");
+				String value = resultSet.getString("type");
+				result.put(key, value);
+			}
+
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+		
+		return result;
+		
+		//SELECT * FROM ms2016.tbl_reg_types;
+	}
+	
 	public List<RegToMoadonit> getActiveRegForPupil(int id)
 			throws IllegalArgumentException, DAOException {
 		List<RegToMoadonit> list = new ArrayList<>();
@@ -275,4 +300,6 @@ public class RegToMoadonitDAO extends AbstractDAO {
 		            throw new DAOException(e);
 		        }		        
 	}
+	
+
 }

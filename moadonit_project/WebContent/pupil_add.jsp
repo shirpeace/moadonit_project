@@ -73,8 +73,6 @@
 
 
 
-
-
 <script src="js/moment-with-locales.js"></script>
 <script src="js/combodate.js"></script>
 

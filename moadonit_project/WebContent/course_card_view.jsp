@@ -97,7 +97,7 @@
 	
 	<!--  script for popup bloking div -->
 	<script src="js/jquery.blockUI.js"></script>
-    	
+    		
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -328,14 +328,14 @@
 					</div>									
 					</fieldset>
 				</form>
-  			
-  				<div class="col-lg-12" style="margin: 0px 0 0px; border-bottom: 1px solid #a6b7bd">
+  				
+  				<div class="col-lg-12" style="margin: 0px 0 0px; border-bottom: 1px solid #a6b7bd; ">
                    
-                    <div class="col-lg-12" >                        
+                    <div class="col-lg-12" style="">                        
                        <!--  <h3  >  
                         	תלמידים בחוג                   
                         </h3> -->
-                        <div class="row" style=" margin-bottom: 10px; ">
+                        <div class="row" style="margin-bottom: 10px; ">
                         
                        
                          <div style="display: inline; text-align: right; font-size: x-large; margin-left: 20px;">
@@ -359,6 +359,7 @@
                    
                    </div> 
                 </div>
+  			
   			</div>
        	   
         </div>
