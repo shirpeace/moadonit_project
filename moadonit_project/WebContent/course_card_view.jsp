@@ -39,29 +39,29 @@
     <title>מועדונית</title>
 	<!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-	<link rel="stylesheet"	href="resources/jquery-ui-1.11.4.custom/jquery-ui.css">
-	<link rel="stylesheet" href="css/ui.jqgrid.css">
-	<link rel="stylesheet" href="css/ui.jqgrid-bootstrap-ui.css">
-
-	
-	
+    
     <!-- Bootstrap Core CSS RTL-->
     <link href="css/bootstrap-rtl.min.css" rel="stylesheet">
-	<link rel="stylesheet" href="css/jquery.timepicker.css">
-
     
     <!-- Custom CSS -->
     <link href="css/sb-admin.css" rel="stylesheet">
     <link href="css/sb-admin-rtl.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="css/datepicker.css" rel="stylesheet">
+                
+	<link rel="stylesheet"	href="resources/jquery-ui-1.11.4.custom/jquery-ui.css">
+	<link rel="stylesheet" href="css/ui.jqgrid.css">
+	<link rel="stylesheet" href="css/ui.jqgrid-bootstrap-ui.css">
+
+	<link rel="stylesheet" href="css/jquery.timepicker.css">
+
     <link href="css/mycss.css" rel="stylesheet">
 
     <!-- Morris Charts CSS -->
    <!--  <link href="css/plugins/morris.css" rel="stylesheet"> -->
 
-    <!-- Custom Fonts -->
-    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    
      <!-- jQuery -->
     <script src="js/jquery.js"></script>
 
@@ -105,14 +105,14 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
      <style type="text/css">
-	    #mainPopUP, popUPResult { 
+	  #mainPopUP, #popUPResult { 
 	    background-color:#fff;
 	    border-radius:15px;
 	    color:#000;
 	    display:none; 
 	    padding:20px;
-	    min-width:400px;
-	    min-height: 180px;
+	   /*  min-width:400px;
+	    min-height: 180px; */
 	}
 	
 	.b-close{
@@ -126,14 +126,14 @@
 	.buttonPopUp:hover{background-color:#1e1e1e}
 	.buttonPopUp>span{font-size:84%}
 	.buttonPopUp.b-close,.buttonPopUp.bClose{border-radius:7px 7px 7px 7px;box-shadow:none;font:bold 131% sans-serif;padding:0 6px 2px;position:absolute;right:-7px;top:-7px}
-	.example{display:block;line-height:1.25;padding:30px 110px 15px 0}
+	 .example{display:block;line-height:1.25;padding:30px 110px 15px 0}
 	.code-undefined{color:#617a61}
 	.code-string{color:#fa8072}
 	.code-function{color:#ffa54f}
 	.code-int{color:#2b91af}
 	.code-comment{color:#7ccd60}::-moz-selection{background-color:#2b91af;color:#fff;text-shadow:none}
 	::selection{background-color:#2b91af;color:#fff;text-shadow:none}
-	#page h1+.buttonPopUp{position:absolute;top:20px;right:25px}
+	#page h1+.buttonPopUp{position:absolute;top:20px;right:25px} 
     </style>
 
 </head>
@@ -164,7 +164,7 @@
                      <li class="active">
                         <a href= "pupil_card_view.jsp" id="detailsLink"><i class="fa fa-fw fa-list-alt"></i> פרטי חוג</a>
                      </li> 
-                     <li>
+                   <!--   <li>
                         <a href= "pupil_week_view.jsp" id="scheduleLink"><i class="fa fa-fw fa-th"></i> רשומים</a>
                      </li>
                      <li>
@@ -172,7 +172,7 @@
                      </li>  
                     <li>
                         <a href= "pupil_one_time_act.jsp" id="oneTimeLink"><i class="fa fa-fw fa-plus-square-o"></i> פעילות חד פעמית</a>
-                     </li> 
+                     </li>  -->
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

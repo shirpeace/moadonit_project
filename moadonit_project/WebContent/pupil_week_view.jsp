@@ -70,13 +70,13 @@
 
 <!-- bootbox code -->
 <script src="js/bootbox.js"></script>
-  <script src="js/bootstrap-datepicker.js"></script> 
-	<script src="js/i18n/bootstrap-datepicker.he.min.js"></script> 
+<script src="js/bootstrap-datepicker.js"></script> 
+<script src="js/i18n/bootstrap-datepicker.he.min.js"></script> 
 
-    	<!-- form validation plugin -->
-	<script src="js/jquery.validate.js"></script>
-	<script src="js/additional-methods.js"></script>
-	<script src="js/messages_he.js"></script>
+<!-- form validation plugin -->
+<script src="js/jquery.validate.js"></script>
+<script src="js/additional-methods.js"></script>
+<script src="js/messages_he.js"></script>
 
 <script src="js/js_logic.js"></script>
 <script src="js/js_pupil_week_view.js"></script>

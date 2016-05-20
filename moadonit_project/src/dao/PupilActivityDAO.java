@@ -24,14 +24,17 @@ public class PupilActivityDAO extends AbstractDAO {
 
 	private String getPupilInCourse = "{ call ms2016.getPupilInCourse( ? ) }";
 	private String insertPupilActivity = "{ call ms2016.insertPupilActivity(?,?,?,?,?,?) }";
+	private String update = "{ call ms2016.updatePupilInCourse(?,? ,? , ?,? , ?) }";
+	private String delete = "DELETE FROM tbl_pupil_activities where pupilNum = ? and activityNum = ? ";
 	/**
-	 *  { call ms2016.insertPupilActivity(?,?,?,?,?,?) }
+	 * { call ms2016.insertPupilActivity(?,?,?,?,?,?) }
 	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * 
-	 * @param id course id
+	 * @param id
+	 *            course id
 	 * @return list of pupil in course
 	 * @throws IllegalArgumentException
 	 * @throws DAOException
@@ -40,15 +43,15 @@ public class PupilActivityDAO extends AbstractDAO {
 			throws IllegalArgumentException, DAOException {
 		List<PupilActivity> list = new ArrayList<>();
 
-		try (PreparedStatement statement = DAOUtil.prepareCallbackStatement(
-				this.con.getConnection(), getPupilInCourse, new Object[] { id });
+		try (PreparedStatement statement = DAOUtil
+				.prepareCallbackStatement(this.con.getConnection(),
+						getPupilInCourse, new Object[] { id });
 				ResultSet resultSet = statement.executeQuery();) {
 
-			
 			while (resultSet.next()) {
-				PupilActivity p = mapPupilActivity(resultSet);				
+				PupilActivity p = mapPupilActivity(resultSet);
 				list.add(p);
-				
+
 			}
 
 		} catch (SQLException e) {
@@ -58,52 +61,54 @@ public class PupilActivityDAO extends AbstractDAO {
 		return list;
 	}
 
-	private PupilActivity mapPupilActivity(ResultSet resultSet) throws SQLException {
-		// TODO Auto-generated method stub activityNum, activityName, pupilNum, startDate, regDate, endDate, firstName, lastName
+	private PupilActivity mapPupilActivity(ResultSet resultSet)
+			throws SQLException {
+		// TODO Auto-generated method stub activityNum, activityName, pupilNum,
+		// startDate, regDate, endDate, firstName, lastName
 		PupilActivity pa = new PupilActivity();
 		PupilActivityPK pk = new PupilActivityPK();
 		pk.setActivityNum(1);
 		pk.setPupilNum(1);
 		pa.setId(pk);
-		
+
 		Activity act = new Activity();
 		ActivityType type = new ActivityType();
 		type.setTypeID(resultSet.getInt("activityType"));
 		act.setTblActivityType(type);
 		act.setActivityName(resultSet.getString("activityName"));
-		
+
 		pa.setTblActivity(act);
-		
+
 		pa.setRegDate(resultSet.getDate("regDate"));
 		pa.setStartDate(resultSet.getDate("startDate"));
 		pa.setEndDate(resultSet.getDate("endDate"));
-		
+
 		Pupil p = new Pupil();
 		p.setPupilNum(resultSet.getInt("pupilNum"));
 		p.setFirstName(resultSet.getString("firstName"));
 		p.setLastName(resultSet.getString("lastName"));
-		
+
 		pa.setTblPupil(p);
-		
+
 		return pa;
 	}
-	
-	public boolean insert(PupilActivity pa) throws IllegalArgumentException, DAOException {
+
+	public boolean insert(PupilActivity pa) throws IllegalArgumentException,
+			DAOException {
 
 		boolean result = false;
 		if (pa.getId() == null) {
 			throw new IllegalArgumentException(
-					"Cant Add Row , the PK ID is not null.");
+					"Cant Add Row , the PK ID is  null.");
 		}
 
-		//pupilNum,activityNum,startDate,regDate,writtenBy,endDate
-		
+		// pupilNum,activityNum,startDate,regDate,writtenBy,endDate
+
 		Object[] values = { pa.getId().getPupilNum(),
 				pa.getId().getActivityNum(),
 				DAOUtil.toSqlDate(pa.getStartDate()),
 				DAOUtil.toSqlDate(pa.getRegDate()),
-				pa.getTblUser().getUserID(),
-				DAOUtil.toSqlDate(pa.getEndDate()) };
+				pa.getTblUser().getUserID(), DAOUtil.toSqlDate(pa.getEndDate()) };
 
 		try (
 
@@ -114,8 +119,9 @@ public class PupilActivityDAO extends AbstractDAO {
 
 			if (affectedRows == 0) {
 				result = false;
-				throw new DAOException(
-						"Creating PupilActivity for Pupilid = " + pa.getId().getPupilNum() + " failed, no rows affected.");
+				throw new DAOException("Creating PupilActivity for Pupilid = "
+						+ pa.getId().getPupilNum()
+						+ " failed, no rows affected.");
 			}
 
 		} catch (SQLException e) {
@@ -125,5 +131,63 @@ public class PupilActivityDAO extends AbstractDAO {
 
 		return result;
 	}
-	
+
+	public boolean update(PupilActivity pa) {
+		// TODO Auto-generated method stub
+		if (pa.getId() == null) {
+			throw new IllegalArgumentException(
+					"Row is not created yet, the PupilActivity ID is null.");
+		}
+
+		Object[] values = { pa.getId().getPupilNum(),
+				pa.getId().getActivityNum(), pa.getStartDate(),
+				pa.getRegDate(), pa.getTblUser().getUserID(), pa.getEndDate()
+
+		};
+
+		try (PreparedStatement statement = DAOUtil.prepareCallbackStatement(
+				this.con.getConnection(), update, values);
+
+		) {
+			int affectedRows = statement.executeUpdate();
+			if (affectedRows > 1) {
+				throw new DAOException("Updating Row was not currect , "
+						+ affectedRows + " rows affected.");
+			}
+
+			return true;
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+	}
+
+	public boolean delete(PupilActivity pa) {
+		// TODO Auto-generated method stub
+		if (pa.getId() == null) {
+			throw new IllegalArgumentException(
+					"cant delete row, the Registration ID is null.");
+		}
+
+		Object[] values = {
+				// pk of row
+				pa.getId().getPupilNum(),
+				pa.getId().getActivityNum()
+
+		};
+
+		try (PreparedStatement statement = DAOUtil.prepareStatement(
+				this.con.getConnection(), delete , false, values);) {
+			int affectedRows = statement.executeUpdate();
+			if (affectedRows == 0) {
+				throw new DAOException(
+						"Deleting PupilActivity failed, no rows affected.");
+			} else {
+				pa.setId(null);
+				return true;
+			}
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+	}
+
 }

@@ -163,10 +163,10 @@ $(function() {
 
 					// set a rule to inputs
 					// input must have name and id attr' and with same value !!!
-					endDate : {
+					/*endDate : {
 						required : true,						
 					// custom validation from additional-methods.js
-					},
+					},*/
 
 					regDate : {
 						required : true,						
@@ -190,7 +190,7 @@ $(function() {
 		return false;
 	});
 
-	loadGrid();
+	loadGrid('list');
 });
 
 function setCourseData(courseData) {
@@ -483,14 +483,29 @@ function loadGrid(gridName) {
 		       
 		    },
 		   afterSubmit: function (response, postdata) {
-			   response = $.parseJSON(response.responseText);
+			   var responseTxt = jQuery.parseJSON(response.responseText);
+               if (responseTxt.msg ==1) {
+            	   $("#popUPResultContent").empty();
+            	   $("#popUPResultContent").append(responseTxt.result);
+            	   popUPResult =  $('#popUPResult').bPopup({ //show popup
+            			position : ['auto',100] ,			
+            			positionStyle : 'absolute', 
+            			onClose : onClosing,	        				
+            			follow : ([false,false]),
+            			modalClose : false
+            		});
+            		
+            	   $(popUPResult).center(true);
+             }
+               
+			   /*response = $.parseJSON(response.responseText);
 			   // delete row
                grid.delRowData(rowData.rowid);
                bootbox.alert("רשומה נמחקה בהצלחה",
 						function() {
 				});
 		        
-			   console.log(response);
+			   console.log(response);*/
 		        return [true, "success"];
 		    },
 		    afterComplete: function (response, postdata, formid) {
@@ -508,7 +523,7 @@ function loadGrid(gridName) {
            //$.extend(rowData, {rowid: rowid});
            //var d = getDateFromValue( rowData.startDate);
            funcParam.url = "ActivityController?" + $.param({
-           	action: "delete",
+           	action: "deletePupilActivity",
            	pupilActivity : rowData,
            	/*pupilID: pupilID,
                startDate : d.getTime(),*/
@@ -537,7 +552,7 @@ function loadGrid(gridName) {
 						datatype : "json",
 						editurl : "ActivityController?action=editPupilInCourse",
 						mtype : 'GET',
-						colNames : [ 'מספר חוג', 'שם חוג', 'מספר תלמיד','שם משפחה', 'שם פרטי', 'תאריך רישום','תאריך התחלה', 'תאריך סיום' , 'פעולה'],
+						colNames : [ 'מספר חוג', 'שם חוג', 'מספר תלמיד','שם משפחה', 'שם פרטי', 'תאריך רישום','תאריך התחלה', 'תאריך סיום' , ''],
 						colModel : [ {
 							name : 'activityNum',
 							index : 'activityNum',
@@ -671,7 +686,22 @@ function loadGrid(gridName) {
 		                           
 		                         },								
 		                         onSuccess:function(jqXHR) {
-		                           
+		                           var response = jQuery.parseJSON(jqXHR.responseText);
+			                           if (response.msg ==1) {
+			                        	   $("#popUPResultContent").empty();
+			                        	   $("#popUPResultContent").append(response.result);
+			                        	   popUPResult =  $('#popUPResult').bPopup({ //show popup
+				                    			position : ['auto',100] ,			
+				                    			positionStyle : 'absolute', 
+				                    			onClose : onClosing,	        				
+				                    			follow : ([false,false]),
+				                    			modalClose : false
+				                    		});
+				                    		
+				                    	   $(popUPResult).center(true);
+			                         }
+		                     		
+		                    		
 		                             return true;
 		                         },
 		                         onError:function(rowid, jqXHR, textStatus) {
@@ -690,6 +720,13 @@ function loadGrid(gridName) {
 		                         },
 		                         afterSave:function(rowid) {
 		                             /*alert("in afterSave (Submit): rowid="+rowid+"\nWe don't need return anything");*/
+		                        	 // if endDate was saved as null reload page after editing to get the generated ednDate in DB
+		                        	 var endDate = jQuery('#list').jqGrid ('getCell', rowid, 'endDate');
+		                        	 if (endDate == '') {
+		                        		 var myGrid = jQuery("#list").jqGrid({});
+			                     		 myGrid.trigger('reloadGrid');
+									  }
+		                        	
 		                         },
 		                         afterRestore:function(rowid) {
 		                             
@@ -707,16 +744,19 @@ function loadGrid(gridName) {
 						gridview : true,
 						height : "100%",
 						loadComplete : function(data) {
-							
-							if (parseInt(data.records, 10) == 0) {
-								currentDate = new Date(); // default date
-															// is today if
-															// there are no
-															// rows in this
-															// grid
+							if(data.records !== undefined){
+								if (parseInt(data.records, 10) == 0) {
+									currentDate = new Date(); // default date
+																// is today if
+																// there are no
+																// rows in this
+																// grid
+									$("#pager div.ui-paging-info").show();
+								} else {
+									$("#pager div.ui-paging-info").hide();
+								}
+							}else{
 								$("#pager div.ui-paging-info").show();
-							} else {
-								$("#pager div.ui-paging-info").hide();
 							}
 						},
 						loadError : function(xhr, status, error) {
@@ -848,8 +888,8 @@ function addPupilToCourse(PupilActivity, action){
  */
 function AddSelectedPupil() {
 
-	if (popUp) {
-		 
+	if (popUp) {		 
+		
 		 var div1 = $("<div>").append('התלמידים הבאים נוספו בהצלחה').append("</br>").append("<ul></ul>");
 		 var div2 = $("<div>").append('התלמידים הבאים לא נוספו').append("</br>").append("<ul></ul>");
 		 var resultpopup  = $("#popUPResultContent").empty();
@@ -865,9 +905,9 @@ function AddSelectedPupil() {
 				 for (var i = 0, ok = 0, error = 0; i < selectedIds.length; i++) {		    		
 						var PupilActivity = new Object();
 						PupilActivity.id = {pupilNum : selectedIds[i] ,activityNum: activityNum };
-						PupilActivity.endDate = new Date();
-						PupilActivity.regDate = new Date();
-						PupilActivity.startDate = new Date();
+						PupilActivity.endDate = $( '#endDate' ).datepicker( "getDate" ); 
+						PupilActivity.regDate = $( '#regDate' ).datepicker( "getDate" );
+						PupilActivity.startDate = $( '#startDate' ).datepicker( "getDate" );
 						PupilActivity.tblPupil = { pupilNum : selectedIds[i] };
 						PupilActivity.tblUser = null;						
 						var result  = addPupilToCourse(PupilActivity, 'insertPupilActivity'); // fire ajax funw to add row on server
@@ -1120,19 +1160,22 @@ function loadPupilGrid() {
 function createPostData(activityID, rowData,isEdit){
 	
 	var pupilActivity = new Object();
-		
+	var _pupilNum = (rowData.pupilNum !== undefined) ? rowData.pupilNum : jQuery('#list').jqGrid ('getCell', rowData.id, 'pupilNum') ;
+			   
 	pupilActivity.id = {			
-		pupilNum : rowData.pupilNum ,
+		pupilNum : _pupilNum ,
 		activityNum : activityID
 	}; // pk
-	if (isEdit) {
-			pupilActivity.regDate = rowData.regDate;
-			pupilActivity.startDate = rowData.startDate;
-			pupilActivity.tblPupil = {
-					pupilNum : rowData.pupilNum
-			};
-			pupilActivity.tblUser = null;			
-	}		
 
+			
+	pupilActivity.tblPupil = {
+			pupilNum : _pupilNum
+	};
+	
+	pupilActivity.tblUser = null;	
+	pupilActivity.regDate = getDateFromValue(  rowData.regDate);
+	pupilActivity.startDate = getDateFromValue(rowData.startDate);
+	pupilActivity.endDate = getDateFromValue(rowData.endDate);	
+	
 	return pupilActivity;
 }

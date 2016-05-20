@@ -108,9 +108,9 @@
 					</a> <br></li>
 					<li class="active"><a href="pupils_search.jsp"><i
 							class="fa fa-fw fa-search"></i> חיפוש</a></li>
-					<li><a href="pupils_phones.jsp"><i
+					<li><a href="#"><i
 							class="fa fa-fw fa-phone"></i>מורי חוגים</a></li>
-					<li><a href="pupil_add.jsp"><i class="fa fa-fw fa-edit"></i>
+					<li><a href="#"><i class="fa fa-fw fa-edit"></i>
 							הוספת חדש</a></li>
 				</ul>
 			</div>

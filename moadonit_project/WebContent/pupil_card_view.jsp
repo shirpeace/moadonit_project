@@ -175,7 +175,7 @@
 								
 								<div class="form-group">
 									<label for="lName">שם משפחה</label> <input type="text"
-										class="form-control input-sm" id="lName" name="lName"  placeholder="משפחה" >
+										class="form-control" id="lName" name="lName"  placeholder="משפחה" >
 								</div>
 								<div class="form-group">
 									<label for="fName">שם פרטי</label> <input type="text" 
