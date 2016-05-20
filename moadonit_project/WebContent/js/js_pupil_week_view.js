@@ -8,6 +8,7 @@ $.extend($.jgrid.ajaxOptions, {
 /*$.jgrid.defaults.width = 780;*/
 
 var currentDate;
+
 /** ********************************************** */
 // TODO //* START PAGE FUNCTIONS */
 /** ********************************************** */
@@ -48,7 +49,7 @@ function loadPupilCard(dataString) {
 
 function loadWeekGrid(pupilID) {
 	var grid = jQuery("#list");
-
+	var idx = 0;
 	grid
 			.jqGrid(
 					{
@@ -62,10 +63,19 @@ function loadWeekGrid(pupilID) {
 							async : false
 						},
 						rowattr : function(rd) {
-
-							if (rd.startDate) {
-								currentDate = new Date(rd.startDate);
+							if(idx == 0){
+								idx++;
+								//first row of grid
+								return {
+									/*"class" : 'not-editable-row',*/
+									"style" : "color:"+colors.presernt+";","data-isHistory": false
+								};
 							}
+							
+//							style="background:'+colors.presernt+'"
+							/*if (rd.startDate) {
+								currentDate = new Date(rd.startDate);
+							}*/
 						},
 						loadComplete : function(data) {
 							
@@ -73,6 +83,7 @@ function loadWeekGrid(pupilID) {
 								currentDate = new Date(); //default date is today if there are no rows in this grid 
 								$("#pager div.ui-paging-info").show();
 							} else {
+								currentDate = new Date(data.rows[0].startDate); 
 								$("#pager div.ui-paging-info").hide();
 							}
 						},
@@ -327,7 +338,7 @@ function loadRegistrationGrid(pupilID) {
 
 					    var d = getDateFromValue(rowData.startDate);
 						if (d && currentDate) {
-							if (d.getTime() < currentDate.getTime()) {
+							if (d.getTime() <= currentDate.getTime()) { 
 								$('#jEditButton_'+rowId).hide();
 								$('#jDeleteButton_'+rowId).hide();
 							}
@@ -344,18 +355,18 @@ function loadRegistrationGrid(pupilID) {
 																	// registration
 							return {
 								/*"class" : 'not-editable-row',*/
-								"style" : "background:#7697B7;","data-isHistory": false
+								"style" : "background:"+colors.future+";","data-isHistory": false
 							};
 						} else if (d.getTime() === currentDate.getTime()) { // current
 																			// registration
 							return {
-								"style" : "background:#8BB5F2;","data-isHistory": false
+								"style" : "color:"+colors.presernt+";","data-isHistory": true
 							};
 						} else { // history registration
 					
 							return {
 								"class" : 'not-editable-row',
-								"style" : "background:#9E9F9F;",
+								/*"style" : "background:#9E9F9F;",*/
 								"data-isHistory": true
 							};
 						}

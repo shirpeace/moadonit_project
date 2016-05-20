@@ -49,7 +49,8 @@
     <script src="js/i18n/grid.locale-he.js"></script>
  	<script src="js/jquery.jqGrid.min.js"></script>
     <script src="js/js_pupil_one_time_act.js"></script> 
-
+	<script src="js/js_logic.js"></script>
+	
     <script src="js/bootstrap-datepicker.js"></script> 
 	<script src="js/i18n/bootstrap-datepicker.he.min.js"></script> 
     <!-- Bootstrap Core CSS -->

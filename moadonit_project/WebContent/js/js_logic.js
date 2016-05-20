@@ -14,6 +14,11 @@ var gradeData;
 	    READ: 1,	    
 	};
 var CurrentYearEndDate = null;
+var colors  = {
+		future : '#ff9999',
+		presernt : '#3399ff'
+		
+};
 /*************************************************/
 //TODO //*  START  PUPILADD PAGE FUNCTIONS       */
 /*************************************************/

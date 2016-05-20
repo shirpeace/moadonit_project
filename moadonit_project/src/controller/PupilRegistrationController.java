@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -56,7 +57,7 @@ public class PupilRegistrationController extends HttpServlet implements
 	OneTimeRegDao oneTimesDAO;
 	private String action;
 	private PupilActivityDAO pupilActDAO;
-
+	Map<Integer, Object> regTypes;
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -77,7 +78,7 @@ public class PupilRegistrationController extends HttpServlet implements
 		this.reg = new RegToMoadonit();
 		String jsonResponse = "";
 		JSONArray registrationData;
-
+		regTypes = this.regDAO.getRegTypeCodes();
 		try {
 			if (action.equals("getRegistration")
 					|| action.equals("getWeekGrid")) { 
@@ -446,9 +447,25 @@ public class PupilRegistrationController extends HttpServlet implements
 		
 		return row;
 	}
+	
+	private boolean isTimeOverlap(Time startA, Time endA, Activity b){
+		
+		//(StartA <= EndB) and (EndA >= StartB) // change the >= operators to >, and <= to <
+		if(startA.getTime() < b.getEndTime().getTime() &&
+				endA.getTime() > b.getStartTime().getTime()){
+			//overlap time
+			return true;
+		}
+		else{
+			//No overlap time
+			return false;
+		}
+	}
 	@SuppressWarnings("unchecked")
 	protected void getRegistrationRow(JSONArray registrationData, int type) {
 
+		
+		
 		if (type == 0) { // get data for weekGrid
 
 			RegToMoadonit regPupil = this.pupilRegList.get(0);
@@ -464,8 +481,12 @@ public class PupilRegistrationController extends HttpServlet implements
 			user.put("thursday", getRegType(regPupil.getTblRegType5().getTypeNum()));
 			
 			registrationData.add(user);
+			
 			List<Map<String,Object>> map = new ArrayList<Map<String,Object>>();
 			Map<String,Object> row ;
+			int index = 0;
+			Time startA = new Time(0);
+			Time endA = new Time(0);
 			if (!this.pupilAcivitiesList.isEmpty()) {
 				for (Activity act : this.pupilAcivitiesList) {
 					boolean isAdded = false;
@@ -476,7 +497,10 @@ public class PupilRegistrationController extends HttpServlet implements
 					row = null;
 					
 					if (map.isEmpty()) {
-								
+							
+						startA = act.getStartTime();
+						endA = act.getEndTime();
+						
 						if(act.getWeekDay().equals("א")){
 							row = createRow("sunday", act.getActivityName() , act.getTblPupilActivities().get(0).getStartDate().getTime()
 									, value,  "שם החוג");
@@ -512,9 +536,21 @@ public class PupilRegistrationController extends HttpServlet implements
 					}
 					else{
 						
+							
 							for (Map<String, Object> mapedRow : map) {
 								
+								
 								if (act.getWeekDay().equals("א") && mapedRow.get("sunday") != null) {
+									
+									if(index < map.size()){
+										Map<String, Object> prev = map.get(index);
+										if(isTimeOverlap(startA,endA,act)){																				
+											
+											startA = act.getStartTime();
+											endA = act.getEndTime();
+										}
+										index++;
+									}
 									continue;
 									//Map<String, Object> newRow = new HashMap<String, Object>();
 								}
@@ -570,6 +606,8 @@ public class PupilRegistrationController extends HttpServlet implements
 									isAdded = true;
 									break;
 								}
+								
+								
 							}
 							
 							if (!isAdded) {
@@ -718,14 +756,7 @@ public class PupilRegistrationController extends HttpServlet implements
 	}
 
 	private String getRegType(int type) {
-
-		if (type == 1)
-			return "לא רשום";
-		else if (type == 2)
-			return "מועדונית";
-		else if (type == 3)
-			return "אוכל בלבד";
-		return "";
+		return (String) this.regTypes.get(type);
 	}
 
 	/**
