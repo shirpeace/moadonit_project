@@ -15,7 +15,173 @@ var state = {
 /*************************************************/
 //TODO //*  START  PUPILADD PAGE FUNCTIONS       */
 /*************************************************/
+$(function(){
+	 $('#date_of_birth').combodate({
+		    minYear: 1975,
+		    maxYear: 2016,
+		    minuteStep: 10
+		});  
+		 moment.locale();         // he
+		 $('.day').attr('name', 'day');
+		$('.month').attr('name', 'month');
+		$('.year').attr('name', 'year'); 
+			
+		$('#staff').click(function() {
+			var isChecked = this.checked;
+			if (isChecked) {
+				$("#staffJobDiv").toggle(true);
 
+			} else {
+				$("#staffJobDiv").toggle(false);
+				$("#staffJob").val('');
+			}
+
+		});
+		
+		$('#detailsLink').attr('href','pupil_card_view.jsp?li=0&pupil=' + pupilID);
+		$('#scheduleLink').attr('href','pupil_week_view.jsp?li=1&pupil=' + pupilID);
+		$('#regLink').attr('href','pupil_week_view.jsp?li=2&pupil=' + pupilID);
+		$('#oneTimeLink').attr('href','pupil_one_time_act.jsp?li=3&pupil=' + pupilID);
+		
+		getGrades();
+		
+	    //alert(options);
+	    var $select = $('#grade');                        
+	    $select.find('option').remove();   
+	    grades = grades.value.split(";");
+	    $.each(grades, function(key, value) {  
+	    	value  = value.split(":");
+	    	if(key != 0)
+	    	$select.append('<option style="background-color:'+ value[2]+'" value=' + value[0] + '>' + value[1] + '</option>'); 
+	    	else
+	    		$select.append('<option  value=' + value[0] + '>' + value[1] + '</option>'); 	
+	    });
+   
+		var dataString = 'id='+ pupilID + '&action=' + "get";
+	   	loadPupilCard(dataString);	
+	    
+		
+	    /* set the validattion for form */
+		var validator = $("#ajaxform").validate({
+			
+			errorPlacement: function(error, element) {
+				// Append error within linked label					
+				error.css("color", "red");				
+				$( element )
+					.closest( "form" )
+						.find( "label[for='" + element.attr( "id" ) + "']" )
+							.append(  error );
+			},
+			rules: {   
+				
+				// set a rule to inputs
+				// input must have name and id attr' and with same value !!!
+				fName : {  
+					required: true,
+					minlength: 2,
+					maxlength: 20,  
+					nameValidator : true //custom validation from additional-methods.js
+					},
+				
+				lName:  {
+					required: true,
+					minlength: 2,
+					maxlength: 20,
+					nameValidator : true 
+				},
+				 cell: {
+					/* required: true, */
+					minlength: 10,
+					maxlength: 10,
+					digits: true
+					
+				}, 
+				staffJob: {
+					required: "#staff:checked",
+					minlength: 2,
+					maxlength: 20,
+					nameValidator : true 
+				}
+				,
+				p1fName : {
+					required: true,
+					maxlength: 20,
+					nameValidator : true 
+				},
+				p1lName : {
+					required: true,
+					maxlength: 20,
+					nameValidator : true 
+				},
+				p2fName : {
+					
+					maxlength: 20,
+					nameValidator : true 
+				},
+				p2lName : {
+					maxlength: 20,
+					nameValidator : true 
+				},
+				p1mail : {
+					email: true,
+					maxlength: 254
+				},
+				p2mail : {
+					email: true,
+					maxlength: 254
+				}, 
+				p2cell : {
+					rangelength: [2, 10],
+					digits: true
+				},
+				p1cell : {
+					minlength: 10,
+					maxlength: 10,
+					digits: true
+				},
+				 genderGruop : {
+					required: true,		
+					minlength: 1
+				}, 
+				phone : {
+					minlength: 9,
+					maxlength: 9,
+					digits: true
+				},address : {
+					
+					maxlength: 45,
+					
+				},
+				 health : { 
+					 maxlength: 20 
+				}, 
+				foodsens : { 
+				maxlength: 20
+				
+				}, 
+				comnt : { 
+					maxlength: 20
+				},
+				
+				
+			},
+			errorElement: "span",
+
+		});
+	    
+	   
+
+		
+		$("#cancelBtn").click(function() {
+			formDisable();
+			validator.resetForm();
+			setPupilCardData(pupilData);
+
+			return false;
+		});
+	    		
+       
+});
 function setPupilCardData(pupil){
 			
 			if(pupil != undefined){

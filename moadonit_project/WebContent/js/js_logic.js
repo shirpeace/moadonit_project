@@ -8,6 +8,7 @@ var currentUserId =	 '<%=session.getAttribute("userid")%>';
 //$.jgrid.defaults.responsive = true;
 //$.jgrid.defaults.styleUI = 'Bootstrap';
 var gradeData;
+var grades;
 // define state for the editable page
 	var state = {
 	    EDIT: 0,
@@ -36,7 +37,30 @@ jQuery.fn.center = function(parent) {
 	return this;
 	}
 
-
+function getGrades()
+{
+	$.ajax({
+  		async: false,
+		type: 'GET',
+		datatype: 'json',
+        url: "FullPupilCardController?action=getGrades",
+        
+        success: function(data) {
+        	if(data != undefined){
+        		grades=data;
+        		console.log("grades"+grades);
+        	}
+        	else
+        		console.log("no data");
+        },
+        error: function(e) {
+        	console.log("error loading grades");
+        	
+			
+        }
+        
+      });	
+}
 /**
  * the value to convert to date , if value is a milliseconds number , create an date from it.
  * if value is string, build date from it.

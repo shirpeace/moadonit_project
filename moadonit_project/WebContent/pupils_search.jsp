@@ -168,7 +168,7 @@
 
 							</div> -->
 
-							<button id="resetBtn" class="pull-left">נקה חיפוש</button>
+							<button id="resetBtn" class="pull-left btn btn-primary">נקה חיפוש</button>
 							<div class="clearfix"></div>
 						</div>
 						<div class="panel-body">

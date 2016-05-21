@@ -773,8 +773,6 @@ public class PupilRegistrationController extends HttpServlet implements
 								
 				registrationData.add(user);
 
-			
-
 		}
 
 	}

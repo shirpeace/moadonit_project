@@ -702,7 +702,7 @@ function goToByScroll(id){
       'slow');
 }
 
-	$(function() {
+$(function() {
 
 		$('#detailsLink').attr('href','pupil_card_view.jsp?li=0&pupil=' + pupilID);
 		$('#scheduleLink').attr('href','pupil_week_view.jsp?li=1&pupil=' + pupilID);
@@ -710,6 +710,8 @@ function goToByScroll(id){
 		$('#oneTimeLink').attr('href', 'pupil_one_time_act.jsp?li=3&pupil=' + pupilID);
 		
 		var dataString = 'id='+ pupilID + '&action=' + "get";
+		
+
 		loadPupilCard(dataString);
 		
 		 $('#datePick').datepicker({
@@ -799,4 +801,4 @@ function goToByScroll(id){
 			}			
 		});
 		
-	});
+});
