@@ -375,6 +375,25 @@ public class FullPupilCardController extends HttpServlet implements
 				resp.setCharacterEncoding("UTF-8");
 				resp.getWriter().print(jo);
 				
+			}else if(action.equals("export")){
+				
+				resp.setContentType("text/html;charset=UTF-8");
+		        Cookie downloadCookie = new Cookie("fileDownload",  "true");
+	        
+	            String fileName = req.getParameter("fileName") ;
+	            String fileType = req.getParameter("fileType") ;
+	            
+	            String htmlfromFunc = getHtmlFromJsonData(req, resp);
+	            
+	            resp.setContentType("application/vnd.ms-excel");
+	            resp.setHeader("Content-Disposition", "attachment;filename=\"" + fileName +"."+fileType+  "\"");
+	            resp.addCookie( downloadCookie );
+	            PrintWriter out = resp.getWriter();
+	            out.print(htmlfromFunc);
+	            out.close();
+		            
+		             
+		      
 			}
 
 		} catch (SQLException e) {
@@ -663,7 +682,7 @@ public class FullPupilCardController extends HttpServlet implements
 		return pupils;
 	}
 	
-	private List<FullPupilCard> fillterPupilNotInActivity(HttpServletRequest req,
+	public List<FullPupilCard> fillterPupilNotInActivity(HttpServletRequest req,
 			HttpServletResponse resp) {
 		List<FullPupilCard> pupils = new ArrayList<>();
 		int activityNum = Integer.parseInt(req.getParameter("activityNum"));
@@ -744,6 +763,40 @@ public class FullPupilCardController extends HttpServlet implements
 		}
 	}
 
+	/**
+	 * like the getPupilList function but with hebrew keys
+	 * @param jsonResult
+	 */
+	@SuppressWarnings("unchecked")
+	protected void getPupilListForHTML(JSONArray jsonResult) {
+		for (FullPupilCard pupil : pupilList) {
+			String gend;
+			if (pupil.getGender() == 1)
+				gend = "בן";
+			else if (pupil.getGender() == 2)
+
+				gend = "בת";
+			else
+				gend = " ";
+
+			Boolean reg;
+			if (pupil.getRegPupilNum() == 0) {
+				reg = false;
+			} else
+				reg = true;
+
+			JSONObject user = new JSONObject();
+			user.put("מספר", pupil.getPupilNum());
+			user.put("שם פרטי", pupil.getFirstName());
+			user.put("שם משפחה", pupil.getLastName());
+			user.put("מגדר", gend);
+			user.put("כיתה", pupil.getGradeName());
+			user.put("רשום", reg ? "כן" : "לא");
+
+			jsonResult.add(user);
+		}
+	}
+	
 	@SuppressWarnings("unchecked")
 	protected void getContactList(JSONArray jsonResult) {
 		for (FullPupilCard pupil : pupilList) {
@@ -778,4 +831,68 @@ public class FullPupilCardController extends HttpServlet implements
 		}
 	}
 
+	public String getHtmlFromJsonData(HttpServletRequest req,HttpServletResponse resp) throws IOException {
+		
+		pupilList = searchPupilList(req, resp); // get list of rows to add to html
+		JSONArray jsonPupilList = new JSONArray();
+		String pageHead = "רשימת תלמידים";	// header for exel file	
+		
+		// ger values of rows with hebrew headers
+		getPupilListForHTML(jsonPupilList); // get the rows as jsons with only the values we need
+		
+		if (!jsonPupilList.isEmpty()) {
+			//start html text with style for table
+			String html = "<!DOCTYPE html><html lang=\"he\" ><head> <meta charset=\"utf-8\" /><style script='css/text'>table.tableList_1 th {border:1px solid #a8da7f; border-bottom:2px solid #a8da7f; text-align:center; vertical-align: middle; padding:5px; background:#e4fad0;}table.tableList_1 td {border:1px solid #a8da7f; text-align: left; vertical-align: top; padding:5px;}</style></head><body dir=\"rtl\"><div class='pageHead_1'>"+pageHead+"</div><table border='1' class='tableList_1 t_space' cellspacing='10' cellpadding='0'>";
+			// headers of table
+			String theads = "";
+			
+			// get header values form the first row of json data 
+			JSONObject o = (JSONObject) jsonPupilList.get(0);
+			for (Object keyObject : o.keySet())
+			{
+			    String key = (String)keyObject;
+			    if (key.equals("מספר")) {
+					continue;
+				}
+			    theads = theads +"<th>"+ key +"</th>";
+			   
+			}
+			
+			theads = "<tr>"+theads+"</tr>";
+			html += theads;
+			
+			// get all rows and build the html
+			for (Object object : jsonPupilList) {
+				JSONObject obj = (JSONObject)object;
+				html += "<tr>";
+				for (Object pair : obj.keySet())
+				{
+					String key = (String)pair;
+					if (key.equals("מספר")) {
+						continue;
+					}
+					html += "<td>";
+				    
+				    html +=  obj.get(key) + "</td>";
+				   
+				}
+				html += "</tr>";
+			}
+			
+			html += "</table></body></html>";
+			
+			return html;
+
+		} else {
+
+			resp.setContentType("application/json");
+			resp.setCharacterEncoding("UTF-8");
+			resultToClient.put("msg", 0);
+			resultToClient.put("result", "לא נמצאו נתונים");
+			resp.getWriter().print(resultToClient);
+		}
+
+		
+		return null;
+	}
 }
