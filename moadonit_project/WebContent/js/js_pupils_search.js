@@ -222,6 +222,12 @@ function exportData(cols,file,gridId ,pageHead){
     html = "<!DOCTYPE html><html><body><table><tr><td>מתן</td><td>טספאי</td><td>50</td></tr><tr><td>משה</td><td>מזרחי</td><td>50</td></tr><tr><td>אבי</td><td>יצחק</td><td>94</td></tr><tr><td>חיים</td><td>משה</td><td>80</td></tr></table></body></html>";
     var $grid = $("#list");
     var postData = $grid.jqGrid('getGridParam', 'postData');
+    var firstName =  null ,gender = null,  isReg=    null , lastName = null , gradeName =  null;
+    if(postData._search === true){
+    	firstName = postData.firstName ,gender =  postData.gender, 
+    	isReg=    postData.isReg , lastName =  postData.lastName ,
+    	gradeName =   postData.gradeName;
+    }
     
     var $preparingFileModal = $("#preparing-file-modal");
     
@@ -241,12 +247,12 @@ function exportData(cols,file,gridId ,pageHead){
         failCallback: function(responseHtml, url) {
 
             $preparingFileModal.dialog('close');
-            $("#error-modal").dialog({ modal: true });
+            //$("#error-modal").dialog({ modal: true });
         },
         data : { pdfBuffer : html, fileType : file, fileName: 'exportFile' , action: "export" ,
-			        	firstName : postData.firstName ,gender : postData.gender, 
-			        	isReg:   postData.isReg , lastName : postData.lastName ,
-			        	gradeName :  postData.gradeName
+			        	firstName : firstName ,gender : gender, 
+			        	isReg:  isReg , lastName : lastName ,
+			        	gradeName :  gradeName
 			    },
         httpMethod: "POST",
         popupWindowTitle: "ייצוא קובץ...",
