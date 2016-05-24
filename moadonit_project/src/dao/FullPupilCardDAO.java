@@ -195,19 +195,19 @@ public class FullPupilCardDAO extends AbstractDAO {
 		int withRegPupil = 0;
 		if(fName!=null ||lName!=null || gend!=null   || (grade!=null && !grade.equals(" "))  || isReg!=null){
 			stat+=" where ";
-			if(fName!=null){
+			if(fName!=null && !fName.trim().equals("")){
 				stat+="firstName LIKE '%" +fName +"%' and ";
 			}
-			if(lName!=null){
+			if(lName!=null && !lName.trim().equals("")){
 				stat+="lastName LIKE '%" +lName +"%' and ";
 			}
-			if(gend!=null){
+			if(gend!=null && !gend.trim().equals("")){
 				stat+="gender =" +gend +" and ";
 			}
-			if(grade!=null && !grade.equals(" ")){
+			if(grade!=null && !grade.equals(" ") && !grade.trim().equals("")){
 				stat+="gradeID =" +grade +" and ";
 			}
-			if(isReg!=null){
+			if(isReg!=null && !isReg.trim().equals("")){
 				if(isReg.equals("1")){
 					//stat+="regPupilNum is not null";
 					withRegPupil = 1; //-- get only registered pupil

@@ -39,22 +39,22 @@ function loadGrid(){
           url : "FullPupilCardController?action=pupilSearch",
           datatype : "json",
           mtype : 'POST',
-          colNames : ['מספר','שם פרטי' , 'שם משפחה' , 'מגדר', 'כיתה', 'רשום'],         
+          colNames : ['מספר', 'שם משפחה' ,'שם פרטי' , 'מגדר', 'כיתה', 'רשום'],         
           colModel : [ {
                   name : 'id',
                   index : 'id',
                   width : 100,
                   hidden: true
           }, {
-                  name : 'firstName',
-                  index : 'firstName',
-                  width : 150,
-                  editable : true
-          }, {
                   name : 'lastName',
                   index : 'lastName',
                   width : 150,
                   editable : true
+          }, {
+              name : 'firstName',
+              index : 'firstName',
+              width : 150,
+              editable : true
           }, {
                   name : 'gender',
                   index : 'gender',
@@ -165,7 +165,7 @@ function onGradeChange(elem){
 		$(elem).attr("class", color); alert($("#gradeSelect"));
 		
 }
-function exportData(cols,file,gridId){
+function exportData(cols,file,gridId ,pageHead){
     var columns = cols.toString().split(",");
     var columnNms = $('#'+gridId).jqGrid('getGridParam','colNames');
     var theads = "";
@@ -192,8 +192,9 @@ function exportData(cols,file,gridId){
         colNames[ii++]=i;
     }
 
-    var pageHead = "Testing PDF";
+    var pageHead = "רשימת תלמידים";
     var html="<!DOCTYPE html><html lang=\"he\" ><head> <meta charset=\"utf-8\" /><style script='css/text'>table.tableList_1 th {border:1px solid #a8da7f; border-bottom:2px solid #a8da7f; text-align:center; vertical-align: middle; padding:5px; background:#e4fad0;}table.tableList_1 td {border:1px solid #a8da7f; text-align: left; vertical-align: top; padding:5px;}</style></head><body dir=\"rtl\"><div class='pageHead_1'>"+pageHead+"</div><table border='"+(file=='pdf'? '0' : '1')+"' class='tableList_1 t_space' cellspacing='10' cellpadding='0'>"+theads;
+    var html="<!DOCTYPE html><html lang=\"he\" ><head> <meta charset=\"utf-8\" /><style script='css/text'>table.tableList_1 th {border:1px solid #a8da7f; border-bottom:2px solid #a8da7f; text-align:center; vertical-align: middle; padding:5px; background:#e4fad0;}table.tableList_1 td {border:1px solid #a8da7f; text-align: left; vertical-align: top; padding:5px;}</style></head><body dir=\"rtl\"><div class='pageHead_1'>"+pageHead+"</div><table border='1' class='tableList_1 t_space' cellspacing='10' cellpadding='0'>"+theads;
     //var html = "<html><head><style script='css/text'>table.tableList_1 th {border:1px solid #a8da7f; border-bottom:2px solid #a8da7f; text-align:center; vertical-align: middle; padding:5px; background:#e4fad0;}table.tableList_1 td {border:1px solid #a8da7f; text-align: left; vertical-align: top; padding:5px;}</style></head><body ><div class='pageHead_1'>"+pageHead+"</div><table border='"+(file=='pdf'? '0' : '1')+"' class='tableList_1 t_space' cellspacing='10' cellpadding='0'>"+theads;
     
     //alert('len'+mya.length);
@@ -218,6 +219,15 @@ function exportData(cols,file,gridId){
     }
     html=html+"</table></body></html>";  // end of line at the end
     //alert(html);
+    html = "<!DOCTYPE html><html><body><table><tr><td>מתן</td><td>טספאי</td><td>50</td></tr><tr><td>משה</td><td>מזרחי</td><td>50</td></tr><tr><td>אבי</td><td>יצחק</td><td>94</td></tr><tr><td>חיים</td><td>משה</td><td>80</td></tr></table></body></html>";
+    var $grid = $("#list");
+    var postData = $grid.jqGrid('getGridParam', 'postData');
+    var firstName =  null ,gender = null,  isReg=    null , lastName = null , gradeName =  null;
+    if(postData._search === true){
+    	firstName = postData.firstName ,gender =  postData.gender, 
+    	isReg=    postData.isReg , lastName =  postData.lastName ,
+    	gradeName =   postData.gradeName;
+    }
     
     var $preparingFileModal = $("#preparing-file-modal");
     
@@ -229,7 +239,7 @@ function exportData(cols,file,gridId){
     test.addres = "חיפה";
     test.boy = true;
     
-    $.fileDownload("GenerateGridPDFs", {
+   $.fileDownload("FullPupilCardController", {
         successCallback: function(url) {
 
             $preparingFileModal.dialog('close');
@@ -237,12 +247,17 @@ function exportData(cols,file,gridId){
         failCallback: function(responseHtml, url) {
 
             $preparingFileModal.dialog('close');
-            $("#error-modal").dialog({ modal: true });
+            //$("#error-modal").dialog({ modal: true });
         },
-        data : { pdfBuffer : html, fileType : file, fileName: 'exportFile' , action: "export" },
+        data : { pdfBuffer : html, fileType : file, fileName: 'exportFile' , action: "export" ,
+			        	firstName : firstName ,gender : gender, 
+			        	isReg:  isReg , lastName : lastName ,
+			        	gradeName :  gradeName
+			    },
         httpMethod: "POST",
         popupWindowTitle: "ייצוא קובץ...",
     });
+
     return false; //this is critical to stop the click event which will trigger a normal file download!
     /*document.formstyle.pdfBuffer.value=html;
     document.formstyle.fileType.value=file;

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
-	pageEncoding="utf-8"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
@@ -7,7 +7,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <!DOCTYPE html>
-<html lang="he">
+<html lang="en">
 
 <head>
 
@@ -155,20 +155,20 @@
 															<option value="2">לא רשום</option>
 														</select> -->
 
-							<!-- <div class="form-group pull-left" id="viewModeBtn">
-								<a href="javascript:void(0);"
+							 <div class="form-group pull-left" id="viewModeBtn">
+							<!-- 	<a href="javascript:void(0);"
 									onclick="exportData('0','pdf', 'list');">
 									<img alt="" src="resources/images/pdf-icon.png">
-									</a>
+									</a> -->
 								 <a
 									href="javascript:void(0);"
 									onclick="exportData('0','xls', 'list');">
-									<img alt="" src="resources/images/Excel-icon.png" style="border-radius:15%;">
+									<img alt="" src="resources/images/Excel-icon.png" style="border-radius:15%; margin-right: 10px;">
 								</a>
 
-							</div> -->
+							</div>
 
-							<button id="resetBtn" class="pull-left">נקה חיפוש</button>
+							<button id="resetBtn" class="pull-left btn btn-primary">נקה חיפוש</button>
 							<div class="clearfix"></div>
 						</div>
 						<div class="panel-body">
