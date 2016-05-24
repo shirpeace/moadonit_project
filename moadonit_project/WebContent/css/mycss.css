@@ -20,3 +20,14 @@
     padding-right: 140px;
 }
 
+.ui-jqgrid .ui-jqgrid-view input, .ui-jqgrid .ui-jqgrid-view select, .ui-jqgrid .ui-jqgrid-view textarea, .ui-jqgrid .ui-jqgrid-view button {
+    font-size: 11px;
+    height: 24px;
+    margin-top: 0px;
+}
+
+.ui-jqgrid .ui-jqgrid-htable .ui-th-div {
+    height: 17px;
+    margin-top: 0px;
+    display: inine-block;
+}
