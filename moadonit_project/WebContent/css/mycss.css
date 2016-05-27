@@ -19,4 +19,11 @@
 #wrapper {
     padding-right: 140px;
 }
+.errorField {
+    border-color: yellow;
+    border-width: medium;
+  }
 
+  .nonErrorField {
+    border: none;
+  }

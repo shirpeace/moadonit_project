@@ -113,7 +113,7 @@ function loadGrid(){
           } 
           ],
           pager : '#pager',
-          rowNum : 50,
+          rowNum : 10,
           rowList : [ ],
           sortname : 'gradeName',
           /*scroll: true,*/
@@ -130,10 +130,8 @@ function loadGrid(){
                   repeatitems : false,
           },
           editurl : "FullPupilCardController",
-          recreateFilter:true,
-          
-          rowList: [],        // disable page size dropdown
-          pgbuttons: true,     // disable page control like next, back button
+          recreateFilter:true,                   
+          //pgbuttons: true,     // disable page control like next, back button
           /*pgtext: null, */        // disable pager text like 'Page 0 of 10'
           loadui:"block",
           viewrecords: true,

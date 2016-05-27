@@ -68,7 +68,8 @@ public class FullPupilCardController extends HttpServlet implements
 	GradeCodeDAO gradeDAO;
 	GradePupilDAO gradePupilDAO;
 	JSONObject resultToClient = new JSONObject();;
-
+	int rows;
+	int page;
 	// Pupil
 	/**
 	 * 
@@ -175,7 +176,10 @@ public class FullPupilCardController extends HttpServlet implements
 		this.gradePupilDAO = new GradePupilDAO(con);
 
 		action = req.getParameter("action");
-
+		rows = req.getParameter("rows") != null ? Integer.parseInt(req.getParameter("rows")): 0 ;
+        page = req.getParameter("page") != null ?Integer.parseInt(req.getParameter("page")) : 0;
+        int totalPages = 0;
+        int totalCount =0;
 		try {
 
 			if (action.equals("insert")) {
@@ -250,17 +254,32 @@ public class FullPupilCardController extends HttpServlet implements
 			}
 			else if (action.equals("pupilSearch")) {
 				// on searching
-				String search = req.getParameter("_search");
+				String search = req.getParameter("_search");				
+                
 				if (search.equals("true")) {
-					pupilList = searchPupilList(req, resp);
+					pupilList = searchPupilList(req, resp,rows*(page-1),rows);
 					JSONArray jsonPupilList = new JSONArray();
 					getPupilList(jsonPupilList);
 
 					if (!jsonPupilList.isEmpty()) {
 
 						String jsonResponse = jsonPupilList.toJSONString();
-						jsonResponse = "{\"page\":1,\"total\":\"1\",\"records\":"
-								+ pupilList.size()
+						
+						totalCount = searchPupilList(req, resp,0,0).size();
+						 
+						if (totalCount > 0) {
+		                    if (totalCount % rows == 0) {
+		                        totalPages = totalCount / rows;
+		                    } else {
+		                        totalPages = (totalCount / rows) + 1;
+		                    }
+		 
+		                } else {
+		                    totalPages = 0;
+		                }
+						
+						jsonResponse = "{\"page\":"+page+",\"total\":" +totalPages + ",\"records\":"
+								+ totalCount
 								+ ",\"rows\":"
 								+ jsonResponse + "}";
 
@@ -278,18 +297,38 @@ public class FullPupilCardController extends HttpServlet implements
 					}
 
 				}
-
 				else { // on search page load
-					pupilList = getFullPupilList(req, resp);
+					pupilList = getFullPupilList(req, resp,rows*(page-1),rows);
 					JSONArray jsonPupilList = new JSONArray();
 					getPupilList(jsonPupilList);
 					if (!jsonPupilList.isEmpty()) {
 
+						totalCount = getFullPupilList(req, resp,0,0).size();
+						
+						 
+						if (totalCount > 0) {
+		                    if (totalCount % rows == 0) {
+		                        totalPages = totalCount / rows;
+		                    } else {
+		                        totalPages = (totalCount / rows) + 1;
+		                    }
+		 
+		                } else {
+		                    totalPages = 0;
+		                }
+						
+						
+						
 						String jsonResponse = jsonPupilList.toJSONString();
-						jsonResponse = "{\"page\":1,\"total\":\"1\",\"records\":"
-								+ pupilList.size()
+						jsonResponse = "{\"page\":"+page+",\"total\":" +totalPages + ",\"records\":"
+								+ totalCount
 								+ ",\"rows\":"
 								+ jsonResponse + "}";
+						
+						/*jsonResponse = "{\"page\":1,\"total\":\"1\",\"records\":"
+								+ pupilList.size()
+								+ ",\"rows\":"
+								+ jsonResponse + "}";*/
 
 						resp.setContentType("application/json");
 						resp.setCharacterEncoding("UTF-8");
@@ -337,7 +376,7 @@ public class FullPupilCardController extends HttpServlet implements
 
 				else { // on contact page load
 
-					pupilList = getFullPupilList(req, resp);
+					pupilList = getFullPupilList(req, resp,rows*(page-1),rows);
 					JSONArray jsonPupilList = new JSONArray();
 					getContactList(jsonPupilList);
 					if (!jsonPupilList.isEmpty()) {
@@ -695,16 +734,16 @@ public class FullPupilCardController extends HttpServlet implements
 	}
 	
 	protected List<FullPupilCard> getFullPupilList(HttpServletRequest req,
-			HttpServletResponse resp) {
+			HttpServletResponse resp,int offset, int rowsPerPage) {
 		List<FullPupilCard> pupils = new ArrayList<>();
 		pupils = this.fullPupilDao.selectAll(req.getParameter("sidx"),
-				req.getParameter("sord"));
+				req.getParameter("sord"),offset, rowsPerPage);
 
 		return pupils;
 	}
 
 	private List<FullPupilCard> searchPupilList(HttpServletRequest req,
-			HttpServletResponse resp) {
+			HttpServletResponse resp,int offset, int rowsPerPage) {
 		List<FullPupilCard> pupils = new ArrayList<>();
 		pupils = this.fullPupilDao.selectSearch(req.getParameter("sidx"),
 				req.getParameter("sord"), req.getParameter("firstName"),
@@ -833,7 +872,7 @@ public class FullPupilCardController extends HttpServlet implements
 
 	public String getHtmlFromJsonData(HttpServletRequest req,HttpServletResponse resp) throws IOException {
 		
-		pupilList = searchPupilList(req, resp); // get list of rows to add to html
+		pupilList = searchPupilList(req, resp,0,0); // get list of rows to add to html
 		JSONArray jsonPupilList = new JSONArray();
 		String pageHead = "רשימת תלמידים";	// header for exel file	
 		

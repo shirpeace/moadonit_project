@@ -47,10 +47,13 @@ public class FullPupilCardDAO extends AbstractDAO {
 		return p;
 	}
 	
-	public List<FullPupilCard> selectAll(String sind, String sord) throws IllegalArgumentException, DAOException {
+	public List<FullPupilCard> selectAll(String sind, String sord, int rowOffset, int rowsPerPage ) throws IllegalArgumentException, DAOException {
 		List<FullPupilCard> list = new ArrayList<>();
-		String stat = selectAll +" ORDER BY "+ sind +" "+ sord;
-		
+		String stat;
+		if(rowOffset == 0 && rowsPerPage == 0)
+			stat = selectAll +" ORDER BY "+ sind +" "+ sord ;		
+		else
+			stat = selectAll +" ORDER BY "+ sind +" "+ sord + " LIMIT " + rowOffset + ", " + rowsPerPage + "";	
 				//(where %s,fName=null?"firstName=fname":" ");
 		try (PreparedStatement statement = DAOUtil.prepareStatement(this.con.getConnection(), stat, false); ResultSet resultSet = statement.executeQuery();) {
 

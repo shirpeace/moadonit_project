@@ -223,6 +223,10 @@ function setPupilCardData(pupil){
 			$('#foodsens').val(pupil.foodSensitivity);
 			$('#comnt').val(pupil.otherComments);
 			
+			setErrorStyle(pupil.healthProblems,"health"); //function in js_logic
+			setErrorStyle(pupil.foodSensitivity,"foodsens");
+			setErrorStyle(pupil.otherComments,"comnt");
+						
 			/* parents details import */			
 			$('#p1fName').val(pupil.p1fname);
 			$('#p1lName').val(pupil.p1lname);

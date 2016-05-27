@@ -35,8 +35,20 @@ jQuery.fn.center = function(parent) {
 	        "left": ((($(parent).width() - this.outerWidth()) / 2) + $(parent).scrollLeft() + "px")
 	    });
 	return this;
-	}
+}
 
+function setErrorStyle(value, elementID){
+	
+	var elem = "#" + elementID;
+	if (value != null && value != "" ) {
+		 
+		$(elem).addClass("errorField");
+			  
+	}
+	else{ 
+		$(elem).removeClass("errorField");
+	}
+}
 function getGrades()
 {
 	$.ajax({
@@ -258,6 +270,9 @@ function savePupilCardData(action,forward){
 	        				bootbox.alert("נתונים עודכנו בהצלחה", function() {		        				
 		    	        	});
 	        				
+	        				setErrorStyle($('#foodsens').val(), 'foodsens');
+	        				setErrorStyle($('#comnt').val(), 'comnt');
+	        				setErrorStyle($('#health').val(), 'health');
 	        			}
 	        		}
 	        		else if(data.msg == "0"){	
