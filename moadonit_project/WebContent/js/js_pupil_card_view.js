@@ -44,19 +44,9 @@ $(function(){
 		$('#oneTimeLink').attr('href','pupil_one_time_act.jsp?li=3&pupil=' + pupilID);
 		
 		getGrades();
+			
+		setColorsForGrade();
 		
-	    //alert(options);
-	    var $select = $('#grade');                        
-	    $select.find('option').remove();   
-	    grades = grades.value.split(";");
-	    $.each(grades, function(key, value) {  
-	    	value  = value.split(":");
-	    	if(key != 0)
-	    	$select.append('<option style="background-color:'+ value[2]+'" value=' + value[0] + '>' + value[1] + '</option>'); 
-	    	else
-	    		$select.append('<option  value=' + value[0] + '>' + value[1] + '</option>'); 	
-	    });
-   
 		var dataString = 'id='+ pupilID + '&action=' + "get";
 	   	loadPupilCard(dataString);	
 	    
@@ -182,6 +172,8 @@ $(function(){
 	    		
        
 });
+
+
 function setPupilCardData(pupil){
 			
 			if(pupil != undefined){
@@ -199,7 +191,8 @@ function setPupilCardData(pupil){
 			$('#lName').val(pupil.lastName);
 			$('#cell').val(pupil.cellphone);
 			
-			$('#grade').val(pupil.gradeID);	
+			$('#grade').val(pupil.gradeID);
+			setGradeBgColor($('#grade'));
 			$("input[name=genderGruop][value=" + pupil.gender + "]").prop('checked', true);	
 			$('#food').val(pupil.foodType);	
 			if(pupil.ethiopian===1){
