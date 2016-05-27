@@ -1,81 +1,43 @@
 [
 	{	"letter":"A",	
-		"frequency":".08167"
+		"frequency":".08167",
+		"hi":"0.03"
 		
 	},
 	{	"letter":"B",	
-		"frequency":".01492"
+		"frequency":".01492",
+		"hi":"0.03"
 	},
 	{	"letter":"C",	
-		"frequency":".02782"
+		"frequency":".02782",
+		"hi":"0.03"
 	},
 	{	"letter":"D",	
-		"frequency":".04253"
+		"frequency":".04253",
+		"hi":"0.03"
 	},
 	{	"letter":"E",	
-		"frequency":".12702"
+		"frequency":".12702",
+		"hi":"0.03"
 	},
 	{	"letter":"F",	
-		"frequency":".02288"
+		"frequency":".02288",
+		"hi":"0.03"
 	},
 	{	"letter":"G",	
-		"frequency":".02015"
+		"frequency":".02015",
+		"hi":"0.03"
 	},
 	{	"letter":"H",	
-		"frequency":".06094"
+		"frequency":".06094",
+		"hi":"0.03"
 	},
 	{	"letter":"I",	
-		"frequency":".06966"
+		"frequency":".06966",
+		"hi":"0.03"
 	},
 	{	"letter":"J",	
-		"frequency":".00153"
-	},
-	{	"letter":"K",	
-		"frequency":".00772"
-	},
-	{	"letter":"L",	
-		"frequency":".04025"
-	},
-	{	"letter":"M",	
-		"frequency":".02406"
-	},
-	{	"letter":"N",	
-		"frequency":".06749"
-	},
-	{	"letter":"O",	
-		"frequency":".07507"
-	},
-	{	"letter":"P",	
-		"frequency":".01929"
-	},
-	{	"letter":"Q",	
-		"frequency":".00095"
-	},
-	{	"letter":"R",	
-		"frequency":".05987"
-	},
-	{	"letter":"S",	
-		"frequency":".06327"
-	},
-	{	"letter":"T",	
-		"frequency":".09056"
-	},
-	{	"letter":"U",	
-		"frequency":".02758"
-	},
-	{	"letter":"V",	
-		"frequency":".00978"
-	},
-	{	"letter":"W",	
-		"frequency":".02360"
-	},
-	{	"letter":"X",	
-		"frequency":".00150"
-	},
-	{	"letter":"Y",	
-		"frequency":".01974"
-	},
-	{	"letter":"Z",	
-		"frequency":".00074"
+		"frequency":".00153",
+		"hi":"0.03"
 	}
 ]

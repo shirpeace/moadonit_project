@@ -47,9 +47,6 @@
 <link href="css/sb-admin.css" rel="stylesheet">
 <link href="css/sb-admin-rtl.css" rel="stylesheet">
 
-<!-- Morris Charts CSS -->
-<!--   <link href="css/plugins/morris.css" rel="stylesheet"> -->
-
 <!-- Custom Fonts -->
 <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet"
 	type="text/css">
@@ -59,7 +56,7 @@
 	href="resources/jquery-ui-1.11.4.custom/jquery-ui.css">
 <link rel="stylesheet" href="css/ui.jqgrid.css">
 <link rel="stylesheet" href="css/jquery.timepicker.css">
-<link href="css/mycss.css" rel="stylesheet">
+<link rel="stylesheet" href="css/mycss.css">
 
 <script src="js/jquery.js"></script>
 <script src="js/jquery-ui.js"></script>
@@ -71,14 +68,8 @@
 <script src="js/jquery.jqGrid.min.js"></script>
 
 <script src="js/jquery.timepicker.min.js"></script>
-
-<script src="js/js_course_search.js"></script>
-<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+<script src="//d3js.org/d3.v3.min.js"></script>
+<script src="js/js_course_regs_chart.js"></script>
 
 </head>
 
@@ -106,11 +97,11 @@
 					<li><a href="" style="font-size: 120%; pointer-events: none;">
 							<i class="fa fa-fw fa-futbol-o"></i> חוגים
 					</a> <br></li>
-					<li class="active"><a href="course_search.jsp"><i
+					<li><a href="course_search.jsp"><i
 							class="fa fa-fw fa-search"></i> חיפוש </a></li>
 					<li><a href="#"><i
 							class="fa fa-fw fa-phone"></i> מורי חוגים </a></li>
-					<li><a href="course_regs_chart.jsp"><i class="fa fa-fw fa-edit"></i>
+					<li class="active"><a href="course_regs_chart.jsp"><i class="fa fa-fw fa-edit"></i>
 							דוח רשומים </a></li>
 					<li><a href="#"><i class="fa fa-fw fa-edit"></i>
 							הוספת חדש</a></li>
@@ -145,48 +136,16 @@
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h3 class="panel-title pull-right">
-								<i class="fa fa-info fa-fw"></i> כל החוגים
+								<i class="fa fa-info fa-fw"></i> מספר רשומים בכל חוג
 							</h3>
-							<!-- <label for="isReg" class="pull-left" >רשום</label> <select
-															class="form-control pull-left col-lg-1"  id="isReg" name="sunday"
-															 >
-															<option value="0"></option>
-															<option value="1">רשום</option>
-															<option value="2">לא רשום</option>
-														</select> -->
+							
 
-							<!-- <div class="form-group pull-left" id="viewModeBtn">
-								<a href="javascript:void(0);"
-									onclick="exportData('0','pdf', 'list');">
-									<img alt="" src="resources/images/pdf-icon.png">
-									</a>
-								 <a
-									href="javascript:void(0);"
-									onclick="exportData('0','xls', 'list');">
-									<img alt="" src="resources/images/Excel-icon.png" style="border-radius:15%;">
-								</a>
-
-							</div> -->
-
-							<button id="resetBtn" class="pull-left">נקה חיפוש</button>
+<!-- 							<button id="resetBtn" class="pull-left">נקה חיפוש</button> -->
 							<div class="clearfix"></div>
 						</div>
 						<div class="panel-body">
-
-							<!--  <div class="text-right">
-                                    <a href="#">View All Transactions <i class="fa fa-arrow-circle-right"></i></a>
-                                </div> -->
-                                
 							<div class=" col-lg-12">
-								<table class="table table-bordered table-hover table-striped"
-									id="list" style="height: 50px">
-
-									<tr>
-										<td></td>
-									</tr>
-								</table>
-
-								<div id="pager"></div>
+								<div id="chart"></div> 
 								<form id="formstyle" action="" method="post" name="formstyle">
 									<input type="hidden" name="pdfBuffer" id="pdfBuffer" value="" />
 									<input type="hidden" name="fileName" id="fileName"
@@ -223,13 +182,7 @@
 
 
 
-	<script type="text/javascript">
-		/* var currentUserId =	 '${p.pupilNum}' */
-		jQuery(document).ready(function() {
-			var actID;
-			loadCourseSearch();
-		});
-	</script>
+	
 
 
 </body>

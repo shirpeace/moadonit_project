@@ -68,7 +68,7 @@ Serializable {
 		this.jsonArry = new JSONArray();
 		try {
 			if (action.equals("getAllCourseRegsData")){
-				jsonArry  = this.repDOA.get();
+				jsonArry  = this.repDOA.getAllCourseRegsData();
 				
 				if (!jsonArry.isEmpty()) {
 					
@@ -92,6 +92,7 @@ Serializable {
 
 		} catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
 		}
 	}
 	
