@@ -73,26 +73,27 @@ public class ReportsDAO extends AbstractDAO {
 				row =  new JSONObject();
 				jsonMap.put(resultSet3.getInt("activityNum"), row);
 				row.put("course",resultSet3.getString("activityName"));
-				row.put("girls",0);		
-				row.put("boys",0);
-				row.put("free",resultSet3.getString("pupilCapacity"));			
+				row.put("פנויים",resultSet3.getString("pupilCapacity"));	
+				row.put("בנות",0);		
+				row.put("בנים",0);
+						
 				
 			}
 			
 			while (resultSet1.next()) {
 				JSONObject row;
 				row =  jsonMap.get(resultSet1.getInt("activityNum"));
-				int last = Integer.valueOf((String) row.get("free")) - resultSet1.getInt("boyRegs");
-				row.put("boys",resultSet1.getString("boyRegs"));
-				row.put("free",""+last);	
+				int last = Integer.valueOf((String) row.get("פנויים")) - resultSet1.getInt("boyRegs");
+				row.put("בנים",resultSet1.getString("boyRegs"));
+				row.put("פנויים",""+last);	
 			}
 			
 			while (resultSet2.next()) {
 				JSONObject row;
 				row =  jsonMap.get(resultSet2.getInt("activityNum"));
-				int last = Integer.valueOf((String) row.get("free")) - resultSet2.getInt("girlRegs");
-				row.put("girls",resultSet2.getString("girlRegs"));
-				row.put("free",""+last);				
+				int last = Integer.valueOf((String) row.get("פנויים")) - resultSet2.getInt("girlRegs");
+				row.put("בנות",resultSet2.getString("girlRegs"));
+				row.put("פנויים",""+last);				
 			}
 
 			

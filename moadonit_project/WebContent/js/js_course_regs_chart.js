@@ -1,27 +1,5 @@
 $(document).ready(function(){
 	
-/*	$.ajax({
-		async: false,
-	type: 'GET',
-	datatype: 'jsonp',
-    url: "ReportsController",
-    data: {action : 'getAllCourseRegsData' },
-    success: function(data) {
-    	if(data != undefined){
-    		console.log(data);
-    		
-    	}
-    	else
-    		console.log("no data !");
-    },
-    error: function(e) {
-    	console.log("error");
-		
-    }
-    
-  });*/
-
-
 
 	var margin = {top: 20, right: 20, bottom: 30, left: 40},
     width = 960 - margin.left - margin.right,
@@ -42,14 +20,24 @@ var xAxis = d3.svg.axis()
 
 var yAxis = d3.svg.axis()
     .scale(y)
-    .orient("left")
-    .tickFormat(d3.format(".2s"));
+    .orient("left");
+   // .tickFormat(d3.format(".2s"));
 
 var svg = d3.select("#chart").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
+    .style("background-color","#f5f5f5")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var tip = d3.tip()
+.attr('class', 'd3-tip')
+.offset([-10, 0])
+.html(function(d) {
+	var value = d.y1-d.y0;
+    return " <span style='color:white'> " + value + "</span> <strong> "+ d.name +"</strong>";
+});
+svg.call(tip);
 
 d3.json("ReportsController?action=getAllCourseRegsData", function(error, data) {
   if (error) throw error;
@@ -80,21 +68,32 @@ d3.json("ReportsController?action=getAllCourseRegsData", function(error, data) {
       .attr("y", 6)
       .attr("dy", ".71em")
       .style("text-anchor", "end")
-      .text("Population");
+      .text("");
 
   var course = svg.selectAll(".course")
       .data(data)
     .enter().append("g")
       .attr("class", "g")
-      .attr("transform", function(d) { return "translate(" + x(d.course) + ",0)"; });
-
+      .attr("transform", function(d) { return "translate(" + x(d.course) + ",0)"; })
+      ;
+  
   course.selectAll("rect")
       .data(function(d) { return d.ages; })
     .enter().append("rect")
       .attr("width", x.rangeBand())
       .attr("y", function(d) { return y(d.y1); })
       .attr("height", function(d) { return y(d.y0) - y(d.y1); })
-      .style("fill", function(d) { return color(d.name); });
+      .style("fill", function(d) { return color(d.name); })
+      .style("opacity","0.7")
+      .on('mouseover',function(d){
+    	  tip.show(d);
+    //	  d3.select(this).style("fill","#d0743c");
+	}) 
+      
+	.on('mouseout',function(){
+    	  tip.hide;
+   // 	  d3.select(this).style("fill",function(d) { return color(d.name); });
+	} );
 
   var legend = svg.selectAll(".legend")
       .data(color.domain().slice().reverse())
