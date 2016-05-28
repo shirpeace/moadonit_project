@@ -125,7 +125,7 @@
 					<li><a href="pupil_week_view.jsp" id="scheduleLink"><i
 							class="fa fa-fw fa-th"></i> תכנית שבועית</a></li>
 					<li><a href="pupil_week_view.jsp" id="regLink"><i
-							class="fa fa-fw fa-edit"></i> עריכת רישום</a></li>
+							class="fa fa-fw fa-edit"></i>עריכת רישום</a></li>
 					<li>
                         <a href= "pupil_one_time_act.jsp" id="oneTimeLink"><i class="fa fa-fw fa-plus-square-o"></i> פעילות חד פעמית</a>
                      </li>  
@@ -243,56 +243,61 @@
 							<div class="panel-heading">								
 								<a href="#" id="regHeaderlink">
 								<!-- <a href="#editReg" data-toggle="collapse" data-target="#editReg" -->
-									עריכת הרישום <i
+									עריכת רישום <i
 									class="fa fa-arrow-circle-down"></i></a>
 
 							</div>
 							<div class="panel-body">
 									<div id="editReg" class="collapse">
 										<form id="regform" >
-												<div class="row">
+												<div class="row" id="regOptions">
+												<div class="form-group col-lg-2">
+												<input type="checkbox" id="checkAllDays" name="checkAllDays" value="1" onchange="checkChange(this)" >&nbsp;&nbsp;שבוע מלא<br>
+												</div>												
+												</div>
+												<div class="row" id="regDays">
 													<div class="form-group col-lg-2">
-														<label for="action">יום ראשון</label> <select
+														<label for="action">יום ראשון</label> <select onchange="ondayChange(this)"
 															class="form-control " id="sunday" name="sunday"
 															 >
 															<option value="1">לא רשום</option>
-															<option value="2">מועדונית</option>
+															<option value="2">יום מלא</option>
 															<option value="3">אוכל בלבד</option>
 														</select>
 													</div>
 													<div class="form-group col-lg-2">
-														<label for="action">יום שני</label> <select
+														<label for="action">יום שני</label> <select onchange="ondayChange(this)"
 															class="form-control " id="monday" name="monday"
 															 >
 															<option value="1">לא רשום</option>
-															<option value="2">מועדונית</option>
+															<option value="2">יום מלא</option>
 															<option value="3">אוכל בלבד</option>
 														</select>
 													</div>
 													<div class="form-group col-lg-2">
-														<label for="action">יום שלישי</label> <select
+														<label for="action">יום שלישי</label> <select onchange="ondayChange(this)"
 															class="form-control " id="tuesday" name="tuesday"
 															 >
 															<option value="1">לא רשום</option>
-															<option value="2">מועדונית</option>
+															<option value="2">יום מלא</option>
 															<option value="3">אוכל בלבד</option>
 														</select>
 													</div>
 													<div class="form-group col-lg-2">
-														<label for="action">יום רביעי</label> <select
+														<label for="action">יום רביעי</label> <select onchange="ondayChange(this)"
 															class="form-control " id="wednesday" name="wednesday"
 															 >
 															<option value="1">לא רשום</option>
-															<option value="2">מועדונית</option>
+															<option value="2">יום מלא</option>
 															<option value="3">אוכל בלבד</option>
 														</select>
 													</div>
 													<div class="form-group col-lg-2">
-														<label for="action">יום חמישי</label> <select
+														<label for="action">יום חמישי</label> <select onchange="ondayChange(this)"
 															class="form-control " id="thursday" name="thursday"
 															 >
 															<option value="1">לא רשום</option>
-															<option value="2">מועדונית</option>
+															<option value="2">יום מלא</option>
 															<option value="3">אוכל בלבד</option>
 														</select>
 													</div>

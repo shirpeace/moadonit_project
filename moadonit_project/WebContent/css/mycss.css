@@ -58,3 +58,11 @@ body #chart{
 .x.axis path {
   display: none;
 }
+
+.form-control {	
+	font-size: 16px;
+}
+
+select.input-sm {	
+	padding-top: 2px;
+}
