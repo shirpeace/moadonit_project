@@ -175,7 +175,7 @@
 								</div>
 							</div>
 							<!-- row 1 col 2 -->
-							<div class="col-lg-3">
+							<div class="col-lg-3" >
 								<!-- <div class="form-group">
 									<label for="fName">תאריך לידה</label> <input type="text"
 										class="form-control" id="fName" placeholder="שם">
@@ -224,7 +224,7 @@
 								</div>
 							</div>
 							<!-- row 1 col 3 -->
-							<div class="col-lg-3">
+							<div class="col-lg-2">
 								<div class="form-group">
 									<label for="food">סוג מנה</label> <select class="form-control"
 										name="food" id="food">
@@ -251,7 +251,7 @@
 							</div>
 
 							<!-- row 1 col 4 -->
-							<div class="col-lg-3">
+							<div class="col-lg-4">
 								<div class="form-group">
 									<label for="health">בעיות בריאות</label> <input type="text"
 										name="health" class="form-control" id="health" placeholder="">
@@ -266,6 +266,23 @@
 										class="form-control" id="comnt" name="comnt" placeholder="">
 								</div>
 							</div>
+							
+							<!-- row 1 col 4 -->
+							<!-- <div class="col-lg-3" >
+								<div class="form-group">
+								<label for="test1">הערות כלליות</label>
+								<textarea rows="3" class="form-control" name="test1" id="test1" >
+								At w3schools.com you will learn how to make a website. We offer free tutorials in all web development technologies. 
+								</textarea>
+								</div>
+								<div class="form-group">
+								<label for="test2" >הערות כלליות</label>
+								<textarea rows="3" class="form-control" name="test2" id="test2">
+								At w3schools.com you will learn how to make a website. We offer free tutorials in all web development technologies. 
+								</textarea>
+								</div>
+							</div> -->
+							
 						</div>
 					</div>
 
