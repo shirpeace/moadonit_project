@@ -205,8 +205,8 @@ Serializable {
 			obj.put("activityNum", pa.getTblActivity().getActivityNum());
 			obj.put("activityName", pa.getTblActivity().getActivityName());
 			obj.put("pupilNum", pa.getTblPupil().getPupilNum());
-			obj.put("startDate", pa.getStartDate().getTime());
-			obj.put("regDate", pa.getRegDate().getTime());
+			obj.put("startDate", pa.getStartDate() == null ? null : pa.getStartDate().getTime());
+			obj.put("regDate",  pa.getRegDate() == null ? null : pa.getRegDate().getTime());
 			obj.put("endDate", pa.getEndDate() == null ? null : pa.getEndDate().getTime());
 			obj.put("firstName", pa.getTblPupil().getFirstName());
 			obj.put("lastName", pa.getTblPupil().getLastName());
