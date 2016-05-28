@@ -37,6 +37,24 @@ jQuery.fn.center = function(parent) {
 	return this;
 }
 
+function setGradeBgColor(elem){
+	
+	$(elem).removeClass("form-control");
+	$(elem).addClass("form-control");
+	
+	var option = $(elem).find('option:selected');
+	if($(elem).find(":selected").val().trim() != ""){
+		var bgcol = $(option).css('backgroundColor');
+		$(elem).css("border-color", bgcol);
+		$(elem).css("border-width", "medium");
+	}
+	else{
+		$(elem).css("border-color", "");
+		$(elem).css("border-width", "");
+	}
+	
+} 
+
 function setErrorStyle(value, elementID){
 	
 	var elem = "#" + elementID;
@@ -48,6 +66,21 @@ function setErrorStyle(value, elementID){
 	else{ 
 		$(elem).removeClass("errorField");
 	}
+}
+
+function setColorsForGrade(){
+	
+    var $select = $('#grade');                        
+    $select.find('option').remove();   
+    grades = grades.value.split(";");
+    $.each(grades, function(key, value) {  
+    	value  = value.split(":");
+    	if(key != 0)
+    	$select.append('<option style="background-color:'+ value[2]+'" value=' + value[0] + '>' + value[1] + '</option>'); 
+    	else
+    		$select.append('<option  value=' + value[0] + '>' + value[1] + '</option>'); 	
+    });
+	
 }
 function getGrades()
 {

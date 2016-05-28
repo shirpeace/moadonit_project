@@ -199,7 +199,7 @@
 									
 									<label for="grade">כיתה</label>
 									<select class="form-control input-sm"
-										id="grade" name="grade" >
+										id="grade" name="grade" onchange="setGradeBgColor(this)">
 										<option value="11">א-א</option>
 										<option value="12">א-ב</option>
 										<option value="13">א-ג</option>
