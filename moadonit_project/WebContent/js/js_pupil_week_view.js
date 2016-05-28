@@ -8,10 +8,13 @@ $.extend($.jgrid.ajaxOptions, {
 /*$.jgrid.defaults.width = 780;*/
 
 var currentDate;
-
+var regoptions = {	value : ""	};
+var selectOptionsData;
+var COurseTime = [];
 /** ********************************************** */
 // TODO //* START PAGE FUNCTIONS */
 /** ********************************************** */
+
 /**
  * on select of change 
  */
@@ -19,6 +22,7 @@ function ondayChange(selectElem){
 	$("#checkAllDays").prop('checked', false);
 	
 }
+
 /**
  * on checkbox of all week change
  * @param checkElem
@@ -35,6 +39,25 @@ function checkChange(checkElem){
 		 });
 		// $("#target").val($("#target option:first").val());
 	 }
+}
+
+function fillRegSelectOptions(){
+	var selects = $("div #regDays select");
+	$(selects).each(function() {	//iterate over the select elements	 
+		var select = this; //get reference to the current select
+		$(select).find('option').remove();
+		$.each(selectOptionsData, function(key, value) {  // iterate over the values from server that we fetched earlier
+			var  name, obj = value;
+	        for (name in obj) { // iterate the keys of the object that represent the option data and get the key and value
+	            if (obj.hasOwnProperty(name)) { // if the key is direct key of object , not inherited 
+	            	// build an option and add it to select
+	            	$(select).append($("<option></option>")
+		                    .attr("value",name)
+		                    .text(obj[name])); 
+	            }
+	        }  
+		});	
+	});
 }
 function setPupilCardData(pupil) {
 
@@ -218,7 +241,7 @@ function loadWeekGrid(pupilID) {
 
 }
 
-var COurseTime = [];
+
 
 function formatCell (rowId, val, rawObject, cm, rdata) {
 	
@@ -265,9 +288,25 @@ function centerForm ($form, grid) {
     });
 }
 
+function setRegoptions(){
+	
+	var temp = selectOptionsData; //get data from server and build the html
+	var s = '';
+	for (var int = 0; int < temp.length; int++) {
+		var  name, obj = temp[int];
+        for (name in obj) {
+            if (obj.hasOwnProperty(name)) {
+            	s += name + ':' + obj[name] + ';';
+            }
+        }        
+	}
+	s = s.substring(0, s.lastIndexOf(";"));
+	regoptions.value = s;
+	
+}
 function loadRegistrationGrid(pupilID) {
-
-	var regoptions = {	value : "1:לא רשום;2:מועדונית;3:אוכל בלבד"	},oldDateVal = new Date(), lastSelection = -1, grid =$("#listRegistration"),
+	setRegoptions();
+	var oldDateVal = new Date(), lastSelection = -1, grid =$("#listRegistration"),	
 	myDelOptions = {
 			 rowData : {},
 			
@@ -471,7 +510,7 @@ function loadRegistrationGrid(pupilID) {
 							index : 'sunday',
 							edittype : "select",
 							editable : true,							
-							editoptions : regoptions
+							editoptions :regoptions
 							
 							
 						}, {
@@ -480,7 +519,7 @@ function loadRegistrationGrid(pupilID) {
 							index : 'monday',
 							edittype : "select",
 							editable : true,
-							editoptions : regoptions
+							editoptions :regoptions
 
 						}, {
 							
@@ -488,7 +527,7 @@ function loadRegistrationGrid(pupilID) {
 							index : 'tuesday',
 							edittype : "select",
 							editable : true,
-							editoptions : regoptions
+							editoptions :regoptions
 
 						}, {
 							
@@ -496,14 +535,14 @@ function loadRegistrationGrid(pupilID) {
 							index : 'wednesday',
 							edittype : "select",
 							editable : true,
-							editoptions : regoptions
+							editoptions :regoptions
 						}, {
 							
 							name : 'thursday',
 							index : 'thursday',
 							edittype : "select",
 							editable : true,
-							editoptions : regoptions
+							editoptions :regoptions
 							
 						},
 						{name : 'actions', index: 'actions', formatter:'actions', align: "center",	sortable:false,formatter:'actions',						
@@ -734,8 +773,8 @@ $(function() {
 		$('#oneTimeLink').attr('href', 'pupil_one_time_act.jsp?li=3&pupil=' + pupilID);
 		
 		var dataString = 'id='+ pupilID + '&action=' + "get";
-		
-
+		selectOptionsData = getRegTypesData(); //get data from server for the registration types select elements
+		fillRegSelectOptions();
 		loadPupilCard(dataString);
 		
 		 $('#datePick').datepicker({
@@ -760,7 +799,7 @@ $(function() {
 		else if(selectedLi == 2){
 			$('#regLink').parent().addClass('active');
 			
-	        goToByScroll('endP');   
+	        goToByScroll('endP');  // scroll to a elemnt endP. 
 		}
 		
 		if (reg != undefined && reg ==1 ) {

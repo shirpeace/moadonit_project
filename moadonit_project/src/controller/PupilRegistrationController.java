@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.mail.Session;
 import javax.servlet.ServletException;
@@ -24,6 +25,8 @@ import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 
 import util.DAOUtil;
 import model.Activity;
@@ -297,7 +300,24 @@ public class PupilRegistrationController extends HttpServlet implements
 				resp.setCharacterEncoding("UTF-8");
 				resp.getWriter().print(resultToClient);
 				
+			}else if (action.equals("getRegTypesData")) {
+				resp.setContentType("application/json");
+				resp.setCharacterEncoding("UTF-8");
+				
+				if(!this.regTypes.isEmpty()){
+					JSONArray arry =  getRegTypesJson();
+					jsonResponse = arry.toJSONString();
+				
+					resp.getWriter().print(jsonResponse);
+					
+				}else{
+					
+					jsonResponse = "{}";
+					resp.getWriter().print(jsonResponse);
+				}
+				
 			}
+			//regTypes
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -417,6 +437,7 @@ public class PupilRegistrationController extends HttpServlet implements
 		
 		
 	}
+	
 	private boolean addRegistration(HttpServletRequest req,
 			HttpServletResponse resp) throws IOException, SQLException {
 		// TODO Auto-generated method stub
@@ -496,11 +517,10 @@ public class PupilRegistrationController extends HttpServlet implements
 			return false;
 		}
 	}
+	
 	@SuppressWarnings("unchecked")
 	protected void getRegistrationRow(JSONArray registrationData, int type) {
 
-		
-		
 		if (type == 0) { // get data for weekGrid
 
 			RegToMoadonit regPupil = this.pupilRegList.get(0);
@@ -509,11 +529,11 @@ public class PupilRegistrationController extends HttpServlet implements
 			user.put("title", "");
 			user.put("type", "סוג רישום");
 			user.put("startDate", regPupil.getId().getStartDate().getTime());
-			user.put("sunday", getRegType(regPupil.getTblRegType1().getTypeNum()));
-			user.put("monday", getRegType(regPupil.getTblRegType2().getTypeNum()));
-			user.put("tuesday", getRegType(regPupil.getTblRegType3().getTypeNum()));
-			user.put("wednesday", getRegType(regPupil.getTblRegType4().getTypeNum()));
-			user.put("thursday", getRegType(regPupil.getTblRegType5().getTypeNum()));
+			user.put("sunday", getRegTypeName(regPupil.getTblRegType1().getTypeNum()));
+			user.put("monday", getRegTypeName(regPupil.getTblRegType2().getTypeNum()));
+			user.put("tuesday", getRegTypeName(regPupil.getTblRegType3().getTypeNum()));
+			user.put("wednesday", getRegTypeName(regPupil.getTblRegType4().getTypeNum()));
+			user.put("thursday", getRegTypeName(regPupil.getTblRegType5().getTypeNum()));
 			
 			registrationData.add(user);
 			
@@ -671,61 +691,7 @@ public class PupilRegistrationController extends HttpServlet implements
 							if(row != null)
 							map.add(row);
 					}
-					
-					
 
-					
-					// get all courses and add the to list as registration rows 
-					/*JSONObject c = new JSONObject();
-					c.put("type", "שם החוג");
-					
-					String val = act.getStartTime().toString().substring(0,5) +  ","+
-							act.getEndTime().toString().substring(0,5) + "," +act.getTblPupilActivities().get(0).getStartDate() ;
-					
-					
-					if(act.getWeekDay().equals("א")){
-						c.put("sunday", act.getActivityName() );
-						c.put("title", val);
-					}
-					else{
-						c.put("sunday", null);
-					}
-					
-					if(act.getWeekDay().equals("ב")){
-						c.put("monday", act.getActivityName());
-						c.put("title", val);
-					}
-					else{
-						c.put("monday", null);
-					}
-					
-					if (act.getWeekDay().equals("ג")) {
-						c.put("tuesday", act.getActivityName());
-						c.put("title", val);
-					}
-					else{
-						c.put("tuesday", null);
-					}
-					
-					if (act.getWeekDay().equals("ד")) {
-						c.put("wednesday", act.getActivityName());
-						c.put("title", val);
-					}
-					else{
-						user.put("wednesday", null);
-					}
-					
-					if (act.getWeekDay().equals("ה")) {
-						c.put("thursday", act.getActivityName());
-						c.put("title", val);
-					}
-					else{
-						c.put("thursday", null);
-					}
-					
-					c.put("startDate", act.getTblPupilActivities().get(0).getStartDate().getTime());
-					
-					registrationData.add(c);*/
 				}
 				
 				for (Map<String, Object> mapedRow : map) {
@@ -746,11 +712,11 @@ public class PupilRegistrationController extends HttpServlet implements
 				JSONObject user = new JSONObject();
 
 				user.put("startDate", regPupil.getId().getStartDate().getTime());
-				user.put("sunday", getRegType(regPupil.getTblRegType1().getTypeNum()));
-				user.put("monday", getRegType(regPupil.getTblRegType2().getTypeNum()));
-				user.put("tuesday", getRegType(regPupil.getTblRegType3().getTypeNum()));
-				user.put("wednesday", getRegType(regPupil.getTblRegType4().getTypeNum()));
-				user.put("thursday", getRegType(regPupil.getTblRegType5().getTypeNum()));
+				user.put("sunday", getRegTypeName(regPupil.getTblRegType1().getTypeNum()));
+				user.put("monday", getRegTypeName(regPupil.getTblRegType2().getTypeNum()));
+				user.put("tuesday", getRegTypeName(regPupil.getTblRegType3().getTypeNum()));
+				user.put("wednesday", getRegTypeName(regPupil.getTblRegType4().getTypeNum()));
+				user.put("thursday", getRegTypeName(regPupil.getTblRegType5().getTypeNum()));
 
 				registrationData.add(user);
 
@@ -758,6 +724,25 @@ public class PupilRegistrationController extends HttpServlet implements
 
 		}
 
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected JSONArray getRegTypesJson() { /*Shir */
+
+	// get data for registration
+		if(this.regTypes == null || this.regTypes.isEmpty())
+			return null;
+		
+		Map<Integer, Object> map = this.regTypes; 
+		JSONArray result = new JSONArray();
+		for (Entry<Integer, Object> entry : map.entrySet())
+		{
+			JSONObject newRow = new JSONObject();		
+			newRow.put(entry.getKey(),entry.getValue());
+			result.add(newRow);
+		}
+			
+		return result;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -769,13 +754,14 @@ public class PupilRegistrationController extends HttpServlet implements
 				JSONObject user = new JSONObject();
 
 				user.put("regDate", oneTimes.getId().getSpecificDate().getTime());
-				user.put("regType", getRegType(oneTimes.getTblRegType().getTypeNum()));
+				user.put("regType", getRegTypeName(oneTimes.getTblRegType().getTypeNum()));
 								
 				registrationData.add(user);
 
 		}
 
 	}
+	
 	private List<OneTimeReg> getOneTimeReg(HttpServletRequest req, /*Shir */
 			HttpServletResponse resp) {
 		List<OneTimeReg> oneTimes = new ArrayList<>();
@@ -788,7 +774,7 @@ public class PupilRegistrationController extends HttpServlet implements
 		return oneTimes;
 	}
 
-	private String getRegType(int type) {
+	private String getRegTypeName(int type) {
 		return (String) this.regTypes.get(type);
 	}
 

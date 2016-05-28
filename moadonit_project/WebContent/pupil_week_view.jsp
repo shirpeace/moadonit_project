@@ -260,45 +260,35 @@
 														<label for="action">יום ראשון</label> <select onchange="ondayChange(this)"
 															class="form-control " id="sunday" name="sunday"
 															 >
-															<option value="1">לא רשום</option>
-															<option value="2">יום מלא</option>
-															<option value="3">אוכל בלבד</option>
+															
 														</select>
 													</div>
 													<div class="form-group col-lg-2">
 														<label for="action">יום שני</label> <select onchange="ondayChange(this)"
 															class="form-control " id="monday" name="monday"
 															 >
-															<option value="1">לא רשום</option>
-															<option value="2">יום מלא</option>
-															<option value="3">אוכל בלבד</option>
+														
 														</select>
 													</div>
 													<div class="form-group col-lg-2">
 														<label for="action">יום שלישי</label> <select onchange="ondayChange(this)"
 															class="form-control " id="tuesday" name="tuesday"
 															 >
-															<option value="1">לא רשום</option>
-															<option value="2">יום מלא</option>
-															<option value="3">אוכל בלבד</option>
+															
 														</select>
 													</div>
 													<div class="form-group col-lg-2">
 														<label for="action">יום רביעי</label> <select onchange="ondayChange(this)"
 															class="form-control " id="wednesday" name="wednesday"
 															 >
-															<option value="1">לא רשום</option>
-															<option value="2">יום מלא</option>
-															<option value="3">אוכל בלבד</option>
+															
 														</select>
 													</div>
 													<div class="form-group col-lg-2">
 														<label for="action">יום חמישי</label> <select onchange="ondayChange(this)"
 															class="form-control " id="thursday" name="thursday"
 															 >
-															<option value="1">לא רשום</option>
-															<option value="2">יום מלא</option>
-															<option value="3">אוכל בלבד</option>
+															
 														</select>
 													</div>
 													
