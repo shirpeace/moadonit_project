@@ -51,7 +51,7 @@ d3.json("ReportsController?action=getAllCourseRegsData", function(error, data) {
   });
 
   data.sort(function(a, b) { return b.total - a.total; });
-
+  
   x.domain(data.map(function(d) { return d.course; }));
   y.domain([0, d3.max(data, function(d) { return d.total; })]);
 
@@ -84,7 +84,7 @@ d3.json("ReportsController?action=getAllCourseRegsData", function(error, data) {
       .attr("y", function(d) { return y(d.y1); })
       .attr("height", function(d) { return y(d.y0) - y(d.y1); })
       .style("fill", function(d) { return color(d.name); })
-      .style("opacity","0.7")
+      .style("opacity","0.6")
       .on('mouseover',function(d){
     	  tip.show(d);
     //	  d3.select(this).style("fill","#d0743c");
@@ -111,8 +111,15 @@ d3.json("ReportsController?action=getAllCourseRegsData", function(error, data) {
       .attr("x", width - 24)
       .attr("y", 9)
       .attr("dy", ".35em")
-      .style("text-anchor", "end")
+ //     .style("text-anchor", "end")
       .text(function(d) { return d; });
+  
+  d3.selectAll('g.y.axis > g.tick ')
+ // .filter(".tick" )
+   //only ticks that returned true for the filter will be included
+   //in the rest of the method calls:
+  .select('text') //grab the tick line
+  .style('text-anchor', "start"); //or style directly with attributes or inline styles
 
 });
 

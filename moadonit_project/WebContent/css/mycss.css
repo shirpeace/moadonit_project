@@ -40,7 +40,7 @@
 }
 
 
-body #chart{
+#chart{
   font: 10px sans-serif;
 }
 
@@ -51,9 +51,9 @@ body #chart{
   shape-rendering: crispEdges;
 }
 
-.bar {
+/* .bar {
   fill: steelblue;
-}
+} */
 
 .x.axis path {
   display: none;
