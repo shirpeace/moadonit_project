@@ -148,7 +148,7 @@
 			                        <div class="panel panel-default">
 			                            <div class="panel-heading">
 			                                <h3 class="panel-title pull-right"><i class="fa fa-info fa-fw"></i> כל התלמידים</h3>
-			                                <button id="resetBtn" class="pull-left">נקה חיפוש</button>
+			                                <button id="resetBtn" class="pull-left btn btn-primary">נקה חיפוש</button>
 			                                <div class="clearfix"></div>
 			                            </div>
 			                            <div class="panel-body">

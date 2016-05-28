@@ -12,6 +12,30 @@ var currentDate;
 /** ********************************************** */
 // TODO //* START PAGE FUNCTIONS */
 /** ********************************************** */
+/**
+ * on select of change 
+ */
+function ondayChange(selectElem){
+	$("#checkAllDays").prop('checked', false);
+	
+}
+/**
+ * on checkbox of all week change
+ * @param checkElem
+ */
+function checkChange(checkElem){
+	
+	 if(checkElem.checked) {
+	        //Do stuff
+		 var selects = $("div #regDays select");
+		 $(selects).each(function() {
+			  $( this ).val( $( this ).find("option:eq(1)").val());
+			  console.log($( this ).find('option:selected'));
+			  //$('select[name=name]').find('option:eq(1)').attr('selected', 'selected');
+		 });
+		// $("#target").val($("#target option:first").val());
+	 }
+}
 function setPupilCardData(pupil) {
 
 	if (pupil != undefined) {

@@ -75,14 +75,14 @@
     <!-- Custom CSS -->
     <link href="css/sb-admin.css" rel="stylesheet">
     <link href="css/sb-admin-rtl.css" rel="stylesheet">
-    <link href="css/mycss.css" rel="stylesheet">
+    
 
     <!-- Morris Charts CSS -->
    <!--  <link href="css/plugins/morris.css" rel="stylesheet"> -->
 
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    
+    <link href="css/mycss.css" rel="stylesheet">
 
 	
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -175,7 +175,7 @@
 								
 								<div class="form-group">
 									<label for="lName">שם משפחה</label> <input type="text"
-										class="form-control" id="lName" name="lName"  placeholder="משפחה" >
+										class="form-control input-sm" id="lName" name="lName"  placeholder="משפחה" >
 								</div>
 								<div class="form-group">
 									<label for="fName">שם פרטי</label> <input type="text" 
