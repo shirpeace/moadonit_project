@@ -129,7 +129,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<h1 class="page-header">
-							 חוגים <small></small>
+							 חיפוש חוגים <small></small>
 						</h1>
 						<ol class="breadcrumb">
 							<li><a href="dashboard.jsp"><i class="fa fa-home"></i>
@@ -141,33 +141,13 @@
 				<!-- /.row -->
 
 
-				<div class="col-lg-12">
+				<div class="col-lg-10">
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h3 class="panel-title pull-right">
 								<i class="fa fa-info fa-fw"></i> כל החוגים
 							</h3>
-							<!-- <label for="isReg" class="pull-left" >רשום</label> <select
-															class="form-control pull-left col-lg-1"  id="isReg" name="sunday"
-															 >
-															<option value="0"></option>
-															<option value="1">רשום</option>
-															<option value="2">לא רשום</option>
-														</select> -->
-
-							<!-- <div class="form-group pull-left" id="viewModeBtn">
-								<a href="javascript:void(0);"
-									onclick="exportData('0','pdf', 'list');">
-									<img alt="" src="resources/images/pdf-icon.png">
-									</a>
-								 <a
-									href="javascript:void(0);"
-									onclick="exportData('0','xls', 'list');">
-									<img alt="" src="resources/images/Excel-icon.png" style="border-radius:15%;">
-								</a>
-
-							</div> -->
-
+						
 							<button id="resetBtn" class="pull-left btn btn-primary">נקה חיפוש</button>
 							<div class="clearfix"></div>
 						</div>

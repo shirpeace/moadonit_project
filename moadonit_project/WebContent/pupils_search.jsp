@@ -141,7 +141,7 @@
 				<!-- /.row -->
 
 
-				<div class="col-lg-12">
+				<div class="col-lg-9">
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h3 class="panel-title pull-right">
@@ -176,6 +176,7 @@
 							<!--  <div class="text-right">
                                     <a href="#">View All Transactions <i class="fa fa-arrow-circle-right"></i></a>
                                 </div> -->
+						
 							<div class="table-responsive col-lg-10">
 								<table class="table table-bordered table-hover table-striped"
 									id="list" >

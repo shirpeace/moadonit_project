@@ -155,7 +155,7 @@
                                  <a href="pupils_search.jsp"><i class="fa fa-users"></i> תלמידים</a>
                             </li>
                             <li>
-                                 <a href="dashboard.jsp"><i class="fa fa-user"></i> כרטיס תלמיד</a>
+                                 <a href="#"><i class="fa fa-user"></i> כרטיס תלמיד</a>
                             </li>
                             <li class="active">
                                 <i class="fa fa-list-alt"></i> פרטים אישיים
