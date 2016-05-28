@@ -231,7 +231,7 @@
 								</div>
 							</div>
 		<!-- row 1 col 3 -->
-							<div class="col-lg-3">
+							<div class="col-lg-2">
 								<div class="form-group">
 									<label for="food">סוג מנה</label>
 									<select class="form-control input-sm"
@@ -263,7 +263,7 @@
 							</div>
 							
 		<!-- row 1 col 4 -->							
-							<div class="col-lg-3">
+							<div class="col-lg-4">
 								<div class="form-group">
 									<label for="health">בעיות בריאות</label> 
 									 <input type="text"
