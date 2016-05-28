@@ -28,8 +28,8 @@
     border: none;
   }
 .ui-jqgrid .ui-jqgrid-view input, .ui-jqgrid .ui-jqgrid-view select, .ui-jqgrid .ui-jqgrid-view textarea, .ui-jqgrid .ui-jqgrid-view button {
-    font-size: 11px;
-    height: 24px;
+    font-size: 15px;
+    /* height: 30px; */
     margin-top: 0px;
 }
 
