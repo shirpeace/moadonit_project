@@ -91,6 +91,13 @@ function loadPupilCard(dataString) {
 		}
 
 	});
+	
+	$("#goToCourses").click(function() {
+		window.location.href = "course_search.jsp";
+		
+		return false;
+		
+	});
 
 }
 

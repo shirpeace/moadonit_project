@@ -373,7 +373,7 @@
 									<input type="submit" id="deleteBtn" name="deleteBtn"
 									class="btn btn-primary" value="îçé÷ä">
 								
-									<input type="submit" id="addPupil" name="clearBtn"
+									<input type="submit" id="addPupil" name="addPupil"
 									 class="btn btn-primary" value="äåñó çãù">
 									<!-- <button id="testBtn">test</button> -->
 								</div>

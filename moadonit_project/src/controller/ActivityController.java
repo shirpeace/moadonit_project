@@ -476,7 +476,9 @@ Serializable {
 				obj.put("startTime", act.getStartTime().toString().substring(0,5));
 				obj.put("endTime",act.getEndTime().toString().substring(0,5));
 				//obj.put("schoolYear", getRegType(act.getTblRegType5().getTypeNum()));
-				obj.put("firstName", act.getTblStaff().getFirstName());
+				String fn = act.getTblStaff().getFirstName() != null ? act.getTblStaff().getFirstName() : "";
+				String ln = act.getTblStaff().getLastName() != null ? act.getTblStaff().getLastName() : "";
+				obj.put("staffName", ln	+ " " + fn);
 				return obj;
 	}
 	

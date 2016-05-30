@@ -185,9 +185,11 @@
 					<div class="col-lg-10">
 						<div class="panel panel-default">
 							<div class="panel-heading">
-								<h3 class="panel-title">
+								<h3 class="panel-title pull-right">
 									<!-- <i class="fa fa-search fa-fw"></i> --> תכנית שבועית
 								</h3>
+								<button id="goToCourses" class="pull-left btn btn-primary">עבור לרישום חוגים</button>
+								<div class="clearfix"></div>
 							</div>
 							<div class="panel-body">
 								<div class="table-responsive col-lg-12">
