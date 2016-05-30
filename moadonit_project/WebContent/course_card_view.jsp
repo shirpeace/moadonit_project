@@ -214,7 +214,7 @@
 		<!-- row 1 col 1 -->
 					<div class="col-lg-12" style="border-bottom: 1px solid #a6b7bd">
 						<div class="col-lg-12">
-							<div class="col-lg-3">
+							<div class="col-lg-2">
 								<div class="form-group">
 									<label for="fName">שם החוג</label> <input type="text" 
 										class="form-control input-sm" name="activityName"  id="activityName" >
@@ -231,7 +231,7 @@
 								</div> 
 								<div class="form-group">
 									<label for="weekDay">יום בשבוע</label> 
-										<select class="form-control input-sm" style="width: 50px;"
+										<select class="form-control input-sm" style="width: 100px;"
 										id="weekDay" name="weekDay" >
 										<option value="א">א</option>
 										<option value="ב">ב</option>
@@ -269,13 +269,12 @@
 							<div class="col-lg-2">
 							<div class="form-group">
 								<label for="weekDay">שם המורה</label> 
-										<select class="form-control input-sm" style="width: 50px;"
-										id="firstName" name="firstName" >
-										<option value="א">א</option>
-										<option value="ב">ב</option>
-										<option value="ג">ג</option>
-										<option value="ד">ד</option>
-										<option value="ה">ה</option>
+										<select class="form-control input-sm" id="firstName" name="firstName" >
+										<option value="א">שושנה מזרחי</option>
+										<option value="ב">דנית גבאי</option>
+										<option value="ג">שמשון בוזגלו</option>
+										<option value="ד">אהובה שלום</option>
+										<option value="ה">אורלי שוורץ</option>
 										<!-- <option value="ו">ו</option>		 -->								
 									</select>								
 								</div>
@@ -304,8 +303,9 @@
 		<!-- row 1 col 4 -->							
 							
 						</div>
-						<div class="col-lg-12">
-						<div class="form-group pull-left" id="viewModeBtn">
+						<div class="col-lg-6"></div>
+						<div class="col-lg-6">
+						<div class="form-group " id="viewModeBtn">
 									<input type="button" id="editBtn" name="editBtn"
 									class="btn btn-primary" value="עריכה">
 								
@@ -317,7 +317,7 @@
 									<!-- <button id="testBtn">test</button> -->
 								</div>
 								
-								<div class="form-group pull-left" id="editModeBtn" style="display: none">
+								<div class="form-group " id="editModeBtn" style="display: none">
 									<input type="button" id="saveBtn" name="saveBtn"
 									class="btn btn-primary" value="שמור שינויים">
 								

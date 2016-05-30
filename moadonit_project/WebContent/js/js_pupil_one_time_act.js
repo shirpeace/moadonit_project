@@ -57,7 +57,7 @@ function loadPupilOneAct(dataString) {
         	if(data != undefined){
         		pupilID = data.pupilNum;
         		pupilData = data;
-        		$('.page-header').html(pupilData.firstName + " " + pupilData.lastName);
+        		$('.page-header').html(pupilData.lastName + " " + pupilData.firstName);
         		
         	}
         	else

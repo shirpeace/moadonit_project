@@ -99,8 +99,8 @@ function setColorsForGrade(){
 	
     var $select = $('#grade');                        
     $select.find('option').remove();   
-    grades = grades.value.split(";");
-    $.each(grades, function(key, value) {  
+    var gradesCopy = grades.value.split(";");
+    $.each(gradesCopy, function(key, value) {  
     	value  = value.split(":");
     	if(key != 0)
     	$select.append('<option style="background-color:'+ value[2]+'" value=' + value[0] + '>' + value[1] + '</option>'); 

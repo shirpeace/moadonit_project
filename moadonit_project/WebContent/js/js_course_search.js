@@ -38,8 +38,8 @@ function loadGrid(){
                   editable : true
           },
            {
-              name : 'firstName', 
-              index : 'firstName',
+              name : 'staffName', 
+              index : 'staffName',
               width : 100,
               
           }, {
@@ -127,6 +127,7 @@ function loadGrid(){
           rowNum : 50,
           rowList : [ ],
           sortname : 'activityName',
+          cmTemplate: {sortable:false},
           /*scroll: true,*/
           direction:"rtl",
           viewrecords : true,

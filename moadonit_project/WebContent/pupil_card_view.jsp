@@ -155,7 +155,7 @@
                                  <a href="pupils_search.jsp"><i class="fa fa-users"></i> תלמידים</a>
                             </li>
                             <li>
-                                 <a href="dashboard.jsp"><i class="fa fa-user"></i> כרטיס תלמיד</a>
+                                 <a href="#"><i class="fa fa-user"></i> כרטיס תלמיד</a>
                             </li>
                             <li class="active">
                                 <i class="fa fa-list-alt"></i> פרטים אישיים
@@ -363,21 +363,22 @@
 							</div>
 							
 			<!-- row 2 col 4 -->				
-							<div class="col-lg-3" style="position: absolute;  bottom: 0; left: 0">
+							<div class="col-lg-9"></div>
+							<div class="col-lg-3" >
 								
-								<div class="form-group pull-left" id="viewModeBtn">
+								<div class="form-group " id="viewModeBtn">
 									<input type="button" id="editBtn" name="editBtn"
 									class="btn btn-primary" value="עריכה">
 								
 									<input type="submit" id="deleteBtn" name="deleteBtn"
 									class="btn btn-primary" value="מחיקה">
 								
-									<input type="submit" id="addPupil" name="clearBtn"
+									<input type="submit" id="addPupil" name="addPupil"
 									 class="btn btn-primary" value="הוסף חדש">
 									<!-- <button id="testBtn">test</button> -->
 								</div>
 								
-								<div class="form-group pull-left" id="editModeBtn" style="display: none">
+								<div class="form-group " id="editModeBtn" style="display: none">
 									<input type="button" id="saveBtn" name="saveBtn"
 									class="btn btn-primary" value="שמור שינויים">
 								

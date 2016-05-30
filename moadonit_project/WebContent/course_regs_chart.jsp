@@ -69,6 +69,8 @@
 
 <script src="js/jquery.timepicker.min.js"></script>
 <script src="//d3js.org/d3.v3.min.js"></script>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+
 <script src="js/js_course_regs_chart.js"></script>
 
 </head>
