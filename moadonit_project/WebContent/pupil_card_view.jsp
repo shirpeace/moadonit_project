@@ -363,9 +363,10 @@
 							</div>
 							
 			<!-- row 2 col 4 -->				
-							<div class="col-lg-3" style="position: absolute;  bottom: 0; left: 0">
+							<div class="col-lg-9"></div>
+							<div class="col-lg-3" >
 								
-								<div class="form-group pull-left" id="viewModeBtn">
+								<div class="form-group " id="viewModeBtn">
 									<input type="button" id="editBtn" name="editBtn"
 									class="btn btn-primary" value="òøéëä">
 								
@@ -377,7 +378,7 @@
 									<!-- <button id="testBtn">test</button> -->
 								</div>
 								
-								<div class="form-group pull-left" id="editModeBtn" style="display: none">
+								<div class="form-group " id="editModeBtn" style="display: none">
 									<input type="button" id="saveBtn" name="saveBtn"
 									class="btn btn-primary" value="ùîåø ùéğåééí">
 								

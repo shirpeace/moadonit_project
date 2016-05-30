@@ -40,7 +40,7 @@ function setPupilCardData(pupil) {
 
 	if (pupil != undefined) {
 
-		$('.page-header').html(pupil.firstName + " " + pupil.lastName);
+		$('.page-header').html(pupil.lastName + " " + pupil.firstName);
 	}
 }
 

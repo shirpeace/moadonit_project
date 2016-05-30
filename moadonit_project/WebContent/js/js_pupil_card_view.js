@@ -178,7 +178,7 @@ function setPupilCardData(pupil){
 			
 			if(pupil != undefined){
 				var d;
-				$('.page-header').html(pupil.firstName + " " + pupil.lastName);
+				$('.page-header').html(pupil.lastName + " " + pupil.firstName);
 				if(pupil.birthDate != null){
 					
 					d = new Date(pupil.birthDate);

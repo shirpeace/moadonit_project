@@ -32,12 +32,38 @@ function loadPupilSearch() {
 		
 	});
 }
+/**
+ * format the cell of grade, add
+ * @param rowId
+ * @param val
+ * @param rawObject
+ * @param cm
+ * @param rdata
+ */
+function formatGradeCell(rowId, val, rawObject, cm, rdata){
+	//"style" : "background:"+colors.future+";","data-isHistory": false
+	var cellVal='';
+	if(grades){
+		var gradesCopy = grades.value.split(";");
+	    $.each(gradesCopy, function(key, value) {  
+	    	value  = value.split(":");
+	    	if(key != 0){
+	    		if(val == value[1]){
+	    			cellVal =  'style="border-color:'+ value[2]+'; border-width: 3px;"';	    			
+	    		//$select.append('<option style="background-color:'+ value[2]+'" value=' + value[0] + '>' + value[1] + '</option>');
+	    		}
+	    	}
+	    });
+	}
+	
+	return cellVal;
+}
 function loadGrid(){
 	  $("#contact").jqGrid({
           url : "FullPupilCardController?action=contactPage",
           datatype : "json",
           mtype : 'POST',
-          colNames : ['מספר','רשום','שם פרטי' , 'שם משפחה' , 'מגדר', 'כיתה', 'סלולר תלמיד', 'טלפון בבית', 'שם ההורה', 'טלפון','שם ההורה','טלפון'],
+          colNames : ['מספר','רשום','שם משפחה' , 'שם פרטי' , 'מגדר', 'כיתה', 'סלולר תלמיד', 'טלפון בבית', 'שם ההורה', 'טלפון','שם ההורה','טלפון'],
           colModel : [ {
                   name : 'id',
                   index : 'id',
@@ -50,17 +76,17 @@ function loadGrid(){
 	              stype: "select",
 	              searchoptions: { value: ":;1:רשום;2:לא רשום"},
 	              formatter: "checkbox"
-	      }, {
-                  name : 'firstName',
-                  index : 'firstName',
-                  width : 80,
-                  editable : true
-          }, {
+	      },  {
                   name : 'lastName',
                   index : 'lastName',
                   width : 80,
                   editable : false
           }, {
+              name : 'firstName',
+              index : 'firstName',
+              width : 80,
+              editable : true
+          },{
                   name : 'gender',
                   index : 'gender',
                   width : 60,
@@ -73,7 +99,8 @@ function loadGrid(){
                   width : 60,
                   editable : false,
                   stype: "select",
-                  searchoptions:  grades
+                  searchoptions:  grades,
+                  cellattr : formatGradeCell,
           }, {
               name : 'pupilCell', 
               index : 'pupilCell',

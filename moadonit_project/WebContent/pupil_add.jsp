@@ -239,6 +239,10 @@
 									<label for="ethi">אתיופי</label> <input type="checkbox"
 										id="ethi" name="ethi">
 								</div>
+								<div class="checkbox ">
+									<label for="divorce">הורים גרושים</label> <input type="checkbox"
+										id="divorce" name="divorce" >
+								</div>
 								<div class="checkbox">
 									<label for="staff">ילד סגל</label> <input type="checkbox"
 										name="staff" id="staff">
@@ -375,9 +379,9 @@
 							</div>
 
 							<!-- row 2 col 4 -->
-							<div class="col-lg-3" style="position: absolute;  bottom: 0; left: 0">
-								
-								<div class="form-group pull-left" id="viewModeBtn" >
+							<div class="col-lg-9"></div>
+							<div class="col-lg-3">
+								<div class="form-group" id="viewModeBtn" >
 								    <div id="btnActionDiv">
 									<input type="button" id="saveBtn" name="saveBtn"
 										class="btn btn-primary" value="שמור">
@@ -390,22 +394,6 @@
 									</div>
 								</div>
 
-<!-- 								<div class="form-group">
-									<button>שמור</button>
-									<input type="submit" id="saveBtn" name="aveBtn"
-										class="btn btn-default" value="שמור">
-								</div>
-								<div class="form-group">
-									<button>שמור ונקה</button>
-									<input type="submit" id="saveClearBtn" name="saveClearBtn"
-										class="btn btn-default" value="שמור ונקה">
-
-								</div>-->
-								<!-- <div class="form-group">
-									<input type="submit" id="clearBtn" name="clearBtn"
-										class="btn btn-default" value="נקה">
-									<button id="testBtn">test</button>
-								</div>  -->
 							</div>
 						</div>
 					</div>

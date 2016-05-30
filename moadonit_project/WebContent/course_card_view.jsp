@@ -214,7 +214,7 @@
 		<!-- row 1 col 1 -->
 					<div class="col-lg-12" style="border-bottom: 1px solid #a6b7bd">
 						<div class="col-lg-12">
-							<div class="col-lg-3">
+							<div class="col-lg-2">
 								<div class="form-group">
 									<label for="fName">שם החוג</label> <input type="text" 
 										class="form-control input-sm" name="activityName"  id="activityName" >
@@ -303,8 +303,9 @@
 		<!-- row 1 col 4 -->							
 							
 						</div>
-						<div class="col-lg-12">
-						<div class="form-group pull-left" id="viewModeBtn">
+						<div class="col-lg-6"></div>
+						<div class="col-lg-6">
+						<div class="form-group " id="viewModeBtn">
 									<input type="button" id="editBtn" name="editBtn"
 									class="btn btn-primary" value="עריכה">
 								
@@ -316,7 +317,7 @@
 									<!-- <button id="testBtn">test</button> -->
 								</div>
 								
-								<div class="form-group pull-left" id="editModeBtn" style="display: none">
+								<div class="form-group " id="editModeBtn" style="display: none">
 									<input type="button" id="saveBtn" name="saveBtn"
 									class="btn btn-primary" value="שמור שינויים">
 								

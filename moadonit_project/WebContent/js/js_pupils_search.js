@@ -1,5 +1,34 @@
 var grades;
 var gridSelectedGrade;
+
+/**
+ * format the cell of grade, add
+ * @param rowId
+ * @param val
+ * @param rawObject
+ * @param cm
+ * @param rdata
+ */
+function formatGradeCell(rowId, val, rawObject, cm, rdata){
+	//"style" : "background:"+colors.future+";","data-isHistory": false
+	var cellVal='';
+	if(grades){
+		var gradesCopy = grades.value.split(";");
+	    $.each(gradesCopy, function(key, value) {  
+	    	value  = value.split(":");
+	    	if(key != 0){
+	    		if(val == value[1]){
+	    			cellVal =  'style="border-color:'+ value[2]+'; border-width: 3px;"';	    			
+	    		//$select.append('<option style="background-color:'+ value[2]+'" value=' + value[0] + '>' + value[1] + '</option>');
+	    		}
+	    	}
+	    });
+	}
+	
+	return cellVal;
+}
+
+
 function loadPupilSearch() {
 	$.ajax({
   		async: false,
@@ -67,7 +96,8 @@ function loadGrid(){
                   index : 'gradeName',
                   width : 100,
                   editable : true,
-                  stype: "select",                  
+                  stype: "select",   
+                  cellattr : formatGradeCell,
                   searchoptions: {
                 	  		dataUrl: "FullPupilCardController?action=getGrades",
 							buildSelect : function (data) {
