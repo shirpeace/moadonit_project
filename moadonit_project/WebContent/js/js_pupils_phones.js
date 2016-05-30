@@ -96,11 +96,43 @@ function loadGrid(){
           }, {
                   name : 'gradeName',
                   index : 'gradeName',
-                  width : 60,
-                  editable : false,
-                  stype: "select",
-                  searchoptions:  grades,
+                  width : 100,
+                  editable : true,
+                  stype: "select",                  
                   cellattr : formatGradeCell,
+                  searchoptions: {
+          	  		dataUrl: "FullPupilCardController?action=getGrades",
+						buildSelect : function (data) {
+          	  		var codes, i, l, code, prop; 
+          	  		
+          	  		var s = '<select id="gradeSelect" >', codes, i, l, code, prop;
+                      if (data ) {
+                          codes = data.value.split(';');
+                          for (i = 0, l = codes.length; i < l; i++) {
+                              code = codes[i];
+                              // enumerate properties of code object
+                              for (prop in code) {
+                                  if (code.hasOwnProperty(prop)) {
+                                  	var op = code.split(':');
+                                  	if(op[0] == ' '){
+                                  		//FFFFFF
+                                  		s += '<option style="background-color:#FFFFFF" value="' + op[0] + '">' + op[1] + '</option>';
+                                          break; // we need only the first property
+                                  	}
+                                  	else{
+                                  		s += '<option style="background-color:'+ op[2]+'" value="' + op[0] + '">' + op[1] + '</option>';
+                                          break; // we need only the first property
+                                  	}
+                                      
+                                  }
+                              }
+                          }
+                      }
+                      
+                     
+                      return s + "</select>";
+          		  }
+            }
           }, {
               name : 'pupilCell', 
               index : 'pupilCell',
@@ -154,9 +186,13 @@ function loadGrid(){
           
           rowList: [],        // disable page size dropdown
           pgbuttons: false,     // disable page control like next, back button
-          pgtext: null         // disable pager text like 'Page 0 of 10'
+          pgtext: null ,
+          // disable pager text like 'Page 0 of 10'
           /*viewrecords: false*/
-          
+          ajaxSelectOptions: {
+              dataType: 'json',
+              cache: false
+          }
   });
   jQuery("#contact").jqGrid('navGrid', '#cont_page', {
           edit : false,
