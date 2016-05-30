@@ -35,8 +35,35 @@ jQuery.fn.center = function(parent) {
 	        "left": ((($(parent).width() - this.outerWidth()) / 2) + $(parent).scrollLeft() + "px")
 	    });
 	return this;
-}
+};
 
+function getRegTypesData(){
+	var returnData;
+	$.ajax({
+  		async: false,
+		type: 'POST',
+		datatype: 'json',
+        url: "PupilRegistration?action=getRegTypesData",
+        
+        success: function(data) {
+        	if(data != undefined){
+        		returnData =  data;
+        	}
+        	else{
+        		return '';
+        	}
+        },
+        error: function(e) {
+        	console.log("error loading grades");
+        	return '';
+			
+        }
+        
+      });
+	
+	return returnData;
+	
+}
 function setGradeBgColor(elem){
 	
 	$(elem).removeClass("form-control");
