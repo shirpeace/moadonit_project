@@ -133,7 +133,7 @@ function loadGrid(){
               editable : false
           } ],
           pager : '#cont_page',
-          rowNum : 30,
+          rowNum : 100,
           rowList : [ ],
           sortname : 'gradeName',
           /*scroll: true,*/

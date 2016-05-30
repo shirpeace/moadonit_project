@@ -271,7 +271,7 @@ public class FullPupilCardDAO extends AbstractDAO {
 		String stat = selectAll;
 		int withRegPupil = 0;
 		if(fName!=null ||lName!=null || gend!=null   || (grade!=null && !grade.equals(" "))  || pupilCell!=null|| 
-				homePhone!=null|| p1name!=null|| p1cell!=null|| p2name!=null|| p2cell!=null || isReg!=null){
+				homePhone!=null|| p1name!=null|| p1cell!=null|| p2name!=null|| p2cell!=null || (isReg!=null && !isReg.trim().equals(""))){
 			stat+=" where ";
 			if(fName!=null){
 				stat+="firstName LIKE '%" +fName +"%' and ";
@@ -312,15 +312,20 @@ public class FullPupilCardDAO extends AbstractDAO {
 					//stat+="regPupilNum is null";
 					withRegPupil = 2; //-- get only non registered pupil
 				}
-			}else{
-				stat = stat.substring(0, stat.length()-4);
+			}
+			
+			else{
+				//stat = stat.substring(0, stat.length()-4);
 				withRegPupil = 0; //-- get all pupil    
 			}
+			
+			if(withRegPupil == 0 && stat.endsWith("and "))
+				stat = stat.substring(0, stat.length()-4);
 			/*else
 				stat = stat.substring(0, stat.length()-4);*/
 		}
 		
-		Object[] values = {   stat, withRegPupil };
+		Object[] values = {   stat, withRegPupil, 0, 0, sind, sord };
 		try (PreparedStatement statement = DAOUtil.prepareCallbackStatement(this.con.getConnection(), selectFilter ,values);
 						ResultSet resultSet = statement.executeQuery();) {
 
