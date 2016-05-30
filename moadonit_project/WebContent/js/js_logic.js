@@ -109,6 +109,8 @@ function setColorsForGrade(){
     });
 	
 }
+
+
 function getGrades()
 {
 	$.ajax({

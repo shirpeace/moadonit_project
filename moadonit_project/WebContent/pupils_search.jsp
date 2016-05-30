@@ -159,13 +159,13 @@
 							<!-- 	<a href="javascript:void(0);"
 									onclick="exportData('0','pdf', 'list');">
 									<img alt="" src="resources/images/pdf-icon.png">
-									</a> -->
+									</a> 
 								 <a
 									href="javascript:void(0);"
 									onclick="exportData('0','xls', 'list');">
 									<img alt="" src="resources/images/Excel-icon.png" style="border-radius:15%; margin-right: 10px;">
 								</a>
-
+							-->
 							</div>
 
 							<button id="resetBtn" class="pull-left btn btn-primary">נקה חיפוש</button>
@@ -191,6 +191,15 @@
 									<input type="hidden" name="fileName" id="fileName"
 										value="GridPDF" /> <input type="hidden" name="fileType"
 										id="fileType" value="" />
+										
+										<input type="hidden" name="firstName" id="firstName" value="" />
+										<input type="hidden" name="lastName" id="lastName" value="" />
+										<input type="hidden" name="gender" id="gender" value="" />
+										<input type="hidden" name="isReg" id="isReg" value="" />
+										<input type="hidden" name="gradeName" id="gradeName" value="" />
+										<input type="hidden" name="sord" id="sord" value="" />
+										<input type="hidden" name="sidx" id="sidx" value="" />
+
 								</form>
 
 								<!-- HTML for jQuery UI Modals -->

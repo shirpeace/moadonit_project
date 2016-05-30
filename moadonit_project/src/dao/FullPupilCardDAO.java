@@ -16,7 +16,7 @@ public class FullPupilCardDAO extends AbstractDAO {
 	private String select = "SELECT * FROM fullPupilCard where pupilNum = ?";
 	private String selectAll = "SELECT * FROM fullPupilCard ";
 	private String selectSearch = "SELECT * FROM fullPupilCard where firstName = ?";
-	private String selectFilter = "{ CALL ms2016.getFullPupilByParam (?, ?) }";
+	private String selectFilter = "{ CALL ms2016.getFullPupilByParam (?, ?, ?, ?, ?, ?) }";
 	private String SelectPupilNotInActivity = "SELECT * FROM fullPupilCard  where pupilNum  NOT IN ( select pupilNum from tbl_pupil_activities where activityNum = ? and CURDATE() <= endDate)";
 	/**
 	 * 
@@ -192,11 +192,12 @@ public class FullPupilCardDAO extends AbstractDAO {
 		return list;
 	}
 	
-	public List<FullPupilCard> selectSearch(String sind, String sord,String fName,String lName,String gend,String grade,String isReg) {
+	public List<FullPupilCard> selectSearch(String sind, String sord,String fName,String lName,String gend,String grade,String isReg,int rowOffset,int rowsPerPage) {
+		
 		List<FullPupilCard> list = new ArrayList<>();
 		String stat = selectAll;
 		int withRegPupil = 0;
-		if(fName!=null ||lName!=null || gend!=null   || (grade!=null && !grade.equals(" "))  || isReg!=null){
+		if(fName!=null ||lName!=null || gend!=null   || (grade!=null && !grade.equals(" "))  || (isReg!=null && !isReg.trim().equals(""))){
 			stat+=" where ";
 			if(fName!=null && !fName.trim().equals("")){
 				stat+="firstName LIKE '%" +fName +"%' and ";
@@ -220,10 +221,21 @@ public class FullPupilCardDAO extends AbstractDAO {
 					withRegPupil = 2; //-- get only non registered pupil
 				}
 			}else{
-				stat = stat.substring(0, stat.length()-4);
+				
 				withRegPupil = 0; //-- get all pupil    
 			}
+			
+			if(withRegPupil == 0 && stat.endsWith("and "))
+				stat = stat.substring(0, stat.length()-4);
+			/*else if(stat.endsWith("where "))
+				stat = stat.substring(0, stat.length()-6);*/
 		}
+		
+	/*	if(rowOffset == 0 && rowsPerPage == 0)
+			stat = stat +" ORDER BY "+ sind +" "+ sord ;		
+		else
+			stat = stat +" ORDER BY "+ sind +" "+ sord + " LIMIT " + rowOffset + ", " + rowsPerPage + "";*/
+		
 		///
 		/*this.regToMoadonitDAO = new RegToMoadonitDAO(con);
 		List<RegToMoadonit> active = regToMoadonitDAO.getActiveRegForPupil(pupil.getPupilNum());
@@ -237,7 +249,7 @@ public class FullPupilCardDAO extends AbstractDAO {
 				reg = true;
 		}*/
 		///
-		Object[] values = {   stat, withRegPupil };
+		Object[] values = {   stat, withRegPupil, rowOffset, rowsPerPage, sind, sord };
 		try (PreparedStatement statement = DAOUtil.prepareCallbackStatement(this.con.getConnection(), selectFilter ,values);
 						ResultSet resultSet = statement.executeQuery();) {
 

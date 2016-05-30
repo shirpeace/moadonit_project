@@ -220,24 +220,29 @@ function exportData(cols,file,gridId ,pageHead){
     html = "<!DOCTYPE html><html><body><table><tr><td>מתן</td><td>טספאי</td><td>50</td></tr><tr><td>משה</td><td>מזרחי</td><td>50</td></tr><tr><td>אבי</td><td>יצחק</td><td>94</td></tr><tr><td>חיים</td><td>משה</td><td>80</td></tr></table></body></html>";
     var $grid = $("#list");
     var postData = $grid.jqGrid('getGridParam', 'postData');
+    $.extend(postData,{ isExport :"true"} );
+    
     var firstName =  null ,gender = null,  isReg=    null , lastName = null , gradeName =  null;
     if(postData._search === true){
     	firstName = postData.firstName ,gender =  postData.gender, 
     	isReg=    postData.isReg , lastName =  postData.lastName ,
-    	gradeName =   postData.gradeName;
+    	gradeName =   postData.gradeName;    	
     }
     
     var $preparingFileModal = $("#preparing-file-modal");
     
-    $preparingFileModal.dialog({ modal: true });
-
+    //$preparingFileModal.dialog({ modal: true });
+    
+    //addGridSearchOption($grid,'action','export');
+    $grid[0].triggerToolbar();
+    
     var test = new Object();
     test.id = 1;
     test.name = "שלמה";
     test.addres = "חיפה";
     test.boy = true;
     
-   $.fileDownload("FullPupilCardController", {
+   /*$.fileDownload("FullPupilCardController", {
         successCallback: function(url) {
 
             $preparingFileModal.dialog('close');
@@ -250,16 +255,29 @@ function exportData(cols,file,gridId ,pageHead){
         data : { pdfBuffer : html, fileType : file, fileName: 'exportFile' , action: "export" ,
 			        	firstName : firstName ,gender : gender, 
 			        	isReg:  isReg , lastName : lastName ,
-			        	gradeName :  gradeName
+			        	gradeName :  gradeName,sord : postData.sord, sidx : postData.sidx
 			    },
         httpMethod: "POST",
         popupWindowTitle: "ייצוא קובץ...",
-    });
+    });*/
 
     return false; //this is critical to stop the click event which will trigger a normal file download!
-    /*document.formstyle.pdfBuffer.value=html;
+   /* document.formstyle.pdfBuffer.value=html;
     document.formstyle.fileType.value=file;
+    document.formstyle.fileName.value='exportFile';
+    //
+    document.formstyle.firstName.value=firstName;
+    document.formstyle.gender.value=gender;
+    document.formstyle.isReg.value=isReg;
+    document.formstyle.lastName.value=lastName;
+    document.formstyle.gradeName.value=gradeName;
+    document.formstyle.sord.value=postData.sord;
+    document.formstyle.sidx.value= postData.sidx;*/
+    //
+   /* var actionToSend = 'FullPupilCardController?action=export&firstName=' + firstName + '&gender=' + gender+ '&isReg=' +
+    isReg +'&lastName='+ lastName +'&gradeName=' + gradeName +'&sord=' +postData.sord +'&sidx=' +postData.sidx;
+    actionToSend = encodeURIComponent(actionToSend);
     document.formstyle.method='POST';
-    document.formstyle.action='GenerateGridPDFs';  // send it to server which will open this contents in excel file
+    document.formstyle.action= actionToSend;  // send it to server which will open this contents in excel file
     document.formstyle.submit();*/
 }

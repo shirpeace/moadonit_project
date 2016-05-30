@@ -3,6 +3,9 @@ package controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -255,45 +258,55 @@ public class FullPupilCardController extends HttpServlet implements
 			else if (action.equals("pupilSearch")) {
 				// on searching
 				String search = req.getParameter("_search");				
-                
+                boolean isExport = req.getParameter("isExport") != null;
 				if (search.equals("true")) {
-					pupilList = searchPupilList(req, resp,rows*(page-1),rows);
-					JSONArray jsonPupilList = new JSONArray();
-					getPupilList(jsonPupilList);
+					if (!isExport) {
+						pupilList = searchPupilList(req, resp, rows
+								* (page - 1), rows);
+						JSONArray jsonPupilList = new JSONArray();
+						getPupilList(jsonPupilList);
+						if (!jsonPupilList.isEmpty()) {
 
-					if (!jsonPupilList.isEmpty()) {
+							String jsonResponse = jsonPupilList.toJSONString();
 
-						String jsonResponse = jsonPupilList.toJSONString();
+							totalCount = searchPupilList(req, resp, 0, 0)
+									.size();
+
+							if (totalCount > 0) {
+								if (totalCount % rows == 0) {
+									totalPages = totalCount / rows;
+								} else {
+									totalPages = (totalCount / rows) + 1;
+								}
+
+							} else {
+								totalPages = 0;
+							}
+
+							jsonResponse = "{\"page\":" + page + ",\"total\":"
+									+ totalPages + ",\"records\":" + totalCount
+									+ ",\"rows\":" + jsonResponse + "}";
+
+							resp.setContentType("application/json");
+							resp.setCharacterEncoding("UTF-8");
+							resp.getWriter().print(jsonResponse);
+
+						} else {
+
+							resp.setContentType("application/json");
+							resp.setCharacterEncoding("UTF-8");
+							resultToClient.put("msg", 0);
+							resultToClient.put("result", "לא נמצאו נתונים");
+							resp.getWriter().print(resultToClient);
+						}
+					}
+					else{
+						/**
+						 * exprot with filters
+						 */
 						
-						totalCount = searchPupilList(req, resp,0,0).size();
-						 
-						if (totalCount > 0) {
-		                    if (totalCount % rows == 0) {
-		                        totalPages = totalCount / rows;
-		                    } else {
-		                        totalPages = (totalCount / rows) + 1;
-		                    }
-		 
-		                } else {
-		                    totalPages = 0;
-		                }
-						
-						jsonResponse = "{\"page\":"+page+",\"total\":" +totalPages + ",\"records\":"
-								+ totalCount
-								+ ",\"rows\":"
-								+ jsonResponse + "}";
+							exportExcel(req, resp);
 
-						resp.setContentType("application/json");
-						resp.setCharacterEncoding("UTF-8");
-						resp.getWriter().print(jsonResponse);
-
-					} else {
-
-						resp.setContentType("application/json");
-						resp.setCharacterEncoding("UTF-8");
-						resultToClient.put("msg", 0);
-						resultToClient.put("result", "לא נמצאו נתונים");
-						resp.getWriter().print(resultToClient);
 					}
 
 				}
@@ -416,23 +429,8 @@ public class FullPupilCardController extends HttpServlet implements
 				
 			}else if(action.equals("export")){
 				
-				resp.setContentType("text/html;charset=UTF-8");
-		        Cookie downloadCookie = new Cookie("fileDownload",  "true");
-	        
-	            String fileName = req.getParameter("fileName") ;
-	            String fileType = req.getParameter("fileType") ;
-	            
-	            String htmlfromFunc = getHtmlFromJsonData(req, resp);
-	            
-	            resp.setContentType("application/vnd.ms-excel");
-	            resp.setHeader("Content-Disposition", "attachment;filename=\"" + fileName +"."+fileType+  "\"");
-	            resp.addCookie( downloadCookie );
-	            PrintWriter out = resp.getWriter();
-	            out.print(htmlfromFunc);
-	            out.close();
-		            
-		             
-		      
+				exportExcel(req, resp);
+				
 			}
 
 		} catch (SQLException e) {
@@ -460,6 +458,25 @@ public class FullPupilCardController extends HttpServlet implements
 
 	}
 
+	protected void exportExcel(HttpServletRequest req,
+			HttpServletResponse resp) throws ServletException, IOException {
+		
+		resp.setContentType("text/html;charset=UTF-8");
+        Cookie downloadCookie = new Cookie("fileDownload",  "true");
+    
+        String fileName = req.getParameter("fileName") ;
+        String fileType = req.getParameter("fileType") ;
+        
+        String htmlfromFunc = getHtmlFromJsonData(req, resp);
+        
+        resp.setContentType("application/vnd.ms-excel");
+        resp.setHeader("Content-Disposition", "attachment;filename=\"" + fileName +"."+fileType+  "\"");
+        resp.addCookie( downloadCookie );
+        PrintWriter out = resp.getWriter();
+        out.print(htmlfromFunc);
+        out.close();
+	}
+	
 	protected void checkConnection(HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession session = req.getSession();
@@ -743,12 +760,12 @@ public class FullPupilCardController extends HttpServlet implements
 	}
 
 	private List<FullPupilCard> searchPupilList(HttpServletRequest req,
-			HttpServletResponse resp,int offset, int rowsPerPage) {
-		List<FullPupilCard> pupils = new ArrayList<>();
+			HttpServletResponse resp,int offset, int rowsPerPage) throws UnsupportedEncodingException {
+		List<FullPupilCard> pupils = new ArrayList<>();			
 		pupils = this.fullPupilDao.selectSearch(req.getParameter("sidx"),
 				req.getParameter("sord"), req.getParameter("firstName"),
 				req.getParameter("lastName"), req.getParameter("gender"),
-				req.getParameter("gradeName"), req.getParameter("isReg"));
+				req.getParameter("gradeName"), req.getParameter("isReg"),offset, rowsPerPage);
 
 		return pupils;
 	}
