@@ -166,7 +166,7 @@
 									ראשי</a></li>
 							<li><a href="pupils_search.jsp"><i class="fa fa-users"></i>
 									תלמידים</a></li>
-							<li><a href="pupil_card_view.jsp"><i class="fa fa-list-alt"></i>
+							<li><a href="pupil_card_view.jsp" id="bcPupilCard" ><i class="fa fa-list-alt"></i>
 									כרטיס תלמיד</a></li>
 							<li class="active"><i class="fa fa-th"></i> תכנית שבועית
 								לתלמיד</li>

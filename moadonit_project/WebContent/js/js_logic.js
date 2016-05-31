@@ -20,6 +20,10 @@ var colors  = {
 		presernt : '#3399ff'
 		
 };
+
+//set the local for bootbox pligin
+bootbox.setLocale("he");
+
 /*************************************************/
 //TODO //*  START  PUPILADD PAGE FUNCTIONS       */
 /*************************************************/

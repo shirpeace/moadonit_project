@@ -5,7 +5,8 @@ $(function() {
 		$('#scheduleLink').attr('href','pupil_week_view.jsp?li=1&pupil=' + pupilID);
 		$('#regLink').attr('href','pupil_week_view.jsp?li=2&pupil=' + pupilID);
 		$('#oneTimeLink').attr('href', 'pupil_one_time_act.jsp?li=3&pupil=' + pupilID);
-	
+		$('#bcPupilCard').attr('href', 'pupil_card_view.jsp?li=0&pupil=' + pupilID);
+		
 		$("#saveBtn").click(function() {
 			if($("#datePick").val() != "" && $("#type").val() != ""){
 				var msg = "התלמיד/ה  "+pupilData.firstName + " " + pupilData.lastName;

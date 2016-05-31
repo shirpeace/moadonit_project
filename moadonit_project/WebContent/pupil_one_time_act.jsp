@@ -133,7 +133,7 @@
                                  <a href="pupils_search.jsp"><i class="fa fa-users"></i> תלמידים</a>
                             </li>
                             <li>
-                                 <a href="pupil_card_view.jsp"><i class="fa fa-user"></i> כרטיס תלמיד</a>
+                                 <a href="pupil_card_view.jsp" id="bcPupilCard"><i class="fa fa-user"></i> כרטיס תלמיד</a>
                             </li>
                             <li class="active">
                                 <i class="fa fa-plus-square-o"></i> פעילות חד פעמית

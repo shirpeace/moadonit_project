@@ -778,6 +778,7 @@ $(function() {
 		$('#scheduleLink').attr('href','pupil_week_view.jsp?li=1&pupil=' + pupilID);
 		$('#regLink').attr('href','pupil_week_view.jsp?reg=1&li=2&pupil=' + pupilID);
 		$('#oneTimeLink').attr('href', 'pupil_one_time_act.jsp?li=3&pupil=' + pupilID);
+		$('#bcPupilCard').attr('href', 'pupil_card_view.jsp?li=0&pupil=' + pupilID);
 		
 		var dataString = 'id='+ pupilID + '&action=' + "get";
 		selectOptionsData = getRegTypesData(); //get data from server for the registration types select elements

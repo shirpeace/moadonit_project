@@ -86,8 +86,12 @@
 					rules: {   
 					
 					// set a rule to inputs
-					// input must have name and id attr' and with same value !!!
-					fName : {  
+					// input must have name and id attr' and with same value !!! 
+						grade : {  
+							required: true,
+							
+							},
+						fName : {  
 						required: true,
 						minlength: 2,
 						maxlength: 20,  

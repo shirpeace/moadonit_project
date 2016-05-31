@@ -45,6 +45,8 @@
     <script src="js/bootstrap.min.js"></script>
 	
 	<script src="js/jquery-ui.js"></script>
+		<!-- bootbox code -->
+    <script src="js/bootbox.js"></script> 
 	<script src="js/js_logic.js"></script>
     
     
@@ -61,8 +63,7 @@
 	<script src="js/additional-methods.js"></script>
 	<script src="js/messages_he.js"></script>
 	
-	<!-- bootbox code -->
-    <script src="js/bootbox.js"></script> 
+
     
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -243,7 +244,29 @@
 										<option value="4">ללא-גלוטן</option>
 									</select>
 								</div>
-								<div class="checkbox ">
+								<table dir="rtl"  style="width:100%" cellpadding="3" cellspacing="5">
+									<tr align="right">
+										<td  style=" width:60%;"><label for="ethi">אתיופי</label></td>
+										<td><input type="checkbox"
+										id="ethi" name="ethi"></td>
+									</tr>
+									<tr align="right">
+										<td><label for="divorce">הורים גרושים</label></td>
+										<td><input type="checkbox"
+										id="divorce" name="divorce" ></td>
+									</tr>
+									<tr align="right">
+										<td><label for="staff">ילד סגל</label></td>
+										<td><input type="checkbox"
+										name="staff" id="staff"></td>
+									</tr>
+								</table>
+								<div class="form-group" style="display: none;" id="staffJobDiv">
+									<label for="staffJob">תפקיד ההורה</label> <input type="text"
+										name="staffJob" class="form-control" id="staffJob"
+										placeholder="תפקיד">
+								</div>
+							<!-- 	<div class="checkbox ">
 									<label for="ethi">אתיופי</label> <input type="checkbox"
 										id="ethi" name="ethi" >
 								</div>
@@ -259,7 +282,7 @@
 									<label for="staffJob">תפקיד ההורה</label> <input type="text"
 										name="staffJob" class="form-control" id="staffJob"
 										placeholder="תפקיד">
-								</div>
+								</div> -->
 							</div>
 							
 		<!-- row 1 col 4 -->							
@@ -370,16 +393,16 @@
 									<input type="button" id="editBtn" name="editBtn"
 									class="btn btn-primary" value="עריכה">
 								
-									<input type="submit" id="deleteBtn" name="deleteBtn"
+									<input type="button" id="deleteBtn" name="deleteBtn"
 									class="btn btn-primary" value="מחיקה">
 								
-									<input type="submit" id="addPupil" name="addPupil"
+									<input type="button" id="addPupil" name="addPupil"
 									 class="btn btn-primary" value="הוסף חדש">
 									<!-- <button id="testBtn">test</button> -->
 								</div>
 								
 								<div class="form-group " id="editModeBtn" style="display: none">
-									<input type="button" id="saveBtn" name="saveBtn"
+									<input type="submit" id="saveBtn" name="saveBtn"
 									class="btn btn-primary" value="שמור שינויים">
 								
 									<input type="submit" id="cancelBtn" name="deleteBtn"
