@@ -11,11 +11,13 @@
 
 <head>
 
-<!--  <meta charset="utf-8"> -->
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- <meta charset="utf-8"> -->
+<!--  <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="">
 <meta name="author" content="">
+
 
 <script type="text/javascript">
 		var currentUserId =	 '<%=session.getAttribute("userid")%>';
@@ -129,12 +131,12 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<h1 class="page-header">
-							חיפוש תלמידים <small></small>
+							חיפוש תלמידים  <small></small>
 						</h1>
 						<ol class="breadcrumb">
 							<li><a href="dashboard.jsp"><i class="fa fa-home"></i>
-									ראשי</a></li>
-							<li class="active"><i class="fa fa-users"></i> תלמידים</li>
+									ראשי</a></li>
+							<li class="active"><i class="fa fa-users"></i> תלמידים</li>
 						</ol>
 					</div>
 				</div>
@@ -145,27 +147,27 @@
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h3 class="panel-title pull-right">
-								<i class="fa fa-info fa-fw"></i> כל התלמידים
+								<i class="fa fa-info fa-fw"></i> כל התלמידים
 							</h3>
-							<!-- <label for="isReg" class="pull-left" >רשום</label> <select
+							<!-- <label for="isReg" class="pull-left" >�¨�©��</label> <select
 															class="form-control pull-left col-lg-1"  id="isReg" name="sunday"
 															 >
 															<option value="0"></option>
-															<option value="1">רשום</option>
-															<option value="2">לא רשום</option>
+															<option value="1">�¨�©��</option>
+															<option value="2">�� �¨�©��</option>
 														</select> -->
 
 							 <div class="form-group pull-left" id="viewModeBtn">
 							<!-- 	<a href="javascript:void(0);"
 									onclick="exportData('0','pdf', 'list');">
 									<img alt="" src="resources/images/pdf-icon.png">
-									</a> 
+									</a> -->
 								 <a
 									href="javascript:void(0);"
 									onclick="exportData('0','xls', 'list');">
 									<img alt="" src="resources/images/Excel-icon.png" style="border-radius:15%; margin-right: 10px;">
 								</a>
-							-->
+							
 							</div>
 
 							<button id="resetBtn" class="pull-left btn btn-primary">נקה חיפוש</button>
@@ -204,9 +206,9 @@
 								</form>
 
 								<!-- HTML for jQuery UI Modals -->
-								<div id="preparing-file-modal" title="יצוא קובץ..."
+								<div id="preparing-file-modal" title="ייצוא הקובץ ..."
 									style="display: none;">
-									ייצוא הקובץ בתהליך, אנא המתן...
+										ייצוא הקובץ בתהליך, אנא המתן...
 
 									<!--Throw what you'd like for a progress indicator below-->
 									<div
@@ -215,7 +217,7 @@
 								</div>
 
 								<div id="error-modal" title="Error" style="display: none;">
-									קיימת שגיאה בייצוא הקובץ, אנא נסה שוב</div>
+									קיימת שגיאה בייצוא הקובץ, אנא נסה שוב</div>
 							</div>
 
 						</div>
