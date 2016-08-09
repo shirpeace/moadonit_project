@@ -283,8 +283,10 @@ function loadPupilCard(dataString){
 }
 
 function deletePupil(id){
-	
-	
+	//shir says thaty its ok to change tje grade to the pupil
+	// in the pupuil _grade table, but only if he has recordes in ref tables
+	//else del from pupil_grade and tehn reg_pupil and then pupil
+	// if he has brothers dont del family
 }
 
 function setPageBtns(){
@@ -327,7 +329,7 @@ function setPageBtns(){
 	$("#deleteBtn").click(function() {
 		bootbox.confirm("האם אתה רוצה למחוק?", function(result) {
 			if (result === true) {                                             
-			    deletePupil(id);                            
+			    deletePupil(pupilID);                            
 			  } 
 		});
 		return false;

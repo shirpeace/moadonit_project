@@ -34,6 +34,10 @@ public class Pupil implements Serializable {
 	@OneToMany(mappedBy="tblPupil")
 	private List<Attendance> tblAttendances;
 
+	//bi-directional many-to-many association to GradeInYear
+	@ManyToMany(mappedBy="tblPupils1")
+	private List<GradeInYear> tblGradeInYears1;
+
 	//bi-directional many-to-one association to OneTimeReg
 	@OneToMany(mappedBy="tblPupil")
 	private List<OneTimeReg> tblOneTimeRegs;
@@ -60,7 +64,7 @@ public class Pupil implements Serializable {
 			@JoinColumn(name="yearID", referencedColumnName="yearID")
 			}
 		)
-	private List<GradeInYear> tblGradeInYears;
+	private List<GradeInYear> tblGradeInYears2;
 
 	//bi-directional many-to-one association to PupilActivity
 	@OneToMany(mappedBy="tblPupil")
@@ -143,6 +147,14 @@ public class Pupil implements Serializable {
 		return tblAttendance;
 	}
 
+	public List<GradeInYear> getTblGradeInYears1() {
+		return this.tblGradeInYears1;
+	}
+
+	public void setTblGradeInYears1(List<GradeInYear> tblGradeInYears1) {
+		this.tblGradeInYears1 = tblGradeInYears1;
+	}
+
 	public List<OneTimeReg> getTblOneTimeRegs() {
 		return this.tblOneTimeRegs;
 	}
@@ -181,12 +193,12 @@ public class Pupil implements Serializable {
 		this.tblGenderRef = tblGenderRef;
 	}
 
-	public List<GradeInYear> getTblGradeInYears() {
-		return this.tblGradeInYears;
+	public List<GradeInYear> getTblGradeInYears2() {
+		return this.tblGradeInYears2;
 	}
 
-	public void setTblGradeInYears(List<GradeInYear> tblGradeInYears) {
-		this.tblGradeInYears = tblGradeInYears;
+	public void setTblGradeInYears2(List<GradeInYear> tblGradeInYears2) {
+		this.tblGradeInYears2 = tblGradeInYears2;
 	}
 
 	public List<PupilActivity> getTblPupilActivities() {
@@ -218,7 +230,6 @@ public class Pupil implements Serializable {
 	public void setTblRegisterPupil(RegisterPupil tblRegisterPupil) {
 		this.tblRegisterPupil = tblRegisterPupil;
 	}
-
 	//bi-directional many-to-one association to GradePupil
 	@OneToMany(mappedBy="tblPupil")
 	private List<GradePupil> tblGradePupils;
@@ -230,4 +241,5 @@ public class Pupil implements Serializable {
 	public void setTblGradePupils(List<GradePupil> tblGradePupils) {
 		this.tblGradePupils = tblGradePupils;
 	}
+
 }

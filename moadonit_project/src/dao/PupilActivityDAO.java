@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Activity;
+import model.ActivityGroup;
 import model.ActivityType;
 import model.Pupil;
 import model.PupilActivity;
@@ -22,7 +23,7 @@ public class PupilActivityDAO extends AbstractDAO {
 		// TODO Auto-generated constructor stub
 	}
 
-	private String getPupilInCourse = "{ call ms2016.getPupilInCourse( ? ) }";
+	private String getPupilInCourse = "{ call ms2016.getPupilInCourse( ?, ? ) }";
 	private String insertPupilActivity = "{ call ms2016.insertPupilActivity(?,?,?,?,?,?) }";
 	private String update = "{ call ms2016.updatePupilInCourse(?,? ,? , ?,? , ?) }";
 	private String delete = "DELETE FROM tbl_pupil_activities where pupilNum = ? and activityNum = ? ";
@@ -40,13 +41,13 @@ public class PupilActivityDAO extends AbstractDAO {
 	 * @throws IllegalArgumentException
 	 * @throws DAOException
 	 */
-	public List<PupilActivity> getPupilInCourse(int id)
+	public List<PupilActivity> getPupilInCourse(int id, Date date)
 			throws IllegalArgumentException, DAOException {
 		List<PupilActivity> list = new ArrayList<>();
 
 		try (PreparedStatement statement = DAOUtil
 				.prepareCallbackStatement(this.con.getConnection(),
-						getPupilInCourse, new Object[] { id });
+						getPupilInCourse, new Object[] { id, date });
 				ResultSet resultSet = statement.executeQuery();) {
 
 			while (resultSet.next()) {
@@ -64,15 +65,16 @@ public class PupilActivityDAO extends AbstractDAO {
 
 	/**
 	 * get courses of pupil
+	 * 
 	 * @param pupilID
 	 * @return List<Activity> of courses
 	 */
 	public List<Activity> getCoursesByPupilNum(int pupilID) {
 		// TODO Auto-generated method stub
 		List<Activity> list = new ArrayList<>();
-		try (PreparedStatement statement = DAOUtil
-				.prepareCallbackStatement(this.con.getConnection(),
-						getCoursesByPupilNum, new Object[] { pupilID });
+		try (PreparedStatement statement = DAOUtil.prepareCallbackStatement(
+				this.con.getConnection(), getCoursesByPupilNum,
+				new Object[] { pupilID });
 				ResultSet resultSet = statement.executeQuery();) {
 
 			while (resultSet.next()) {
@@ -87,9 +89,10 @@ public class PupilActivityDAO extends AbstractDAO {
 
 		return list;
 	}
-	
+
 	/**
 	 * map a course data for pupil - to show in week gridview
+	 * 
 	 * @param resultSet
 	 * @return
 	 * @throws SQLException
@@ -97,28 +100,37 @@ public class PupilActivityDAO extends AbstractDAO {
 	private Activity mapCourses(ResultSet resultSet) throws SQLException {
 		// TODO Auto-generated method stub
 		Activity act = new Activity();
+
 		ActivityType type = new ActivityType();
 		type.setTypeID(resultSet.getInt("activityType"));
-		
-		act.setTblActivityType(type);
+
+		ActivityGroup ag = new ActivityGroup();
+		ag.setActivityGroupNum(resultSet.getInt("activityGroup"));
+
+		// type.getTblActivityGroups().add(ag);
+
+		ag.setTblActivityType(type);
+
+		act.setTblActivityGroup(ag);
+
 		act.setActivityName(resultSet.getString("activityName"));
-		act.setActivityNum(resultSet.getInt("activityNum"));		
+		act.setActivityNum(resultSet.getInt("activityNum"));
 		act.setStartTime(resultSet.getTime("startTime"));
 		act.setEndTime(resultSet.getTime("endTime"));
 		act.setWeekDay(resultSet.getString("weekDay"));
-		
+
 		PupilActivity pa = new PupilActivity();
 		PupilActivityPK pk = new PupilActivityPK();
 		pk.setActivityNum(resultSet.getInt("activityNum"));
 		pk.setPupilNum(resultSet.getInt("pupilNum"));
 		pa.setId(pk);
 		pa.setStartDate(resultSet.getDate("startDate"));
-		
+
 		List<PupilActivity> list = new ArrayList<PupilActivity>();
 		list.add(pa);
-		
+
 		act.setTblPupilActivities(list);
-		
+
 		return act;
 	}
 
@@ -127,6 +139,7 @@ public class PupilActivityDAO extends AbstractDAO {
 		// TODO Auto-generated method stub activityNum, activityName, pupilNum,
 		// startDate, regDate, endDate, firstName, lastName
 		PupilActivity pa = new PupilActivity();
+
 		PupilActivityPK pk = new PupilActivityPK();
 		pk.setActivityNum(resultSet.getInt("activityNum"));
 		pk.setPupilNum(resultSet.getInt("pupilNum"));
@@ -135,7 +148,14 @@ public class PupilActivityDAO extends AbstractDAO {
 		Activity act = new Activity();
 		ActivityType type = new ActivityType();
 		type.setTypeID(resultSet.getInt("activityType"));
-		act.setTblActivityType(type);
+		
+		ActivityGroup ag = new ActivityGroup();
+		ag.setActivityGroupNum(resultSet.getInt("activityGroup"));
+
+		ag.setTblActivityType(type);
+
+		act.setTblActivityGroup(ag);
+
 		act.setActivityName(resultSet.getString("activityName"));
 
 		pa.setTblActivity(act);
@@ -231,13 +251,12 @@ public class PupilActivityDAO extends AbstractDAO {
 
 		Object[] values = {
 				// pk of row
-				pa.getId().getPupilNum(),
-				pa.getId().getActivityNum()
+				pa.getId().getPupilNum(), pa.getId().getActivityNum()
 
 		};
 
 		try (PreparedStatement statement = DAOUtil.prepareStatement(
-				this.con.getConnection(), delete , false, values);) {
+				this.con.getConnection(), delete, false, values);) {
 			int affectedRows = statement.executeUpdate();
 			if (affectedRows == 0) {
 				throw new DAOException(
@@ -250,7 +269,5 @@ public class PupilActivityDAO extends AbstractDAO {
 			throw new DAOException(e);
 		}
 	}
-
-
 
 }

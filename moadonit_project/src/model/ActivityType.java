@@ -20,9 +20,9 @@ public class ActivityType implements Serializable {
 
 	private String type;
 
-	//bi-directional many-to-one association to Activity
+	//bi-directional many-to-one association to ActivityGroup
 	@OneToMany(mappedBy="tblActivityType")
-	private List<Activity> tblActivities;
+	private List<ActivityGroup> tblActivityGroups;
 
 	public ActivityType() {
 	}
@@ -43,26 +43,26 @@ public class ActivityType implements Serializable {
 		this.type = type;
 	}
 
-	public List<Activity> getTblActivities() {
-		return this.tblActivities;
+	public List<ActivityGroup> getTblActivityGroups() {
+		return this.tblActivityGroups;
 	}
 
-	public void setTblActivities(List<Activity> tblActivities) {
-		this.tblActivities = tblActivities;
+	public void setTblActivityGroups(List<ActivityGroup> tblActivityGroups) {
+		this.tblActivityGroups = tblActivityGroups;
 	}
 
-	public Activity addTblActivity(Activity tblActivity) {
-		getTblActivities().add(tblActivity);
-		tblActivity.setTblActivityType(this);
+	public ActivityGroup addTblActivityGroup(ActivityGroup tblActivityGroup) {
+		getTblActivityGroups().add(tblActivityGroup);
+		tblActivityGroup.setTblActivityType(this);
 
-		return tblActivity;
+		return tblActivityGroup;
 	}
 
-	public Activity removeTblActivity(Activity tblActivity) {
-		getTblActivities().remove(tblActivity);
-		tblActivity.setTblActivityType(null);
+	public ActivityGroup removeTblActivityGroup(ActivityGroup tblActivityGroup) {
+		getTblActivityGroups().remove(tblActivityGroup);
+		tblActivityGroup.setTblActivityType(null);
 
-		return tblActivity;
+		return tblActivityGroup;
 	}
 
 }

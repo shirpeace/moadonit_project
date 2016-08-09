@@ -9,6 +9,7 @@ import java.util.Date;
  * The persistent class for the fullPupilCard database table.
  * 
  */
+
 @NamedQuery(name="FullPupilCard.findAll", query="SELECT f FROM FullPupilCard f")
 public class FullPupilCard implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -346,6 +347,5 @@ public class FullPupilCard implements Serializable {
 	public void setStaffChild(String staffChild) {
 		this.staffChild = staffChild;
 	}
-
 
 }

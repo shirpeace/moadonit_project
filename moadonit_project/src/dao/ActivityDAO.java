@@ -11,6 +11,7 @@ import java.util.List;
 import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 
 import model.Activity;
+import model.ActivityGroup;
 import model.ActivityType;
 import model.Course;
 import model.RegToMoadonit;
@@ -61,13 +62,13 @@ public class ActivityDAO extends AbstractDAO {
 				ResultSet resultSet = statement.executeQuery();) {
 
 			while (resultSet.next()) {
-				Activity p = mapActivity(resultSet);
-				if (p.getTblActivityType().getTypeID() == 1) {
+				Activity act = mapActivity(resultSet);
+				if (act.getTblActivityGroup().getTblActivityType().getTypeID() == 1) {
 					Course c = mapCourse(resultSet);
-					c.setActivityNum(p.getActivityNum());
-					c.setTblActivity(p);
-					p.setTblCourse(c);
-					list.add(p);
+					c.setActivityNum(act.getActivityNum());
+					c.setTblActivity(act);
+					act.setTblCourse(c);
+					list.add(act);
 				}
 				
 			}
@@ -98,7 +99,7 @@ public class ActivityDAO extends AbstractDAO {
 
 			while (resultSet.next()) {
 				Activity p = mapActivity(resultSet);
-				if (p.getTblActivityType().getTypeID() == 1) {
+				if (p.getTblActivityGroup().getTblActivityType().getTypeID() == 1) {
 					Course c = mapCourse(resultSet);
 					c.setActivityNum(p.getActivityNum());
 					c.setTblActivity(p);
@@ -131,8 +132,13 @@ public class ActivityDAO extends AbstractDAO {
 	private Activity mapActivity(ResultSet resultSet) throws SQLException {
 		//, , , , , , schoolYear, responsibleStaff, 
 		Activity act = new Activity();
+		
 		ActivityType type = new ActivityType();
 		type.setTypeID(resultSet.getInt("activityType"));
+		
+		ActivityGroup ag = new ActivityGroup();
+		ag.setActivityGroupNum(resultSet.getInt("activityGroup"));
+		ag.setTblActivityType(type);
 		
 		Staff s = new Staff();
 		s.setStaffID(resultSet.getInt("activityType"));
@@ -140,7 +146,8 @@ public class ActivityDAO extends AbstractDAO {
 		s.setLastName(resultSet.getString("lastName") );
 		act.setTblStaff(s);		
 		
-		act.setTblActivityType(type);
+		act.setTblActivityGroup(ag);
+		
 		act.setActivityName(resultSet.getString("activityName"));
 		act.setActivityNum(resultSet.getInt("activityNum"));		
 		act.setStartTime(resultSet.getTime("startTime"));

@@ -25,14 +25,28 @@ public class GradeInYear implements Serializable {
 	@JoinColumn(name="gradeID")
 	private GradeCode tblGradeCode;
 
+	//bi-directional many-to-many association to Pupil
+	@ManyToMany
+	@JoinTable(
+		name="tbl_grade_pupil"
+		, joinColumns={
+			@JoinColumn(name="gradeID", referencedColumnName="gradeID"),
+			@JoinColumn(name="yearID", referencedColumnName="yearID")
+			}
+		, inverseJoinColumns={
+			@JoinColumn(name="pupilNum")
+			}
+		)
+	private List<Pupil> tblPupils1;
+
 	//bi-directional many-to-one association to SchoolYear
 	@ManyToOne
 	@JoinColumn(name="yearID")
 	private SchoolYear tblSchoolYear;
 
 	//bi-directional many-to-many association to Pupil
-	@ManyToMany(mappedBy="tblGradeInYears")
-	private List<Pupil> tblPupils;
+	@ManyToMany(mappedBy="tblGradeInYears2")
+	private List<Pupil> tblPupils2;
 
 	public GradeInYear() {
 	}
@@ -61,6 +75,14 @@ public class GradeInYear implements Serializable {
 		this.tblGradeCode = tblGradeCode;
 	}
 
+	public List<Pupil> getTblPupils1() {
+		return this.tblPupils1;
+	}
+
+	public void setTblPupils1(List<Pupil> tblPupils1) {
+		this.tblPupils1 = tblPupils1;
+	}
+
 	public SchoolYear getTblSchoolYear() {
 		return this.tblSchoolYear;
 	}
@@ -69,12 +91,12 @@ public class GradeInYear implements Serializable {
 		this.tblSchoolYear = tblSchoolYear;
 	}
 
-	public List<Pupil> getTblPupils() {
-		return this.tblPupils;
+	public List<Pupil> getTblPupils2() {
+		return this.tblPupils2;
 	}
 
-	public void setTblPupils(List<Pupil> tblPupils) {
-		this.tblPupils = tblPupils;
+	public void setTblPupils2(List<Pupil> tblPupils2) {
+		this.tblPupils2 = tblPupils2;
 	}
 
 }

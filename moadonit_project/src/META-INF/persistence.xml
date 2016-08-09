@@ -34,9 +34,8 @@
 		<class>model.PupilActivity</class>
 		<class>model.PupilActivityPK</class>
 		<class>model.Teacher</class>
-<!-- 		<class>model.GradeTeacher</class>
-		<class>model.GradeTeacherPK</class> -->
-<!-- 		<class>model.FullPupilCard</class> -->
+		<!-- <class>model.FullPupilCard</class> -->
+		<class>model.ActivityGroup</class>
 
 
 	</persistence-unit>

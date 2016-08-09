@@ -23,6 +23,8 @@ public class Course implements Serializable {
 
 	private float pricePerMonth;
 
+	private int pupilCapacity;
+
 	private String regularOrPrivate;
 
 	//bi-directional one-to-one association to Activity
@@ -63,6 +65,14 @@ public class Course implements Serializable {
 
 	public void setPricePerMonth(float pricePerMonth) {
 		this.pricePerMonth = pricePerMonth;
+	}
+
+	public int getPupilCapacity() {
+		return this.pupilCapacity;
+	}
+
+	public void setPupilCapacity(int pupilCapacity) {
+		this.pupilCapacity = pupilCapacity;
 	}
 
 	public String getRegularOrPrivate() {

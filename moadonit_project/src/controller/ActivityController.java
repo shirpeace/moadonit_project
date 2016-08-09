@@ -162,8 +162,9 @@ Serializable {
 			HttpServletResponse resp) {
 		// TODO Auto-generated method stub
 		int actID = Integer.parseInt(req.getParameter("activityNum"));
-		this.pupilActDAO = new PupilActivityDAO(con);
-		List<PupilActivity> list =  this.pupilActDAO.getPupilInCourse(actID);
+		java.sql.Date dateToSearch = req.getParameter("dateToSearch") == null ? null : new java.sql.Date(Long.parseLong(req.getParameter("dateToSearch").toString()));  
+				this.pupilActDAO = new PupilActivityDAO(con);
+		List<PupilActivity> list =  this.pupilActDAO.getPupilInCourse(actID, dateToSearch);
 		
 		return list;
 	}
@@ -470,7 +471,7 @@ Serializable {
 				JSONObject obj = new JSONObject();
 
 				obj.put("activityNum", act.getActivityNum());
-				obj.put("activityType", act.getTblActivityType().getTypeID());
+				obj.put("activityType", act.getTblActivityGroup().getTblActivityType().getTypeID());
 				obj.put("activityName", act.getActivityName());
 				obj.put("weekDay", act.getWeekDay());			
 				obj.put("startTime", act.getStartTime().toString().substring(0,5));

@@ -371,7 +371,7 @@ Serializable {
 				JSONObject obj = new JSONObject();
 
 				obj.put("activityNum", act.getActivityNum());
-				obj.put("activityType", act.getTblActivityType().getTypeID());
+				obj.put("activityType", act.getTblActivityGroup().getTblActivityType().getTypeID());
 				obj.put("activityName", act.getActivityName());
 				obj.put("weekDay", act.getWeekDay());			
 				obj.put("startTime", act.getStartTime().toString().substring(0,5));

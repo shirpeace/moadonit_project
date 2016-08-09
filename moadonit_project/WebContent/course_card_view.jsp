@@ -77,6 +77,9 @@
     <script src="js/i18n/grid.locale-he.js"></script>
     <script src="js/jquery.jqGrid.min.js"></script>
     
+    <!-- bootbox code -->
+    <script src="js/bootbox.js"></script> 
+    
     <script src="js/js_logic.js"></script>
     <script src="js/js_course_card_view.js"></script> 
 	
@@ -88,8 +91,7 @@
 	<script src="js/additional-methods.js"></script>
 	<script src="js/messages_he.js"></script>
 	<script src="js/jquery.timepicker.min.js"></script>
-	<!-- bootbox code -->
-    <script src="js/bootbox.js"></script> 
+	
     
     <script src="js/jquery.bpopup.min.js"></script> 
     <script src="js/bootstrap-datepicker.js"></script> 
