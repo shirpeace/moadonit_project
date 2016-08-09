@@ -227,8 +227,8 @@ public class FullPupilCardDAO extends AbstractDAO {
 			
 			if(withRegPupil == 0 && stat.endsWith("and "))
 				stat = stat.substring(0, stat.length()-4);
-			/*else if(stat.endsWith("where "))
-				stat = stat.substring(0, stat.length()-6);*/
+			else if(stat.endsWith("where "))
+				stat = stat.substring(0, stat.length()-6);
 		}
 		
 	/*	if(rowOffset == 0 && rowsPerPage == 0)
