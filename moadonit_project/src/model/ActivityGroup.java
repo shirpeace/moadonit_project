@@ -4,7 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 
-//persistent
+
 /**
  * The persistent class for the tbl_activity_group database table.
  * 

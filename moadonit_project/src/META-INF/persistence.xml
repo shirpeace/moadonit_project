@@ -4,9 +4,11 @@
 		<mapping-file>META-INF/eclipselink-orm.xml</mapping-file>
 		
 		<class>model.Activity</class>
+		<class>model.ActivityGroup</class>
 		<class>model.ActivityType</class>
 		<class>model.Attendance</class>
 		<class>model.AttendancePK</class>
+		<class>model.Course</class>
 		<class>model.Family</class>
 		<class>model.FamilyRelation</class>
 		<class>model.FoodType</class>
@@ -21,6 +23,8 @@
 		<class>model.OneTimeRegPK</class>
 		<class>model.Parent</class>
 		<class>model.Pupil</class>
+		<class>model.PupilActivity</class>
+		<class>model.PupilActivityPK</class>
 		<class>model.RegSource</class>
 		<class>model.RegToMoadonit</class>
 		<class>model.RegToMoadonitPK</class>
@@ -28,14 +32,10 @@
 		<class>model.RegisterPupil</class>
 		<class>model.Room</class>
 		<class>model.SchoolYear</class>
-		<class>model.User</class>		
-		<class>model.Course</class>
 		<class>model.Staff</class>
-		<class>model.PupilActivity</class>
-		<class>model.PupilActivityPK</class>
 		<class>model.Teacher</class>
+		<class>model.User</class>
 		<!-- <class>model.FullPupilCard</class> -->
-		<class>model.ActivityGroup</class>
 
 
 	</persistence-unit>
