@@ -5,7 +5,7 @@ import javax.persistence.*;
 import java.sql.Time;
 import java.util.List;
 
-
+//wee
 /**
  * The persistent class for the tbl_activity database table.
  * 
