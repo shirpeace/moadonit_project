@@ -8,7 +8,7 @@ var currentUserId =	 '<%=session.getAttribute("userid")%>';
 //$.jgrid.defaults.responsive = true;
 //$.jgrid.defaults.styleUI = 'Bootstrap';
 var gradeData;
-var grades;
+var grades, FoodTypes;
 // define state for the editable page
 	var state = {
 	    EDIT: 0,
@@ -114,6 +114,18 @@ function setColorsForGrade(){
 	
 }
 
+function setFoodTypeSelect(selectObj){
+	debugger;
+    var $select = selectObj;                       
+    $select.find('option').remove();   
+    var FoodTypesCopy = FoodTypes.value.split(";");
+    $.each(FoodTypesCopy, function(key, value) {  
+    	value  = value.split(":");
+    	$select.append('<option  value=' + value[0] + '>' + value[1] + '</option>'); 	
+    });
+	
+}
+
 
 function getGrades()
 {
@@ -140,6 +152,30 @@ function getGrades()
       });	
 }
 
+function getFoodTypes()
+{
+	$.ajax({
+  		async: false,
+		type: 'GET',
+		datatype: 'json',
+        url: "FullPupilCardController?action=getFoodTypes",
+        
+        success: function(data) {
+        	if(data != undefined){
+        		FoodTypes = data;
+        		console.log("FoodTypes = "+FoodTypes);
+        	}
+        	else
+        		console.log("no data");
+        },
+        error: function(e) {
+        	console.log("error loading FoodTypes");
+        	
+			
+        }
+        
+      });	
+}
 
 /**
  * the value to convert to date , if value is a milliseconds number , create an date from it.

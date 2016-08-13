@@ -23,9 +23,17 @@
 
 			});
 			
-			getGrades();
+			// get grade values from server
+			getGrades();			
+			//get food type values from server
+			getFoodTypes();
 			
+			// set grade select with values
 			setColorsForGrade();
+			
+			//set food type select with values
+			setFoodTypeSelect($('#food'));
+			
 			//saveBtn
 			$("#saveBtn").click(function() {
 				
