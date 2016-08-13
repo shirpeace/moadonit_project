@@ -139,7 +139,7 @@ function loadGrid(){
               width : 100,
               editable : false,
               stype: "select",
-              searchoptions: { value: ":;1:רשום;2:לא רשום"},
+              searchoptions: { value: ":;2:רשום;1:לא רשום"},
               formatter: "checkbox",
           } 
           ],

@@ -91,6 +91,10 @@
 							required: true,
 							
 							},
+							food : {  
+								required: true,
+								
+								},
 						fName : {  
 						required: true,
 						minlength: 2,

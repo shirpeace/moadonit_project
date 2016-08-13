@@ -46,6 +46,7 @@ import model.GenderRef;
 import model.GradeCode;
 import model.Parent;
 import model.Pupil;
+import model.PupilState;
 import model.RegToMoadonit;
 import model.RegisterPupil;
 
@@ -132,6 +133,16 @@ public class FullPupilCardController extends HttpServlet implements
 				resp.setCharacterEncoding("UTF-8");
 				resp.getWriter().print(jsonObj);
 			}
+			
+			if (action.equals("getFoodTypes")) {
+
+				JSONObject jsonObj = getFoodTypesJson();
+
+				resp.setContentType("application/json");
+				resp.setCharacterEncoding("UTF-8");
+				resp.getWriter().print(jsonObj);
+			}
+			
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -148,6 +159,21 @@ public class FullPupilCardController extends HttpServlet implements
 
 	@SuppressWarnings("unchecked")
 	private JSONObject getGradesJson() {
+		List<GradeCode> list = gradeDAO.selectIndex(0);
+		String values = " : ;";
+		for (int i = 0; i < list.size(); i++) { // { value: ":;1:בן;2:בת"}
+			GradeCode grade = list.get(i);
+			values += grade.getGradeID() + ":" + grade.getGradeName() + ":"
+					+ grade.getGradeColor() + ";";
+		}
+		values = values.substring(0, values.length() - 1);
+		JSONObject json = new JSONObject();
+		json.put("value", values);
+		return json;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private JSONObject getFoodTypesJson() {
 		List<GradeCode> list = gradeDAO.selectIndex(0);
 		String values = " : ;";
 		for (int i = 0; i < list.size(); i++) { // { value: ":;1:בן;2:בת"}
@@ -585,7 +611,7 @@ public class FullPupilCardController extends HttpServlet implements
 			if (!p.getTblGradePupils().isEmpty())
 				this.gradePupilDAO.update(p.getTblGradePupils().get(0));
 
-			if (rp.getPupilNum() > 0) {
+			if (p.getPupilNum() > 0) {
 				// check if update regPupil
 				RegisterPupil temp = this.regPupilDao.selectById(rp
 						.getPupilNum());
@@ -607,26 +633,25 @@ public class FullPupilCardController extends HttpServlet implements
 					}
 
 				}
-			} else {
-
-				// insert regPupil
-				rp.setPupilNum(p.getPupilNum());
-				if (rp.getEthiopian() != 0
-						|| !rp.getFoodSensitivity().trim().equals("")
-						|| !rp.getHealthProblems().trim().equals("")
-						|| !rp.getOtherComments().trim().equals("")
-						|| (rp.getStaffChild() != null && !rp.getStaffChild()
-								.trim().equals(""))
-						|| rp.getTblFoodType().getFoodTypeID() != 0) {
-
-					if (rp.getTblFoodType().getFoodTypeID() == 0) {
-						rp.getTblFoodType().setFoodTypeID(1);
-					}
-
+				else{
+					// insert regPupil
 					rp.setPupilNum(p.getPupilNum());
-					this.regPupilDao.insert(rp);
-				}
+					if (rp.getEthiopian() != 0
+							|| !rp.getFoodSensitivity().trim().equals("")
+							|| !rp.getHealthProblems().trim().equals("")
+							|| !rp.getOtherComments().trim().equals("")
+							|| (rp.getStaffChild() != null && !rp.getStaffChild()
+									.trim().equals(""))
+							|| rp.getTblFoodType().getFoodTypeID() != 0) {
 
+						if (rp.getTblFoodType().getFoodTypeID() == 0) {
+							rp.getTblFoodType().setFoodTypeID(1);
+						}
+
+						rp.setPupilNum(p.getPupilNum());
+						this.regPupilDao.insert(rp);
+					}
+				}
 			}
 
 		}
@@ -698,6 +723,10 @@ public class FullPupilCardController extends HttpServlet implements
 
 		}
 
+		PupilState s = new PupilState();
+		s.setStateNum(1);
+		p.setTblPupilState(s);
+		
 		this.pupilDao.insert(p);
 
 		// save pupil is to the pupilGrade id entity and save pupilGrade to DB
@@ -812,11 +841,11 @@ public class FullPupilCardController extends HttpServlet implements
 			 * List<RegToMoadonit> active =
 			 * regToMoadonitDAO.getActiveRegForPupil(pupil.getPupilNum());
 			 */
-			Boolean reg;
+			/*Boolean reg;
 			if (pupil.getRegPupilNum() == 0) {
 				reg = false;
 			} else
-				reg = true;
+				reg = true;*/
 
 			JSONObject user = new JSONObject();
 			user.put("id", pupil.getPupilNum());
@@ -824,7 +853,7 @@ public class FullPupilCardController extends HttpServlet implements
 			user.put("lastName", pupil.getLastName());
 			user.put("gender", gend);
 			user.put("gradeName", pupil.getGradeName());
-			user.put("isReg", reg);
+			user.put("isReg", pupil.getStateNum() == 2 ? true : false);
 
 			jsonResult.add(user);
 		}
@@ -877,15 +906,15 @@ public class FullPupilCardController extends HttpServlet implements
 				gend = "בת";
 			else
 				gend = " ";
-			Boolean reg;
+			/*Boolean reg;
 			if (pupil.getRegPupilNum() == 0) {
 				reg = false;
 			} else
-				reg = true;
+				reg = true;*/
 
 			JSONObject user = new JSONObject();
 			user.put("id", pupil.getPupilNum());
-			user.put("isReg", reg);
+			user.put("isReg", pupil.getStateNum() == 2 ? true : false);
 			user.put("firstName", pupil.getFirstName());
 			user.put("lastName", pupil.getLastName());
 			user.put("gender", gend);

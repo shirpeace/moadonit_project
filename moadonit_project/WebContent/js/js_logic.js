@@ -139,6 +139,8 @@ function getGrades()
         
       });	
 }
+
+
 /**
  * the value to convert to date , if value is a milliseconds number , create an date from it.
  * if value is string, build date from it.
@@ -217,7 +219,7 @@ function savePupilCardData(action,forward){
 	 	var parent2  = new Object();
 	 	/*var relation1 = new  Object();
 	 	var relation2 = new  Object();*/
-	 	
+	 	debugger;
 	 	if(typeof pupilData != undefined && pupilData != "" && pupilData != null)
 	 		pupil.pupilNum = pupilData.pupilNum;
 	 	else

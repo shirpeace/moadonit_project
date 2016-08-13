@@ -5,14 +5,13 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-
 /**
  * The persistent class for the tbl_pupil database table.
  * 
  */
 @Entity
-@Table(name="tbl_pupil")
-@NamedQuery(name="Pupil.findAll", query="SELECT p FROM Pupil p")
+@Table(name = "tbl_pupil")
+@NamedQuery(name = "Pupil.findAll", query = "SELECT p FROM Pupil p")
 public class Pupil implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -30,49 +29,47 @@ public class Pupil implements Serializable {
 
 	private String photoPath;
 
-	//bi-directional many-to-one association to Attendance
-	@OneToMany(mappedBy="tblPupil")
+	// bi-directional many-to-one association to Attendance
+	@OneToMany(mappedBy = "tblPupil")
 	private List<Attendance> tblAttendances;
 
-	//bi-directional many-to-many association to GradeInYear
-	@ManyToMany(mappedBy="tblPupils1")
+	// bi-directional many-to-many association to GradeInYear
+	@ManyToMany(mappedBy = "tblPupils1")
 	private List<GradeInYear> tblGradeInYears1;
 
-	//bi-directional many-to-one association to OneTimeReg
-	@OneToMany(mappedBy="tblPupil")
+	// bi-directional many-to-one association to OneTimeReg
+	@OneToMany(mappedBy = "tblPupil")
 	private List<OneTimeReg> tblOneTimeRegs;
 
-	//bi-directional many-to-one association to Family
+	// bi-directional many-to-one association to Family
 	@ManyToOne
-	@JoinColumn(name="familyID")
+	@JoinColumn(name = "familyID")
 	private Family tblFamily;
 
-	//bi-directional many-to-one association to GenderRef
+	// bi-directional many-to-one association to GenderRef
 	@ManyToOne
-	@JoinColumn(name="gender")
+	@JoinColumn(name = "gender")
 	private GenderRef tblGenderRef;
 
-	//bi-directional many-to-many association to GradeInYear
+	// bi-directional many-to-many association to GradeInYear
 	@ManyToMany
-	@JoinTable(
-		name="tbl_grade_pupil"
-		, joinColumns={
-			@JoinColumn(name="pupilNum")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="gradeID", referencedColumnName="gradeID"),
-			@JoinColumn(name="yearID", referencedColumnName="yearID")
-			}
-		)
+	@JoinTable(name = "tbl_grade_pupil", joinColumns = { @JoinColumn(name = "pupilNum") }, inverseJoinColumns = {
+			@JoinColumn(name = "gradeID", referencedColumnName = "gradeID"),
+			@JoinColumn(name = "yearID", referencedColumnName = "yearID") })
 	private List<GradeInYear> tblGradeInYears2;
 
-	//bi-directional many-to-one association to PupilActivity
-	@OneToMany(mappedBy="tblPupil")
+	// bi-directional many-to-one association to PupilActivity
+	@OneToMany(mappedBy = "tblPupil")
 	private List<PupilActivity> tblPupilActivities;
 
-	//bi-directional one-to-one association to RegisterPupil
-	@OneToOne(mappedBy="tblPupil")
+	// bi-directional one-to-one association to RegisterPupil
+	@OneToOne(mappedBy = "tblPupil")
 	private RegisterPupil tblRegisterPupil;
+
+	// bi-directional many-to-one association to PupilState
+	@ManyToOne
+	@JoinColumn(name = "isReg")
+	private PupilState tblPupilState;
 
 	public Pupil() {
 	}
@@ -230,16 +227,24 @@ public class Pupil implements Serializable {
 	public void setTblRegisterPupil(RegisterPupil tblRegisterPupil) {
 		this.tblRegisterPupil = tblRegisterPupil;
 	}
-	//bi-directional many-to-one association to GradePupil
-	@OneToMany(mappedBy="tblPupil")
+
+	public PupilState getTblPupilState() {
+		return this.tblPupilState;
+	}
+
+	public void setTblPupilState(PupilState tblPupilState) {
+		this.tblPupilState = tblPupilState;
+	}
+
+	// bi-directional many-to-one association to GradePupil
+	@OneToMany(mappedBy = "tblPupil")
 	private List<GradePupil> tblGradePupils;
 
-		public List<GradePupil> getTblGradePupils() {
+	public List<GradePupil> getTblGradePupils() {
 		return tblGradePupils;
 	}
 
 	public void setTblGradePupils(List<GradePupil> tblGradePupils) {
 		this.tblGradePupils = tblGradePupils;
 	}
-
 }
