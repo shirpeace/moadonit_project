@@ -26,7 +26,7 @@ public class OneTimeRegDao extends AbstractDAO {
 	 * select all oneTimeRegs of a pupil by a giving id 
 	 */
 	private String select = " select * from ms2016.tbl_one_time_reg where pupilNum = ? AND schoolYear = ms2016.get_currentYearID() ORDER BY specificDate desc";
-	private String checkOneTimeRegPK = "SELECT pupilNum, specificDate FROM tbl_one_time_reg where pupilNum = ? and specificDate = ? and activeYear =  ms2016.get_currentYearID()";
+	private String checkOneTimeRegPK = "SELECT pupilNum, specificDate FROM tbl_one_time_reg where pupilNum = ? and specificDate = ? and schoolYear =  ms2016.get_currentYearID()";
 	private String insertOTR = "INSERT INTO tbl_one_time_reg "
 			+ "(pupilNum,specificDate,regType, schoolYear )"
 			+ "VALUES(?,?,?, ms2016.get_currentYearID() );";
@@ -90,8 +90,8 @@ public class OneTimeRegDao extends AbstractDAO {
 		// (pupilNum,registerDate,startDate,sunday_,monday_,tuesday_,wednesday_,thursday_,writenBy,source)
 		Object[] values = { reg.getId().getPupilNum(),
 				DAOUtil.toSqlDate(reg.getId().getSpecificDate()),
-				reg.getTblRegType(),
-				reg.getTblSchoolYear()
+				reg.getTblRegType()//,
+			//	reg.getTblSchoolYear()
 				};
 
 		try (

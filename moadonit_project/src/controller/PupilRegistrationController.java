@@ -249,10 +249,12 @@ public class PupilRegistrationController extends HttpServlet implements
 							+ 0 + ",\"rows\":" + jsonResponse + "}";
 					resp.getWriter().print(jsonResponse);
 				}
-			} else if (action.equals("saveOneTime")) { /*Shir */
+			} else if (action.equals("saveOneTime")) { 
 				/////////////////////////
 			
 				String otr = req.getParameter("oneTimeReg");
+				oneTime = new OneTimeReg();
+				this.oneTimesDAO = new OneTimeRegDao(con);
 				this.oneTime = (OneTimeReg) DAOUtil.getObjectFromJson(otr,
 						this.oneTime.getClass());
 

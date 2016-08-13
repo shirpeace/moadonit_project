@@ -156,7 +156,7 @@
 										<div class="row">
 											<div class="form-group col-lg-4" id="typeDiv">
 												<label for="type">ברצוני לרשום את התלמיד ל</label> 
-												<select class="form-control " id="type" name="type">
+												<select class="form-control " id="typePick" name="type">
 													<option value="1"></option>
 													<option value="2">מועדונית</option>
 													<option value="3">אוכל בלבד</option>

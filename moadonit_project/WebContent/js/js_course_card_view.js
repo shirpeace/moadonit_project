@@ -991,7 +991,7 @@ function loadPupilGrid() {
 								+ activityNum,
 							datatype : "json",
 							mtype : 'POST',
-							colNames : [ 'מספר', 'שם פרטי', 'שם משפחה', 'מגדר',
+							colNames : [ 'מספר', 'שם משפחה', 'שם פרטי', 'מגדר',
 									'כיתה', 'רשום' ],
 							loadComplete : function(data) {
 								
@@ -1017,14 +1017,14 @@ function loadPupilGrid() {
 										hidden : true
 									},
 									{
-										name : 'firstName',
-										index : 'firstName',
+										name : 'lastName',
+										index : 'lastName',
 										width : 150,
 										editable : true
 									},
 									{
-										name : 'lastName',
-										index : 'lastName',
+										name : 'firstName',
+										index : 'firstName',
 										width : 150,
 										editable : true
 									},

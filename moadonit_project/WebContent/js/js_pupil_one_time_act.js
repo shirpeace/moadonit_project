@@ -8,18 +8,18 @@ $(function() {
 		$('#bcPupilCard').attr('href', 'pupil_card_view.jsp?li=0&pupil=' + pupilID);
 		
 		$("#saveBtn").click(function() {
-			if($("#datePick").val() != "" && $("#type").val() != ""){
+			if($("#datePick").val() != "" && $("#typePick").val() != ""){
 				var msg = "התלמיד/ה  "+pupilData.firstName + " " + pupilData.lastName;
 				
 				msg+= " ת/ירשם באופן חד-פעמי לתאריך "+ $("#datePick").val();
 				bootbox.confirm(msg, function(result) {
-					if (result === true)  
-						result = saveOneTimeAct(pupilID);			
+					if (result === true) { 
+						saveOneTimeAct(pupilID);			
 						if(result === true){
-							loadhistoryRegsGrid(pupilID); 
+							$("#listRegistration").trigger("reloadGrid");
+							//loadhistoryRegsGrid(pupilID); 
+						}
 					}
-					                            
-					   
 				});
 					
 				}
@@ -436,9 +436,9 @@ function saveOneTimeAct(pupilID){
 	var oneTime = new Object();
 	var oneTimePK = new Object();
 	oneTimePK.pupilNum = pupilID;
-	oneTimePK.specificDate = $("#datePick").val();
+	oneTimePK.specificDate = getDateFromValue($("#datePick").val());
 	oneTime.id = oneTimePK;
-	oneTime.regType = oneTimePK;
+	oneTime.regType = $("#typePick").val();
 	
 	$.ajax({
 	  		async: false,
