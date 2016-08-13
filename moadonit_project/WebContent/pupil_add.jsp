@@ -194,7 +194,7 @@
 
 									<label for="grade">כיתה</label> <select class="form-control" onchange="setGradeBgColor(this)"
 										name="grade" id="grade">
-										<option value="11">א-א</option>
+										<!-- <option value="11">א-א</option>
 										<option value="12">א-ב</option>
 										<option value="13">א-ג</option>
 										<option value="21">ב-א</option>
@@ -211,7 +211,7 @@
 										<option value="53">ב-ג</option>
 										<option value="61">ו-א</option>
 										<option value="62">ו-ב</option>
-										<option value="63">ו-ג</option>
+										<option value="63">ו-ג</option> -->
 									</select>
 								</div>
 								<div class="form-group">
@@ -231,7 +231,7 @@
 								<div class="form-group">
 									<label for="food">סוג מנה</label> <select class="form-control"
 										name="food" id="food">
-										<option value="0">בחר</option>
+										<!-- <option value="0">בחר</option> -->
 										<option value="1">רגילה</option>
 										<option value="2">אפויה</option>
 										<option value="3">צמחונית</option>

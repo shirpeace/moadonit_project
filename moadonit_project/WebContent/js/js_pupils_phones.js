@@ -74,7 +74,7 @@ function loadGrid(){
 	              width : 60,
 	              editable : false,
 	              stype: "select",
-	              searchoptions: { value: ":;1:רשום;2:לא רשום"},
+	              searchoptions: { value: ":;2:רשום;1:לא רשום"},
 	              formatter: "checkbox"
 	      },  {
                   name : 'lastName',

@@ -36,6 +36,8 @@
 		<class>model.Teacher</class>
 		<class>model.User</class>
 		<!-- <class>model.FullPupilCard</class> -->
+		<class>model.PupilState</class>
+		
 
 
 	</persistence-unit>

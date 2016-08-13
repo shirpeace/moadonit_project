@@ -16,7 +16,7 @@ public class FullPupilCardDAO extends AbstractDAO {
 	private String select = "SELECT * FROM fullPupilCard where pupilNum = ?";
 	private String selectAll = "SELECT * FROM fullPupilCard ";
 	private String selectSearch = "SELECT * FROM fullPupilCard where firstName = ?";
-	private String selectFilter = "{ CALL ms2016.getFullPupilByParam (?, ?, ?, ?, ?, ?) }";
+	private String selectFilter = "{ CALL ms2016.getFullPupilByParam_V2 ( ?, ?, ?, ?, ?) }";
 	private String SelectPupilNotInActivity = "SELECT * FROM fullPupilCard  where pupilNum  NOT IN ( select pupilNum from tbl_pupil_activities where activityNum = ? and CURDATE() <= endDate)";
 	/**
 	 * 
@@ -124,6 +124,8 @@ public class FullPupilCardDAO extends AbstractDAO {
 		p.setP2relation(resultSet.getInt("p2relation"));
 		p.setParent1ID(resultSet.getInt("parent1ID"));
 		p.setParent2ID(resultSet.getInt("parent2ID"));
+		p.setStateNum(resultSet.getInt("stateNum"));
+		p.setState(resultSet.getString("state"));
 		return p;
 	}
 
@@ -212,14 +214,15 @@ public class FullPupilCardDAO extends AbstractDAO {
 				stat+="gradeID =" +grade +" and ";
 			}
 			if(isReg!=null && !isReg.trim().equals("")){
-				if(isReg.equals("1")){
+				stat+="stateNum =" +isReg +" and ";
+				/*if(isReg.equals("1")){
 					//stat+="regPupilNum is not null";
-					withRegPupil = 1; //-- get only registered pupil
+					withRegPupil = 1; //-- get only non registered pupil 
 				}
 				else{
 					//stat+="regPupilNum is null";
-					withRegPupil = 2; //-- get only non registered pupil
-				}
+					withRegPupil = 2; //-- get only registered pupil
+				}*/
 			}else{
 				
 				withRegPupil = 0; //-- get all pupil    
@@ -227,7 +230,7 @@ public class FullPupilCardDAO extends AbstractDAO {
 			
 			if(withRegPupil == 0 && stat.endsWith("and "))
 				stat = stat.substring(0, stat.length()-4);
-			else if(stat.endsWith("where "))
+			else if(withRegPupil == 0 && stat.endsWith("where "))
 				stat = stat.substring(0, stat.length()-6);
 		}
 		
@@ -249,7 +252,7 @@ public class FullPupilCardDAO extends AbstractDAO {
 				reg = true;
 		}*/
 		///
-		Object[] values = {   stat, withRegPupil, rowOffset, rowsPerPage, sind, sord };
+		Object[] values = {   stat, rowOffset, rowsPerPage, sind, sord };
 		try (PreparedStatement statement = DAOUtil.prepareCallbackStatement(this.con.getConnection(), selectFilter ,values);
 						ResultSet resultSet = statement.executeQuery();) {
 
@@ -303,29 +306,30 @@ public class FullPupilCardDAO extends AbstractDAO {
 			if(p2cell!=null){
 				stat+="p2cell LIKE '%" +p2cell +"%' and ";
 			}
-			if(isReg!=null){
-				if(isReg.equals("1")){
+			if(isReg!=null && !isReg.trim().equals("")){
+				stat+="stateNum =" +isReg +" and ";
+				/*if(isReg.equals("1")){
 					//stat+="regPupilNum is not null";
-					withRegPupil = 1; //-- get only registered pupil
+					withRegPupil = 1; //-- get only non registered pupil 
 				}
 				else{
 					//stat+="regPupilNum is null";
-					withRegPupil = 2; //-- get only non registered pupil
-				}
-			}
-			
-			else{
-				//stat = stat.substring(0, stat.length()-4);
+					withRegPupil = 2; //-- get only registered pupil
+				}*/
+			}else{
+				
 				withRegPupil = 0; //-- get all pupil    
 			}
 			
 			if(withRegPupil == 0 && stat.endsWith("and "))
 				stat = stat.substring(0, stat.length()-4);
+			else if(withRegPupil == 0 && stat.endsWith("where "))
+				stat = stat.substring(0, stat.length()-6);
 			/*else
 				stat = stat.substring(0, stat.length()-4);*/
 		}
 		
-		Object[] values = {   stat, withRegPupil, 0, 0, sind, sord };
+		Object[] values = {   stat, 0, 0, sind, sord };
 		try (PreparedStatement statement = DAOUtil.prepareCallbackStatement(this.con.getConnection(), selectFilter ,values);
 						ResultSet resultSet = statement.executeQuery();) {
 

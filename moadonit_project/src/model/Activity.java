@@ -5,7 +5,7 @@ import javax.persistence.*;
 import java.sql.Time;
 import java.util.List;
 
-//wee
+
 /**
  * The persistent class for the tbl_activity database table.
  * 
@@ -26,6 +26,11 @@ public class Activity implements Serializable {
 	private Time startTime;
 
 	private String weekDay;
+
+	//bi-directional many-to-one association to ActivityGroup
+	@ManyToOne
+	@JoinColumn(name="activityGroup")
+	private ActivityGroup tblActivityGroup;
 
 	//bi-directional many-to-one association to SchoolYear
 	@ManyToOne
@@ -52,11 +57,6 @@ public class Activity implements Serializable {
 	//bi-directional many-to-one association to RegToMoadonit
 	@OneToMany(mappedBy="tblActivity")
 	private List<RegToMoadonit> tblRegToMoadonits;
-
-	//bi-directional many-to-one association to ActivityGroup
-	@ManyToOne
-	@JoinColumn(name="activityGroup")
-	private ActivityGroup tblActivityGroup;
 
 	public Activity() {
 	}
@@ -99,6 +99,14 @@ public class Activity implements Serializable {
 
 	public void setWeekDay(String weekDay) {
 		this.weekDay = weekDay;
+	}
+
+	public ActivityGroup getTblActivityGroup() {
+		return this.tblActivityGroup;
+	}
+
+	public void setTblActivityGroup(ActivityGroup tblActivityGroup) {
+		this.tblActivityGroup = tblActivityGroup;
 	}
 
 	public SchoolYear getTblSchoolYear() {
@@ -189,14 +197,6 @@ public class Activity implements Serializable {
 		tblRegToMoadonit.setTblActivity(null);
 
 		return tblRegToMoadonit;
-	}
-
-	public ActivityGroup getTblActivityGroup() {
-		return this.tblActivityGroup;
-	}
-
-	public void setTblActivityGroup(ActivityGroup tblActivityGroup) {
-		this.tblActivityGroup = tblActivityGroup;
 	}
 
 }
