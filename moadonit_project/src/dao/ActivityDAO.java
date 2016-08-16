@@ -40,7 +40,7 @@ public class ActivityDAO extends AbstractDAO {
 	 * @param _weekDay
 	 * @param _startTime
 	 * @param _endTime
-	 * @param firstName
+	 * @param _staffName
 	 * @param _pricePerMonth
 	 * @param _extraPrice
 	 * @param _regularOrPrivate
@@ -50,12 +50,12 @@ public class ActivityDAO extends AbstractDAO {
 	 * @throws DAOException
 	 */
 	public List<Activity> searchCoursesByParam( String _activityName, String _weekDay,String _startTime,
-			String _endTime, String firstName, float _pricePerMonth, float _extraPrice, String _regularOrPrivate, int _category)
+			String _endTime, String _staffName, float _pricePerMonth, float _extraPrice, String _regularOrPrivate, int _category)
 			throws IllegalArgumentException, DAOException {
 		List<Activity> list = new ArrayList<>();
 
 		Object[] values = {    _activityName, _weekDay, 
-				_startTime, _endTime, firstName, _pricePerMonth, _extraPrice, _regularOrPrivate, _category};
+				_startTime, _endTime, _staffName, _pricePerMonth, _extraPrice, _regularOrPrivate, _category};
 		
 		try (PreparedStatement statement = DAOUtil.prepareCallbackStatement(
 				this.con.getConnection(), searchCoursesByParam, values );

@@ -8,24 +8,25 @@ $(function() {
 		$('#bcPupilCard').attr('href', 'pupil_card_view.jsp?li=0&pupil=' + pupilID);
 		
 		$("#saveBtn").click(function() {
-			if($("#datePick").val() != "" && $("#typePick").val() != ""){
+			
+		//	var result;
+			var form = $("#oneTForm");
+			if (form.valid()){
 				var msg = "התלמיד/ה  "+pupilData.firstName + " " + pupilData.lastName;
-				
 				msg+= " ת/ירשם באופן חד-פעמי לתאריך "+ $("#datePick").val();
 				bootbox.confirm(msg, function(result) {
 					if (result === true) { 
 						saveOneTimeAct(pupilID);			
 						if(result === true){
 							$("#listRegistration").trigger("reloadGrid");
+							bootbox.alert("נתונים נשמרו בהצלחה", function() {	});
 							//loadhistoryRegsGrid(pupilID); 
 						}
 					}
 				});
-					
-				}
-//			else
-//				tell the user to enter date
-				
+			}
+			
+		
 			
 			return false;
 		});
@@ -45,6 +46,37 @@ $(function() {
 		    todayHighlight: true,
 		    toggleActive: true 
 		}); 
+		 
+			/* set the validattion for form */
+			var validator = $("#oneTForm").validate({
+				
+				errorPlacement: function(error, element) {
+					// Append error within linked label					
+					error.css("color", "red");				
+					$( element )
+						.closest( "form" )
+							.find( "label[for='" + element.attr( "id" ) + "']" )
+								.append(  error );
+				},
+					rules: {   
+					
+					// set a rule to inputs
+					// input must have name and id attr' and with same value !!! 
+						
+							typePick : {  
+								required: true,
+								
+								},
+								datePick : {  
+									required: true
+									
+								}
+				
+					
+				},
+				errorElement: "span",
+				
+			});
 });
 
 function loadPupilOneAct(dataString) {
@@ -103,10 +135,19 @@ function loadhistoryRegsGrid(pupilID) {
 			   afterSubmit: function (response, postdata) {
 				   response = $.parseJSON(response.responseText);
 				   // delete row
-	                grid.delRowData(rowData.id);
-	                bootbox.alert("רשומה נמחקה בהצלחה",
-							function() {
+				   var msg = "פעולה זו תמחק את הרישום החד-פעמי לחלוטין, גם מדוח החיובים החודשי. האם למחוק בכל זאת?";
+				   bootbox.confirm(msg, function(result) {
+						if (result === true) { 
+							 retrn = true;//delete func ;
+								 if(retrn === true){
+						             bootbox.alert("רשומה נמחקה בהצלחה", function() {});
+						             grid.delRowData(rowData.id);
+								 }
+								 else
+									 bootbox.alert("שגיאה במחיקת הרשומה", function() {});
+						}
 					});
+	               
 			        
 				   console.log(response);
 			        return [true, "success"];
@@ -435,10 +476,12 @@ function saveOneTimeAct(pupilID){
 	
 	var oneTime = new Object();
 	var oneTimePK = new Object();
+	var RegType = new Object();
 	oneTimePK.pupilNum = pupilID;
 	oneTimePK.specificDate = getDateFromValue($("#datePick").val());
 	oneTime.id = oneTimePK;
-	oneTime.regType = $("#typePick").val();
+	RegType.typeNum =  $("#typePick").val();
+	oneTime.tblRegType = RegType;
 	
 	$.ajax({
 	  		async: false,

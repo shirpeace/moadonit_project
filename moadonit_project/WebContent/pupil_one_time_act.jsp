@@ -52,6 +52,11 @@
 	<script src="js/js_logic.js"></script>
 
 	
+	<!-- form validation plugin -->
+	<script src="js/jquery.validate.js"></script>
+	<script src="js/additional-methods.js"></script>
+	<script src="js/messages_he.js"></script> 
+	
     <script src="js/bootstrap-datepicker.js"></script> 
 	<script src="js/i18n/bootstrap-datepicker.he.min.js"></script> 
     <!-- Bootstrap Core CSS -->
@@ -152,22 +157,22 @@
                             </div>
                             <div class="panel-body">
                                 <div class="text-right">
-                                	<form >
+                                	<form id="oneTForm">
 										<div class="row">
 											<div class="form-group col-lg-4" id="typeDiv">
-												<label for="type">ברצוני לרשום את התלמיד ל</label> 
-												<select class="form-control " id="typePick" name="type">
-													<option value="1"></option>
+												<label for="typePick">ברצוני לרשום את התלמיד ל</label> 
+												<select class="form-control " id="typePick" name="typePick">
+													<option value=""></option>
 													<option value="2">מועדונית</option>
 													<option value="3">אוכל בלבד</option>
 												</select>
 											</div>
 											<div class="form-group  col-lg-4">
 												<label for="datePick"> בתאריך</label>
-												<input  type="text" class="form-control" id="datePick">
+												<input  type="text" class="form-control" id="datePick" name="datePick">
 											</div>
 											<div class="form-group  col-lg-2">
-												<label for="type"> </label>
+												<!-- <label for="type"> </label> -->
 												<input class="form-control btn btn-primary" id="saveBtn" style="margin-top: 5px;" type="button" value="שמור">
 											</div>											
 										</div>

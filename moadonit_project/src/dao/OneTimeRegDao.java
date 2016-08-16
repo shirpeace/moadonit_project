@@ -90,8 +90,7 @@ public class OneTimeRegDao extends AbstractDAO {
 		// (pupilNum,registerDate,startDate,sunday_,monday_,tuesday_,wednesday_,thursday_,writenBy,source)
 		Object[] values = { reg.getId().getPupilNum(),
 				DAOUtil.toSqlDate(reg.getId().getSpecificDate()),
-				reg.getTblRegType()//,
-			//	reg.getTblSchoolYear()
+				reg.getTblRegType().getTypeNum()
 				};
 
 		try (

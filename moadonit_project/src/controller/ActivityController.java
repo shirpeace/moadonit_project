@@ -444,8 +444,8 @@ Serializable {
 		String isRegular = req.getParameter("regularOrPrivate");
 		isRegular = (isRegular != null && isRegular.trim().equals("")) ? null : isRegular;
 		
-		String firstName = req.getParameter("firstName");
-		firstName = (firstName != null && firstName.trim().equals("")) ? null : firstName;
+		String staffName = req.getParameter("staffName");
+		staffName = (staffName != null && staffName.trim().equals("")) ? null : staffName;
 		
 		//req.getParameter("regularOrPrivate").trim().equals("") ? null : req.getParameter("regularOrPrivate");
 		
@@ -455,7 +455,7 @@ Serializable {
 				week, 
 				req.getParameter("startTime"), 
 				req.getParameter("endTime"),
-				firstName, //no need for _responsibleStaff
+				staffName, 
 				req.getParameter("pricePerMonth") != null ? Float.parseFloat(req.getParameter("pricePerMonth")) : 0,
 				req.getParameter("extraPrice") != null ? Float.parseFloat(req.getParameter("extraPrice")) : 0
 				,isRegular, 0 //no need for category
