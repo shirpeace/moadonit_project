@@ -43,9 +43,14 @@ $(function(){
 		$('#regLink').attr('href','pupil_week_view.jsp?li=2&pupil=' + pupilID);
 		$('#oneTimeLink').attr('href','pupil_one_time_act.jsp?li=3&pupil=' + pupilID);
 		
-		getGrades();
-			
-		setColorsForGrade();
+		getSelectValuesFromDB("getFoodTypes","FoodTypes"); //getFoodTypes
+		getSelectValuesFromDB("getGrades","grades"); //getGrades
+		getSelectValuesFromDB("getFamilyRelation","FamilyRelation"); //getFamilyRelation
+		
+		setSelectValues($('#food'), "FoodTypes");
+		setSelectValues($('#grade'), "grades");
+		setSelectValues($('#p1relat'), "FamilyRelation");
+		setSelectValues($('#p2relat'), "FamilyRelation");
 		
 		var dataString = 'id='+ pupilID + '&action=' + "get";
 	   	loadPupilCard(dataString);	
@@ -72,7 +77,10 @@ $(function(){
 					maxlength: 20,  
 					nameValidator : true //custom validation from additional-methods.js
 					},
-				
+					food : {  
+						required: true,
+						
+						},
 				lName:  {
 					required: true,
 					minlength: 2,

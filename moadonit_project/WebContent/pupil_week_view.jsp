@@ -305,10 +305,9 @@
 													<input  type="text" class="form-control" id="datePick" name="datePick" >
 												</div>
 													<div class="form-group col-lg-3">
-														<label for="action">סיבת הרישום</label> <select
+														<label for="reason">סיבת הרישום</label> <select
 															class="form-control " id="reason" name="reason" >
-															<option value="1">לרשום את התלמיד</option>
-															<option value="2">לבטל רישום</option>
+															
 														</select>
 													</div>
 													<div class="form-group  col-lg-2">

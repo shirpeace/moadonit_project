@@ -49,6 +49,7 @@ import model.GradeCode;
 import model.Parent;
 import model.Pupil;
 import model.PupilState;
+import model.RegSource;
 import model.RegToMoadonit;
 import model.RegisterPupil;
 
@@ -147,6 +148,24 @@ public class FullPupilCardController extends HttpServlet implements
 				resp.getWriter().print(jsonObj);
 			}
 			
+			if (action.equals("getFamilyRelation")) {
+
+				JSONObject jsonObj = getFamilyRelationJson();
+
+				resp.setContentType("application/json");
+				resp.setCharacterEncoding("UTF-8");
+				resp.getWriter().print(jsonObj);
+			}
+			
+			if (action.equals("getRegSource")) {
+
+				JSONObject jsonObj = getRegSourceJson();
+
+				resp.setContentType("application/json");
+				resp.setCharacterEncoding("UTF-8");
+				resp.getWriter().print(jsonObj);
+			}
+			
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -159,6 +178,35 @@ public class FullPupilCardController extends HttpServlet implements
 			e.printStackTrace();
 		}
 
+	}
+
+	private JSONObject getRegSourceJson() {
+		// TODO Auto-generated method stub
+		List<RegSource> list = generalDAO.getRegSource(0);
+		
+		String values = " : ;";
+		for (int i = 0; i < list.size(); i++) { // { value: ":;1:בן;2:בת"}
+			RegSource ft = list.get(i);
+			values += ft.getSourceNum() + ":" + ft.getSourceName()  + ";";
+		}
+		values = values.substring(0, values.length() - 1);
+		JSONObject json = new JSONObject();
+		json.put("value", values);
+		return json;
+	}
+
+	private JSONObject getFamilyRelationJson() {
+		List<FamilyRelation> list = generalDAO.getFamilyRelation(0);
+		
+		String values = " : ;";
+		for (int i = 0; i < list.size(); i++) { // { value: ":;1:בן;2:בת"}
+			FamilyRelation ft = list.get(i);
+			values += ft.getIdFamilyRelation() + ":" + ft.getRelation()  + ";";
+		}
+		values = values.substring(0, values.length() - 1);
+		JSONObject json = new JSONObject();
+		json.put("value", values);
+		return json;
 	}
 
 	@SuppressWarnings("unchecked")
