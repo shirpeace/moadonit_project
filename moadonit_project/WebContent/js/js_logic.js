@@ -8,7 +8,7 @@ var currentUserId =	 '<%=session.getAttribute("userid")%>';
 //$.jgrid.defaults.responsive = true;
 //$.jgrid.defaults.styleUI = 'Bootstrap';
 var gradeData;
-var grades;
+var grades, FoodTypes , FamilyRelation, RegSource;
 // define state for the editable page
 	var state = {
 	    EDIT: 0,
@@ -114,7 +114,81 @@ function setColorsForGrade(){
 	
 }
 
+function setFoodTypeSelect(selectObj){
+	
+    var $select = selectObj;                       
+    $select.find('option').remove();   
+    var FoodTypesCopy = FoodTypes.value.split(";");
+    $.each(FoodTypesCopy, function(key, value) {  
+    	value  = value.split(":");
+    	$select.append('<option  value=' + value[0] + '>' + value[1] + '</option>'); 	
+    });
+	
+}
 
+/**
+ * fill the selectObj with the values from the valObj
+ * @param selectObj - select element to fill
+ * @param valObj - json object with values from db
+ */
+function setSelectValues(selectObj, valObj){
+	
+    var $select = selectObj;                       
+    $select.find('option').remove();
+    
+    if(typeof window[valObj] == "undefined") return;
+    
+    var objCopy = window[valObj].value.split(";");
+    $.each(objCopy, function(key, value) {  
+    	value  = value.split(":");
+    	if(valObj === "grades"){
+    		if(key != 0)
+    	    	$select.append('<option style="background-color:'+ value[2]+'" value=' + value[0] + '>' + value[1] + '</option>'); 
+    	    	else
+    	    		$select.append('<option  value=' + value[0] + '>' + value[1] + '</option>'); 
+    	}
+    	else if(valObj === "FamilyRelation"){
+    		if(key == 0)
+    	    	return; 
+    	    else
+    	    		$select.append('<option  value=' + value[0] + '>' + value[1] + '</option>'); 
+    	}    	
+    	else
+    	$select.append('<option  value=' + value[0] + '>' + value[1] + '</option>'); 	
+    });
+	
+}
+
+/**
+ * get data for select element
+ * @param funcName - name of function to trigger in controller
+ * @param objVal - javascript object name to set
+ */
+function getSelectValuesFromDB(funcName,objName)
+{
+
+	$.ajax({
+  		async: false,
+		type: 'GET',
+		datatype: 'json',
+        url: "FullPupilCardController?action=" + funcName,
+        
+        success: function(data) {
+        	if(data != undefined){
+        		window[objName] = data;
+        		console.log("Got " + window[objName] + "from db  => "+ window[objName]);
+        	}
+        	else
+        		console.log("no data");
+        },
+        error: function(e) {
+        	console.log("error loading " + window[objName]);       			
+        }
+        
+      });	
+}
+
+//getFamilyRelationJson
 function getGrades()
 {
 	$.ajax({
@@ -140,6 +214,30 @@ function getGrades()
       });	
 }
 
+function getFoodTypes()
+{
+	$.ajax({
+  		async: false,
+		type: 'GET',
+		datatype: 'json',
+        url: "FullPupilCardController?action=getFoodTypes",
+        
+        success: function(data) {
+        	if(data != undefined){
+        		FoodTypes = data;
+        		console.log("FoodTypes = "+FoodTypes);
+        	}
+        	else
+        		console.log("no data");
+        },
+        error: function(e) {
+        	console.log("error loading FoodTypes");
+        	
+			
+        }
+        
+      });	
+}
 
 /**
  * the value to convert to date , if value is a milliseconds number , create an date from it.
@@ -184,6 +282,7 @@ function formatDateInGrid(cellValue, opts, rwd) {
 	}
 }
 
+// i think we dont use this func
 /* action to update/insert pupil*/
 function loadGrades()
 {

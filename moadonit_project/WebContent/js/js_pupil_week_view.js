@@ -867,9 +867,16 @@ $(function() {
 				datePick : {  
 					required: true
 					
-					}
+					},
+					reason : {  
+						required: true
+						
+						}	
 				
 			}			
 		});
+		
+		getSelectValuesFromDB("getRegSource","RegSource");
+		setSelectValues($('#reason'), "RegSource");
 		
 });

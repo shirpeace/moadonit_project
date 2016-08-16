@@ -30,6 +30,7 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
 import dao.DAOException;
 import dao.FamilyDAO;
 import dao.FullPupilCardDAO;
+import dao.GeneralDAO;
 import dao.GradeCodeDAO;
 import dao.GradePupilDAO;
 /*import dao.GradeDAO;*/
@@ -40,6 +41,7 @@ import dao.RegisterPupilDAO;
 import util.DAOUtil;
 import model.Family;
 import model.FamilyRelation;
+import model.FoodType;
 import model.FullPupilCard;
 import model.GenderRef;
 /*import model.Grade;*/
@@ -47,6 +49,7 @@ import model.GradeCode;
 import model.Parent;
 import model.Pupil;
 import model.PupilState;
+import model.RegSource;
 import model.RegToMoadonit;
 import model.RegisterPupil;
 
@@ -72,6 +75,7 @@ public class FullPupilCardController extends HttpServlet implements
 	RegisterPupilDAO regPupilDao;
 	RegToMoadonitDAO regToMoadonitDAO;
 	GradeCodeDAO gradeDAO;
+	GeneralDAO generalDAO;
 	GradePupilDAO gradePupilDAO;
 	JSONObject resultToClient = new JSONObject();;
 	int rows;
@@ -100,6 +104,7 @@ public class FullPupilCardController extends HttpServlet implements
 		// check and set connection to session
 		checkConnection(req, resp);
 		gradeDAO = new GradeCodeDAO(con);
+		generalDAO = new GeneralDAO(con);
 		this.fullPupilDao = new FullPupilCardDAO(con);
 		try {
 
@@ -143,6 +148,24 @@ public class FullPupilCardController extends HttpServlet implements
 				resp.getWriter().print(jsonObj);
 			}
 			
+			if (action.equals("getFamilyRelation")) {
+
+				JSONObject jsonObj = getFamilyRelationJson();
+
+				resp.setContentType("application/json");
+				resp.setCharacterEncoding("UTF-8");
+				resp.getWriter().print(jsonObj);
+			}
+			
+			if (action.equals("getRegSource")) {
+
+				JSONObject jsonObj = getRegSourceJson();
+
+				resp.setContentType("application/json");
+				resp.setCharacterEncoding("UTF-8");
+				resp.getWriter().print(jsonObj);
+			}
+			
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -155,6 +178,35 @@ public class FullPupilCardController extends HttpServlet implements
 			e.printStackTrace();
 		}
 
+	}
+
+	private JSONObject getRegSourceJson() {
+		// TODO Auto-generated method stub
+		List<RegSource> list = generalDAO.getRegSource(0);
+		
+		String values = " : ;";
+		for (int i = 0; i < list.size(); i++) { // { value: ":;1:בן;2:בת"}
+			RegSource ft = list.get(i);
+			values += ft.getSourceNum() + ":" + ft.getSourceName()  + ";";
+		}
+		values = values.substring(0, values.length() - 1);
+		JSONObject json = new JSONObject();
+		json.put("value", values);
+		return json;
+	}
+
+	private JSONObject getFamilyRelationJson() {
+		List<FamilyRelation> list = generalDAO.getFamilyRelation(0);
+		
+		String values = " : ;";
+		for (int i = 0; i < list.size(); i++) { // { value: ":;1:בן;2:בת"}
+			FamilyRelation ft = list.get(i);
+			values += ft.getIdFamilyRelation() + ":" + ft.getRelation()  + ";";
+		}
+		values = values.substring(0, values.length() - 1);
+		JSONObject json = new JSONObject();
+		json.put("value", values);
+		return json;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -174,12 +226,12 @@ public class FullPupilCardController extends HttpServlet implements
 	
 	@SuppressWarnings("unchecked")
 	private JSONObject getFoodTypesJson() {
-		List<GradeCode> list = gradeDAO.selectIndex(0);
+		List<FoodType> list = generalDAO.getFoodTypes(0);
+		
 		String values = " : ;";
 		for (int i = 0; i < list.size(); i++) { // { value: ":;1:בן;2:בת"}
-			GradeCode grade = list.get(i);
-			values += grade.getGradeID() + ":" + grade.getGradeName() + ":"
-					+ grade.getGradeColor() + ";";
+			FoodType ft = list.get(i);
+			values += ft.getFoodTypeID() + ":" + ft.getFoodType()  + ";";
 		}
 		values = values.substring(0, values.length() - 1);
 		JSONObject json = new JSONObject();
