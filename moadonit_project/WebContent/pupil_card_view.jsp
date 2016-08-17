@@ -196,12 +196,24 @@
 									class=".ignore" data-smartDays="true" data-firstItem="name"
 										data-format="DD-MM-YYYY" data-template="D MMM YYYY" > 
 								</div>
-								<div class="form-group">
+								<div class="form-group col-lg-5">
 									
 									<label for="grade">כיתה</label>
 									<select class="form-control input-sm"
 										id="grade" name="grade" onchange="setGradeBgColor(this)">
 										
+									</select>
+								</div>
+								<div class="form-group col-lg-7">
+									
+									<label for="teacher">מחנכ/ת</label>
+									<select class="form-control input-sm"
+										id="teacher" name="teacher" onchange="" disabled>
+										<option value="א">שושנה מזרחי</option>
+										<option value="ב">דנית גבאי</option>
+										<option value="ג">שמשון בוזגלו</option>
+										<option value="ד">אהובה שלום</option>
+										<option value="ה">אורלי שוורץ</option>
 									</select>
 								</div>
 								<div class="form-group">

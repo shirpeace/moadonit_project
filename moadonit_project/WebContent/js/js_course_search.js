@@ -19,7 +19,7 @@ function loadGrid(){
           url : "ActivityController?action=getCourses&activityNum=0",
           datatype : "json",
           mtype : 'POST',
-          colNames : ['מספר','סוג פעילות' , 'שם החוג' ,'שם המורה', 'יום בשבוע', 'שעת התחלה', 'שעת סיום','מחיר לחודש' ,'תשלום חומרים' ,'סוג החוג' ],         
+          colNames : ['מספר','סוג פעילות' , 'שם הקבוצה' ,'שם המורה', 'יום בשבוע', 'שעת התחלה', 'שעת סיום','מחיר לחודש' ,'תשלום חומרים' ,'חוג' ,'סוג החוג' ],         
           colModel : [ {
                   name : 'activityNum',
                   index : 'activityNum',
@@ -32,7 +32,7 @@ function loadGrid(){
                   width : 150,
                   hidden: true
           }, {
-                  name : 'activityName',
+                  name : 'activityName', //שם הקבוצה
                   index : 'activityName',
                   width : 100,
                   editable : true
@@ -106,6 +106,12 @@ function loadGrid(){
              width : 100,
              formatter: currencyFmatter,
              unformat:unformatCurrency
+         }
+         , 
+         {
+             name : 'activityGroup', //קבוצת חוגים
+             index : 'activityGroup',
+             width : 100
          }
          , {
              name : 'regularOrPrivate', 

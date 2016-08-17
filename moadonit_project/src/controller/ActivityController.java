@@ -279,7 +279,16 @@ Serializable {
 
 				
 			}else if (action.equals("update")) {
-				updateCourse(req, resp);
+				
+				boolean r = updateCourse(req, resp);
+				if (r) {
+					resultToClient.put("msg", 1);
+					resultToClient.put("result", null);
+				} else {
+					resultToClient.put("msg", 0);
+					resultToClient
+							.put("result", "שגיאה בשמירת הנתונים");
+				}
 
 				resp.setContentType("application/json");
 				resp.setCharacterEncoding("UTF-8");
@@ -312,6 +321,14 @@ Serializable {
 			//
 		} catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
+			resultToClient.put("msg", 0);
+			resultToClient
+					.put("result", "שגיאה בשמירת הנתונים");
+			resp.setContentType("application/json");
+			resp.setCharacterEncoding("UTF-8");
+			resp.getWriter().print(resultToClient);
+			
 		}
 	}
 	
@@ -411,24 +428,35 @@ Serializable {
 		
 	}
 	@SuppressWarnings("unchecked")
-	private JSONObject updateCourse(HttpServletRequest req, HttpServletResponse resp) throws ParseException {
+	private Boolean updateCourse(HttpServletRequest req, HttpServletResponse resp) throws ParseException {
 		// TODO Auto-generated method stub
 		Activity act ;
 		String activityData = req.getParameter("activityData");
+		
 		String startTime = req.getParameter("startTime");
+		String[] start = startTime.split(":");
+		@SuppressWarnings("deprecation")
+		java.sql.Time sTime = new Time(Integer.parseInt(start[0]), Integer.parseInt(start[1]), 00);
+		
+		String endTime = req.getParameter("endTime");
+		String[] end = endTime.split(":");
+		@SuppressWarnings("deprecation")
+		java.sql.Time eTime = new Time(Integer.parseInt(end[0]), Integer.parseInt(end[1]), 00);
 		/*String endTime = req.getParameter("endTime");
 		SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
 		Date date = format.parse(startTime);*/
 		//Time t = new Time();
 		
-		/*********
-		 * NOT FINISHED
-		 * ******
-		 */
+		
 		act = (Activity) DAOUtil.getObjectFromJson(activityData, Activity.class);
-		resultToClient.put("msg", 1);
-		resultToClient.put("result", act.getActivityNum());
-		return resultToClient;
+		act.setStartTime(sTime);
+		act.setStartTime(eTime);
+		// SHIR- in this point we get both times into act
+		//somewhere after here the end date becomes null
+		actDOA = new ActivityDAO(con);
+		Boolean result = actDOA.updateCourse(act);
+
+		return result;
 		
 	}
 	
@@ -458,7 +486,9 @@ Serializable {
 				staffName, 
 				req.getParameter("pricePerMonth") != null ? Float.parseFloat(req.getParameter("pricePerMonth")) : 0,
 				req.getParameter("extraPrice") != null ? Float.parseFloat(req.getParameter("extraPrice")) : 0
-				,isRegular, 0 //no need for category
+				,isRegular
+				, 0 //no need for category
+				, req.getParameter("activityGroup")
 				);
 		return result;
 	}
@@ -472,6 +502,8 @@ Serializable {
 
 				obj.put("activityNum", act.getActivityNum());
 				obj.put("activityType", act.getTblActivityGroup().getTblActivityType().getTypeID());
+				obj.put("activityGroup", act.getTblActivityGroup().getActGroupName());
+				obj.put("activityGNum", act.getTblActivityGroup().getActivityGroupNum());
 				obj.put("activityName", act.getActivityName());
 				obj.put("weekDay", act.getWeekDay());			
 				obj.put("startTime", act.getStartTime().toString().substring(0,5));

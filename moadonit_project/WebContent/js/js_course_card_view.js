@@ -13,7 +13,7 @@ var selectedIds;
 
 // define state for the editable page
 /** ********************************************** */
-// TODO //* START PUPILADD PAGE FUNCTIONS */
+// TODO //* START COURSE PAGE FUNCTIONS */
 /** ********************************************** */
 var courseData;
 // set the state at start to read. (state object from js_logic file)
@@ -109,7 +109,7 @@ $(function() {
 
 	var dataString = 'activityNum=' + activityNum + '&action=' + "getCourses";
 	loadCourseData(dataString);	
-	/* set the validattion for form */ 
+	/* set the validation for form */ 
 	 validator = $("#ajaxform").validate(
 			{
 
@@ -132,12 +132,12 @@ $(function() {
 					// custom validation from additional-methods.js
 					},
 
-					lName : {
+					/*lName : {
 						required : true,
 						minlength : 2,
 						maxlength : 20,
 						nameValidator : true
-					},
+					},*/
 
 					extraPrice : {
 						required : "#extraPriceChk:checked",
@@ -201,12 +201,13 @@ function setCourseData(courseData) {
 
 		$('.page-header').html("חוג " + courseData.activityName + " ");
 
-		/* pupil details import */
+		/* course details import */
 		$('#activityName').val(courseData.activityName);
 		$('#weekDay').val(courseData.weekDay);
 		$('#startTime').val(courseData.startTime);
 		$('#endTime').val(courseData.endTime);
 		$('#responsibleStaff').val(courseData.responsibleStaff);
+		$('#activityGroup').val(courseData.activityGroup);
 
 		$('#pricePerMonth').val(courseData.pricePerMonth);
 		$('#extraPrice').val(courseData.extraPrice);
@@ -272,17 +273,19 @@ function saveCourseData(action, forward) {
 
 	var activity = new Object();
 	activity.activityNum = activityNum;
-	activity.tblActivityType = {
-		typeID : 1,
-	}; // course type id
 	activity.activityName = $('#activityName').val();
-	// activity.startTime = $('#startTime').val();
-	// activity.endTime = $('#endTime').val();
+	
+	activity.tblActivityGroup ={
+			activityGroupNum : $('#activityGroup').val(),
+			activityType : {
+				typeID : 1,
+			}
+	};
+
+	activity.weekDay = $('#weekDay').val();
 	activity.schoolYear = 0;
 	activity.tblStaff = {
-		staffID : $('#responsibleStaff').val(),
-		firstName : "",
-		lastName : "",
+		staffID : $('#responsibleStaff').val()
 	};
 	activity.tblCourse = {
 
