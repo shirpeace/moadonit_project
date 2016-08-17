@@ -27,8 +27,9 @@ public class ActivityDAO extends AbstractDAO {
 	}
 
 	private String selectCourses = "{call ms2016.getCourses (?)}";
-	private String searchCoursesByParam = "{ call ms2016.searchCoursesByParam( ? , ? , ?, ? , ?, ?, ? , ?, ? ) }";
+	private String searchCoursesByParam = "{ call ms2016.searchCoursesByParam( ? , ? , ?, ? , ?, ?, ? , ?, ? ,? ) }";
 	private String getCurrentYearEndDate = "select getCurrentYearEndDate() as endDate";
+	private String updateCourse = "{call ms2016.updateCourse (?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 	/**
 	 * getCourses
 	 */
@@ -50,12 +51,13 @@ public class ActivityDAO extends AbstractDAO {
 	 * @throws DAOException
 	 */
 	public List<Activity> searchCoursesByParam( String _activityName, String _weekDay,String _startTime,
-			String _endTime, String _staffName, float _pricePerMonth, float _extraPrice, String _regularOrPrivate, int _category)
+			String _endTime, String _staffName, float _pricePerMonth, float _extraPrice, 
+			String _regularOrPrivate, int _category, String _actGroupName)
 			throws IllegalArgumentException, DAOException {
 		List<Activity> list = new ArrayList<>();
 
 		Object[] values = {    _activityName, _weekDay, 
-				_startTime, _endTime, _staffName, _pricePerMonth, _extraPrice, _regularOrPrivate, _category};
+				_startTime, _endTime, _staffName, _pricePerMonth, _extraPrice, _regularOrPrivate, _category, _actGroupName};
 		
 		try (PreparedStatement statement = DAOUtil.prepareCallbackStatement(
 				this.con.getConnection(), searchCoursesByParam, values );
@@ -116,6 +118,53 @@ public class ActivityDAO extends AbstractDAO {
 		return list;
 	}
 
+	/**
+	 * update Course according to given id and params.
+	 * @param id - id of the course
+	 * @param year - if 0 then will take the current year from the DB
+	 * @throws IllegalArgumentException
+	 * @throws DAOException
+	 */
+	/*public void updateCourse(int id, String actName, String weekDay, Time start, 
+				Time end, int staffID, float price, float extraPrice, String regularOrPrivate,
+				int category, int actGroup, int capacity, int year)*/
+	public Boolean updateCourse(Activity act)
+			throws IllegalArgumentException, DAOException {
+		List<Activity> list = new ArrayList<>();
+
+		Object[] values = { 
+						act.getActivityNum(), 
+						act.getActivityName(), 
+						act.getWeekDay(), 
+						act.getStartTime(), 
+						act.getEndTime(), 
+						act.getTblStaff().getStaffID(), 
+						act.getTblCourse().getPricePerMonth(),
+						act.getTblCourse().getExtraPrice(), 
+						act.getTblCourse().getRegularOrPrivate(), 
+						act.getTblCourse().getCategory(), 
+						act.getTblActivityGroup().getActivityGroupNum(), 
+						act.getTblCourse().getPupilCapacity(),
+						act.getTblSchoolYear() != null ? act.getTblSchoolYear().getYearID() : null
+					};
+		
+		try (PreparedStatement statement = DAOUtil.prepareCallbackStatement(
+				this.con.getConnection(), updateCourse, values);) {
+
+			{
+	            int affectedRows = statement.executeUpdate();
+	            if (affectedRows > 1) {
+	                throw new DAOException("Updating Row was not currect , " + affectedRows + " rows affected.");
+	            }
+			}
+	            
+	            return true;
+	        } catch (SQLException e) {
+	            throw new DAOException(e);
+	        }
+	}
+
+	
 	private Course mapCourse(ResultSet resultSet) throws SQLException {
 		//activityNum, pricePerMonth, extraPrice, regularOrPrivate, category
 		Course c = new Course();
@@ -137,11 +186,12 @@ public class ActivityDAO extends AbstractDAO {
 		type.setTypeID(resultSet.getInt("activityType"));
 		
 		ActivityGroup ag = new ActivityGroup();
-		ag.setActivityGroupNum(resultSet.getInt("activityGroup"));
+		ag.setActivityGroupNum(resultSet.getInt("activityGroup")); 
+		ag.setActGroupName(resultSet.getString("actGroupName"));
 		ag.setTblActivityType(type);
 		
 		Staff s = new Staff();
-		s.setStaffID(resultSet.getInt("activityType"));
+		s.setStaffID(resultSet.getInt("staffID"));
 		s.setFirstName(resultSet.getString("firstName") );
 		s.setLastName(resultSet.getString("lastName") );
 		act.setTblStaff(s);		

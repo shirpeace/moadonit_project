@@ -218,22 +218,39 @@
 						<div class="col-lg-12">
 							<div class="col-lg-2">
 								<div class="form-group">
-									<label for="fName">שם החוג</label> <input type="text" 
+									<label for="activityName">שם הקבוצה</label> <input type="text" 
 										class="form-control input-sm" name="activityName"  id="activityName" >
 								</div>
 								<div class="form-group">
-									<label for="cell">סוג החוג</label>
-										<select class="form-control input-sm" style="width: 100px;"
+									<label for="activityGroup">חוג</label> 
+										<select class="form-control input-sm" 
+										id="activityGroup" name="activityGroup" >
+										<option value="1">א</option>
+										<option value="2">ב</option>
+										<option value="3">ג</option>
+										<option value="4">ד</option>
+										<option value="5">ה</option>								
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="activityGroupNew"> חוג חדש</label> <input type="text" 
+										class="form-control input-sm" name="activityGroupNew"  id="activityGroupNew" >
+								</div>
+								<div class="form-group">
+									<label for="regularOrPrivate">סוג</label>
+										<select class="form-control input-sm" 
 										id="regularOrPrivate" name="regularOrPrivate" >
 										<option value="רגיל">רגיל</option>
 										<option value="מיוחד">מיוחד</option>
-										
 									</select>
 									
 								</div> 
+							</div>
+		<!-- row 1 col 2 -->
+							<div class="col-lg-2">
 								<div class="form-group">
 									<label for="weekDay">יום בשבוע</label> 
-										<select class="form-control input-sm" style="width: 100px;"
+										<select class="form-control input-sm" "
 										id="weekDay" name="weekDay" >
 										<option value="א">א</option>
 										<option value="ב">ב</option>
@@ -242,72 +259,68 @@
 										<option value="ה">ה</option>
 										<!-- <option value="ו">ו</option>		 -->								
 									</select>
-									
 								</div>
-								
-							</div>
-		<!-- row 1 col 2 -->
-							<div class="col-lg-2">
 								<div class="form-group">
-									<label for="date_of_birth">שעת התחלה</label>
+									<label for="startTime">שעת התחלה</label>
 									<br>	
-									<input type="text"
-										class="form-control input-sm" id="startTime" name="startTime" style="width: 90px;"  > 
+									<!-- <input type="text"
+										class="form-control input-sm" id="startTime" name="startTime" style="width: 90px;"  >  -->
+									<input type="text" class="form-control input-sm" 
+										id="startTime" name="startTime" >
 								</div>
 								<div class="form-group">
-									<label for="food">שעת סיום</label>									
+									<label for="endTime">שעת סיום</label>									
 									<br>	
+									<!-- <input type="text"
+										class="form-control input-sm" id="endTime" name="endTime" style="width: 90px;"  > --> 
 									<input type="text"
-										class="form-control input-sm" id="endTime" name="endTime" style="width: 90px;"  > 
+										class="form-control input-sm" id="endTime" name="endTime"  >
 								</div>
-								<div class="form-group">
-									
-									<label for="grade">מחיר בחודש</label>
-									<input type="text"
-										class="form-control input-sm" id="pricePerMonth" name="pricePerMonth"  > 
-								</div>								
+																
 							</div>
 		<!-- row 1 col 3 -->
 							<div class="col-lg-2">
-							<div class="form-group">
-								<label for="weekDay">שם המורה</label> 
-										<select class="form-control input-sm" id="firstName" name="firstName" >
-										<option value="א">שושנה מזרחי</option>
-										<option value="ב">דנית גבאי</option>
-										<option value="ג">שמשון בוזגלו</option>
-										<option value="ד">אהובה שלום</option>
-										<option value="ה">אורלי שוורץ</option>
-										<!-- <option value="ו">ו</option>		 -->								
+								<div class="form-group">
+										<label for="responsibleStaff">שם המורה</label> 
+										<select class="form-control input-sm" id="responsibleStaff" name="responsibleStaff" >
+										<option value="1">שושנה מזרחי</option>
+										<option value="2">דנית גבאי</option>
+										<option value="3">שמשון בוזגלו</option>
+										<option value="4">אהובה שלום</option>
+										<option value="5">אורלי שוורץ</option>
 									</select>								
 								</div>
+								<div class="form-group">
+									
+									<label for="capacity">מקסימום תלמידים</label>
+									<input type="text"
+										class="form-control input-sm" id="capacity" name="capacity"  > 
+								</div>
+							</div>
+							<div class="col-lg-2">
+								<div class="form-group">
+									
+									<label for="pricePerMonth">מחיר בחודש</label>
+									<input type="text"
+										class="form-control input-sm" id="pricePerMonth" name="pricePerMonth"  > 
+								</div>
 								<div class="checkbox">
-									<label for="extraPriceChk">תשלום חומרים</label> <input type="checkbox"
-										id="extraPriceChk" name="staff" >
+									<label for="extraPriceChk">תשלום חומרים</label> 
+									<input type="checkbox" id="extraPriceChk" name="staff" >
 								</div>
 								<div class="form-group" style="display: none;" id="extraPriceDiv">
 									<label for="extraPrice">מחיר חומרים</label> <input type="text"
 										name="extraPrice" class="form-control" id="extraPrice"
 										placeholder="מחיר">
 								</div>
-								<!-- <div class="form-group">
-									
-									<label for="genderGruop" class="col-lg-1">קטגוריה</label>
-										<select class="form-control input-sm"
-										id="regularOrPrivate" name="regularOrPrivate" >
-										<option value="רגיל">רגיל</option>
-										<option value="מיוחד">מיוחד</option>
-										
-									</select>
-									
-								</div> -->
 							</div>
-							
 		<!-- row 1 col 4 -->							
 							
 						</div>
 						<div class="col-lg-6"></div>
 						<div class="col-lg-6">
-						<div class="form-group " id="viewModeBtn">
+								
+								<div class="form-group " id="viewModeBtn">
 									<input type="button" id="editBtn" name="editBtn"
 									class="btn btn-primary" value="עריכה">
 								

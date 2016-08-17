@@ -362,6 +362,7 @@ function formEnable(){
 	 $("fieldset :input").removeAttr('readonly');
 	 $("fieldset :checkbox").prop("disabled", false);
 	 $("fieldset :radio").prop("disabled", false);
+	 $("#teacher").prop("disabled", true);
 	 $("#viewModeBtn").hide();
 	 $("#editModeBtn").show();
 	
