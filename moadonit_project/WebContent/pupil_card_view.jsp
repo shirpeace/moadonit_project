@@ -201,24 +201,7 @@
 									<label for="grade">כיתה</label>
 									<select class="form-control input-sm"
 										id="grade" name="grade" onchange="setGradeBgColor(this)">
-										<option value="11">א-א</option>
-										<option value="12">א-ב</option>
-										<option value="13">א-ג</option>
-										<option value="21">ב-א</option>
-										<option value="22">ב-ב</option>
-										<option value="23">ב-ג</option>
-										<option value="31">ג-א</option>
-										<option value="32">ג-ב</option>
-										<option value="33">ג-ג</option>
-										<option value="41">ד-א</option>
-										<option value="42">ד-ב</option>
-										<option value="43">ד-ג</option>
-										<option value="51">ה-א</option>
-										<option value="52">ה-ב</option>
-										<option value="53">ב-ג</option>
-										<option value="61">ו-א</option>
-										<option value="62">ו-ב</option>
-										<option value="63">ו-ג</option>
+										
 									</select>
 								</div>
 								<div class="form-group">

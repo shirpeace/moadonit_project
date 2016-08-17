@@ -1,6 +1,6 @@
 
 /*************************************************/
-//TODO //* START Global PARMS and FUNCTIONS */
+//TODO //* START Global PARMS and FUNCTIONS */ 
 /*************************************************/
 
 /*   the current user the us logged if to the system */
@@ -9,6 +9,7 @@ var currentUserId =	 '<%=session.getAttribute("userid")%>';
 //$.jgrid.defaults.styleUI = 'Bootstrap';
 var gradeData;
 var grades, FoodTypes , FamilyRelation, RegSource;
+var RegDatesToValid = { startDate:null, lastDateToReg : null , numOfDaysToModify : null};
 // define state for the editable page
 	var state = {
 	    EDIT: 0,
@@ -68,6 +69,40 @@ function getRegTypesData(){
 	return returnData;
 	
 }
+
+
+function getRegDatesToValid(){
+	
+	$.ajax({
+  		async: false,
+		type: 'POST',
+		datatype: 'json',
+        url: "PupilRegistration?action=getRegDatesToValid",
+        
+        success: function(data) {
+        	if(data != undefined){
+        		 
+        		RegDatesToValid.startDate = getDateFromValue(data[0].startDate);
+        		RegDatesToValid.lastDateToReg = getDateFromValue(data[0].lastDateToReg);
+        		RegDatesToValid.numOfDaysToModify = data[0].numOfDaysToModify;
+        		
+        	}
+        	else{
+        		console.log("data of RegDatesToValid is undefined");
+        	}
+        },
+        error: function(e) {
+        	console.log("error loading RegDatesToValid");
+        	return '';
+			
+        }
+        
+      });		
+	
+}
+
+
+
 function setGradeBgColor(elem){
 	
 	$(elem).removeClass("form-control");
@@ -86,6 +121,8 @@ function setGradeBgColor(elem){
 	
 } 
 
+
+
 function setErrorStyle(value, elementID){
 	
 	var elem = "#" + elementID;
@@ -98,6 +135,8 @@ function setErrorStyle(value, elementID){
 		$(elem).removeClass("errorField");
 	}
 }
+
+
 
 function setColorsForGrade(){
 	
@@ -114,6 +153,8 @@ function setColorsForGrade(){
 	
 }
 
+
+
 function setFoodTypeSelect(selectObj){
 	
     var $select = selectObj;                       
@@ -125,6 +166,8 @@ function setFoodTypeSelect(selectObj){
     });
 	
 }
+
+
 
 /**
  * fill the selectObj with the values from the valObj
@@ -159,6 +202,7 @@ function setSelectValues(selectObj, valObj){
 	
 }
 
+
 /**
  * get data for select element
  * @param funcName - name of function to trigger in controller
@@ -188,6 +232,8 @@ function getSelectValuesFromDB(funcName,objName)
       });	
 }
 
+
+
 //getFamilyRelationJson
 function getGrades()
 {
@@ -213,6 +259,8 @@ function getGrades()
         
       });	
 }
+
+
 
 function getFoodTypes()
 {
@@ -242,12 +290,20 @@ function getFoodTypes()
 /**
  * the value to convert to date , if value is a milliseconds number , create an date from it.
  * if value is string, build date from it.
- * if vlaue is string, build date from it. id value is empty string return null
+ * if value is string representing a number convert it to a number and build date from it. 
+ * if value is empty string return null
  * @param value
  * @returns {Date}
  */
 function getDateFromValue(value){
 	if (typeof value === 'string' && value.trim().length > 0 ) {
+	
+		if(!isNaN(value)){
+			var n = parseInt(value,10);
+			var d = new Date(n);
+			return d;
+		}
+		
 		var isArry = false;
 		var arr , deli = ['/','-',',']; 
 
@@ -282,6 +338,8 @@ function formatDateInGrid(cellValue, opts, rwd) {
 	}
 }
 
+
+
 // i think we dont use this func
 /* action to update/insert pupil*/
 function loadGrades()
@@ -307,6 +365,8 @@ function loadGrades()
         
       }); 	
 }
+
+
 
 function savePupilCardData(action,forward){
 		    
@@ -463,6 +523,8 @@ function savePupilCardData(action,forward){
 	
 }
 
+
+
 /*
 * FormChanges(string FormID | DOMelement FormNode)
  * Returns an array of changed form elements.
@@ -523,10 +585,14 @@ function FormChanges(form) {
 
 }	
 
+
+
 String.prototype.replaceAll = function(search, replacement) {
     var target = this;
     return target.split(search).join(replacement);
 };
+
+
 
 function getCurrentYearEndDate(){
 	

@@ -301,8 +301,12 @@
 												</div>
 												<div class="row">
 												<div class="form-group  col-lg-2">
-													<label for="datePick"> בתאריך</label>
+													<label for="datePick"> מתאריך</label>
 													<input  type="text" class="form-control" id="datePick" name="datePick" >
+												</div>
+												<div class="form-group  col-lg-2">
+													<label for="endDatePick"> עד תאריך</label>
+													<input  type="text" class="form-control" id="endDatePick" name="endDatePick" >
 												</div>
 													<div class="form-group col-lg-3">
 														<label for="reason">סיבת הרישום</label> <select

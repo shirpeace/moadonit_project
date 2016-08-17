@@ -697,11 +697,16 @@ function saveRegistraion() {
 	var rtm = new Object();
 	var parts = $('#datePick').val().split('/');
 	var mydate = new Date(parts[2], parts[1] - 1, parts[0]);
+	parts = $('#endDatePick').val().split('/'); //endDatePick
+	var endDate = new Date(parts[2], parts[1] - 1, parts[0]);
 
 	rtm.id = {
 		startDate : mydate,
 		pupilNum : pupilID
 	}; // pk
+	
+	rtm.endDate = endDate;
+	
 	rtm.tblRegType1 = {
 		typeNum : $('#sunday').val()
 	};
@@ -798,6 +803,20 @@ $(function() {
 			    toggleActive: true 
 			}); 
 		 
+		 $('#endDatePick').datepicker({
+			    format: "dd/mm/yyyy",
+			    language: "he" ,
+			     startDate: "today",
+			    maxViewMode: 0,
+			    minViewMode: 0,
+			    todayBtn: true,
+			    keyboardNavigation: false,
+			    daysOfWeekDisabled: "5,6",
+			    todayHighlight: true,
+			    toggleActive: true 
+			});
+		 
+		 
 		loadWeekGrid(pupilID);
 		
 		loadRegistrationGrid(pupilID); 
@@ -868,15 +887,24 @@ $(function() {
 					required: true
 					
 					},
-					reason : {  
-						required: true
-						
-						}	
+				endDatePick : {  
+					required: true
+					
+					},			
+				reason : {  
+					required: true
+					
+					}	
 				
 			}			
 		});
 		
 		getSelectValuesFromDB("getRegSource","RegSource");
 		setSelectValues($('#reason'), "RegSource");
-		
+		getCurrentYearEndDate();
+		getRegDatesToValid();
+		var date = new Date(CurrentYearEndDate);
+		if (CurrentYearEndDate != null) {
+			$("#endDatePick").datepicker("setDate" , date );
+		}
 });

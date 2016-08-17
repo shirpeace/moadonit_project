@@ -231,11 +231,11 @@
 								<div class="form-group">
 									<label for="food">סוג מנה</label> <select class="form-control"
 										name="food" id="food">
-										<!-- <option value="0">בחר</option> -->
+										<!-- <option value="0">בחר</option> 
 										<option value="1">רגילה</option>
 										<option value="2">אפויה</option>
 										<option value="3">צמחונית</option>
-										<option value="4">ללא-גלוטן</option>
+										<option value="4">ללא-גלוטן</option> -->
 									</select>
 								</div>
 								<table dir="rtl"  style="width:100%" cellpadding="3" cellspacing="5">
@@ -345,11 +345,11 @@
 								<div class="form-group">
 									<label for="p1relat">קרבה</label> <select class="form-control"
 										name="p1relat" id="p1relat">
-										<option value="1" selected="selected">אמא</option>
+										<!-- <option value="1" selected="selected">אמא</option>
 										<option value="2">אבא</option>
 										<option value="3">אח</option>
 										<option value="4">אחות</option>
-										<option value="5">אחר</option>
+										<option value="5">אחר</option> -->
 									</select>
 								</div>
 							</div>
@@ -379,11 +379,11 @@
 								<div class="form-group">
 									<label for="p2relat">קרבה</label> <select class="form-control"
 										name="p2relat" id="p2relat">
-										<option value="1">אמא</option>
+										<!-- <option value="1">אמא</option>
 										<option value="2" selected="selected">אבא</option>
 										<option value="3">אח</option>
 										<option value="4">אחות</option>
-										<option value="5">אחר</option>
+										<option value="5">אחר</option> -->
 									</select>
 								</div>
 							</div>

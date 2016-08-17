@@ -1,5 +1,6 @@
 package dao;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,6 +25,8 @@ public class GeneralDAO extends AbstractDAO {
 	private String callFoodTypeProc = "{ call ms2016.get_FoodType_code(?) }";
 	private String callfamilyRelationProc = "{ call ms2016.get_family_Relation(?) }"; // tbl_family_relation
 	private String callgetRegSourceProc = "{ call ms2016.get_Reg_Source(?) }"; // 
+
+	private String getRegDatesToValid = "{ call ms2016.getRegDatesToValid() }"; // ;
 
 	public GeneralDAO(MyConnection con) {
 		super(con);
@@ -118,6 +121,31 @@ public class GeneralDAO extends AbstractDAO {
 		rs.setSourceName(resultSet.getString("sourceName"));
 
 		return rs;
+	}
+
+	public List<Object> getRegDatesToValid() throws IllegalArgumentException, DAOException {
+		// TODO Auto-generated method stub
+		List<Object> list = new ArrayList<>();
+		try (PreparedStatement statement = DAOUtil.prepareCallbackStatement(
+				this.con.getConnection(), getRegDatesToValid,
+				new Object[] { });
+				ResultSet resultSet = statement.executeQuery();) {
+
+			while (resultSet.next()) {
+				Date startDate = resultSet.getDate("startDate");
+				Date lastDateToReg = resultSet.getDate("lastDateToReg");
+				int numOfDaysToModify = resultSet.getByte("@numOfDaysToModify");
+				
+				list.add(startDate.getTime());
+				list.add(lastDateToReg.getTime());
+				list.add(numOfDaysToModify);
+			}
+
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+
+		return list;
 	}
 
 }

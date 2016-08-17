@@ -25,6 +25,7 @@
 		<class>model.Pupil</class>
 		<class>model.PupilActivity</class>
 		<class>model.PupilActivityPK</class>
+		<class>model.PupilState</class>
 		<class>model.RegSource</class>
 		<class>model.RegToMoadonit</class>
 		<class>model.RegToMoadonitPK</class>
@@ -36,7 +37,6 @@
 		<class>model.Teacher</class>
 		<class>model.User</class>
 		<!-- <class>model.FullPupilCard</class> -->
-		<class>model.PupilState</class>
 		
 
 

@@ -38,6 +38,7 @@ import model.RegToMoadonitPK;
 import model.RegType;
 import model.User;
 import dao.FullPupilCardDAO;
+import dao.GeneralDAO;
 import dao.OneTimeRegDao;
 import dao.PupilActivityDAO;
 import dao.RegToMoadonitDAO;
@@ -62,11 +63,13 @@ public class PupilRegistrationController extends HttpServlet implements
 	OneTimeRegDao oneTimesDAO;
 	private String action;
 	private PupilActivityDAO pupilActDAO;
+	GeneralDAO generalDAO;
 	Map<Integer, Object> regTypes;
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub	
+		
 
 	}
 
@@ -78,6 +81,7 @@ public class PupilRegistrationController extends HttpServlet implements
 
 		checkConnection(req, resp);
 		this.regDAO = new RegToMoadonitDAO(con);
+		this.generalDAO = new GeneralDAO(con);
 		action = req.getParameter("action");
 
 		this.reg = new RegToMoadonit();
@@ -319,7 +323,31 @@ public class PupilRegistrationController extends HttpServlet implements
 				}
 				
 			}
-			//regTypes
+			else if(action.equals("getRegDatesToValid")){
+				resp.setContentType("application/json");
+				resp.setCharacterEncoding("UTF-8");
+				
+				List<Object> result = this.getRegDatesToValid(req, resp);
+				if(!result.isEmpty()){
+					JSONArray arry =  new JSONArray();
+					
+					JSONObject o = new JSONObject();
+					o.put("startDate", result.get(0).toString());
+					o.put("lastDateToReg", result.get(1).toString());
+					o.put("numOfDaysToModify", result.get(2));
+					arry.add(o);
+					
+					jsonResponse = arry.toJSONString();
+				
+					resp.getWriter().print(jsonResponse);
+					
+				}else{
+					
+					jsonResponse = "{}";
+					resp.getWriter().print(jsonResponse);
+					
+				}
+			}			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -350,6 +378,14 @@ public class PupilRegistrationController extends HttpServlet implements
 	}
 	
 
+	private List<Object> getRegDatesToValid(HttpServletRequest req,
+			HttpServletResponse resp) {
+		// TODO Auto-generated method stub
+		List<Object> result = new ArrayList<Object>();		
+		result = this.generalDAO.getRegDatesToValid();
+		return result;
+	}
+	
 	private List<Activity> getCoursesByPupilNum(HttpServletRequest req,
 			HttpServletResponse resp, int i) {
 		// TODO Auto-generated method stub
