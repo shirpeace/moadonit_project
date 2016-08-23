@@ -189,7 +189,8 @@ public class PupilActivityDAO extends AbstractDAO {
 				pa.getId().getActivityNum(),
 				DAOUtil.toSqlDate(pa.getStartDate()),
 				DAOUtil.toSqlDate(pa.getRegDate()),
-				pa.getTblUser().getUserID(), DAOUtil.toSqlDate(pa.getEndDate()) };
+				pa.getTblUser().getUserID(), 
+				DAOUtil.toSqlDate(pa.getEndDate()) };
 
 		try (
 

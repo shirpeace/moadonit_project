@@ -154,7 +154,7 @@ Serializable {
 			}
 			//getPupilInCourse
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 	}
 	
@@ -320,7 +320,6 @@ Serializable {
 			
 			//
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 			resultToClient.put("msg", 0);
 			resultToClient
@@ -413,7 +412,6 @@ Serializable {
 			}
 			
 		} catch (Exception e) {
-			// TODO: handle exception
 			r = false;
 			resultToClient.put("msg", 0);
 			resultToClient.put("result",e.getMessage());
@@ -450,7 +448,7 @@ Serializable {
 		
 		act = (Activity) DAOUtil.getObjectFromJson(activityData, Activity.class);
 		act.setStartTime(sTime);
-		act.setStartTime(eTime);
+		act.setEndTime(eTime);
 		// SHIR- in this point we get both times into act
 		//somewhere after here the end date becomes null
 		actDOA = new ActivityDAO(con);
@@ -512,6 +510,7 @@ Serializable {
 				String fn = act.getTblStaff().getFirstName() != null ? act.getTblStaff().getFirstName() : "";
 				String ln = act.getTblStaff().getLastName() != null ? act.getTblStaff().getLastName() : "";
 				obj.put("staffName", ln	+ " " + fn);
+				obj.put("staffID", act.getTblStaff().getStaffID());
 				return obj;
 	}
 	
@@ -527,6 +526,7 @@ Serializable {
 				obj.put("extraPrice", act.getTblCourse().getExtraPrice());
 				obj.put("regularOrPrivate", act.getTblCourse().getRegularOrPrivate());
 				obj.put("category", act.getTblCourse().getCategory());
+				obj.put("pupilCapacity", act.getTblCourse().getPupilCapacity());
 				registrationData.add(obj);
 
 			}
@@ -554,10 +554,8 @@ Serializable {
 				con = new MyConnection();
 
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			session.setAttribute("connection", con);

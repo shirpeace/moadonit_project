@@ -174,7 +174,8 @@ public class ActivityDAO extends AbstractDAO {
 		c.setExtraPrice(resultSet.getInt("extraPrice"));
 		c.setPricePerMonth(resultSet.getInt("pricePerMonth"));
 		c.setRegularOrPrivate(resultSet.getString("regularOrPrivate"));
-
+		c.setPupilCapacity(resultSet.getInt("pupilCapacity"));
+		
 		return c;
 	}
 
@@ -203,8 +204,7 @@ public class ActivityDAO extends AbstractDAO {
 		act.setStartTime(resultSet.getTime("startTime"));
 		act.setEndTime(resultSet.getTime("endTime"));
 		act.setWeekDay(resultSet.getString("weekDay"));
-		//act.setTblSchoolYear(null);
-		//act.setTblStaff(null);		
+		//act.setTblSchoolYear(null);	
 		
 		return act;
 	}
@@ -212,7 +212,6 @@ public class ActivityDAO extends AbstractDAO {
 
 
 	public Date getCurrentYearEndDate() {
-		// TODO Auto-generated method stub
 		Date date = null;
 		
 		try (PreparedStatement statement = DAOUtil.prepareStatement(

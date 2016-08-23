@@ -211,6 +211,9 @@ function setCourseData(courseData) {
 
 		$('#pricePerMonth').val(courseData.pricePerMonth);
 		$('#extraPrice').val(courseData.extraPrice);
+		$("#capacity").val(courseData.pupilCapacity);
+		$("#responsibleStaff").val(courseData.staffID);
+		$("#activityGroup").val(courseData.activityGNum);
 
 		if (courseData.extraPrice !== null) {
 			$('#extraPriceChk').prop('checked', true);
@@ -277,7 +280,7 @@ function saveCourseData(action, forward) {
 	
 	activity.tblActivityGroup ={
 			activityGroupNum : $('#activityGroup').val(),
-			activityType : {
+			tblActivityType : {
 				typeID : 1,
 			}
 	};
@@ -294,6 +297,7 @@ function saveCourseData(action, forward) {
 		pricePerMonth : $('#pricePerMonth').val(),
 		regularOrPrivate : $('#regularOrPrivate').val(),
 		extraPrice : $('#extraPrice').val(),
+		pupilCapacity: $('#capacity').val()
 	};
 
 	var result;
@@ -307,8 +311,8 @@ function saveCourseData(action, forward) {
 				data : {
 					action : action,
 					activityData : JSON.stringify(activity),
-					endTime : $('#startTime').val(),
-					startTime : $('#endTime').val()
+					startTime : $('#startTime').val(),
+					endTime : $('#endTime').val()
 				},
 
 				success : function(data) {
