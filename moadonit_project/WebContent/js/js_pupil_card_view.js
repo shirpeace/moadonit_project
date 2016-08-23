@@ -43,9 +43,9 @@ $(function(){
 		$('#regLink').attr('href','pupil_week_view.jsp?li=2&pupil=' + pupilID);
 		$('#oneTimeLink').attr('href','pupil_one_time_act.jsp?li=3&pupil=' + pupilID);
 		
-		getSelectValuesFromDB("getFoodTypes","FoodTypes"); //getFoodTypes
-		getSelectValuesFromDB("getGrades","grades"); //getGrades
-		getSelectValuesFromDB("getFamilyRelation","FamilyRelation"); //getFamilyRelation
+		getSelectValuesFromDB("getFoodTypes","FoodTypes","FullPupilCardController"); //getFoodTypes
+		getSelectValuesFromDB("getGrades","grades","FullPupilCardController"); //getGrades
+		getSelectValuesFromDB("getFamilyRelation","FamilyRelation","FullPupilCardController"); //getFamilyRelation
 		
 		setSelectValues($('#food'), "FoodTypes");
 		setSelectValues($('#grade'), "grades");

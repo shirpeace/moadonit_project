@@ -22,7 +22,9 @@ import model.ActivityType;
 import model.Pupil;
 import model.PupilActivity;
 import model.PupilActivityPK;
+import model.RegSource;
 import model.RegToMoadonit;
+import model.Staff;
 import model.User;
 
 import org.json.simple.JSONArray;
@@ -32,10 +34,11 @@ import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 
 import util.DAOUtil;
 import dao.ActivityDAO;
+import dao.GeneralDAO;
 import dao.PupilActivityDAO;
+
 @WebServlet("/ActivityController")
-public class ActivityController extends HttpServlet implements
-Serializable {
+public class ActivityController extends HttpServlet implements Serializable {
 
 	/**
 	 * 
@@ -48,6 +51,7 @@ Serializable {
 	List<PupilActivity> listPupilActivity;
 	List<Activity> listAct;
 	JSONObject resultToClient = new JSONObject();
+	GeneralDAO generalDAO;
 	/**
 	 * 
 	 */
@@ -55,6 +59,7 @@ Serializable {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -62,36 +67,36 @@ Serializable {
 		// TODO Auto-generated method stub
 		checkConnection(req, resp);
 		this.actDOA = new ActivityDAO(con);
+		generalDAO = new GeneralDAO(con);
 		String action = req.getParameter("action");
 		String jsonResponse = "";
 		this.jsonArry = new JSONArray();
 		try {
-			if (action.equals("getCourses")){
-				listAct  = getCourses(req,resp);
-				
-				if (!listAct.isEmpty()){
+			if (action.equals("getCourses")) {
+				listAct = getCourses(req, resp);
+
+				if (!listAct.isEmpty()) {
 					getJsonCourses(jsonArry); // get courses
 					if (!jsonArry.isEmpty()) {
-						
+
 						jsonResponse = jsonArry.toJSONString();
 						jsonResponse = "{\"page\":1,\"total\":\"1\",\"records\":"
 								+ jsonArry.size()
 								+ ",\"rows\":"
-								+ jsonResponse + "}";
+								+ jsonResponse
+								+ "}";
 
 						resp.setContentType("application/json");
 						resp.setCharacterEncoding("UTF-8");
 						resp.getWriter().print(jsonResponse);
-					}
-					else{
+					} else {
 						resp.setContentType("application/json");
 						resp.setCharacterEncoding("UTF-8");
 						resultToClient.put("msg", 0);
 						resultToClient.put("result", "לא נמצאו נתונים");
 						resp.getWriter().print(resultToClient);
 					}
-				}
-				else{
+				} else {
 					resp.setContentType("application/json");
 					resp.setCharacterEncoding("UTF-8");
 					resultToClient.put("msg", 0);
@@ -99,44 +104,41 @@ Serializable {
 					resp.getWriter().print(resultToClient);
 				}
 			}
-			if (action.equals("getPupilInCourse")){
-				
-				
-				listPupilActivity = getPupilInCourse(req,resp);
-				
+			if (action.equals("getPupilInCourse")) {
+
+				listPupilActivity = getPupilInCourse(req, resp);
+
 				if (!listPupilActivity.isEmpty()) {
 					jsonArry = getJsonPupilActivities(listPupilActivity);
 					if (!jsonArry.isEmpty()) {
-						
+
 						jsonResponse = jsonArry.toJSONString();
 						jsonResponse = "{\"page\":1,\"total\":\"1\",\"records\":"
 								+ jsonArry.size()
 								+ ",\"rows\":"
-								+ jsonResponse + "}";
+								+ jsonResponse
+								+ "}";
 
 						resp.setContentType("application/json");
 						resp.setCharacterEncoding("UTF-8");
 						resp.getWriter().print(jsonResponse);
-						
-					}
-					else{
+
+					} else {
 						resp.setContentType("application/json");
 						resp.setCharacterEncoding("UTF-8");
 						resultToClient.put("msg", 0);
 						resultToClient.put("result", "לא נמצאו נתונים");
 						resp.getWriter().print(resultToClient);
 					}
-				}
-				else{
+				} else {
 					resp.setContentType("application/json");
 					resp.setCharacterEncoding("UTF-8");
 					resultToClient.put("msg", 0);
 					resultToClient.put("result", "לא נמצאו נתונים");
 					resp.getWriter().print(resultToClient);
 				}
-				
-			}
-			else if (action.equals("getCurrentYearEndDate")){
+
+			} else if (action.equals("getCurrentYearEndDate")) {
 				Date d = this.actDOA.getCurrentYearEndDate();
 				if (d != null) {
 					resp.setContentType("application/json");
@@ -144,7 +146,7 @@ Serializable {
 					resultToClient.put("msg", 1);
 					resultToClient.put("result", d.getTime());
 					resp.getWriter().print(resultToClient);
-				}else{
+				} else {
 					resp.setContentType("application/json");
 					resp.setCharacterEncoding("UTF-8");
 					resultToClient.put("msg", 0);
@@ -157,58 +159,76 @@ Serializable {
 			e.printStackTrace();
 		}
 	}
-	
+
+	private JSONObject getSatff() {
+		// TODO Auto-generated method stub
+		List<Staff> list = generalDAO.get_Staff(0);
+
+		String values = " : ;";
+		for (int i = 0; i < list.size(); i++) {
+			Staff ft = list.get(i);
+			values += ft.getStaffID() + ":" + ft.getLastName() + " " + ft.getFirstName() + ";";
+		}
+		values = values.substring(0, values.length() - 1);
+		JSONObject json = new JSONObject();
+		json.put("value", values);
+		return json;
+	}
+
 	private List<PupilActivity> getPupilInCourse(HttpServletRequest req,
 			HttpServletResponse resp) {
 		// TODO Auto-generated method stub
 		int actID = Integer.parseInt(req.getParameter("activityNum"));
-		java.sql.Date dateToSearch = req.getParameter("dateToSearch") == null ? null : new java.sql.Date(Long.parseLong(req.getParameter("dateToSearch").toString()));  
-				this.pupilActDAO = new PupilActivityDAO(con);
-		List<PupilActivity> list =  this.pupilActDAO.getPupilInCourse(actID, dateToSearch);
-		
+		java.sql.Date dateToSearch = req.getParameter("dateToSearch") == null ? null
+				: new java.sql.Date(Long.parseLong(req.getParameter(
+						"dateToSearch").toString()));
+		this.pupilActDAO = new PupilActivityDAO(con);
+		List<PupilActivity> list = this.pupilActDAO.getPupilInCourse(actID,
+				dateToSearch);
+
 		return list;
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	protected JSONArray getJsonPupilActivities( List<PupilActivity> list){
-		
+	protected JSONArray getJsonPupilActivities(List<PupilActivity> list) {
+
 		JSONArray result = new JSONArray();
-		//activityNum, activityName, pupilNum, startDate, regDate, endDate, firstName, lastName 
+		// activityNum, activityName, pupilNum, startDate, regDate, endDate,
+		// firstName, lastName
 		for (PupilActivity pa : list) {
-			
+
 			JSONObject obj = new JSONObject();
 			/*
-			 *PupilActivity pa = new PupilActivity();
-		PupilActivityPK pk = new PupilActivityPK();
-		pk.setActivityNum(1);
-		pk.setPupilNum(1);
-		pa.setId(pk);
-		
-		Activity act = new Activity();
-		ActivityType type = new ActivityType();
-		type.setTypeID(resultSet.getInt("activityType"));
-		act.setTblActivityType(type);
-		act.setActivityName(resultSet.getString("activityName"));
-		
-		pa.setTblActivity(act);
-		
-		pa.setRegDate(resultSet.getDate("regDate"));
-		pa.setStartDate(resultSet.getDate("startDate"));
-		pa.setEndDate(resultSet.getDate("endDate"));
-		
-		Pupil p = new Pupil();
-		p.setPupilNum(1);
-		p.setFirstName(resultSet.getString("firstName"));
-		p.setLastName(resultSet.getString("lastName"));
-		
-		pa.setTblPupil(p);
-			 * */
+			 * PupilActivity pa = new PupilActivity(); PupilActivityPK pk = new
+			 * PupilActivityPK(); pk.setActivityNum(1); pk.setPupilNum(1);
+			 * pa.setId(pk);
+			 * 
+			 * Activity act = new Activity(); ActivityType type = new
+			 * ActivityType(); type.setTypeID(resultSet.getInt("activityType"));
+			 * act.setTblActivityType(type);
+			 * act.setActivityName(resultSet.getString("activityName"));
+			 * 
+			 * pa.setTblActivity(act);
+			 * 
+			 * pa.setRegDate(resultSet.getDate("regDate"));
+			 * pa.setStartDate(resultSet.getDate("startDate"));
+			 * pa.setEndDate(resultSet.getDate("endDate"));
+			 * 
+			 * Pupil p = new Pupil(); p.setPupilNum(1);
+			 * p.setFirstName(resultSet.getString("firstName"));
+			 * p.setLastName(resultSet.getString("lastName"));
+			 * 
+			 * pa.setTblPupil(p);
+			 */
 			obj.put("activityNum", pa.getTblActivity().getActivityNum());
 			obj.put("activityName", pa.getTblActivity().getActivityName());
 			obj.put("pupilNum", pa.getTblPupil().getPupilNum());
-			obj.put("startDate", pa.getStartDate() == null ? null : pa.getStartDate().getTime());
-			obj.put("regDate",  pa.getRegDate() == null ? null : pa.getRegDate().getTime());
-			obj.put("endDate", pa.getEndDate() == null ? null : pa.getEndDate().getTime());
+			obj.put("startDate", pa.getStartDate() == null ? null : pa
+					.getStartDate().getTime());
+			obj.put("regDate", pa.getRegDate() == null ? null : pa.getRegDate()
+					.getTime());
+			obj.put("endDate", pa.getEndDate() == null ? null : pa.getEndDate()
+					.getTime());
 			obj.put("firstName", pa.getTblPupil().getFirstName());
 			obj.put("lastName", pa.getTblPupil().getLastName());
 			result.add(obj);
@@ -345,8 +365,7 @@ Serializable {
 			return true;
 		} else {
 			resultToClient.put("msg", 0);
-			resultToClient
-					.put("result", "שגיאה בשמירת הנתונים");
+			resultToClient.put("result", "שגיאה בשמירת הנתונים");
 			return false;
 		}
 		

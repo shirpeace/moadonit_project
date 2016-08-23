@@ -28,9 +28,9 @@
 			//get food type values from server
 			getFoodTypes();*/
 			
-			getSelectValuesFromDB("getFoodTypes","FoodTypes"); //getFoodTypes
-			getSelectValuesFromDB("getGrades","grades"); //getGrades
-			getSelectValuesFromDB("getFamilyRelation","FamilyRelation"); //getFamilyRelation
+			getSelectValuesFromDB("getFoodTypes","FoodTypes","FullPupilCardController"); //getFoodTypes
+			getSelectValuesFromDB("getGrades","grades","FullPupilCardController"); //getGrades
+			getSelectValuesFromDB("getFamilyRelation","FamilyRelation","FullPupilCardController"); //getFamilyRelation
 			
 			setSelectValues($('#food'), "FoodTypes");
 			setSelectValues($('#grade'), "grades");

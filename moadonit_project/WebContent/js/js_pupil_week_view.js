@@ -120,6 +120,7 @@ function loadWeekGrid(pupilID) {
 							if(idx == 0){
 								idx++;
 								//first row of grid
+								if(rd.type == "סוג רישום")
 								return {
 									/*"class" : 'not-editable-row',*/
 									"style" : "color:"+colors.presernt+";","data-isHistory": false
@@ -390,15 +391,14 @@ function loadRegistrationGrid(pupilID) {
 				datatype : "json",
 				mtype : 'POST',
 				editurl : "PupilRegistration?action=edit&pupilID="+ pupilID,
-				colNames : [ 'תאריך התחלה', 'יום ראשון', 'יום שני',
-						'יום שלישי', 'יום רביעי', 'יום חמישי' ,'פעולה'],					
+				colNames : [ 'תאריך התחלה','תאריך סיום','תאריך רישום', 'יום ראשון', 'יום שני','יום שלישי', 'יום רביעי', 'יום חמישי' ,'פעולה'],					
 				loadComplete : function(data) {
 					if (parseInt(data.records, 10) == 0) {
 						$("#listRegistrationPager div.ui-paging-info").show();
 					} else {
 						//$("#listRegistrationPager div.ui-paging-info").hide();
 					}
-							
+					
 					/* START hide edit/delete buttons for history records */
 					var ids = $("#listRegistration").jqGrid('getDataIDs');
 					for (var i = 0; i < ids.length; i++) 
@@ -408,7 +408,7 @@ function loadRegistrationGrid(pupilID) {
 
 					    var d = getDateFromValue(rowData.startDate);
 						if (d && currentDate) {
-							if (d.getTime() <= currentDate.getTime()) { 
+							if (d.getTime() < currentDate.getTime()) { 
 								$('#jEditButton_'+rowId).hide();
 								$('#jDeleteButton_'+rowId).hide();
 							}
@@ -417,7 +417,7 @@ function loadRegistrationGrid(pupilID) {
 					/*  END edit/delete buttons for history records */
 				},
 				rowattr : function(rd) {
-
+					
 					// set the style and editable of the row 
 					if (rd.startDate && currentDate) {
 						var d = new Date(rd.startDate);
@@ -511,7 +511,97 @@ function loadRegistrationGrid(pupilID) {
 								}
 							}
 				            , formatoptions: { newformat: "d/m/Y" },
-						}, {
+						},
+						{
+							name : "endDate",
+							index : 'endDate',
+							sorttype : "date",
+							editable : true,
+							editoptions: {
+		                            size: 20,
+		                            dataInit: function (el) {
+		                                $(el).datepicker({
+		                				    format: "dd/mm/yyyy",
+		                				    language: "he" ,
+		                				    startDate: "today",
+		                				    maxViewMode: 0,
+		                				    minViewMode: 0,
+		                				    todayBtn: true,
+		                				    keyboardNavigation: false,
+		                				    daysOfWeekDisabled: "5,6",
+		                				    todayHighlight: true,
+		                				    toggleActive: true 
+		                				}); 
+		                            },
+		                            defaultValue: function () {
+		                                var currentTime = new Date();
+		                                var month = parseInt(currentTime.getMonth() + 1);
+		                                month = month <= 9 ? "0" + month : month;
+		                                var day = currentTime.getDate();
+		                                day = day <= 9 ? "0" + day : day;
+		                                var year = currentTime.getFullYear();
+		                                return day + "/" + month + "/" + year;
+		                            }
+							 },
+	
+							formatter : function (cellValue, opts, rwd) {								
+								if (cellValue) {
+									 getDateFromValue(cellValue);
+									
+									var d = $.fn.fmatter.call(this, "date",
+											getDateFromValue(cellValue), opts, rwd);
+									return d;
+								} else {
+									return '';
+								}
+							}
+				            , formatoptions: { newformat: "d/m/Y" },
+						},
+						{
+							name : "registerDate",
+							index : 'registerDate',
+							sorttype : "date",
+							editable : false,
+							/*editoptions: {
+		                            size: 20,
+		                            dataInit: function (el) {
+		                                $(el).datepicker({
+		                				    format: "dd/mm/yyyy",
+		                				    language: "he" ,
+		                				    startDate: "today",
+		                				    maxViewMode: 0,
+		                				    minViewMode: 0,
+		                				    todayBtn: true,
+		                				    keyboardNavigation: false,
+		                				    daysOfWeekDisabled: "5,6",
+		                				    todayHighlight: true,
+		                				    toggleActive: true 
+		                				}); 
+		                            },
+		                            defaultValue: function () {
+		                                var currentTime = new Date();
+		                                var month = parseInt(currentTime.getMonth() + 1);
+		                                month = month <= 9 ? "0" + month : month;
+		                                var day = currentTime.getDate();
+		                                day = day <= 9 ? "0" + day : day;
+		                                var year = currentTime.getFullYear();
+		                                return day + "/" + month + "/" + year;
+		                            }
+							 },*/
+	
+							formatter : function (cellValue, opts, rwd) {								
+								if (cellValue) {
+									 getDateFromValue(cellValue);
+									
+									var d = $.fn.fmatter.call(this, "date",
+											getDateFromValue(cellValue), opts, rwd);
+									return d;
+								} else {
+									return '';
+								}
+							}
+				            , formatoptions: { newformat: "d/m/Y" },
+						},{
 							
 							name : 'sunday',
 							index : 'sunday',
@@ -558,12 +648,17 @@ function loadRegistrationGrid(pupilID) {
 						        editbutton: true,
 						        onEdit:function(rowid) {
 		                            //do somethinf if you need on edit button click
-						        	
+						        	debugger;
 						        	// get html content of cell
 						        	var cellContent = $(this).getCell(rowid,'startDate'); 
 						        	// convert it to a datePicker and get value of the cell
+						        	if(cellContent.indexOf("input") > 0){
 						        	var oldDate = $( '#'+$(cellContent).attr('id') ).datepicker( "getDate" );
 						        	oldDateVal = oldDate;
+						        	}else{
+						        		
+							        	oldDateVal = getDateFromValue(cellContent);
+						        	}
 		                         },								
 		                         onSuccess:function(jqXHR) {
 		                             // the function will be used as "succesfunc" parameter of editRow function
@@ -641,6 +736,29 @@ function loadRegistrationGrid(pupilID) {
 				refresh : false
 			});
 
+	//customize editing cell row conditionally
+	var orgRowActions = $.fn.fmatter.rowactions;
+	$.fn.fmatter.rowactions = function (act, gid, rid , pos) {
+		gid = grid[0].id;
+		
+	    var $grid = $("#" + $.jgrid.jqID(gid)), isNonEditable = false, result;
+	    var id =parseInt(this.id.substr(this.id.lastIndexOf("_")+1,1)); //get id of row form the erit button id
+	    var  rowData = $grid.jqGrid("getRowData", id); //get tow data
+	    
+	    // we can test any condition and change editable property of any column
+	    if (act === "edit" && getDateFromValue(rowData.startDate).getTime() == currentDate.getTime()) {
+	        $grid.jqGrid("setColProp", "startDate", {editable: false});
+	        isNonEditable = true;
+	    }
+	    
+	    //fire originl function
+	    result = orgRowActions.call(this, act, gid, rid, pos);
+	    if (isNonEditable) {
+	        // reset the setting to original state of column
+	        $grid.jqGrid("setColProp", "startDate", {editable: true});
+	    }
+	    return result;
+	}
 	/*
 	 * jQuery("#list").jqGrid('filterToolbar',{autosearch:true, stringResult:
 	 * true});
@@ -777,6 +895,50 @@ function goToByScroll(id){
       'slow');
 }
 
+function checkDatesForReg(start, end){
+	
+	if(start == null || end  == null) return;
+	
+	if(start > end){
+		//RegMsg		
+		/*$('#RegMsg').html("תאריכים לא תקינים");
+		$('#RegMsg').removeClass();
+		$('#RegMsg').addClass( "alert alert-danger" );
+		$('#RegMsg').show();
+		$('#btnSave').attr('disabled',true);*/
+		setRegMsg("תאריכים לא תקינים",true, "alert alert-danger" , true);
+	}
+	else{
+		setRegMsg("",false, null , false);
+		/*$('#RegMsg').html("");
+		$('#RegMsg').removeClass();		
+		$('#btnSave').attr('disabled',false);*/
+		isDateValidToReg(start,end);
+		
+	}
+}
+
+function OkToReg(elemnt){
+	 if(elemnt.checked) {
+	        //Do stuff
+		 $('#btnSave').attr('disabled',false);
+		
+	 }
+	 else{
+		 $('#btnSave').attr('disabled',true);
+	 }
+}
+
+
+function setRegMsg(msgHtml,msgStatus, msgCss, btnStatus){
+	if(msgHtml != null) $('#RegMsg').html(msgHtml);
+	$('#RegMsg').removeClass();
+	if(msgCss != null) $('#RegMsg').addClass( msgCss);
+	$('#RegMsg').toggle(msgStatus);
+	$('#btnSave').attr('disabled',btnStatus);
+	
+}
+
 $(function() {
 
 		$('#detailsLink').attr('href','pupil_card_view.jsp?li=0&pupil=' + pupilID);
@@ -800,8 +962,10 @@ $(function() {
 			    keyboardNavigation: false,
 			    daysOfWeekDisabled: "5,6",
 			    todayHighlight: true,
-			    toggleActive: true 
+			    toggleActive: true
+			   
 			}); 
+		 
 		 
 		 $('#endDatePick').datepicker({
 			    format: "dd/mm/yyyy",
@@ -813,9 +977,23 @@ $(function() {
 			    keyboardNavigation: false,
 			    daysOfWeekDisabled: "5,6",
 			    todayHighlight: true,
-			    toggleActive: true 
+			    toggleActive: true
+			 
 			});
 		 
+		$('#datePick').change(function(){
+		     //Change code!
+			var start = getDateFromValue(this.value);
+			var end = getDateFromValue($('#endDatePick').val());
+			checkDatesForReg(start, end);
+			
+		});
+		$('#endDatePick').change(function(){
+		     //Change code!
+			var start = getDateFromValue($('#datePick').val());
+			var end =  getDateFromValue(this.value);
+			checkDatesForReg(start, end);
+		});
 		 
 		loadWeekGrid(pupilID);
 		
@@ -899,7 +1077,9 @@ $(function() {
 			}			
 		});
 		
-		getSelectValuesFromDB("getRegSource","RegSource");
+		
+		
+		getSelectValuesFromDB("getRegSource","RegSource","FullPupilCardController");
 		setSelectValues($('#reason'), "RegSource");
 		getCurrentYearEndDate();
 		getRegDatesToValid();

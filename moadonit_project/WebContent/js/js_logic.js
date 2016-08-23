@@ -8,7 +8,7 @@ var currentUserId =	 '<%=session.getAttribute("userid")%>';
 //$.jgrid.defaults.responsive = true;
 //$.jgrid.defaults.styleUI = 'Bootstrap';
 var gradeData;
-var grades, FoodTypes , FamilyRelation, RegSource;
+var grades, FoodTypes , FamilyRelation, RegSource, Staff;
 var RegDatesToValid = { startDate:null, lastDateToReg : null , numOfDaysToModify : null};
 // define state for the editable page
 	var state = {
@@ -41,6 +41,116 @@ jQuery.fn.center = function(parent) {
 	    });
 	return this;
 };
+
+function isElementInViewport (el) {	
+	    //special bonus for those using jQuery
+	    if (typeof jQuery === "function" && el instanceof jQuery) {
+	        el = el[0];
+	    }
+
+	    var rect = el.getBoundingClientRect();
+
+	    var r = (
+		        rect.top >= 0 &&
+		        rect.left >= 0 &&
+		        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && /*or $(window).height() */
+		        rect.right <= (window.innerWidth || document.documentElement.clientWidth) /*or $(window).width() */
+		    );
+	    return r;
+}
+
+
+function isDateValidToReg(dateParam, endParam){
+	
+	var startModDate , endModDate , tempDate;
+	
+	if(RegDatesToValid.startDate == null && RegDatesToValid.lastDateToReg == null) return null;
+	//if we in registration period
+	if(RegDatesToValid.startDate <= dateParam && dateParam <= RegDatesToValid.lastDateToReg){		
+		
+		return true;
+	}
+	else{
+		var html = "<input type='checkbox' id='OkToReg' name='OkToReg' value='1' onchange='OkToReg(this)' >&nbsp;&nbsp;שמור שינויים בכל זאת.<br>"+
+		 "<strong>שיב לב</strong> התאריכים לא בתקופת השינויים";
+		
+		var firstDay = new Date(dateParam.getFullYear(), dateParam.getMonth(), 1);
+		startModDate = new Date();
+		endModDate = new Date();
+		startModDate.setDate(firstDay.getDate() - 3);
+		endModDate.setDate(firstDay.getDate() + 3);
+		
+		//check for overlapping dates
+		var result  = checkOverlappingDatesInGrid(dateParam, endParam);
+		 
+		if(result)
+			return ;
+		
+		// if no overlapping
+		// check if the dates are in the modification period
+		if(startModDate <= dateParam && dateParam <= endModDate){
+			return true;
+		}else{
+			setRegMsg(html,true, "alert alert-warning" , true);
+			return true;
+		}
+		
+		return false;
+	}
+	
+}
+
+Date.prototype.ddmmyyyy = function() {
+	  var mm = this.getMonth() + 1; // getMonth() is zero-based
+	  var dd = this.getDate();
+
+	  return [ dd,"/", mm,"/", this.getFullYear() ].join(''); // padding
+	 
+	};
+
+function checkOverlappingDatesInGrid(startParam, endParam){
+	
+	var rowCount =  $('#listRegistration').getGridParam("reccount");
+	var allRowsInGrid = $('#listRegistration').jqGrid('getGridParam','data');
+	
+	var overlappingDates = [];
+	var rowData = [];
+	for (var int = 1; int <= rowCount; int++) {
+		rowData[int] = $('#listRegistration').jqGrid("getRowData", int);		
+		
+	}
+	
+	for (var i = 1; i <= rowData.length; i++) {
+		var startDate, endDate;
+		if(rowData[i] == undefined) continue;
+		
+		startDate = getDateFromValue(rowData[i].startDate);
+		endDate = getDateFromValue(rowData[i].endDate);
+		
+		if(endDate != null && endDate != null){
+			
+			if ((startParam < startDate && startDate <= endParam)
+			        || (startParam >= startDate && endDate >= startParam)){
+				//overlapping!!!
+				var val = { "startDate" : startDate , "endDate" : endDate};
+				
+				overlappingDates.push(val);
+			}
+		}
+	}
+	
+	if(overlappingDates.length > 0){
+		var html = "קיימת חפיפה עם תקופה המתחילה ב " + overlappingDates[0].startDate.ddmmyyyy() + " ומסתיימת בתאריך " + overlappingDates[0].endDate.ddmmyyyy() ;
+		setRegMsg(html,true, "alert alert-danger" , true);
+		return true;
+	}
+	else{
+		return false;
+	}
+	
+	
+}
+
 
 function getRegTypesData(){
 	var returnData;
@@ -208,14 +318,15 @@ function setSelectValues(selectObj, valObj){
  * @param funcName - name of function to trigger in controller
  * @param objVal - javascript object name to set
  */
-function getSelectValuesFromDB(funcName,objName)
+function getSelectValuesFromDB(funcName,objName,ContorlName)
 {
 
+	var url = ContorlName + "?action=" + funcName;
 	$.ajax({
   		async: false,
 		type: 'GET',
 		datatype: 'json',
-        url: "FullPupilCardController?action=" + funcName,
+        url: url,
         
         success: function(data) {
         	if(data != undefined){
@@ -286,6 +397,7 @@ function getFoodTypes()
         
       });	
 }
+
 
 /**
  * the value to convert to date , if value is a milliseconds number , create an date from it.

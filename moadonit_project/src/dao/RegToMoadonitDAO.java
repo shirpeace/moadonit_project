@@ -258,6 +258,8 @@ public class RegToMoadonitDAO extends AbstractDAO {
 						
 				rtm.setRegisterDate(resultSet.getDate("registerDate"));
 				
+				rtm.setEndDate(resultSet.getDate("endDate"));
+				
 				User u = new User();
 				u.setUserID(resultSet.getInt("writenBy"));
 				rtm.setTblUser(u);
