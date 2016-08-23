@@ -241,6 +241,15 @@
 				<div class="row">
 					<div class="col-lg-1"></div>
 					<div class="col-lg-10">
+							<div id="RegMsg" class="alert alert-warning" style="display: none;">
+							 <input type="checkbox" id="OkToReg" name="OkToReg" value="1" onchange="OkToReg(this)" >&nbsp;&nbsp;שמור שינויים בכל זאת.<br>
+							 <strong>שיב לב</strong> התאריכים לא בתקופת השינויים
+							</div>
+					</div>
+				</div>				
+				<div class="row">
+					<div class="col-lg-1"></div>
+					<div class="col-lg-10">
 						<div class="panel panel-default">
 							<div class="panel-heading">								
 								<a href="#" id="regHeaderlink">
@@ -320,7 +329,7 @@
 															style="margin-top: 5px;" type="button" value="שמור">
 													</div>
 												</div>
-											</form>
+											</form>											
 									</div>
 								<div id="endP"></div>
 							</div>
@@ -360,7 +369,6 @@
 	<%
 		}
 	%>
-
 
 </body>
 

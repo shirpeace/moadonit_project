@@ -7,11 +7,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
+
 import model.FamilyRelation;
 import model.FoodType;
 import model.GenderRef;
 import model.GradeCode;
 import model.RegSource;
+import model.Staff;
 import util.DAOUtil;
 import controller.MyConnection;
 
@@ -24,13 +27,35 @@ public class GeneralDAO extends AbstractDAO {
 
 	private String callFoodTypeProc = "{ call ms2016.get_FoodType_code(?) }";
 	private String callfamilyRelationProc = "{ call ms2016.get_family_Relation(?) }"; // tbl_family_relation
-	private String callgetRegSourceProc = "{ call ms2016.get_Reg_Source(?) }"; // 
+	private String callgetRegSourceProc = "{ call ms2016.get_Reg_Source(?) }"; //
+	private String get_Staff = "{ call ms2016.get_Staff(?) }"; // get_Staff
 
 	private String getRegDatesToValid = "{ call ms2016.getRegDatesToValid() }"; // ;
 
 	public GeneralDAO(MyConnection con) {
 		super(con);
 		// TODO Auto-generated constructor stub
+	}
+
+	public List<Staff> get_Staff(int id) throws IllegalArgumentException,
+			DAOException {
+
+		List<Staff> list = new ArrayList<>();
+		try (PreparedStatement statement = DAOUtil
+				.prepareCallbackStatement(this.con.getConnection(),
+						get_Staff, new Object[] { id });
+				ResultSet resultSet = statement.executeQuery();) {
+
+			while (resultSet.next()) {
+				Staff p = mapStaff(resultSet);
+				list.add(p);
+			}
+
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+
+		return list;
 	}
 
 	public List<FoodType> getFoodTypes(int id) throws IllegalArgumentException,
@@ -123,19 +148,32 @@ public class GeneralDAO extends AbstractDAO {
 		return rs;
 	}
 
-	public List<Object> getRegDatesToValid() throws IllegalArgumentException, DAOException {
+	private Staff mapStaff(ResultSet resultSet) throws IllegalArgumentException, SQLException {
+		// TODO Auto-generated method stub
+		Staff p = new Staff();
+		//staffID, firstName, lastName, cellphone, email
+		p.setStaffID(resultSet.getInt("staffID"));
+		p.setFirstName(resultSet.getString("firstName"));
+		p.setLastName(resultSet.getString("lastName"));
+		p.setCellphone(resultSet.getString("cellphone"));
+		p.setEmail(resultSet.getString("email"));
+		
+		return p;
+	}
+	
+	public List<Object> getRegDatesToValid() throws IllegalArgumentException,
+			DAOException {
 		// TODO Auto-generated method stub
 		List<Object> list = new ArrayList<>();
 		try (PreparedStatement statement = DAOUtil.prepareCallbackStatement(
-				this.con.getConnection(), getRegDatesToValid,
-				new Object[] { });
+				this.con.getConnection(), getRegDatesToValid, new Object[] {});
 				ResultSet resultSet = statement.executeQuery();) {
 
 			while (resultSet.next()) {
 				Date startDate = resultSet.getDate("startDate");
 				Date lastDateToReg = resultSet.getDate("lastDateToReg");
 				int numOfDaysToModify = resultSet.getByte("@numOfDaysToModify");
-				
+
 				list.add(startDate.getTime());
 				list.add(lastDateToReg.getTime());
 				list.add(numOfDaysToModify);

@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Function;
 
 import javax.mail.Session;
 import javax.servlet.ServletException;
@@ -562,18 +563,24 @@ public class PupilRegistrationController extends HttpServlet implements
 		if (type == 0) { // get data for weekGrid
 
 			RegToMoadonit regPupil = this.pupilRegList.get(0);
-
-			JSONObject user = new JSONObject();
-			user.put("title", "");
-			user.put("type", "סוג רישום");
-			user.put("startDate", regPupil.getId().getStartDate().getTime());
-			user.put("sunday", getRegTypeName(regPupil.getTblRegType1().getTypeNum()));
-			user.put("monday", getRegTypeName(regPupil.getTblRegType2().getTypeNum()));
-			user.put("tuesday", getRegTypeName(regPupil.getTblRegType3().getTypeNum()));
-			user.put("wednesday", getRegTypeName(regPupil.getTblRegType4().getTypeNum()));
-			user.put("thursday", getRegTypeName(regPupil.getTblRegType5().getTypeNum()));
+	
+			Date today = new Date();
 			
-			registrationData.add(user);
+			JSONObject user = new JSONObject();
+			
+			if(!today.after(regPupil.getEndDate())){
+				user.put("title", "");
+				user.put("type", "סוג רישום");
+				user.put("startDate", regPupil.getId().getStartDate().getTime());
+				user.put("sunday", getRegTypeName(regPupil.getTblRegType1().getTypeNum()));
+				user.put("monday", getRegTypeName(regPupil.getTblRegType2().getTypeNum()));
+				user.put("tuesday", getRegTypeName(regPupil.getTblRegType3().getTypeNum()));
+				user.put("wednesday", getRegTypeName(regPupil.getTblRegType4().getTypeNum()));
+				user.put("thursday", getRegTypeName(regPupil.getTblRegType5().getTypeNum()));
+				
+				registrationData.add(user);
+			}
+			
 			
 			List<Map<String,Object>> map = new ArrayList<Map<String,Object>>();
 			Map<String,Object> row ;
@@ -750,11 +757,14 @@ public class PupilRegistrationController extends HttpServlet implements
 				JSONObject user = new JSONObject();
 
 				user.put("startDate", regPupil.getId().getStartDate().getTime());
+				user.put("registerDate", regPupil.getRegisterDate().getTime());
+				user.put("endDate", regPupil.getEndDate().getTime());
 				user.put("sunday", getRegTypeName(regPupil.getTblRegType1().getTypeNum()));
 				user.put("monday", getRegTypeName(regPupil.getTblRegType2().getTypeNum()));
 				user.put("tuesday", getRegTypeName(regPupil.getTblRegType3().getTypeNum()));
 				user.put("wednesday", getRegTypeName(regPupil.getTblRegType4().getTypeNum()));
 				user.put("thursday", getRegTypeName(regPupil.getTblRegType5().getTypeNum()));
+				
 
 				registrationData.add(user);
 

@@ -131,7 +131,10 @@ $(function() {
 						nameValidator : true
 					// custom validation from additional-methods.js
 					},
-
+					responsibleStaff : {
+						required : true						
+					// custom validation from additional-methods.js
+					},
 					/*lName : {
 						required : true,
 						minlength : 2,
@@ -190,6 +193,9 @@ $(function() {
 		return false;
 	});
 
+	getSelectValuesFromDB("getSatff", "Staff","ActivityController");
+	setSelectValues($('#responsibleStaff'), "Staff");
+	
 	loadGrid('list');
 	getCurrentYearEndDate();
 	
