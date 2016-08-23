@@ -153,6 +153,12 @@ public class ActivityController extends HttpServlet implements Serializable {
 					resultToClient.put("result", "לא נמצאו נתונים");
 					resp.getWriter().print(resultToClient);
 				}
+			} else if (action.equals("getSatff")) {
+				resp.setContentType("application/json");
+				resp.setCharacterEncoding("UTF-8");
+
+				JSONObject jsonObj = getSatff();
+				resp.getWriter().print(jsonObj);
 			}
 			//getPupilInCourse
 		} catch (Exception e) {
