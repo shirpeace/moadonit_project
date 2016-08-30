@@ -110,6 +110,9 @@ $(function() {
 	 * activityNum);
 	 */
 
+	getSelectValuesFromDB("getSatff", "Staff","ActivityController");
+	setSelectValues($('#responsibleStaff'), "Staff");
+	
 	var dataString = 'activityNum=' + activityNum + '&action=' + "getCourses";
 	loadCourseData(dataString);	
 	/* set the validation for form */ 
@@ -196,8 +199,7 @@ $(function() {
 		return false;
 	});
 
-	getSelectValuesFromDB("getSatff", "Staff","ActivityController");
-	setSelectValues($('#responsibleStaff'), "Staff");
+	
 	
 	loadGrid('list');
 	getCurrentYearEndDate();
@@ -210,14 +212,16 @@ function setCourseData(courseData) {
 
 	if (courseData != undefined) {
 
-		$('.page-header').html("חוג " + courseData.activityName + " ");
-
+	//	$('.page-header').html("חוג " + courseData.activityName + " ");
+		$('.page-header').html(courseData.activityGroup+ "  -  " + courseData.activityName );
+		//activityGroup
+		
 		/* course details import */
 		$('#activityName').val(courseData.activityName);
 		$('#weekDay').val(courseData.weekDay);
 		$('#startTime').val(courseData.startTime);
 		$('#endTime').val(courseData.endTime);
-		$('#responsibleStaff').val(courseData.responsibleStaff);
+		
 		$('#activityGroup').val(courseData.activityGroup);
 
 		$('#pricePerMonth').val(courseData.pricePerMonth);
@@ -283,111 +287,6 @@ function deletePupil(id) {
 
 }
 
-function saveCourseData(action, forward) {
-
-	var activity = new Object();
-	activity.activityNum = activityNum;
-	activity.activityName = $('#activityName').val();
-	
-	activity.tblActivityGroup ={
-			activityGroupNum : $('#activityGroup').val(),
-			tblActivityType : {
-				typeID : 1,
-			}
-	};
-
-	activity.weekDay = $('#weekDay').val();
-	activity.schoolYear = 0;
-	activity.tblStaff = {
-		staffID : $('#responsibleStaff').val()
-	};
-	activity.tblCourse = {
-
-		activityNum : activityNum,
-		category : 0,
-		pricePerMonth : $('#pricePerMonth').val(),
-		regularOrPrivate : $('#regularOrPrivate').val(),
-		extraPrice : $('#extraPrice').val(),
-		pupilCapacity: $('#capacity').val()
-	};
-
-	var result;
-
-	$
-			.ajax({
-				async : false,
-				type : 'POST',
-				datatype : 'jsonp',
-				url : "ActivityController",
-				data : {
-					action : action,
-					activityData : JSON.stringify(activity),
-					startTime : $('#startTime').val(),
-					endTime : $('#endTime').val()
-				},
-
-				success : function(data) {
-					if (data != undefined) {
-						/* alert(data); */
-						/**
-						 * FIX error of update/
-						 */
-						if (!data.msg) {
-							result = true;
-						}
-						if (data.msg == "1") {
-							result = true;
-							activityNum = data.result;
-							if (action === "insert") {
-								if (typeof forward != undefined && forward) {
-									bootbox
-											.alert(
-													"נתונים נשמרו בהצלחה, הנך מועבר למסך החוג",
-													function() {
-														// send user to the
-														// pupil page after
-														// successful insert
-														window.location.href = "course_card_view.jsp?activityNum="
-																+ activityNum
-																+ "";
-													});
-								} else {
-									bootbox.alert("נתונים נשמרו בהצלחה",
-											function() {
-											});
-								}
-
-							} else {
-								bootbox.alert("נתונים עודכנו בהצלחה",
-										function() {
-										});
-
-							}
-						} else if (data.msg == "0") {
-							result = false;
-							bootbox
-									.alert(
-											"שגיאה בשמירת הנתונים, נא בדוק את הערכים ונסה שוב.",
-											function() {
-											});
-						}
-					}
-				},
-				error : function(e) {
-					result = false;
-					console.log(e);
-					bootbox
-							.alert(
-									"שגיאה בשמירת הנתונים, נא בדוק את הערכים ונסה שוב.",
-									function() {
-									});
-				}
-
-			});
-
-	return result;
-
-}
 
 function setPageBtns() {
 	bootbox.setDefaults({
@@ -413,8 +312,9 @@ function setPageBtns() {
 					if (result === true) {
 						formDisable('ajaxform');
 						currentPageState = state.READ;
-						$('.page-header').html(
-								$('#activityName').val() + " " + " " + "חוג ");
+						
+		//				$('.page-header').html("חוג " + $('#activityName').val() + " ");
+						$('.page-header').html($('#activityGroup').find("option:selected").text() + "  -  " + $('#activityName').val() );
 						/* $('#ajaxform').trigger('reinitialize.areYouSure'); */
 					}
 

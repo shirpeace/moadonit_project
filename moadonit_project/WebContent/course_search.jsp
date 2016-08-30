@@ -112,7 +112,7 @@
 							class="fa fa-fw fa-phone"></i> מורי חוגים </a></li>
 					<li><a href="course_regs_chart.jsp"><i class="fa fa-fw fa-edit"></i>
 							דוח רשומים </a></li>
-					<li><a href="#"><i class="fa fa-fw fa-edit"></i>
+					<li><a href="course_add.jsp"><i class="fa fa-fw fa-edit"></i>
 							הוספת חדש</a></li>
 				</ul>
 			</div>

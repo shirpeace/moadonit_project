@@ -23,13 +23,20 @@ public class ActivityDAO extends AbstractDAO {
 
 	public ActivityDAO(MyConnection con) {
 		super(con);
-		// TODO Auto-generated constructor stub
 	}
 
 	private String selectCourses = "{call ms2016.getCourses (?)}";
 	private String searchCoursesByParam = "{ call ms2016.searchCoursesByParam( ? , ? , ?, ? , ?, ?, ? , ?, ? ,? ) }";
 	private String getCurrentYearEndDate = "select getCurrentYearEndDate() as endDate";
 	private String updateCourse = "{call ms2016.updateCourse (?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+	
+	private String insertActivity = "INSERT INTO tbl_activity (activityGroup, activityName, " +
+					"weekDay, startTime, endTime, schoolYear, responsibleStaff) VALUES ( ?, ?, ?, ?, ?, ?, ?)";
+	/*private String insertActGroup = "INSERT INTO tbl_activity_group (activityGroupNum, actGroupName, activityType)" +
+					"VALUES (?, ? , ?)";*/
+	private String  insertCourse= "INSERT INTO tbl_course (activityNum, pricePerMonth, extraPrice, " +
+					"regularOrPrivate, category, pupilCapacity) VALUES (?, ?, ?, ?, ?, ?)";
+
 	/**
 	 * getCourses
 	 */
@@ -164,6 +171,78 @@ public class ActivityDAO extends AbstractDAO {
 	        }
 	}
 
+	/**
+	 * update Course according to given id and params.
+	 * @param id - id of the course
+	 * @param year - if 0 then will take the current year from the DB
+	 * @throws IllegalArgumentException
+	 * @throws DAOException
+	 */
+	public Boolean insertCourse(Activity act)
+			throws IllegalArgumentException, DAOException {
+		List<Activity> list = new ArrayList<>();
+
+		
+		Object[] activityValues = { 
+						act.getTblActivityGroup().getActivityGroupNum(), 
+						act.getActivityName(), 
+						act.getWeekDay(), 
+						act.getStartTime(), 
+						act.getEndTime(), 
+						act.getTblSchoolYear() != null ? act.getTblSchoolYear().getYearID() : null,
+						act.getTblStaff().getStaffID()
+					};
+		
+		
+	/*	Object[] actGroupValues = { 
+						act.getTblActivityGroup().getActivityGroupNum(),
+						act.getTblActivityGroup().getActGroupName(),
+						act.getTblActivityGroup().getTblActivityType().getTypeID()
+					};*/
+		
+		try (PreparedStatement statement2 = DAOUtil.prepareStatement(this.con.getConnection(), insertActivity, true, activityValues);
+				/*PreparedStatement statement3 = DAOUtil.prepareStatement(this.con.getConnection(), insertActGroup, true, actGroupValues);*/) {
+		
+			// * transaction block start *//
+				this.con.getConnection().setAutoCommit(false);
+  
+				statement2.executeUpdate();
+				ResultSet generatedKeys;
+				try  {
+					generatedKeys = statement2.getGeneratedKeys();
+					if (generatedKeys.next()) {
+						act.setActivityNum(generatedKeys.getInt(1));
+					
+					} else {
+						throw new DAOException(
+								"Creating activity failed, no generated key obtained.");
+					}
+					}catch(SQLException e) {
+			            throw new DAOException(e);
+			        }
+				if(generatedKeys != null){
+					Object[] courseValues = { 
+							act.getActivityNum(), 
+							act.getTblCourse().getPricePerMonth(),
+							act.getTblCourse().getExtraPrice(), 
+							act.getTblCourse().getRegularOrPrivate(), 
+							act.getTblCourse().getCategory(), 
+							act.getTblCourse().getPupilCapacity()
+						};
+					PreparedStatement statement1 = DAOUtil.prepareStatement(this.con.getConnection(), insertCourse, true, courseValues);
+					
+		            statement1.executeUpdate();
+				}
+				
+			
+				this.con.getConnection().commit();
+			// * transaction block end *//
+				
+	            return true;
+	        } catch (SQLException e) {
+	            throw new DAOException(e);
+	        }
+	}
 	
 	private Course mapCourse(ResultSet resultSet) throws SQLException {
 		//activityNum, pricePerMonth, extraPrice, regularOrPrivate, category

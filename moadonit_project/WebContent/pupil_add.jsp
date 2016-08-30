@@ -192,27 +192,9 @@
 								</div>
 								<div class="form-group">
 
-									<label for="grade">כיתה</label> <select class="form-control" onchange="setGradeBgColor(this)"
-										name="grade" id="grade">
-										<!-- <option value="11">א-א</option>
-										<option value="12">א-ב</option>
-										<option value="13">א-ג</option>
-										<option value="21">ב-א</option>
-										<option value="22">ב-ב</option>
-										<option value="23">ב-ג</option>
-										<option value="31">ג-א</option>
-										<option value="32">ג-ב</option>
-										<option value="33">ג-ג</option>
-										<option value="41">ד-א</option>
-										<option value="42">ד-ב</option>
-										<option value="43">ד-ג</option>
-										<option value="51">ה-א</option>
-										<option value="52">ה-ב</option>
-										<option value="53">ב-ג</option>
-										<option value="61">ו-א</option>
-										<option value="62">ו-ב</option>
-										<option value="63">ו-ג</option> -->
-									</select>
+									<label for="grade">כיתה</label> 
+									<select class="form-control" onchange="setGradeBgColor(this)"
+										name="grade" id="grade"></select>
 								</div>
 								<div class="form-group">
 								     <div class="checkbox-group required">
@@ -229,14 +211,8 @@
 							<!-- row 1 col 3 -->
 							<div class="col-lg-2">
 								<div class="form-group">
-									<label for="food">סוג מנה</label> <select class="form-control"
-										name="food" id="food">
-										<!-- <option value="0">בחר</option> 
-										<option value="1">רגילה</option>
-										<option value="2">אפויה</option>
-										<option value="3">צמחונית</option>
-										<option value="4">ללא-גלוטן</option> -->
-									</select>
+									<label for="food">סוג מנה</label>
+									 <select class="form-control" name="food" id="food"></select>
 								</div>
 								<table dir="rtl"  style="width:100%" cellpadding="3" cellspacing="5">
 									<tr>
@@ -295,23 +271,6 @@
 										class="form-control" id="comnt" name="comnt" placeholder="">
 								</div>
 							</div>
-							
-							<!-- row 1 col 4 -->
-							<!-- <div class="col-lg-3" >
-								<div class="form-group">
-								<label for="test1">הערות כלליות</label>
-								<textarea rows="3" class="form-control" name="test1" id="test1" >
-								At w3schools.com you will learn how to make a website. We offer free tutorials in all web development technologies. 
-								</textarea>
-								</div>
-								<div class="form-group">
-								<label for="test2" >הערות כלליות</label>
-								<textarea rows="3" class="form-control" name="test2" id="test2">
-								At w3schools.com you will learn how to make a website. We offer free tutorials in all web development technologies. 
-								</textarea>
-								</div>
-							</div> -->
-							
 						</div>
 					</div>
 
@@ -343,14 +302,8 @@
 										placeholder="אימייל">
 								</div>
 								<div class="form-group">
-									<label for="p1relat">קרבה</label> <select class="form-control"
-										name="p1relat" id="p1relat">
-										<!-- <option value="1" selected="selected">אמא</option>
-										<option value="2">אבא</option>
-										<option value="3">אח</option>
-										<option value="4">אחות</option>
-										<option value="5">אחר</option> -->
-									</select>
+									<label for="p1relat">קרבה</label> 
+									<select class="form-control" name="p1relat" id="p1relat"></select>
 								</div>
 							</div>
 							<!-- row 2 col 2 -->

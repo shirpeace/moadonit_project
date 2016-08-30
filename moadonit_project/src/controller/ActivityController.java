@@ -299,12 +299,19 @@ public class ActivityController extends HttpServlet implements Serializable {
 				}
 			}else if (action.equals("insert")) {
 				
-					insertCourse(req, resp);
-					
+					boolean r = insertCourse(req, resp);
+					if (r) {
+						resultToClient.put("msg", 1);
+						resultToClient.put("result", null);
+					} else {
+						resultToClient.put("msg", 0);
+						resultToClient
+								.put("result", "שגיאה בשמירת הנתונים");
+					}
+
 					resp.setContentType("application/json");
 					resp.setCharacterEncoding("UTF-8");
 					resp.getWriter().print(resultToClient);
-
 				
 			}else if (action.equals("update")) {
 				
@@ -462,16 +469,25 @@ public class ActivityController extends HttpServlet implements Serializable {
 		
 		return r;
 	}
- 	private void insertCourse(HttpServletRequest req, HttpServletResponse resp) {
-		// TODO Auto-generated method stub
+ 	private Boolean insertCourse(HttpServletRequest req, HttpServletResponse resp) {
+ 		Activity act = getActFromReq(req);
+		actDOA = new ActivityDAO(con);
 		
-		
-		
+			Boolean result = actDOA.insertCourse(act);
+
+		return result;
 	}
-	@SuppressWarnings("unchecked")
+	
 	private Boolean updateCourse(HttpServletRequest req, HttpServletResponse resp) throws ParseException {
-		// TODO Auto-generated method stub
-		Activity act ;
+		Activity act = getActFromReq(req );
+		actDOA = new ActivityDAO(con);
+		Boolean result = actDOA.updateCourse(act);
+
+		return result;
+	}
+	
+	private Activity getActFromReq(HttpServletRequest req ){
+		Activity act;
 		String activityData = req.getParameter("activityData");
 		
 		String startTime = req.getParameter("startTime");
@@ -483,22 +499,12 @@ public class ActivityController extends HttpServlet implements Serializable {
 		String[] end = endTime.split(":");
 		@SuppressWarnings("deprecation")
 		java.sql.Time eTime = new Time(Integer.parseInt(end[0]), Integer.parseInt(end[1]), 00);
-		/*String endTime = req.getParameter("endTime");
-		SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
-		Date date = format.parse(startTime);*/
-		//Time t = new Time();
-		
 		
 		act = (Activity) DAOUtil.getObjectFromJson(activityData, Activity.class);
 		act.setStartTime(sTime);
 		act.setEndTime(eTime);
-		// SHIR- in this point we get both times into act
-		//somewhere after here the end date becomes null
-		actDOA = new ActivityDAO(con);
-		Boolean result = actDOA.updateCourse(act);
-
-		return result;
 		
+		return act;
 	}
 	
 	private List<Activity> searchCourses(HttpServletRequest req,
