@@ -732,3 +732,109 @@ function getCurrentYearEndDate(){
 }
 /*var dd = new Intl.DateTimeFormat("he-IL").format(date);	   
 dd = dd.replaceAll(".", "/");*/
+
+/**
+ * update or insert course details 
+ * activated from js_course_card_view.js , js_course_add.js
+ */
+function saveCourseData(action, forward) {
+
+	var activity = new Object();
+	activity.activityNum = activityNum;
+	activity.activityName = $('#activityName').val();
+	
+	activity.tblActivityGroup ={
+			activityGroupNum : $('#activityGroup').val(),
+			tblActivityType : {
+				typeID : 1,
+			}
+	};
+
+	activity.weekDay = $('#weekDay').val();
+	activity.schoolYear = 0;
+	activity.tblStaff = {
+		staffID : $('#responsibleStaff').val()
+	};
+	activity.tblCourse = {
+
+		activityNum : activityNum,
+		category : 0,
+		pricePerMonth : $('#pricePerMonth').val(),
+		regularOrPrivate : $('#regularOrPrivate').val(),
+		extraPrice : $('#extraPrice').val(),
+		pupilCapacity: $('#capacity').val()
+	};
+
+	var result;
+
+	$
+			.ajax({
+				async : false,
+				type : 'POST',
+				datatype : 'jsonp',
+				url : "ActivityController",
+				data : {
+					action : action,
+					activityData : JSON.stringify(activity),
+					startTime : $('#startTime').val(),
+					endTime : $('#endTime').val()
+				},
+
+				success : function(data) {
+					if (data != undefined) {
+						/* alert(data); */
+						/**
+						 * FIX error of update/
+						 */
+						if (!data.msg) {
+							result = true;
+						}
+						if (data.msg == "1") {
+							result = true;
+							if (data.result != null) activityNum = data.result;
+							if (action === "insert") {
+								if (typeof forward != undefined && forward) {
+									bootbox.alert(
+													"נתונים נשמרו בהצלחה, הנך מועבר למסך החוג",
+													function() {
+														// send user to the course page after successful insert
+														window.location.href = "course_card_view.jsp?activityNum="
+																+ activityNum + "";
+													});
+								} else {
+									bootbox.alert("נתונים נשמרו בהצלחה",
+											function() {
+											});
+								}
+
+							} else {
+								bootbox.alert("נתונים עודכנו בהצלחה",
+										function() {
+										});
+
+							}
+						} else if (data.msg == "0") {
+							result = false;
+							bootbox
+									.alert(
+											"שגיאה בשמירת הנתונים, נא בדוק את הערכים ונסה שוב.",
+											function() {
+											});
+						}
+					}
+				},
+				error : function(e) {
+					result = false;
+					console.log(e);
+					bootbox
+							.alert(
+									"שגיאה בשמירת הנתונים, נא בדוק את הערכים ונסה שוב.",
+									function() {
+									});
+				}
+
+			});
+
+	return result;
+
+}

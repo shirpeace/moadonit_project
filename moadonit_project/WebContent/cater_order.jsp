@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=windows-1255"
-	pageEncoding="windows-1255"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
@@ -36,7 +36,7 @@
 		}
 	%> 
 
-    <title>מועדונית</title>
+    <title>׳׳•׳¢׳“׳•׳ ׳™׳×</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -53,6 +53,23 @@
 
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    <!-- jQuery -->
+<script src="js/jquery.js"></script>
+<script src="js/jquery-ui.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="js/bootstrap.min.js"></script>
+<script src="js/i18n/grid.locale-he.js"></script>
+ <script src="js/jquery.jqGrid.min.js"></script>
+
+<!-- bootbox code -->
+<script src="js/bootbox.js"></script>
+<script src="js/bootstrap-datepicker.js"></script> 
+<script src="js/i18n/bootstrap-datepicker.he.min.js"></script> 
+
+   
+<script src="js/js_logic.js"></script>
+	<script src="js/js_cater_order.js"></script> 	
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -71,11 +88,11 @@
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="nav navbar-right top-nav" style="padding-top: 15px; ">
             	<a href="login.jsp?action=logout">
-	            	<i class="fa fa-fw fa-power-off"></i>&nbsp;יציאה</a>
+	            	<i class="fa fa-fw fa-power-off"></i>&nbsp;׳™׳¦׳™׳׳”</a>
             </div>
             <div class="navbar-header" >
             	<a class="navbar-brand" href="dashboard.jsp">
-            	<i class="fa fa-home fa-fw"></i>&nbsp;מועדונית</a>
+            	<i class="fa fa-home fa-fw"></i>&nbsp;׳׳•׳¢׳“׳•׳ ׳™׳×</a>
                 
             </div>
             
@@ -83,14 +100,14 @@
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li>
-                        <a href="" style="font-size: 120%; pointer-events: none;"> <i class="fa fa-fw fa-cutlery"></i> קייטרינג</a>
+                        <a href="" style="font-size: 120%; pointer-events: none;"> <i class="fa fa-fw fa-cutlery"></i> ׳§׳™׳™׳˜׳¨׳™׳ ׳’</a>
                         <br>
                      </li> 
                      <li class="active">
-                        <a href= "#"><i class="fa fa-fw fa-file-o"></i> הזמנה</a>
+                        <a href= "#"><i class="fa fa-fw fa-file-o"></i> ׳”׳–׳׳ ׳”</a>
                      </li> 
                      <li>
-                        <a href= "#"><i class="fa fa-fw fa-file-text-o"></i> דוח הזמנות</a>
+                        <a href= "#"><i class="fa fa-fw fa-file-text-o"></i> ׳“׳•׳— ׳”׳–׳׳ ׳•׳×</a>
                      </li>
                 </ul>
             </div>
@@ -108,17 +125,17 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            הערכת כמות מנות להזמנה
+                            ׳”׳¢׳¨׳›׳× ׳›׳׳•׳× ׳׳ ׳•׳× ׳׳”׳–׳׳ ׳”
                         </h1>
                         <ol class="breadcrumb">
                             <li>
-                                 <a href="dashboard.jsp"><i class="fa fa-home"></i> ראשי</a>
+                                 <a href="dashboard.jsp"><i class="fa fa-home"></i> ׳¨׳׳©׳™</a>
                             </li>
                             <li>
-                                 <a href="settings_main.jsp"><i class="fa fa-folder-open"></i> ניהול</a>
+                                 <a href="settings_main.jsp"><i class="fa fa-folder-open"></i> ׳ ׳™׳”׳•׳</a>
                             </li>
                             <li class="active">
-                                 <i class="fa fa-cutlery"></i> קייטרינג
+                                 <i class="fa fa-cutlery"></i> ׳§׳™׳™׳˜׳¨׳™׳ ׳’
                             </li>
                         </ol>
                     </div>
@@ -140,84 +157,16 @@
                 <div class="col-lg-8">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h3 class="panel-title"><i class="fa fa-search fa-fw"></i> תכנית שבועית</h3>
+                                <h3 class="panel-title"><i class="fa fa-search fa-fw"></i> ׳×׳›׳ ׳™׳× ׳©׳‘׳•׳¢׳™׳×</h3>
                             </div>
                             <div class="panel-body">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered table-hover table-striped">
-                                        <thead>
-                                            <tr>
-                                                <td></td>
-                                                <th>ראשון</th>
-                                                <th>שני</th>
-                                                <th>שלישי</th>
-                                                <th>רביעי</th>
-                                                <th>חמישי</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>מנות רגילות</td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td>מנות אפויות</td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td>מנות צמחוניות</td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td>ללא גלוטן</td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td>צוות</td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td>סך הכל</td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                        </tbody>
+                                    <table class="table table-bordered table-hover table-striped" id="list">
+                                        <tr>
+											<td ></td>
+										</tr>
                                     </table>
                                 </div>
-                               <!--  <div class="text-right">
-                                    <a href="javascript:;" data-toggle="collapse" data-target="#editReg">עריכת הרישום <i class="fa fa-arrow-circle-down"></i></a>
-
-								<div id="editReg" class="collapse">
-									להכניס טבלה עם חמש עמודות, בכל אחת קומבו בוקס לסוג הרישום
-									<br>
-									בחירת תאריך התחלה וקומבו לבחירת סיבת הרישום וכפתורי שמירה ומחיקה
-								</div>
-
-
-								</div> -->
                             </div>
                         </div>
                     </div>
@@ -225,6 +174,7 @@
 
         <!-- /#page-wrapper -->
 
+    </div>
     </div>
     <!-- /#wrapper -->
 
