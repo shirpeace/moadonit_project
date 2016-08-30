@@ -33,14 +33,14 @@ public class RegToMoadonitDAO extends AbstractDAO {
 	 */
 	private static final long serialVersionUID = 1L;
 	private String insert = "INSERT INTO tbl_reg_to_moadonit "
-			+ "(pupilNum,registerDate,startDate,sunday_,monday_,tuesday_,wednesday_,thursday_,writenBy,source , activeYear )"
-			+ "VALUES(?,?,?,?,?,?,?,?,?,?, ms2016.get_currentYearID() );";
+			+ "(pupilNum,registerDate,startDate,endDate,sunday_,monday_,tuesday_,wednesday_,thursday_,writenBy,source , activeYear )"
+			+ "VALUES(?,?,?,?,?,?,?,?,?,?,?, ms2016.get_currentYearID() );";
 	private String checkRegToMoPK = "SELECT pupilNum, startDate FROM tbl_reg_to_moadonit where pupilNum = ? and startDate = ? and activeYear =  ms2016.get_currentYearID()";
 //	private String selectAll = "SELECT * FROM ms2016.tbl_reg_to_moadonit WHERE pupilNum = ? and  startdate <= CURDATE() and activeYear =  ms2016.get_currentYearID() order by startdate desc";
 	private String getActiveRegInPeriod = "{call ms2016.getActiveRegInPeriodTry (?)}";
 	private String getAllRegsForPupil = "{ call ms2016.get_Regs_For_Pupils( ? , ? ) }";
 	private String getActiveRegForPupil = "{ call ms2016.getActiveRegByPupilId( ? ) }";
-	private String update = "{ call ms2016.updateRegToMoadonitForPupil(?,? ,? , ?,? , ?, ?, ?,?) }";
+	private String update = "{ call ms2016.updateRegToMoadonitForPupil(?,? ,? , ?,? , ?, ?, ?,?,?) }";
 	private String delete = "DELETE FROM tbl_reg_to_moadonit where pupilNum = ? and startDate = ? and activeYear =  ms2016.get_currentYearID()";
 
 	public boolean update(RegToMoadonit regToUpdate, Date oldDate) throws DAOException {
@@ -58,8 +58,8 @@ public class RegToMoadonitDAO extends AbstractDAO {
         		regToUpdate.getId().getPupilNum(),
         		regToUpdate.getTblUser().getUserID(),
         		regToUpdate.getId().getStartDate(),
-        		oldDate
-				
+        		oldDate,
+        		regToUpdate.getEndDate()				
 
 		};
 
@@ -137,11 +137,17 @@ public class RegToMoadonitDAO extends AbstractDAO {
 
 		// (pupilNum,registerDate,startDate,sunday_,monday_,tuesday_,wednesday_,thursday_,writenBy,source)
 		Object[] values = { regToMo.getId().getPupilNum(),
-				DAOUtil.toSqlDate(regToMo.getId().getStartDate()),
-				regToMo.getId().getStartDate(), regToMo.getTblRegType1().getTypeNum(),
-				regToMo.getTblRegType2().getTypeNum(), regToMo.getTblRegType3().getTypeNum(),
-				regToMo.getTblRegType4().getTypeNum(), regToMo.getTblRegType5().getTypeNum(),
-				regToMo.getTblUser().getUserID(), regToMo.getTblRegSource().getSourceNum() };
+							DAOUtil.toSqlDate(regToMo.getRegisterDate()),
+							DAOUtil.toSqlDate(regToMo.getId().getStartDate()),
+							DAOUtil.toSqlDate(regToMo.getEndDate()),
+							regToMo.getTblRegType1().getTypeNum(),
+							regToMo.getTblRegType2().getTypeNum(),
+							regToMo.getTblRegType3().getTypeNum(),
+							regToMo.getTblRegType4().getTypeNum(),
+							regToMo.getTblRegType5().getTypeNum(),
+							regToMo.getTblUser().getUserID(), 
+							regToMo.getTblRegSource().getSourceNum()
+							};
 
 		try (
 
@@ -266,6 +272,8 @@ public class RegToMoadonitDAO extends AbstractDAO {
 				
 				RegSource rs = new RegSource();
 				rs.setSourceNum(resultSet.getInt("source"));
+				rs.setSourceName(resultSet.getString("sourceName"));
+				
 				rtm.setTblRegSource(rs);
 				
 				

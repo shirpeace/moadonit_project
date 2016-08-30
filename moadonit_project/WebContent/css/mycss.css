@@ -104,3 +104,8 @@ g rect:hover {
 select.input-sm {	
 	padding-top: 2px;
 }
+
+.disabledbutton {
+    pointer-events: none;
+    opacity: 0.4;
+}

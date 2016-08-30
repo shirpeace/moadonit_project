@@ -207,14 +207,16 @@
 								<div class="form-group col-lg-7">
 									
 									<label for="teacher">מחנכ/ת</label>
-									<select class="form-control input-sm"
+									<input type="text" name="teacher" class="form-control" id="teacher"
+										placeholder="מחנכ/ת">
+								<!-- 	<select class="form-control input-sm"
 										id="teacher" name="teacher" onchange="" disabled>
 										<option value="א">שושנה מזרחי</option>
 										<option value="ב">דנית גבאי</option>
 										<option value="ג">שמשון בוזגלו</option>
 										<option value="ד">אהובה שלום</option>
 										<option value="ה">אורלי שוורץ</option>
-									</select>
+									</select> -->
 								</div>
 								<div class="form-group">
 									<div class="checkbox-group required">

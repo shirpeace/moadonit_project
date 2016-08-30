@@ -10,6 +10,9 @@ import java.util.List;
 import model.Activity;
 import model.ActivityGroup;
 import model.ActivityType;
+import model.GradeCode;
+import model.GradeInYear;
+import model.GradeInYearPK;
 import model.Pupil;
 import model.PupilActivity;
 import model.PupilActivityPK;
@@ -164,7 +167,25 @@ public class PupilActivityDAO extends AbstractDAO {
 		pa.setStartDate(resultSet.getDate("startDate"));
 		pa.setEndDate(resultSet.getDate("endDate"));
 
+		GradeInYearPK giypk = new GradeInYearPK();
+		giypk.setYearID(resultSet.getInt("yearID"));
+		giypk.setGradeID(resultSet.getInt("gradeID")); //gradeID
+		
+		GradeInYear gy = new GradeInYear();
+		gy.setId(giypk);
+		
+		GradeCode gc = new GradeCode();
+		gc.setGradeID(resultSet.getInt("gradeID"));
+		gc.setGradeName(resultSet.getString("gradeName"));
+		gc.setGradeColor(resultSet.getString("gradeColor"));
+		
+		gy.setTblGradeCode(gc);
+		
 		Pupil p = new Pupil();
+		ArrayList<GradeInYear> l = new ArrayList<GradeInYear>();
+		l.add(gy);
+		
+		p.setTblGradeInYears1(l);
 		p.setPupilNum(resultSet.getInt("pupilNum"));
 		p.setFirstName(resultSet.getString("firstName"));
 		p.setLastName(resultSet.getString("lastName"));

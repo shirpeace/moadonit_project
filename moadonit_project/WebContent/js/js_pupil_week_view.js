@@ -11,6 +11,9 @@ var currentDate;
 var regoptions = {	value : ""	};
 var selectOptionsData;
 var COurseTime = [];
+var endDateEdit,startDateEdit; 
+var $editRowID, isNonEditable = false;
+var okToSave = false,lastSelection = -1, seledtedId = -1 ;//lastSelection and seledtedId are for row selection events and validation process //;
 /** ********************************************** */
 // TODO //* START PAGE FUNCTIONS */
 /** ********************************************** */
@@ -138,7 +141,12 @@ function loadWeekGrid(pupilID) {
 								currentDate = new Date(); //default date is today if there are no rows in this grid 
 								$("#pager div.ui-paging-info").show();
 							} else {
-								currentDate = new Date(data.rows[0].startDate); 
+								if(data.rows[0].type == "סוג רישום"){
+									currentDate = new Date(data.rows[0].startDate);
+								}
+								else{
+									currentDate = new Date();
+								} 
 								$("#pager div.ui-paging-info").hide();
 							}
 						},
@@ -314,7 +322,7 @@ function setRegoptions(){
 }
 function loadRegistrationGrid(pupilID) {
 	setRegoptions();
-	var oldDateVal = new Date(), lastSelection = -1, grid =$("#listRegistration"),	
+	var oldEndDate = oldDateVal = new Date(),  grid =$("#listRegistration"),
 	myDelOptions = {
 			 rowData : {},
 			
@@ -322,7 +330,7 @@ function loadRegistrationGrid(pupilID) {
 				 
 		        },
 			 errorTextFormat: function (response) {
-				 
+				 	
 				 	$(this).restoreAfterErorr = false;
 				 	var overlay = $('body > div.ui-widget-overlay'); //.is(":visible");
 					 if (overlay.is(":visible")) {
@@ -339,6 +347,7 @@ function loadRegistrationGrid(pupilID) {
 			       
 			    },
 			   afterSubmit: function (response, postdata) {
+				   
 				   response = $.parseJSON(response.responseText);
 				   // delete row
 	                grid.delRowData(rowData.id);
@@ -350,6 +359,7 @@ function loadRegistrationGrid(pupilID) {
 			        return [true, "success"];
 			    },
 			    afterComplete: function (response, postdata, formid) {
+			    	
 			    	response = $.parseJSON(response.responseText);
 			       
 			    },
@@ -359,7 +369,7 @@ function loadRegistrationGrid(pupilID) {
 	       
             onclickSubmit: function(rp_ge, rowid) {
                 // we can use onclickSubmit function as "onclick" on "Delete" button
-               
+            	
                 rowData = $(this).jqGrid("getRowData", rowid);
                 $.extend(rowData, {id: rowid});
                 var d = getDateFromValue( rowData.startDate);
@@ -391,8 +401,9 @@ function loadRegistrationGrid(pupilID) {
 				datatype : "json",
 				mtype : 'POST',
 				editurl : "PupilRegistration?action=edit&pupilID="+ pupilID,
-				colNames : [ 'תאריך התחלה','תאריך סיום','תאריך רישום', 'יום ראשון', 'יום שני','יום שלישי', 'יום רביעי', 'יום חמישי' ,'פעולה'],					
+				colNames : [ 'תאריך התחלה','תאריך סיום','תאריך רישום','סיבת רישום', 'יום ראשון', 'יום שני','יום שלישי', 'יום רביעי', 'יום חמישי' ,'פעולה'],					
 				loadComplete : function(data) {
+					
 					if (parseInt(data.records, 10) == 0) {
 						$("#listRegistrationPager div.ui-paging-info").show();
 					} else {
@@ -405,7 +416,7 @@ function loadRegistrationGrid(pupilID) {
 					{
 					    var rowId = ids[i];
 					    var rowData = $('#listRegistration').jqGrid ('getRowData', rowId);
-
+					    rowDataGlobal[i] = rowData; // rowDataGlobal from js_logic
 					    var d = getDateFromValue(rowData.startDate);
 						if (d && currentDate) {
 							if (d.getTime() < currentDate.getTime()) { 
@@ -414,7 +425,7 @@ function loadRegistrationGrid(pupilID) {
 							}
 						}
 					}
-					/*  END edit/delete buttons for history records */
+					/*  END hide edit/delete buttons for history records */
 				},
 				rowattr : function(rd) {
 					
@@ -430,7 +441,7 @@ function loadRegistrationGrid(pupilID) {
 						} else if (d.getTime() === currentDate.getTime()) { // current
 																			// registration
 							return {
-								"style" : "color:"+colors.presernt+";","data-isHistory": true
+								"style" : "color:"+colors.presernt+";","data-isHistory": false
 							};
 						} else { // history registration
 					
@@ -444,16 +455,41 @@ function loadRegistrationGrid(pupilID) {
 					}
 				},
 				loadError : function(xhr,st,err) {
+					
 					alert("Type: "+st+"; Response: "+ xhr.status + " "+xhr.statusText);
 			    },				
 				serializeRowData: function(postdata) { 
-					return { rtm : JSON.stringify(createPostData(pupilID, postdata,true)), _oldDateVal: oldDateVal.getTime()  } ;
+					return { rtm : JSON.stringify(createPostData(pupilID, postdata,true)), _oldDateVal: oldDateVal.getTime() , _oldEndDate: oldEndDate.getTime() } ;
 		        },
-		      
+		        beforeSelectRow : function (id, e){
+		        	/*if (lastSelection != -1 && id &&  id !== lastSelection) {
+		        		return false;
+		        	}
+		        	else{
+		        		return true;
+		        	}*/
+		        },
 				onSelectRow: function(id) { 
+					seledtedId = id;
 					if (id && id !== lastSelection) {
+						// restore row data
+						/*if ($("#listRegistration tr#"+ lastSelection ).attr("editable") === "1") {
+	                   	    // the row having id=lastSelection is in editing mode
+	                   		//startDateEdit = endDateEdit = null; // reset dates values
+	                   	}*/
+						
+						
 						var grid = $("#listRegistration");
-						grid.jqGrid('restoreRow', lastSelection);						
+						grid.jqGrid('restoreRow', lastSelection);
+						
+						//restore validation data
+						var grId = grid[0].id;
+	                   	 var btn = $("#" + grId + " tr#" + id + " .ui-inline-save");
+	                   	 btn.removeClass("disabledbutton"); // reset save button style
+	                   	 setRegMsg("",false, null , null, null); //reset error msg
+	                   	
+	                   	 
+						
 						var islastSelectHistory = $('#gview_listRegistration div #'+ lastSelection).attr('data-isHistory');
 						
 						if (islastSelectHistory === 'false') {
@@ -463,15 +499,18 @@ function loadRegistrationGrid(pupilID) {
 							$('#jCancelButton_'+lastSelection).hide();
 						}
 											
-						lastSelection = id;
+						lastSelection = id
+						
 					}
 		        },
+		        
 				colModel : [				           
 						{
 							name : "startDate",
 							index : 'startDate',
 							sorttype : "date",
 							editable : true,
+							/*editrules: {  custom: true, custom_func: validateCell },*/
 							editoptions: {
 		                            size: 20,
 		                            dataInit: function (el) {
@@ -485,8 +524,26 @@ function loadRegistrationGrid(pupilID) {
 		                				    keyboardNavigation: false,
 		                				    daysOfWeekDisabled: "5,6",
 		                				    todayHighlight: true,
-		                				    toggleActive: true 
+		                				    toggleActive: true ,
+
 		                				}); 
+		                                //var valId = Number(el.outerHTML.substring(el.outerHTML.indexOf("rowid")+7,el.outerHTML.indexOf("rowid")+8));
+		                                //endDateEdit
+		                                startDateEdit = getDateFromValue(el.value);
+		                                
+		                                $(el).datepicker().on("input change", function (e) {
+		                                	
+		                                	var start = getDateFromValue(e.target.value);
+			                                startDateEdit = startDateEdit.getTime() == start.getTime() ? startDateEdit : start;
+			                                var $grid =$("#listRegistration");
+			                                var grId = $grid[0].id
+			                                var btnSave = $("#" + grId + " tr#" + $editRowID + " .ui-inline-save");
+			                                var result = checkDatesForReg(startDateEdit, endDateEdit, $editRowID -1 , btnSave);
+			                                
+		                                });
+		                                
+		                                
+		                                
 		                            },
 		                            defaultValue: function () {
 		                                var currentTime = new Date();
@@ -532,6 +589,19 @@ function loadRegistrationGrid(pupilID) {
 		                				    todayHighlight: true,
 		                				    toggleActive: true 
 		                				}); 
+		                                
+		                                endDateEdit = getDateFromValue(el.value);
+		                                
+		                                $(el).datepicker().on("input change", function (e) {
+		                                	
+		                                	var end = getDateFromValue(e.target.value);
+		                                	endDateEdit = endDateEdit.getTime() == end.getTime() ? endDateEdit : end;
+			                               /* var $grid =$("#listRegistration");
+			                                var grId = $grid[0].id*/
+			                                var btnSave = $("#listRegistration tr#" + $editRowID + " .ui-inline-save");
+			                                var result = checkDatesForReg(startDateEdit, endDateEdit, $editRowID -1 , btnSave);
+			                                
+		                                });
 		                            },
 		                            defaultValue: function () {
 		                                var currentTime = new Date();
@@ -603,6 +673,12 @@ function loadRegistrationGrid(pupilID) {
 				            , formatoptions: { newformat: "d/m/Y" },
 						},{
 							
+							name : 'source',
+							index : 'source',
+							editable : false,							
+							
+						},{
+							
 							name : 'sunday',
 							index : 'sunday',
 							edittype : "select",
@@ -648,16 +724,27 @@ function loadRegistrationGrid(pupilID) {
 						        editbutton: true,
 						        onEdit:function(rowid) {
 		                            //do somethinf if you need on edit button click
-						        	debugger;
+						        	/*if (typeof lastSelection !== "undefined" && rowid !== lastSelection) {
+				                        cancelEditing(grid);
+				                    }*/						        	
+				                    
+						        	$editRowID = Number(rowid);
 						        	// get html content of cell
 						        	var cellContent = $(this).getCell(rowid,'startDate'); 
 						        	// convert it to a datePicker and get value of the cell
 						        	if(cellContent.indexOf("input") > 0){
-						        	var oldDate = $( '#'+$(cellContent).attr('id') ).datepicker( "getDate" );
+						        	var oldDate = $( '#'+$(cellContent).attr('id') ).datepicker( "getDate" );						        
 						        	oldDateVal = oldDate;
 						        	}else{
 						        		
 							        	oldDateVal = getDateFromValue(cellContent);
+						        	}
+						        	
+						        	cellContent = $(this).getCell(rowid,'endDate'); 
+						        	if(cellContent.indexOf("input") > 0){						        
+						        		oldEndDate = $( '#'+$(cellContent).attr('id') ).datepicker( "getDate" );
+						        	}else{
+						        		oldEndDate = getDateFromValue(cellContent);
 						        	}
 		                         },								
 		                         onSuccess:function(jqXHR) {
@@ -683,14 +770,25 @@ function loadRegistrationGrid(pupilID) {
 		                                   "\n\nWe don't need return anything");*/
 		                         },
 		                         afterSave:function(rowid) {
-		                             /*alert("in afterSave (Submit): rowid="+rowid+"\nWe don't need return anything");*/
+		                        	 bootbox.alert("נתונים נשמרו בהצלחה",
+			                 					function() {
+		                        		 setRegMsg("",false, null , null, null);
+		                        		 
+			                 					});
 		                         },
 		                         afterRestore:function(rowid) {
-		                             
+		                        	 
+		                        	 var $grid =$("#listRegistration");
+		                        	 var grId = $grid[0].id;
+		                        	 var btn = $("#" + grId + " tr#" + rowid + " .ui-inline-save");
+		                        	 btn.removeClass("disabledbutton");
+		                        	 setRegMsg("",false, null , null, null);
+		                        	 startDateEdit = endDateEdit = null;
 		                         },		                         
 						        delOptions: myDelOptions /*{ url: "PupilRegistration?action=delete&pupilID="+ pupilID }*/
 						        }},
 						        ],
+						        
 				pager : '#listRegistrationPager',
 				autowidth : true,
 				shrinkToFit : true,
@@ -741,13 +839,15 @@ function loadRegistrationGrid(pupilID) {
 	$.fn.fmatter.rowactions = function (act, gid, rid , pos) {
 		gid = grid[0].id;
 		
-	    var $grid = $("#" + $.jgrid.jqID(gid)), isNonEditable = false, result;
-	    var id =parseInt(this.id.substr(this.id.lastIndexOf("_")+1,1)); //get id of row form the erit button id
+	    var $grid = $("#" + $.jgrid.jqID(gid)),  result;
+	    isNonEditable = false;
+	    var id =parseInt(this.id.substr(this.id.lastIndexOf("_")+1,1)); //get id of row form the edit button id
 	    var  rowData = $grid.jqGrid("getRowData", id); //get tow data
 	    
 	    // we can test any condition and change editable property of any column
 	    if (act === "edit" && getDateFromValue(rowData.startDate).getTime() == currentDate.getTime()) {
 	        $grid.jqGrid("setColProp", "startDate", {editable: false});
+	        startDateEdit = getDateFromValue(rowData.startDate);
 	        isNonEditable = true;
 	    }
 	    
@@ -766,6 +866,40 @@ function loadRegistrationGrid(pupilID) {
 
 }
 
+cancelEditing = function(myGrid) {
+    var lrid;
+    if (typeof lastSelection !== "undefined") {
+        // cancel editing of the previous selected row if it was in editing state.
+        // jqGrid hold intern savedRow array inside of jqGrid object,
+        // so it is safe to call restoreRow method with any id parameter
+        // if jqGrid not in editing state
+        myGrid.jqGrid('restoreRow',lastSelection);
+
+        // now we need to restore the icons in the formatter:"actions"
+        lrid = $.jgrid.jqID(lastSelection);
+        $("tr#" + lrid + " div.ui-inline-edit, " + "tr#" + lrid + " div.ui-inline-del").show();
+        $("tr#" + lrid + " div.ui-inline-save, " + "tr#" + lrid + " div.ui-inline-cancel").hide();
+    }
+};
+
+/*******************
+// not in use !!!!!
+*******************/
+function validateCell(val,cellName,nm,valref)
+{
+if(!($editRowID && startDateEdit && endDateEdit)) return [false, "some values are undefined"];
+
+var start = getDateFromValue(val);
+startDateEdit = startDateEdit.getTime() == start.getTime() ? startDateEdit : start;
+var $grid =$("#listRegistration");
+var grId = $grid[0].id
+var btn = $("#" + grId + " tr#" + $editRowID + " .ui-inline-save");
+var result = checkDatesForReg(startDateEdit, endDateEdit, $editRowID -1 , btn);
+
+//return [result, "something is worng"];
+
+return [false, "something is worng"];
+}
 /**
  * create the data to be sent to edit function on server
  * @param pupilID
@@ -800,6 +934,7 @@ function createPostData(pupilID, rowData,isEdit){
 			};
 	}
 	
+	rtm.endDate = getDateFromValue( rowData.endDate);
 	rtm.registerDate = new Date();
 	/* rtm.writenBy = currentUserId; */
 	rtm.tblRegSource = {
@@ -895,47 +1030,59 @@ function goToByScroll(id){
       'slow');
 }
 
-function checkDatesForReg(start, end){
+function checkDatesForReg(start, end, idx , btn){
 	
-	if(start == null || end  == null) return;
+	if(start == null || end  == null) return false;
 	
-	if(start > end){
-		//RegMsg		
-		/*$('#RegMsg').html("תאריכים לא תקינים");
-		$('#RegMsg').removeClass();
-		$('#RegMsg').addClass( "alert alert-danger" );
-		$('#RegMsg').show();
-		$('#btnSave').attr('disabled',true);*/
-		setRegMsg("תאריכים לא תקינים",true, "alert alert-danger" , true);
+	if(start > end){	
+		setRegMsg("תאריך התחלה חייב להיות לפני תאריך סיום",true, "alert alert-danger" , btn, true);
+		return false;
 	}
 	else{
-		setRegMsg("",false, null , false);
+		setRegMsg("",false, null  , btn, false);
 		/*$('#RegMsg').html("");
 		$('#RegMsg').removeClass();		
 		$('#btnSave').attr('disabled',false);*/
-		isDateValidToReg(start,end);
+		return isDateValidToReg(start,end, idx , btn);
 		
 	}
 }
 
 function OkToReg(elemnt){
+	 var $grid =$("#listRegistration");
+	 var grId = $grid[0].id
+	 var btn = $("#" + grId + " tr#" + $editRowID + " .ui-inline-save");
+	 
 	 if(elemnt.checked) {
-	        //Do stuff
+	        //Do stuff		 
 		 $('#btnSave').attr('disabled',false);
-		
+		 btn.removeClass("disabledbutton");
 	 }
 	 else{
+		 
+		 btn.addClass("disabledbutton");
 		 $('#btnSave').attr('disabled',true);
 	 }
 }
 
 
-function setRegMsg(msgHtml,msgStatus, msgCss, btnStatus){
+function setRegMsg(msgHtml,msgStatus, msgCss,btn, btnStatus){
 	if(msgHtml != null) $('#RegMsg').html(msgHtml);
 	$('#RegMsg').removeClass();
 	if(msgCss != null) $('#RegMsg').addClass( msgCss);
 	$('#RegMsg').toggle(msgStatus);
-	$('#btnSave').attr('disabled',btnStatus);
+	if (btnStatus != null && btnStatus != undefined  && btn != undefined){ 
+		btn.attr('disabled',btnStatus);
+		if(btnStatus){
+			if(btn[0].id.includes("jSaveButton"))
+				btn.addClass("disabledbutton");
+		}else{
+			if(btn[0].id.includes("jSaveButton"))
+				btn.removeClass("disabledbutton");
+			
+		}
+	}
+
 	
 }
 
@@ -985,14 +1132,14 @@ $(function() {
 		     //Change code!
 			var start = getDateFromValue(this.value);
 			var end = getDateFromValue($('#endDatePick').val());
-			checkDatesForReg(start, end);
+			checkDatesForReg(start, end,null, $('#btnSave'));
 			
 		});
 		$('#endDatePick').change(function(){
 		     //Change code!
 			var start = getDateFromValue($('#datePick').val());
 			var end =  getDateFromValue(this.value);
-			checkDatesForReg(start, end);
+			checkDatesForReg(start, end,null, $('#btnSave'));
 		});
 		 
 		loadWeekGrid(pupilID);
@@ -1087,4 +1234,15 @@ $(function() {
 		if (CurrentYearEndDate != null) {
 			$("#endDatePick").datepicker("setDate" , date );
 		}
+		
+		$("#clearBtn").click(function() {
+			
+			validator.resetForm();
+			 //$(this).closest('form').find("input[type=text],input[type=select],input[type=email],input[type=number], textarea").val("");
+			 
+			$(this).closest('form')[0].reset();	
+			setRegMsg("",false, null , $("#btnSave"), false);
+			 return false;
+		});		
+		
 });

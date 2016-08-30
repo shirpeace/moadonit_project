@@ -21,7 +21,7 @@ var colors  = {
 		presernt : '#3399ff'
 		
 };
-
+var rowDataGlobal = [];
 //set the local for bootbox pligin
 bootbox.setLocale("he");
 
@@ -42,6 +42,25 @@ jQuery.fn.center = function(parent) {
 	return this;
 };
 
+Date.prototype.changeDate = function (n) {
+    var time = this.getTime();
+    var changedDate  = new Date();
+
+    changedDate = new Date(time + (n * 24 * 60 * 60 * 1000));
+    
+    changedDate.setTime(changedDate.getTime());
+    
+    return changedDate;
+};
+
+Date.prototype.ddmmyyyy = function() {
+	  var mm = this.getMonth() + 1; // getMonth() is zero-based
+	  var dd = this.getDate();
+
+	  return [ dd,"/", mm,"/", this.getFullYear() ].join(''); // padding
+	 
+};
+
 function isElementInViewport (el) {	
 	    //special bonus for those using jQuery
 	    if (typeof jQuery === "function" && el instanceof jQuery) {
@@ -59,73 +78,112 @@ function isElementInViewport (el) {
 	    return r;
 }
 
-
-function isDateValidToReg(dateParam, endParam){
+function isDateIn3daysSpan(date){
+	var startModDate , endModDate , firstDay = new Date();
 	
-	var startModDate , endModDate , tempDate;
+	if(date == null || typeof date == undefined)
+		return null;
 	
-	if(RegDatesToValid.startDate == null && RegDatesToValid.lastDateToReg == null) return null;
-	//if we in registration period
-	if(RegDatesToValid.startDate <= dateParam && dateParam <= RegDatesToValid.lastDateToReg){		
-		
-		return true;
+	startModDate = new Date();
+	endModDate = new Date();	
+	
+	var day = date.getDate();	
+	if(day <= 15){// check for this month
+	    firstDay = new Date(date.getFullYear(), date.getMonth(), 1);		
 	}
-	else{
-		var html = "<input type='checkbox' id='OkToReg' name='OkToReg' value='1' onchange='OkToReg(this)' >&nbsp;&nbsp;שמור שינויים בכל זאת.<br>"+
-		 "<strong>שיב לב</strong> התאריכים לא בתקופת השינויים";
-		
-		var firstDay = new Date(dateParam.getFullYear(), dateParam.getMonth(), 1);
-		startModDate = new Date();
-		endModDate = new Date();
-		startModDate.setDate(firstDay.getDate() - 3);
-		endModDate.setDate(firstDay.getDate() + 3);
-		
-		//check for overlapping dates
-		var result  = checkOverlappingDatesInGrid(dateParam, endParam);
-		 
-		if(result)
-			return ;
-		
-		// if no overlapping
-		// check if the dates are in the modification period
-		if(startModDate <= dateParam && dateParam <= endModDate){
-			return true;
-		}else{
-			setRegMsg(html,true, "alert alert-warning" , true);
-			return true;
-		}
-		
-		return false;
+	else{ // check for next month
+		firstDay = new Date(date.getFullYear(), date.getMonth()+1, 1);		
 	}
+	
+	startModDate = firstDay.changeDate(-3);
+	endModDate = firstDay.changeDate(3);		
+	
+	return (startModDate <= date && date <= endModDate);
 	
 }
 
-Date.prototype.ddmmyyyy = function() {
-	  var mm = this.getMonth() + 1; // getMonth() is zero-based
-	  var dd = this.getDate();
+function isDateValidToReg(dateParam, endParam, idx , btn){
+		
+	var isStartInRegTime = false; // is start date in registration period (start of year) 
+	var isEndIn3days = false; //  is end date -+3 days from start of month
+	var isStartIn3days = false;
+	var html;
+	
+	if(RegDatesToValid.startDate == null && RegDatesToValid.lastDateToReg == null) return;
 
-	  return [ dd,"/", mm,"/", this.getFullYear() ].join(''); // padding
-	 
-	};
+	//check for overlapping dates
+	var isOverlap  = checkOverlappingDatesInGrid(dateParam, endParam, idx , btn);
+	
+	
+	if(isOverlap) return false;
+	
+	//if we in registration period
+	if(RegDatesToValid.startDate <= dateParam && dateParam <= RegDatesToValid.lastDateToReg)		
+		isStartInRegTime = true;
 
-function checkOverlappingDatesInGrid(startParam, endParam){
+	// check if endParam date is in -+3 days from month
+	isEndIn3days = isDateIn3daysSpan(endParam);
+	
+	//if we in registration time
+	if(isStartInRegTime)
+		return true;
+	
+	//if it's not regitration time and isNonEditable == true (startDate need validation) , need to check isStartIn3days 
+	if(!isStartInRegTime && typeof isNonEditable != undefined && !isNonEditable)
+		isStartIn3days = isDateIn3daysSpan(dateParam);
+	else
+		isStartIn3days = true;
+	
+	//if not in registration time , check if both dates are valid - (-+ 3days valid)
+	if(isStartIn3days && isEndIn3days){
+		setRegMsg("",false, null , btn, false);
+		return true;
+	}
+	else{
+		 html = "<strong>שים לב</strong> התאריכים לא בתקופת השינויים.<br>" +
+		 "<input type='checkbox' id='OkToReg' name='OkToReg' value='1' onchange='OkToReg(this)' >&nbsp;&nbsp;שמור רישום בכל זאת";
+		 
+		 
+		 
+		 setRegMsg(html,true, "alert alert-warning" , btn, true);
+		 return false;
+/*		 if(btn){ // validate for outer form
+			 setRegMsg(html,true, "alert alert-warning" , btn, true);
+			 return false;
+		 }
+		 else{ // validate for inline edit
+			 if(okToSave){
+				 setRegMsg("",false, null , btn, null);
+				 return true;
+			 }else{
+				 setRegMsg(html,true, "alert alert-warning" , btn, null);
+				 return false;
+			 }
+		 }	*/	 	
+		 
+	}
+	
+	return false;
+}
+
+
+
+function checkOverlappingDatesInGrid(startParam, endParam, idx , btn){
 	
 	var rowCount =  $('#listRegistration').getGridParam("reccount");
 	var allRowsInGrid = $('#listRegistration').jqGrid('getGridParam','data');
 	
-	var overlappingDates = [];
-	var rowData = [];
-	for (var int = 1; int <= rowCount; int++) {
-		rowData[int] = $('#listRegistration').jqGrid("getRowData", int);		
-		
-	}
+	var overlappingDates = [];	
 	
-	for (var i = 1; i <= rowData.length; i++) {
+	for (var i = 0; i < rowDataGlobal.length; i++) {
 		var startDate, endDate;
-		if(rowData[i] == undefined) continue;
 		
-		startDate = getDateFromValue(rowData[i].startDate);
-		endDate = getDateFromValue(rowData[i].endDate);
+		if(i == idx) continue;
+		
+		if(rowDataGlobal[i] == undefined) continue;
+		
+		startDate = getDateFromValue(rowDataGlobal[i].startDate);
+		endDate = getDateFromValue(rowDataGlobal[i].endDate);
 		
 		if(endDate != null && endDate != null){
 			
@@ -140,8 +198,17 @@ function checkOverlappingDatesInGrid(startParam, endParam){
 	}
 	
 	if(overlappingDates.length > 0){
-		var html = "קיימת חפיפה עם תקופה המתחילה ב " + overlappingDates[0].startDate.ddmmyyyy() + " ומסתיימת בתאריך " + overlappingDates[0].endDate.ddmmyyyy() ;
-		setRegMsg(html,true, "alert alert-danger" , true);
+		var html = "קיימת חפיפה עם תקופה המתחילה ב  " + overlappingDates[0].startDate.ddmmyyyy() + " ומסתיימת בתאריך " + overlappingDates[0].endDate.ddmmyyyy() ;
+		if(overlappingDates.length > 1){
+			html = "קיימת חפיפה עם התקופות הבאות :";
+			html+= "<br>";
+			for (var int = 0; int < overlappingDates.length; int++) {
+				html += int+1 + ". תקופה המתחילה ב :" + overlappingDates[int].startDate.ddmmyyyy() + " ומסתיימת בתאריך " + overlappingDates[int].endDate.ddmmyyyy() ;
+				html+= "<br>";
+			}
+		}
+		
+		setRegMsg(html,true, "alert alert-danger" , btn, true);
 		return true;
 	}
 	else{
@@ -527,6 +594,7 @@ function savePupilCardData(action,forward){
 	    family.homePhoneNum = $('#phone').val();
 	    family.parentID1 = null;
 	    family.parentID2 = null;
+	    family.areDivorced = $('#divorce').is(":checked") ? 1 : 0;
 	    	
 	    if(typeof pupilData != undefined && pupilData != "" && pupilData != null)
 	    	regPupil.pupilNum = pupilData.regPupilNum;
@@ -541,6 +609,9 @@ function savePupilCardData(action,forward){
 	    }else{
 	    	regPupil.staffChild = null;
 	    }	
+	    
+	    
+	    //pupil.areDivorced
 	    
 	    regPupil.foodSensitivity = $('#foodsens').val();
 	    regPupil.otherComments = $('#comnt').val();	    

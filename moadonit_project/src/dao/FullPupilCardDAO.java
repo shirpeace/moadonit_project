@@ -126,6 +126,8 @@ public class FullPupilCardDAO extends AbstractDAO {
 		p.setParent2ID(resultSet.getInt("parent2ID"));
 		p.setStateNum(resultSet.getInt("stateNum"));
 		p.setState(resultSet.getString("state"));
+		p.setGradeTeacher(resultSet.getString("gradeTeacher"));
+		p.setAreDivorced(resultSet.getInt("areDivorced"));
 		return p;
 	}
 

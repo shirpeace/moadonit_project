@@ -15,11 +15,14 @@ var selectedIds;
 /** ********************************************** */
 // TODO //* START COURSE PAGE FUNCTIONS */
 /** ********************************************** */
-var courseData;
+var courseData, pupilCount;
 // set the state at start to read. (state object from js_logic file)
 var currentPageState = state.READ;
 var popUp, popUPResult;
 var validator , validator1;
+var endDateEdit,startDateEdit; 
+var $editRowID, isNonEditable = false, lastSelection = -1 ;//lastSelection and seledtedId are for row selection events and validation process //;
+$.extend($.jgrid.inlineEdit, { restoreAfterError: false });
 $(function() {
 
 	moment.locale(); // he
@@ -198,7 +201,9 @@ $(function() {
 	
 	loadGrid('list');
 	getCurrentYearEndDate();
-	
+	var rowCount =  $('#list').getGridParam("reccount");
+	var rowCount1 = $('#list').jqGrid('getGridParam','records');
+			
 });
 
 function setCourseData(courseData) {
@@ -567,7 +572,7 @@ function loadGrid(gridName) {
 						datatype : "json",
 						editurl : "ActivityController?action=editPupilInCourse",
 						mtype : 'GET',
-						colNames : [ 'מספר חוג', 'שם חוג', 'מספר תלמיד','שם משפחה', 'שם פרטי', 'תאריך רישום','תאריך התחלה', 'תאריך סיום' , ''],
+						colNames : [ 'מספר חוג', 'שם חוג', 'מספר תלמיד','שם משפחה', 'שם פרטי', 'כיתה','תאריך רישום','תאריך התחלה', 'תאריך סיום' , 'פעולה'],
 						colModel : [ {
 							name : 'activityNum',
 							index : 'activityNum',
@@ -590,13 +595,18 @@ function loadGrid(gridName) {
 							name : 'firstName',
 							index : 'firstName',
 							width : 100,
-						}, {
+						},
+						 {
+							name : 'gradeName',
+							
+							width : 50,
+						},{
 							name : 'regDate',
 							index : 'regDate',
 							width : 100,
 							formatter : formatDateInGrid,
 							sorttype : "date",
-							editable : true,
+							editable : false,
 						    formatoptions: { newformat: "d/m/Y" },
 							editoptions: {
 		                            size: 20,
@@ -693,7 +703,8 @@ function loadGrid(gridName) {
 		                            }
 							 }
 						},
-						{name : 'actions', index: 'actions', formatter:'actions', align: "center",	sortable:false,formatter:'actions',						
+						{name : 'actions', index: 'actions', formatter:'actions', align: "center",	sortable:false,formatter:'actions',	
+							width : 100,
 						    formatoptions: {
 						        keys: true,
 						        editbutton: true,
@@ -714,7 +725,7 @@ function loadGrid(gridName) {
 				                    		});
 				                    		
 				                    	   $(popUPResult).center(true);
-			                         }
+			                           }
 		                     		
 		                    		
 		                             return true;
@@ -724,9 +735,14 @@ function loadGrid(gridName) {
 		                             // (see http://www.trirand.com/jqgridwiki/doku.php?id=wiki:inline_editing#editrow)
 		                             // and saveRow function
 		                             // (see http://www.trirand.com/jqgridwiki/doku.php?id=wiki:inline_editing#saverow)
-		                        	 bootbox.alert("שגיאה בשמירת הנתונים, נא בדוק את הערכים ונסה שוב.",
-		                 					function() {
-		                 					});
+		                        	 var response = jQuery.parseJSON(jqXHR.responseText);
+		                        	 if (response.msg == 0) {
+		                        		 bootbox.alert(response.result,
+				                 					function() {
+				                 					});
+			                           }
+		                        	 
+		                        	return false;
 		                            /* alert("in onError used only for remote editing:"+
 		                                   "\nresponseText="+jqXHR.responseText+
 		                                   "\nstatus="+jqXHR.status+
@@ -752,7 +768,7 @@ function loadGrid(gridName) {
 						pager : '#pager',
 						rowNum : 50,
 						rowList : [],
-						sortname : 'gradeName',
+						
 						/* scroll: true, */
 						direction : "rtl",
 						viewrecords : true,
@@ -773,9 +789,14 @@ function loadGrid(gridName) {
 							}else{
 								$("#pager div.ui-paging-info").show();
 							}
+														
+							pupilCount = $('#list').jqGrid('getGridParam','records');
+							$("#pupilCount").text("מספר תלמידים בחוג : " + pupilCount);
+							
 						},
 						loadError : function(xhr, status, error) {
 							/* alert("complete loadError"); */
+							jQuery("#rsperror").html("Type: "+st+"; Response: "+ xhr.status + " "+xhr.statusText);
 						},
 						serializeRowData: function(postdata) { 
 							return { pupilActivity : JSON.stringify(createPostData(activityNum, postdata,true))  } ;
@@ -812,6 +833,7 @@ function loadGrid(gridName) {
 		refresh : false
 	});
 
+	
 	// jQuery("#list").jqGrid('filterToolbar',{autosearch:true/*, stringResult:
 	// true*/});
 
@@ -1185,6 +1207,7 @@ function createPostData(activityID, rowData,isEdit){
 	
 	var pupilActivity = new Object();
 	var _pupilNum = (rowData.pupilNum !== undefined) ? rowData.pupilNum : jQuery('#list').jqGrid ('getCell', rowData.id, 'pupilNum') ;
+	var regDate = (rowData.regDate !== undefined) ? rowData.regDate : jQuery('#list').jqGrid ('getCell', rowData.id, 'regDate') ;
 			   
 	pupilActivity.id = {			
 		pupilNum : _pupilNum ,
@@ -1197,7 +1220,7 @@ function createPostData(activityID, rowData,isEdit){
 	};
 	
 	pupilActivity.tblUser = null;	
-	pupilActivity.regDate = getDateFromValue(  rowData.regDate);
+	pupilActivity.regDate = getDateFromValue(  regDate);
 	pupilActivity.startDate = getDateFromValue(rowData.startDate);
 	pupilActivity.endDate = getDateFromValue(rowData.endDate);	
 	

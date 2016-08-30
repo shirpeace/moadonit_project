@@ -568,6 +568,8 @@ public class PupilRegistrationController extends HttpServlet implements
 			
 			JSONObject user = new JSONObject();
 			
+			today = DAOUtil.getZeroTimeDate(today);
+			
 			if(!today.after(regPupil.getEndDate())){
 				user.put("title", "");
 				user.put("type", "סוג רישום");
@@ -764,6 +766,7 @@ public class PupilRegistrationController extends HttpServlet implements
 				user.put("tuesday", getRegTypeName(regPupil.getTblRegType3().getTypeNum()));
 				user.put("wednesday", getRegTypeName(regPupil.getTblRegType4().getTypeNum()));
 				user.put("thursday", getRegTypeName(regPupil.getTblRegType5().getTypeNum()));
+				user.put("source",regPupil.getTblRegSource().getSourceName());
 				
 
 				registrationData.add(user);

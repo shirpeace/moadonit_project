@@ -16,10 +16,10 @@ public class FamilyDAO extends AbstractDAO {
 	private static final long serialVersionUID = -4505815614324512802L;
 
 	private String insert = "INSERT INTO tbl_family"
-			+ "( homeAddress, homePhoneNum, parentID1, parentID2) VALUES (?,?,?,?)";
+			+ "( homeAddress, homePhoneNum, parentID1, parentID2,areDivorced) VALUES (?,?,?,?,?)";
 
 	private String update = "UPDATE tbl_family "
-			+ "SET homeAddress=?,homePhoneNum=?,parentID1=?,parentID2=? WHERE familyID = ?";
+			+ "SET homeAddress=?,homePhoneNum=?,parentID1=?,parentID2=?,areDivorced=? WHERE familyID = ?";
 
 	private String delete = "DELETE FROM tbl_family WHERE familyID = ?;";
 
@@ -64,7 +64,8 @@ public class FamilyDAO extends AbstractDAO {
 		// ?"
 		Object[] values = { fam.getHomeAddress(), fam.getHomePhoneNum(),
 				fam.getTblParent1().getParentID(),
-				(fam.getTblParent2() != null ) ? fam.getTblParent2().getParentID() : null, fam.getFamilyID()
+				(fam.getTblParent2() != null ) ? fam.getTblParent2().getParentID() : null,fam.getAreDivorced(), fam.getFamilyID(),
+						
 
 		};
 
@@ -110,6 +111,7 @@ public class FamilyDAO extends AbstractDAO {
 		Object[] values = { fam.getHomeAddress(), fam.getHomePhoneNum(),
 				fam.getTblParent1().getParentID(),
 				fam.getTblParent2() != null ? fam.getTblParent2().getParentID() :  null
+						,fam.getAreDivorced()
 
 		};
 

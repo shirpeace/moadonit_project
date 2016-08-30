@@ -350,28 +350,37 @@
                        <!--  <h3  >  
                         	תלמידים בחוג                   
                         </h3> -->
-                        <div class="row" style="margin-bottom: 10px; ">
+                        <div class="row" style="margin-bottom: 10px;margin-top: 10px; ">
                         
                        
-                         <div style="display: inline; text-align: right; font-size: x-large; margin-left: 20px;">
-                         תלמידים בחוג    
+                         <div id="pupilCount" class="col-lg-3" style="display: inline; text-align: right; font-size: x-large; margin-left: 20px;">
+                         
                          </div>
-                        	 <input type="button" id="addPupilToCourse" name="addPupilToCourse" onclick="openPopup()"
-									class="btn btn-primary" value="הוסף תלמידים">               
+	                        <div class="col-lg-3">
+	                       
+	                       </div>
+	                       <div class="col-lg-3">
+	                       <input type="button" id="addPupilToCourse" name="addPupilToCourse" onclick="openPopup()"
+										class="btn btn-primary" value="הוסף תלמידים">               
+	                       </div>
+                         
                          </div>
                        
-                        <div class="table-responsive col-lg-10">
-                        <table class="table table-bordered table-hover table-striped"
-									id="list" >
-
-									<tr>
-										<td></td>
-									</tr>
-								</table>
-
-								<div id="pager"></div>
-                        </div>
-                   
+                       <div class="row" >
+                       
+	                        <div class="table-responsive col-lg-10">
+	                        <table class="table table-bordered table-hover table-striped"
+										id="list" >
+	
+										<tr>
+											<td></td>
+										</tr>
+									</table>
+	
+									<div id="pager"></div>
+	                        </div>
+                       </div>
+                       
                    </div> 
                 </div>
   			

@@ -93,6 +93,12 @@
     z-index: 9;
 } 
 
+.ui-jqgrid tr.jqgrow td {
+ white-space: normal !important;
+ height:auto;
+ vertical-align:text-top;
+ padding-top:2px;
+}
 </style>
 
 </head>
@@ -213,8 +219,8 @@
 
 					<!-- /.row -->
 
-					<div class="col-lg-1"></div>
-					<div class="col-lg-10">
+					<!-- <div class="col-lg-1"></div> -->
+					<div class="col-lg-12">
 						<div class="panel panel-default">
 							<div class="panel-heading">
 								<h3 class="panel-title">
@@ -248,15 +254,15 @@
 					</div>
 				</div>				
 				<div class="row">
-					<div class="col-lg-1"></div>
-					<div class="col-lg-10">
+					<!-- <div class="col-lg-1"></div> -->
+					<div class="col-lg-12">
 						<div class="panel panel-default">
 							<div class="panel-heading">								
 								<a href="#" id="regHeaderlink">
 								<!-- <a href="#editReg" data-toggle="collapse" data-target="#editReg" -->
 									עריכת רישום <i
 									class="fa fa-arrow-circle-down"></i></a>
-
+							
 							</div>
 							<div class="panel-body">
 									<div id="editReg" class="collapse">
@@ -310,14 +316,14 @@
 												</div>
 												<div class="row">
 												<div class="form-group  col-lg-2">
-													<label for="datePick"> מתאריך</label>
+													<label for="datePick">תאריך התחלה</label>
 													<input  type="text" class="form-control" id="datePick" name="datePick" >
 												</div>
 												<div class="form-group  col-lg-2">
-													<label for="endDatePick"> עד תאריך</label>
+													<label for="endDatePick">תאריך סיום</label>
 													<input  type="text" class="form-control" id="endDatePick" name="endDatePick" >
 												</div>
-													<div class="form-group col-lg-3">
+													<div class="form-group col-lg-2">
 														<label for="reason">סיבת הרישום</label> <select
 															class="form-control " id="reason" name="reason" >
 															
@@ -326,8 +332,19 @@
 													<div class="form-group  col-lg-2">
 														<label for="type"> </label> <input
 															class="form-control btn btn-primary" id="btnSave"
-															style="margin-top: 5px;" type="button" value="שמור">
+															style="margin-top: 5px;" type="button" value="שמור">															 
 													</div>
+													<div class="form-group  col-lg-2">
+														<label for="type"> </label> <input
+															class="form-control btn btn-primary" id="clearBtn"
+															style="margin-top: 5px;" type="button" value="נקה">															 
+													</div>
+													<!-- <div class="form-group  col-lg-2">
+													<label for="clearBtn"> </label>
+														<input
+															type="button" id="clearBtn" name="clearBtn"
+															class="form-control btn btn-primary" value="נקה" alt="נקה ערכים">													 
+													</div> -->
 												</div>
 											</form>											
 									</div>

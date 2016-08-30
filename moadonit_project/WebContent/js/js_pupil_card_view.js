@@ -202,6 +202,16 @@ function setPupilCardData(pupil){
 			$('#grade').val(pupil.gradeID);
 			setGradeBgColor($('#grade'));
 			$("input[name=genderGruop][value=" + pupil.gender + "]").prop('checked', true);	
+
+			$('#teacher').val(pupil.gradeTeacher);
+			
+			if(pupil.areDivorced === 1){
+				$('#divorce').prop('checked', true);
+			}
+			else{
+				$('#divorce').prop('checked', false);
+			}
+			
 			$('#food').val(pupil.foodType);	
 			if(pupil.ethiopian===1){
 				$('#ethi').prop('checked', true);

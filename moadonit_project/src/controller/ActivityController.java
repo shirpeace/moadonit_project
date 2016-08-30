@@ -237,6 +237,8 @@ public class ActivityController extends HttpServlet implements Serializable {
 					.getTime());
 			obj.put("firstName", pa.getTblPupil().getFirstName());
 			obj.put("lastName", pa.getTblPupil().getLastName());
+			//we only need the grade for this year so only take first element from getTblGradeInYears1() - the GradeCode class we need
+			obj.put("gradeName", pa.getTblPupil().getTblGradeInYears1().get(0).getTblGradeCode().getGradeName());
 			result.add(obj);
 
 		}
@@ -334,6 +336,11 @@ public class ActivityController extends HttpServlet implements Serializable {
 				boolean r = editPupilInCourse(req, resp);
 				resp.setContentType("application/json");
 				resp.setCharacterEncoding("UTF-8");
+				
+				if(!r){
+					resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				}
+				
 				resp.getWriter().print(resultToClient);
 			}else if(action.equals("deletePupilActivity")){
 				
@@ -347,9 +354,9 @@ public class ActivityController extends HttpServlet implements Serializable {
 			//
 		} catch (Exception e) {
 			e.printStackTrace();
-			resultToClient.put("msg", 0);
+			/*resultToClient.put("msg", 0);
 			resultToClient
-					.put("result", "שגיאה בשמירת הנתונים");
+					.put("result", "שגיאה בשמירת הנתונים");*/
 			resp.setContentType("application/json");
 			resp.setCharacterEncoding("UTF-8");
 			resp.getWriter().print(resultToClient);
@@ -380,7 +387,7 @@ public class ActivityController extends HttpServlet implements Serializable {
 	
 	@SuppressWarnings("unchecked")
 	private boolean editPupilInCourse(HttpServletRequest req,
-			HttpServletResponse resp) {
+			HttpServletResponse resp) throws Exception {
 		// TODO Auto-generated method stub
 		this.pupilActDAO = new PupilActivityDAO(con);
 		PupilActivity pa = new PupilActivity();
@@ -391,16 +398,27 @@ public class ActivityController extends HttpServlet implements Serializable {
 			u = (User) DAOUtil.getObjectFromJson(user.toString(), u.getClass());
 			pa = (PupilActivity)DAOUtil.getObjectFromJson(req.getParameter("pupilActivity"), pa.getClass());
 			pa.setTblUser(u);
+			
+			//check dates before save
+			if(DAOUtil.getZeroTimeDate(pa.getEndDate()).before(DAOUtil.getZeroTimeDate(pa.getStartDate()))){
+				resultToClient.put("msg", 0);
+				resultToClient.put("result", "תאריך ההתחלה חייב להיות לפני תאריך סיום");
+				
+				return false;
+			}
+			
 			boolean r  = this.pupilActDAO.update(pa);	
 			if (r) {
 				resultToClient.put("msg", 1);
 				resultToClient.put("result", "רישום נשמר בהצלחה");
+				return true;
 			} else {
 				resultToClient.put("msg", 0);
 				resultToClient
 						.put("result", "שגיאה בשמירת הנתונים");
+				return false;
 			}
-			return true;
+			//return true;
 		}
 		
 		return false;
