@@ -92,20 +92,29 @@ $(function() {
 						required : true,
 						minlength : 2,
 						maxlength : 20,
-						nameValidator : true
-					// custom validation from additional-methods.js
+						//nameValidator : true
+					},
+					weekDay : {
+						required : true						
+					},
+					startTime : {
+						required : true						
+					},
+					endTime : {
+						required : true,
+						isTimeOK: true				
 					},
 					responsibleStaff : {
 						required : true						
-					// custom validation from additional-methods.js
 					},
-					/*lName : {
+					capacity : {
 						required : true,
-						minlength : 2,
-						maxlength : 20,
-						nameValidator : true
-					},*/
-
+						digits : true
+					},
+					pricePerMonth : {
+						required : true,
+						digits : true					
+					},
 					extraPrice : {
 						required : "#extraPriceChk:checked",
 						digits : true
@@ -144,7 +153,23 @@ $(function() {
 
 	
 });
-
+/*function isTimeOK(){
+	var start = $("#startTime").val();
+	var end = $("#endTime").val();
+	if (start>=end)
+		return false;
+	else
+		return true;
+	
+};*/
+$.validator.addMethod("isTimeOK", function() { 
+	var start = $("#startTime").val();
+	var end = $("#endTime").val();
+	if (start>=end)
+		return false;
+	else
+		return true;
+}, "שעת התחלה אחרי שעת סיום");
 /*function setCourseData(courseData) {
 
 	if (courseData != undefined) {

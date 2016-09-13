@@ -141,6 +141,7 @@
 					,
 					p1fName : {
 						required: true,
+						minlength: 2,
 						maxlength: 20,
 						nameValidator : true 
 					},
@@ -150,7 +151,7 @@
 						nameValidator : true 
 					},
 					p2fName : {
-						
+						minlength: 2,
 						maxlength: 20,
 						nameValidator : true 
 					},
@@ -172,6 +173,7 @@
 						digits: true
 					},
 					p1cell : {
+						required: true,
 						minlength: 10,
 						maxlength: 10,
 						digits: true
