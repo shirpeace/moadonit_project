@@ -133,6 +133,7 @@ $(function(){
 					digits: true
 				},
 				p1cell : {
+					required: true,
 					minlength: 10,
 					maxlength: 10,
 					digits: true
@@ -301,9 +302,9 @@ function loadPupilCard(dataString){
 }
 
 function deletePupil(id){
-	//shir says thaty its ok to change tje grade to the pupil
-	// in the pupuil _grade table, but only if he has recordes in ref tables
-	//else del from pupil_grade and tehn reg_pupil and then pupil
+	//shir says that its ok to change the grade to the pupil
+	// in the pupuil _grade table, but only if he has records in ref tables
+	//else del from pupil_grade and then reg_pupil and then pupil
 	// if he has brothers dont del family
 }
 
