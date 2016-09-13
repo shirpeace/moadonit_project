@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.PreparedStatement; 
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -258,7 +259,18 @@ public class FullPupilCardDAO extends AbstractDAO {
 		try (PreparedStatement statement = DAOUtil.prepareCallbackStatement(this.con.getConnection(), selectFilter ,values);
 						ResultSet resultSet = statement.executeQuery();) {
 
+			
+			/*ResultSetMetaData rsmd = resultSet.getMetaData();
+			
+			int columnCount = rsmd.getColumnCount();
+            for(int i=1;i<=columnCount;i++){
+                System.out.println(rsmd.getColumnName(i));
+                System.out.println(rsmd.getColumn);
+            }*/
+			
+		
 			while (resultSet.next()) {
+				
 				FullPupilCard p = map(resultSet);
 				list.add(p);
 			}
@@ -278,34 +290,34 @@ public class FullPupilCardDAO extends AbstractDAO {
 		if(fName!=null ||lName!=null || gend!=null   || (grade!=null && !grade.equals(" "))  || pupilCell!=null|| 
 				homePhone!=null|| p1name!=null|| p1cell!=null|| p2name!=null|| p2cell!=null || (isReg!=null && !isReg.trim().equals(""))){
 			stat+=" where ";
-			if(fName!=null){
+			if(fName!=null && !fName.trim().equals("")){
 				stat+="firstName LIKE '%" +fName +"%' and ";
 			}
-			if(lName!=null){
+			if(lName!=null && !lName.trim().equals("")){
 				stat+="lastName LIKE '%" +lName +"%' and ";
 			}
-			if(gend!=null){
+			if(gend!=null && !gend.trim().equals("")){
 				stat+="gender =" +gend +" and ";
 			}
-			if(grade!=null && !grade.equals(" ")){
+			if(grade!=null && !grade.equals(" ") && !grade.trim().equals("")){
 				stat+="gradeID =" +grade +" and ";
 			}
-			if(pupilCell!=null){
+			if(pupilCell!=null && !pupilCell.trim().equals("")){
 				stat+="cellphone LIKE '%" +pupilCell +"%' and ";
 			}
-			if(homePhone!=null){
+			if(homePhone!=null && !homePhone.trim().equals("")){
 				stat+="homePhoneNum LIKE '%" +homePhone +"%' and ";
 			}
-			if(p1name!=null){
+			if(p1name!=null && !p1name.trim().equals("")){
 				stat+="p1fname LIKE '%" +p1name +"%' and ";
 			}
-			if(p1cell!=null){
+			if(p1cell!=null && !p1cell.trim().equals("")){
 				stat+="p1cell LIKE '%" +p1cell +"%' and ";
 			}
-			if(p2name!=null){
+			if(p2name!=null && !p2name.trim().equals("")){
 				stat+="p2fname LIKE '%" +p2name +"%' and ";
 			}
-			if(p2cell!=null){
+			if(p2cell!=null && !p2cell.trim().equals("")) {
 				stat+="p2cell LIKE '%" +p2cell +"%' and ";
 			}
 			if(isReg!=null && !isReg.trim().equals("")){

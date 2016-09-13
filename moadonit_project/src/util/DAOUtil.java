@@ -6,14 +6,20 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.AbstractMap;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import dao.DAOException;
 
 /**
  * Utility class for DAO's. This class contains commonly used DAO logic which is been refactored in
@@ -25,6 +31,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public final class DAOUtil {
 
+	
+	
     // Constructors -------------------------------------------------------------------------------
 
     private DAOUtil() {
@@ -146,6 +154,41 @@ public final class DAOUtil {
         res = calendar.getTime();
 
         return res;
+    }
+    
+    public static HashMap<Entry<String, String>, String> getKeysColmunComments(Connection connection ,String query, String whereClouse) {
+    	HashMap<Entry<String, String>, String> s = new HashMap<Entry<String, String>, String>();
+    
+		
+    	
+    	if(query == null ) return null;
+    	
+    	HashMap<String,String> keysval = new HashMap<String, String>();
+    	String selectColumnComment = query;
+    	if(whereClouse != null && !whereClouse.trim().isEmpty())
+    	selectColumnComment += whereClouse;
+    	
+    	try (PreparedStatement statement = prepareStatement(
+    			connection, selectColumnComment, false, new Object[] { });
+				ResultSet resultSet = statement.executeQuery();) {
+
+    		while (resultSet.next()) {
+    			String tableName   = resultSet.getString("TABLE_NAME");
+    			String colName = resultSet.getString("COLUMN_NAME");
+    			
+    			AbstractMap.SimpleEntry<String, String> pair = new AbstractMap.SimpleEntry<>(tableName,colName);
+    			
+    			s.put(pair, resultSet.getString("COLUMN_COMMENT"));  
+    			//keysval.put(pair, resultSet.getString("COLUMN_COMMENT"));    			
+			}
+
+    		return s;
+    		
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+    	    
+    	
     }
 
 }

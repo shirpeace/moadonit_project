@@ -58,12 +58,59 @@ function formatGradeCell(rowId, val, rawObject, cm, rdata){
 	
 	return cellVal;
 }
+
+function exportData(cols,file,gridId ,pageHead){
+
+	var $grid = $("#" + gridId);
+    var postData = $grid.jqGrid('getGridParam', 'postData');
+    
+    var firstName =  null ,gender = null,  isReg=    null , lastName = null , gradeName =  null,pupilCell = null, homePhone = null,
+    p1Name = null, p1Cell = null, p2Name = null, p2Cell = null;
+    
+    if(postData._search === true){
+    	firstName = postData.firstName ,gender =  postData.gender, 
+    	isReg=    postData.isReg , lastName =  postData.lastName ,
+    	gradeName =   postData.gradeName,
+    	pupilCell =  postData.pupilCell,homePhone =  postData.homePhone, p1Name =  postData.p1Name,
+    	p1Cell = postData.p1Cell, p2Name =  postData.p2Name, p2Cell = postData.p2Cell;
+    }
+    
+    var $preparingFileModal = $("#preparing-file-modal");
+    
+    $preparingFileModal.dialog({ modal: true });       
+    
+   $.fileDownload("FullPupilCardController", {
+        successCallback: function(url) {
+
+            $preparingFileModal.dialog('close');
+        },
+        failCallback: function(responseHtml, url) {
+
+            $preparingFileModal.dialog('close');
+            $("#error-modal").dialog({ modal: true });
+        },
+        data : {  fileType : file, fileName: 'exportFile' , action: "export" ,
+        	pupilCell : pupilCell, homePhone :  homePhone,
+            p1Name: p1Name, p1Cell : p1Cell, p2Name : p2Name, p2Cell : p2Cell,        	
+        	firstName : firstName ,gender : gender, 
+			        	isReg:  isReg , lastName : lastName ,
+			        	gradeName :  gradeName,sord : postData.sord, sidx : postData.sidx,pageName : "pupils_phones"
+			        	, colNum : 11
+			    },
+        httpMethod: "POST",
+        popupWindowTitle: "ייצוא קובץ...",
+    });
+
+    return false; //this is critical to stop the click event which will trigger a normal file download!
+   
+}
+
 function loadGrid(){
 	  $("#contact").jqGrid({
           url : "FullPupilCardController?action=contactPage",
           datatype : "json",
           mtype : 'POST',
-          colNames : ['מספר','רשום','שם משפחה' , 'שם פרטי' , 'מגדר', 'כיתה', 'סלולר תלמיד', 'טלפון בבית', 'שם ההורה', 'טלפון','שם ההורה','טלפון'],
+          colNames : ['מספר','רשום','שם משפחה' , 'שם פרטי' , 'מגדר', 'כיתה', 'סלולר תלמיד', 'טלפון בבית','שם ההורה','טלפון','מייל','שם ההורה','טלפון','מייל'],
           colModel : [ {
                   name : 'id',
                   index : 'id',
@@ -76,7 +123,7 @@ function loadGrid(){
 	              stype: "select",
 	              searchoptions: { value: ":;2:רשום;1:לא רשום"},
 	              formatter: "checkbox"
-	      },  {
+	      }, {
                   name : 'lastName',
                   index : 'lastName',
                   width : 80,
@@ -86,7 +133,8 @@ function loadGrid(){
               index : 'firstName',
               width : 80,
               editable : true
-          },{
+          }
+          ,{
                   name : 'gender',
                   index : 'gender',
                   width : 60,
@@ -154,6 +202,12 @@ function loadGrid(){
               width : 100,
               editable : false
           }, {
+              name : 'p1mail',
+              index : 'p1mail',
+              width : 160,
+              editable : true
+          }
+         , {
               name : 'p2Name', 
               index : 'p2Name',
               width : 100,
@@ -163,6 +217,11 @@ function loadGrid(){
               index : 'p2Cell',
               width : 100,
               editable : false
+          } , {
+              name : 'p2mail',
+              index : 'p2mail',
+              width : 160,
+              editable : true
           } ],
           pager : '#cont_page',
           rowNum : 100,

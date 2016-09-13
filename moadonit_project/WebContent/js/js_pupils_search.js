@@ -208,7 +208,7 @@ function onGradeChange(elem){
 }
 function exportData(cols,file,gridId ,pageHead){
 
-	var $grid = $("#list");
+	var $grid = $("#" + gridId);
     var postData = $grid.jqGrid('getGridParam', 'postData');
     
     var firstName =  null ,gender = null,  isReg=    null , lastName = null , gradeName =  null;
@@ -238,7 +238,7 @@ function exportData(cols,file,gridId ,pageHead){
         data : {  fileType : file, fileName: 'exportFile' , action: "export" ,
 			        	firstName : firstName ,gender : gender, 
 			        	isReg:  isReg , lastName : lastName ,
-			        	gradeName :  gradeName,sord : postData.sord, sidx : postData.sidx,pageName : "pupils_search"
+			        	gradeName :  gradeName,sord : postData.sord, sidx : postData.sidx,pageName : "pupils_search", colNum : 5
 			    },
         httpMethod: "POST",
         popupWindowTitle: "ייצוא קובץ...",

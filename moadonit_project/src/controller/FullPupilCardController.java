@@ -7,11 +7,15 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -23,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.swing.text.StyledEditorKit.BoldAction;
 
+import org.eclipse.persistence.exceptions.IntegrityChecker;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.xhtmlrenderer.pdf.ITextRenderer;
@@ -67,7 +72,7 @@ public class FullPupilCardController extends HttpServlet implements
 	Family fam = null;
 	Parent parent1 = null;
 	Parent parent2 = null;
-	List<FullPupilCard> pupilList = null;
+	List<FullPupilCard> data = null;
 
 	PupilDAO pupilDao;
 	FamilyDAO familyDao;
@@ -284,15 +289,15 @@ public class FullPupilCardController extends HttpServlet implements
 				String search = req.getParameter("_search");
 				if (search.equals("true")) {
 					// on filtering popup window
-					pupilList = fillterPupilNotInActivity(req, resp);
+					 List<FullPupilCard> list = fillterPupilNotInActivity(req, resp);
 					JSONArray jsonPupilList = new JSONArray();
-					getPupilList(jsonPupilList);
+					getPupilList(jsonPupilList, list);
 
 					if (!jsonPupilList.isEmpty()) {
 
 						String jsonResponse = jsonPupilList.toJSONString();
 						jsonResponse = "{\"page\":1,\"total\":\"1\",\"records\":"
-								+ pupilList.size()
+								+ data.size()
 								+ ",\"rows\":"
 								+ jsonResponse + "}";
 
@@ -313,14 +318,14 @@ public class FullPupilCardController extends HttpServlet implements
 
 				else { // on pop up search page load
 
-					pupilList = SelectPupilNotInActivity(req, resp);
+					List<FullPupilCard> list = SelectPupilNotInActivity(req, resp);
 					JSONArray jsonPupilList = new JSONArray();
-					getPupilList(jsonPupilList);
+					getPupilList(jsonPupilList, list);
 					if (!jsonPupilList.isEmpty()) {
 
 						String jsonResponse = jsonPupilList.toJSONString();
 						jsonResponse = "{\"page\":1,\"total\":\"1\",\"records\":"
-								+ pupilList.size()
+								+ data.size()
 								+ ",\"rows\":"
 								+ jsonResponse + "}";
 
@@ -344,10 +349,10 @@ public class FullPupilCardController extends HttpServlet implements
 				//boolean isExport = req.getParameter("isExport") != null;
 				if (search.equals("true")) {
 					//if (!isExport) {
-						pupilList = searchPupilList(req, resp, rows
+					List<FullPupilCard> list = searchPupilList(req, resp, rows
 								* (page - 1), rows);
 						JSONArray jsonPupilList = new JSONArray();
-						getPupilList(jsonPupilList);
+						getPupilList(jsonPupilList, list);
 						if (!jsonPupilList.isEmpty()) {
 
 							String jsonResponse = jsonPupilList.toJSONString();
@@ -392,10 +397,10 @@ public class FullPupilCardController extends HttpServlet implements
 					//}
 
 				} else { // on search page load
-					pupilList = getFullPupilList(req, resp, rows * (page - 1),
+					List<FullPupilCard> list = getFullPupilList(req, resp, rows * (page - 1),
 							rows);
 					JSONArray jsonPupilList = new JSONArray();
-					getPupilList(jsonPupilList);
+					getPupilList(jsonPupilList, list);
 					if (!jsonPupilList.isEmpty()) {
 
 						totalCount = getFullPupilList(req, resp, 0, 0).size();
@@ -439,7 +444,7 @@ public class FullPupilCardController extends HttpServlet implements
 				// on contact page searching
 				String search = req.getParameter("_search");
 				if (search.equals("true")) {
-					pupilList = searchContactList(req, resp);
+					data = searchContactList(req, resp);
 					JSONArray jsonPupilList = new JSONArray();
 					getContactList(jsonPupilList);
 
@@ -447,7 +452,7 @@ public class FullPupilCardController extends HttpServlet implements
 
 						String jsonResponse = jsonPupilList.toJSONString();
 						jsonResponse = "{\"page\":1,\"total\":\"1\",\"records\":"
-								+ pupilList.size()
+								+ data.size()
 								+ ",\"rows\":"
 								+ jsonResponse + "}";
 
@@ -468,7 +473,7 @@ public class FullPupilCardController extends HttpServlet implements
 
 				else { // on contact page load
 
-					pupilList = getFullPupilList(req, resp, rows * (page - 1),
+					data = getFullPupilList(req, resp, rows * (page - 1),
 							rows);
 					JSONArray jsonPupilList = new JSONArray();
 					getContactList(jsonPupilList);
@@ -476,7 +481,7 @@ public class FullPupilCardController extends HttpServlet implements
 
 						String jsonResponse = jsonPupilList.toJSONString();
 						jsonResponse = "{\"page\":1,\"total\":\"1\",\"records\":"
-								+ pupilList.size()
+								+ data.size()
 								+ ",\"rows\":"
 								+ jsonResponse + "}";
 
@@ -509,7 +514,9 @@ public class FullPupilCardController extends HttpServlet implements
 
 			} else if (action.equals("export")) {
 
-				exportExcel(req, resp);
+		//		String[] arrKeys = { "lastName","firstName","gender","gradeName","isReg" };
+				
+				exportExcel(req, resp );
 
 			}
 
@@ -538,8 +545,8 @@ public class FullPupilCardController extends HttpServlet implements
 
 	}
 
-	protected void exportExcel(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	protected void exportExcel(HttpServletRequest req, HttpServletResponse resp )
+			throws ServletException, IOException, SQLException {
 
 		resp.setContentType("text/html;charset=UTF-8");
 		Cookie downloadCookie = new Cookie("fileDownload", "true");
@@ -877,8 +884,8 @@ public class FullPupilCardController extends HttpServlet implements
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void getPupilList(JSONArray jsonResult) {
-		for (FullPupilCard pupil : pupilList) {
+	protected void getPupilList(JSONArray jsonResult, List<FullPupilCard> list) {
+		for (FullPupilCard pupil : list) {
 			String gend;
 			if (pupil.getGender() == 1)
 				gend = "בן";
@@ -905,22 +912,93 @@ public class FullPupilCardController extends HttpServlet implements
 			user.put("lastName", pupil.getLastName());
 			user.put("gender", gend);
 			user.put("gradeName", pupil.getGradeName());
-			user.put("isReg", pupil.getStateNum() == 2 ? true : false);
+			user.put("isReg", pupil.getStateNum() == 2 ? true : false);			
 
 			jsonResult.add(user);
 		}
 	}
 
-	/**
-	 * 
-	 * like the getPupilList function but with hebrew keys
-	 *  //NOT IN USE
-	 * @param jsonResult
-	 */
+	@SuppressWarnings("unchecked")
+	protected void getJsonForExport(JSONArray jsonResult, List<FullPupilCard> list) {
+		for (FullPupilCard pupil : list) {
+			String gend;
+			if (pupil.getGender() == 1)
+				gend = "בן";
+			else if (pupil.getGender() == 2)
+
+				gend = "בת";
+			else
+				gend = " ";
+			// / delete this part after fixing sp
+			/*
+			 * this.regToMoadonitDAO = new RegToMoadonitDAO(con);
+			 * List<RegToMoadonit> active =
+			 * regToMoadonitDAO.getActiveRegForPupil(pupil.getPupilNum());
+			 */
+			/*Boolean reg;
+			if (pupil.getRegPupilNum() == 0) {
+				reg = false;
+			} else
+				reg = true;*/
+
+			JSONObject user = new JSONObject();
+			user.put(new AbstractMap.SimpleEntry<>("fullPupilCard","pupilNum"), pupil.getPupilNum());
+			user.put(new AbstractMap.SimpleEntry<>("fullPupilCard","firstName"), pupil.getFirstName());
+			user.put(new AbstractMap.SimpleEntry<>("fullPupilCard","lastName"), pupil.getLastName());
+			user.put(new AbstractMap.SimpleEntry<>("fullPupilCard","gender"), gend);
+			user.put(new AbstractMap.SimpleEntry<>("fullPupilCard","gradeName"), pupil.getGradeName());
+			user.put(new AbstractMap.SimpleEntry<>("fullPupilCard","state"), pupil.getState());
+			
+			
+			/*user.put("firstName", pupil.getFirstName());
+			user.put("lastName", pupil.getLastName());
+			user.put("gender", gend);
+			user.put("gradeName", pupil.getGradeName());
+			user.put("isReg", pupil.getStateNum() == 2 ? true : false);			*/
+
+			jsonResult.add(user);
+		}
+	}
 	
 	@SuppressWarnings("unchecked")
+	protected void getContactList(JSONArray jsonResult) {
+		for (FullPupilCard pupil : data) {
+			String gend;
+			if (pupil.getGender() == 1)
+				gend = "בן";
+			else if (pupil.getGender() == 2)
+				gend = "בת";
+			else
+				gend = " ";
+			/*Boolean reg;
+			if (pupil.getRegPupilNum() == 0) {
+				reg = false;
+			} else
+				reg = true;*/
+
+			JSONObject user = new JSONObject();
+			user.put("id", pupil.getPupilNum());
+			user.put("isReg", pupil.getStateNum() == 2 ? true : false);
+			user.put("firstName", pupil.getFirstName());
+			user.put("lastName", pupil.getLastName());
+			user.put("gender", gend);
+			user.put("gradeName", pupil.getGradeName());
+			user.put("pupilCell", pupil.getCellphone());
+			user.put("homePhone", pupil.getHomePhoneNum());
+			user.put("p1Name", pupil.getP1fname());
+			user.put("p1Cell", pupil.getP1cell());
+			user.put("p1mail", pupil.getP1mail());
+			user.put("p2Name", pupil.getP2fname());
+			user.put("p2Cell", pupil.getP2cell());
+			user.put("p2mail", pupil.getP2mail());
+			
+			jsonResult.add(user);
+		}
+	}
+
+	/*@SuppressWarnings("unchecked")
 	protected void getPupilListForHTML(JSONArray jsonResult) {
-		for (FullPupilCard pupil : pupilList) {
+		for (FullPupilCard pupil : data) {
 			String gend;
 			if (pupil.getGender() == 1)
 				gend = "בן";
@@ -946,67 +1024,111 @@ public class FullPupilCardController extends HttpServlet implements
 
 			jsonResult.add(user);
 		}
-	}
+	}*/
 
 	@SuppressWarnings("unchecked")
-	protected void getContactList(JSONArray jsonResult) {
-		for (FullPupilCard pupil : pupilList) {
+	protected void getContactListForExport(JSONArray jsonResult,  List<FullPupilCard> list) {
+		for (FullPupilCard pupil : list) {
 			String gend;
 			if (pupil.getGender() == 1)
 				gend = "בן";
 			else if (pupil.getGender() == 2)
 				gend = "בת";
 			else
-				gend = " ";
-			/*Boolean reg;
-			if (pupil.getRegPupilNum() == 0) {
-				reg = false;
-			} else
-				reg = true;*/
+				gend = " ";			
 
 			JSONObject user = new JSONObject();
 			user.put("id", pupil.getPupilNum());
-			user.put("isReg", pupil.getStateNum() == 2 ? true : false);
-			user.put("firstName", pupil.getFirstName());
-			user.put("lastName", pupil.getLastName());
-			user.put("gender", gend);
-			user.put("gradeName", pupil.getGradeName());
-			user.put("pupilCell", pupil.getCellphone());
-			user.put("homePhone", pupil.getHomePhoneNum());
-			user.put("p1Name", pupil.getP1fname());
-			user.put("p1Cell", pupil.getP1cell());
-			user.put("p2Name", pupil.getP2fname());
-			user.put("p2Cell", pupil.getP2cell());
-
+			user.put(new AbstractMap.SimpleEntry<>("fullPupilCard","pupilNum"), pupil.getPupilNum());
+			user.put(new AbstractMap.SimpleEntry<>("fullPupilCard","firstName"), pupil.getFirstName());
+			user.put(new AbstractMap.SimpleEntry<>("fullPupilCard","lastName"), pupil.getLastName());
+			user.put(new AbstractMap.SimpleEntry<>("fullPupilCard","gender"), gend);
+			user.put(new AbstractMap.SimpleEntry<>("fullPupilCard","gradeName"), pupil.getGradeName());
+			user.put(new AbstractMap.SimpleEntry<>("fullPupilCard","state"), pupil.getState());
+			
+			user.put(new AbstractMap.SimpleEntry<>("fullPupilCard","cellphone"), pupil.getCellphone());
+			user.put(new AbstractMap.SimpleEntry<>("fullPupilCard","homePhoneNum"), pupil.getHomePhoneNum() != null ? pupil.getHomePhoneNum() : "");
+			user.put(new AbstractMap.SimpleEntry<>("fullPupilCard","p1fname"), pupil.getP1fname());
+			user.put(new AbstractMap.SimpleEntry<>("fullPupilCard","p1cell"), pupil.getP1cell());
+			user.put(new AbstractMap.SimpleEntry<>("fullPupilCard","p1mail"), pupil.getP1mail() != null ? pupil.getP1mail() : "");
+			user.put(new AbstractMap.SimpleEntry<>("fullPupilCard","p2fname"), pupil.getP2fname() != null ? pupil.getP2fname() : "");
+			user.put(new AbstractMap.SimpleEntry<>("fullPupilCard","p2cell"), pupil.getP2cell() != null ? pupil.getP2cell() : "");
+			user.put(new AbstractMap.SimpleEntry<>("fullPupilCard","p2mail"), pupil.getP2mail() != null ? pupil.getP2mail() : "");
+			
 			jsonResult.add(user);
 		}
 	}
 
 	
 	public String getHtmlFromJsonData(HttpServletRequest req,
-			HttpServletResponse resp) throws IOException {
+			HttpServletResponse resp) throws IOException, SQLException {
 		String pageName = req.getParameter("pageName");
-		String[] arrTitles = { "שם משפחה", "שם פרטי", "מגדר", "כיתה",  "רשום" };
-		String[] arrKeys = { "lastName","firstName","gender","gradeName","isReg" };
+		//int colNum = Integer.parseInt(req.getParameter("colNum"));
+		String query = null;
+		String whereClouse = null;
+		String pageHead = ""; // header for exel file	
+		//String[] arrKeys = new String[colNum] ;
 		
-		if(pageName.equals("pupils_search")){
+		ArrayList<Entry<String, String>> arrlist = new ArrayList<Entry<String, String>>();
 		
-			pupilList = searchPupilList(req, resp, 0, 0); // get list of rows to add
-			/*String[] arrTitles = { "שם משפחה", "שם פרטי", "מגדר", "כיתה",  "רשום" };
-			String[] arrKeys = { "lastName","firstName","gender","gradeName","isReg" };*/
+		JSONArray jsonList = new JSONArray();
+		
+		switch (pageName) {
+			case "pupils_search":
+				List<FullPupilCard> list = null;
+				query = "SELECT COLUMN_NAME, COLUMN_COMMENT, TABLE_NAME FROM information_schema.columns ";
+				whereClouse = " WHERE (table_name = 'fullPupilCard'); ";
+				
+				list = searchPupilList(req, resp, 0, 0); // get list of rows to add
+				getJsonForExport(jsonList, list);
+				pageHead = "רשימת תלמידים";
+				
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","lastName"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","firstName"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","gender"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","gradeName"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","state"));
+				
+				//pupil cellphone, family homePhoneNum, 
+				
+				/*arrKeys[0] = "lastName";arrKeys[1] = "firstName";arrKeys[2] = "gender";arrKeys[3] = "gradeName";
+				arrKeys[4] = "isReg";*/
+				//arrKeys1 = { "lastName","firstName","gender","gradeName","isReg" };
+				
+				break;
+			case "pupils_phones":
+				
+				List<FullPupilCard> listContact = null;
+				query = "SELECT COLUMN_NAME, COLUMN_COMMENT, TABLE_NAME FROM information_schema.columns ";
+				whereClouse = " WHERE (table_name = 'fullPupilCard'); ";
+				
+				listContact = searchContactList(req, resp); // get list of rows to add
+				getContactListForExport(jsonList, listContact);
+				pageHead = "רשימת תלמידים";
+				//arrKeys[0] = "lastName";arrKeys[1] = "firstName";arrKeys[2] = "gender";arrKeys[3] = "gradeName";
+				//arrKeys[4] = "isReg";
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","lastName"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","firstName"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","gender"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","gradeName"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","state"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","cellphone"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","homePhoneNum"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","p1fname"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","p1cell"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","p1mail"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","p2fname"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","p2cell"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","p2mail"));
+				
+				
+				break;
+	
+			default:
+				break;
 		}
-		else if (pageName.equals("pupils_search")){
-			/*String[] arrTitles = { "שם משפחה", "שם פרטי", "מגדר", "כיתה",  "רשום" };
-			String[] arrKeys = { "lastName","firstName","gender","gradeName","isReg" };*/
-		}
-														// to html
-		JSONArray jsonPupilList = new JSONArray();
-		String pageHead = "רשימת תלמידים"; // header for exel file
-
-		
-		getPupilList(jsonPupilList); 
-
-		if (!jsonPupilList.isEmpty()) {
+	
+		if (!jsonList.isEmpty() && arrlist.size() > 0) {
 			// start html text with style for table
 				String html = "<!DOCTYPE html><html lang=\"he\" ><head> <meta charset=\"utf-8\" /><style script='css/text'>table.tableList_1 th {border:1px solid #a8da7f; border-bottom:2px solid #a8da7f; text-align:center; vertical-align: middle; padding:5px; background:#e4fad0;}table.tableList_1 td {border:1px solid #a8da7f; text-align: left; vertical-align: top; padding:5px;}</style></head><body dir=\"rtl\"><div class='pageHead_1'>"
 						+ pageHead
@@ -1014,51 +1136,42 @@ public class FullPupilCardController extends HttpServlet implements
 				// headers of table
 				String theads = "";
 
-				// get header values form the first row of json data
-				//JSONObject o = (JSONObject) jsonPupilList.get(0);
-				
-				
-				for (int i = 0; i < arrTitles.length; i++) {
-					String key = arrTitles[i];
-					theads = theads + "<th>" + key + "</th>";
+				HashMap<Entry<String, String>, String> keysColComments = DAOUtil.getKeysColmunComments(this.con.getConnection(),query, whereClouse);
+			
+				if(keysColComments != null)
+				for (int i = 0; i < arrlist.size(); i++)
+				{
+					Entry<String, String> key = arrlist.get(i);				
+					String title  = keysColComments.get(key);					
+					theads = theads + "<th>" + title + "</th>";
 				}
-
-				/*
-				 * for (Object keyObject : o.keySet()) { String key =
-				 * (String)keyObject; if (key.equals("מספר")) { continue; }
-				 * theads = theads +"<th>"+ key +"</th>";
-				 * 
-				 * 
-				 * }
-				 */
+				
+				/*for (int i = 0; i < arrKeys.length; i++)
+				{
+					String s = arrKeys[i];
+					String title  = t.get(s);
+					theads = theads + "<th>" + title + "</th>";
+				}*/
 
 				theads = "<tr>" + theads + "</tr>";
 				html += theads;
 
 				// get all rows and build the html
-				for (Object object : jsonPupilList) {
+				for (Object object : jsonList) {
 					JSONObject obj = (JSONObject) object;
 					html += "<tr>";
-					for (int i = 0; i < arrKeys.length; i++) {
-						String key = arrKeys[i];
+					for (int i = 0; i < arrlist.size(); i++) {
+						Entry<String, String> keyEntry = arrlist.get(i);
+						//String key = arrKeys[i];
 						html += "<td>";
-						if(obj.get(key) instanceof Boolean){
-							boolean b = (boolean)obj.get(key);
+						if(obj.get(keyEntry) instanceof Boolean){
+							boolean b = (boolean)obj.get(keyEntry);
 							html += b ? "כן" : "לא" + "</td>";
 						}
 						else
-						html += obj.get(key) + "</td>";
+						html += obj.get(keyEntry) + "</td>";
 					}
-
-					/*
-					 * for (Object pair : obj.keySet()) { String key =
-					 * (String)pair; if (key.equals("מספר")) { continue; } html
-					 * += "<td>";
-					 * 
-					 * html += obj.get(key) + "</td>";
-					 * 
-					 * }
-					 */
+					
 					html += "</tr>";
 				}
 

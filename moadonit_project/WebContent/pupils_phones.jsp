@@ -71,6 +71,7 @@
 	
 	<script src="js/js_pupils_phones.js"></script> 	
 	
+	<script src="js/jquery.fileDownload.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -148,6 +149,18 @@
 			                        <div class="panel panel-default">
 			                            <div class="panel-heading">
 			                                <h3 class="panel-title pull-right"><i class="fa fa-info fa-fw"></i> כל התלמידים</h3>
+							                <div class="form-group pull-left" id="viewModeBtn">
+											<!-- 	<a href="javascript:void(0);"
+													onclick="exportData('0','pdf', 'list');">
+													<img alt="" src="resources/images/pdf-icon.png">
+													</a> -->
+												 <a
+													href="javascript:void(0);"
+													onclick="exportData('0','xls', 'contact');">
+													<img alt="" src="resources/images/Excel-icon.png" style="border-radius:15%; margin-right: 10px;">
+												</a>
+											
+											</div>
 			                                <button id="resetBtn" class="pull-left btn btn-primary">נקה חיפוש</button>
 			                                <div class="clearfix"></div>
 			                            </div>
