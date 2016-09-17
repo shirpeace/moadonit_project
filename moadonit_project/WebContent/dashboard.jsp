@@ -142,9 +142,9 @@
                     </div>
                     <div class="col-lg-3 col-md-6">
                         <div class="panel panel-yellow">
-                           <a href="attends_page.jsp">
+                           <a href="pupils_phones.jsp">
                                 <div class="panel-footer">
-                                    <span class="pull-right">נוכחות</span>
+                                    <span class="pull-right">דפי קשר</span>
                                     <span class="pull-left"><i class="fa  fa-check-square-o fa-5x"></i></span>
                                     <div class="clearfix"></div>
                                 </div>
