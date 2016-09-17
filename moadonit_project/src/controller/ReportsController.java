@@ -293,6 +293,7 @@ Serializable {
 		
 		return false;
 	}
+	
 	@SuppressWarnings("unchecked")
 	private boolean insertPupilActivity( HttpServletRequest req, HttpServletResponse resp) {
 		
@@ -333,12 +334,14 @@ Serializable {
 		
 		return r;
 	}
- 	private void insertCourse(HttpServletRequest req, HttpServletResponse resp) {
+ 	
+	private void insertCourse(HttpServletRequest req, HttpServletResponse resp) {
 		// TODO Auto-generated method stub
 		
 		
 		
 	}
+	
 	@SuppressWarnings("unchecked")
 	private JSONObject updateCourse(HttpServletRequest req, HttpServletResponse resp) throws ParseException {
 		// TODO Auto-generated method stub
