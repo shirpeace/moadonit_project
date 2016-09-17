@@ -1,42 +1,47 @@
-/*var grades;  
-function loadPupilSearch() {
-	$.ajax({
-  		async: false,
-		type: 'GET',
-		datatype: 'json',
-        url: "FullPupilCardController?action=getGrades",
-        
-        success: function(data) {
-        	if(data != undefined){
-        		grades=data;
-        		console.log("grades"+grades);
-        	}
-        	else
-        		console.log("no data");
-        },
-        error: function(e) {
-        	console.log("error loading grades");
-        	
-			
-        }
-        
-      }); 
-	loadGrid();
-
-}*/
+var sunDate;
 $().ready(function (){
-	loadGrid();	
+	 $('#weekPick').datepicker({
+		    format: "dd/mm/yyyy",
+		    language: "he" ,
+		     startDate: '01/01/2000',
+		    maxViewMode: 0,
+		    minViewMode: 0,
+		    todayBtn: true,
+		    keyboardNavigation: false,
+		    daysOfWeekDisabled: "1,2,3,4,5,6",
+		    todayHighlight: true,
+		    toggleActive: true,
+		    autoclose: true
+		   
+		}); 
+	 $('#weekPick').datepicker('setDate', nextSunday());
+	 sunDate = getDateFromValue($('#weekPick').val());
+	 loadGrid();
+	 
+	 $('#weekPick').change(function(){
+		sunDate = getDateFromValue(this.value);
+		loadGrid();
+	});
+	 
+		
 });  
 
-/**
- * format the cell of grade, add
- */
+
+function nextSunday() {
+    var d = new Date();
+    var n = d.getDay();
+    d.setDate(d.getDate() + (7-n));
+    return d;
+   // document.getElementById("demo").innerHTML = d ;
+}
+
 
 function loadGrid(){
+	var grid = $("#list");
 	  $("#list").jqGrid({
-          url : "LogisticsController?action=cateringOrder",
+          url : "LogisticsController?action=getAmounts&sunday="+sunDate.getTime(),
           datatype : "json",
-          mtype : 'POST',
+          mtype : 'GET',
           colNames : ['מספר','סוג מנה','ראשון' , 'שני' , 'שלישי', 'רביעי', 'חמישי'],
           colModel : [ {
                   name : 'typeID',
@@ -45,7 +50,7 @@ function loadGrid(){
           }, {
 	              name : 'typeName',
 	              index : 'typeName',
-	              width : 60,
+	              width : '100%',
 	              editable : false,
 	              /*stype: "select",
 	              searchoptions: { value: ":;2:רשום;1:לא רשום"},
@@ -55,7 +60,7 @@ function loadGrid(){
                   index : 'sunday',
                   width : 80,
                   editable : false
-          },,  {
+          },  {
               name : 'monday',
               index : 'monday',
               width : 80,
@@ -83,30 +88,36 @@ function loadGrid(){
           viewrecords : true,
           gridview : true,
           height: "100%",
+          width: "100%",
          
           jsonReader : {
                   repeatitems : false,
           },
           editurl : "FullPupilCardController",
-          recreateFilter:true,
+     //     recreateFilter:true,
           
           rowList: [],        // disable page size dropdown
           pgbuttons: false,     // disable page control like next, back button
           pgtext: null ,
+          footerrow: true,
           // disable pager text like 'Page 0 of 10'
           /*viewrecords: false*/
           ajaxSelectOptions: {
               dataType: 'json',
               cache: false
+          },
+          loadComplete: function(){
+        	  var sum1 = grid.jqGrid('getCol','sunday', false, 'sum');
+        	  var sum2 = grid.jqGrid('getCol','monday', false, 'sum');
+        	  var sum3 = grid.jqGrid('getCol','tuesday', false, 'sum');
+        	  var sum4 = grid.jqGrid('getCol','wednesday', false, 'sum');
+        	  var sum5 = grid.jqGrid('getCol','thursday', false, 'sum');
+        	  
+        	  grid.jqGrid('footerData', 'set', { sunday : sum1, monday : sum2,
+        		  tuesday: sum3, wednesday : sum4 , thursday : sum5});
           }
   });
-  jQuery("#list").jqGrid('navGrid', '#cont_page', {
-          edit : false,
-          add : false,
-          del : false,
-          search : false,
-          refresh: false
-  });
+
   
 
 }	 	

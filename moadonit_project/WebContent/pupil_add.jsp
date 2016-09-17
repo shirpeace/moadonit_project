@@ -332,11 +332,6 @@
 								<div class="form-group">
 									<label for="p2relat">קרבה</label> <select class="form-control"
 										name="p2relat" id="p2relat">
-										<!-- <option value="1">אמא</option>
-										<option value="2" selected="selected">אבא</option>
-										<option value="3">אח</option>
-										<option value="4">אחות</option>
-										<option value="5">אחר</option> -->
 									</select>
 								</div>
 							</div>

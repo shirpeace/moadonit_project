@@ -104,17 +104,17 @@
                         <a href="" style="font-size: 120%; pointer-events: none;"> <i class="fa fa-fw fa-phone"></i> דפי קשר</a>
                         <br>
                      </li> 
-                     <li class="active">
+                     <li>
                         <a href="pupils_phones.jsp" ><i class="fa fa-fw fa-user"></i> תלמידים</a>
                      </li> 
-                     <li>
+                     <li class="active">
                         <a href="staff_phones.jsp" ><i class="fa fa-fw fa-phone"></i> צוות המועדונית</a>
                      </li>
                      <li>
                         <a href= "#"><i class="fa fa-fw fa-phone"></i> מורי חוגים</a>
                      </li> 
                      <li>
-                        <a href= "#"><i class="fa fa-fw fa-phone"></i> מורי  ביה"ס </a>
+                        <a href= "#"><i class="fa fa-fw fa-phone"></i> מורי ביה"ס</a>
                      </li>  
                 </ul>
             </div>
@@ -138,10 +138,10 @@
                                  <a href="dashboard.jsp"><i class="fa fa-home"></i> ראשי</a>
                             </li>
                             <li>
-                                 <a href="#"><i class="fa fa-phone"></i> דפי קשר</a>
+                                 <a href="pupils_search.jsp"><i class="fa fa-phone"></i> דפי קשר</a>
                             </li>
                             <li class="active">
-                                <i class="fa fa-user"></i> תלמידים
+                                <i class="fa fa-phone"></i> צוות המועדונית
                             </li>
                         </ol>
                     </div>
@@ -200,7 +200,7 @@
 /* var currentUserId =	 '${p.pupilNum}' */
 jQuery(document).ready(function() {
 	var pupilID ;
-	loadPupilSearch();
+	//loadPupilSearch();
 });
 </script>
   
