@@ -264,3 +264,40 @@ function exportData(cols,file,gridId ,pageHead){
     document.formstyle.action= actionToSend;  // send it to server which will open this contents in excel file
     document.formstyle.submit();*/
 }
+
+function exportDataOntime(cols,file,gridId ,pageHead){
+
+	/*var $grid = $("#" + gridId);
+    var postData = $grid.jqGrid('getGridParam', 'postData');
+    
+    var firstName =  null ,gender = null,  isReg=    null , lastName = null , gradeName =  null;
+    if(postData._search === true){
+    	firstName = postData.firstName ,gender =  postData.gender, 
+    	isReg=    postData.isReg , lastName =  postData.lastName ,
+    	gradeName =   postData.gradeName;    	
+    }*/
+    debugger;
+    var $preparingFileModal = $("#preparing-file-modal");
+    
+    $preparingFileModal.dialog({ modal: true });
+    
+    //addGridSearchOption($grid,'action','export');
+    //$grid[0].triggerToolbar();   
+    
+   $.fileDownload("ReportsController", {
+        successCallback: function(url) {
+
+            $preparingFileModal.dialog('close');
+        },
+        failCallback: function(responseHtml, url) {
+
+            $preparingFileModal.dialog('close');
+            $("#error-modal").dialog({ modal: true });
+        },
+        data : {  fileType : file, fileName: 'exportFile' , action: "export" , pageName : "OneTimeReport", month : 8, year : 2 },
+        httpMethod: "POST",
+        popupWindowTitle: "ייצוא קובץ...",
+    });
+
+    return false; 
+}

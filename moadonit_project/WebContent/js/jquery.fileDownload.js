@@ -32,7 +32,7 @@ $.extend({
     //$.fileDownload('/path/to/url/', options)
     //  see directly below for possible 'options'
     fileDownload: function (fileUrl, options) {
-
+debugger;
         //provide some reasonable defaults to any unspecified options below
         var settings = $.extend({
 
@@ -350,7 +350,7 @@ $.extend({
 
                 //execute specified callback
                 internalCallbacks.onSuccess(fileUrl);
-
+                
                 //remove cookie
                 var cookieData = settings.cookieName + "=; path=" + settings.cookiePath + "; expires=" + new Date(0).toUTCString() + ";";
                 if (settings.cookieDomain) cookieData += " domain=" + settings.cookieDomain + ";";

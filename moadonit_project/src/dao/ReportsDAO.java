@@ -3,6 +3,7 @@ package dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -17,6 +18,8 @@ import org.json.simple.JSONObject;
 import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 
 import controller.MyConnection;
+import model.Activity;
+import model.Course;
 import model.OneTimeReg;
 import model.Pupil;
 import model.RegSource;
@@ -46,6 +49,7 @@ public class ReportsDAO extends AbstractDAO {
 	private String getBoyRegsToCourses = "{ call getBoyRegsToCourses() }";
 	private String getcapacityToCourses = "select a.activityNum, activityName, pupilCapacity " 
 			+ " from tbl_course c inner join tbl_activity a on c.activityNum = a.activityNum ;";
+	private String getOneTimeReport = "{ call ms2016.get_OneTimeReport(?, ?,?) }";
 	
 
 	@SuppressWarnings("unchecked")
@@ -161,4 +165,32 @@ public class ReportsDAO extends AbstractDAO {
 			return row;
 	}
 
+	@SuppressWarnings("unchecked")
+	public JSONArray getOneTimeReport( int month, int year ,int RegType)throws IllegalArgumentException, DAOException{
+		
+		JSONArray list = new JSONArray();
+
+		try (PreparedStatement statement = DAOUtil.prepareCallbackStatement(
+				this.con.getConnection(), getOneTimeReport, new Object[] { month , year , RegType });
+				ResultSet resultSet = statement.executeQuery();) {
+
+			while (resultSet.next()) {
+				
+				JSONObject user = new JSONObject();
+				user.put(new AbstractMap.SimpleEntry<>("tbl_grade_code","gradeName"),resultSet.getString("gradeName"));
+				user.put(new AbstractMap.SimpleEntry<>("tbl_pupil","lastName"),resultSet.getString("lastName"));
+				user.put(new AbstractMap.SimpleEntry<>("tbl_pupil","firstName"),resultSet.getString("firstName"));
+				user.put(new AbstractMap.SimpleEntry<>("tbl_reg_types","type"),resultSet.getString("type"));
+				user.put(new AbstractMap.SimpleEntry<>("tbl_one_time_reg","ימים"),resultSet.getInt("days"));				
+							
+				list.add(user);
+				
+			}
+
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+		
+		return list; 
+	}
 }

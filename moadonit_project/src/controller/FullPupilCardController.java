@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.swing.text.StyledEditorKit.BoldAction;
+import javax.xml.crypto.dsig.keyinfo.PGPData;
 
 import org.eclipse.persistence.exceptions.IntegrityChecker;
 import org.json.simple.JSONArray;
@@ -67,6 +68,7 @@ public class FullPupilCardController extends HttpServlet implements
 	JSONObject filters;
 	FullPupilCard pupilCard = null;
 	FullPupilCardDAO fullPupilDao;
+	ReportsController reporter;
 	Pupil p = null;
 	RegisterPupil rp = null;
 	Family fam = null;
@@ -96,7 +98,6 @@ public class FullPupilCardController extends HttpServlet implements
 	 */
 	public FullPupilCardController() {
 		super();
-
 		// TODO Auto-generated constructor stub
 	}
 
@@ -107,7 +108,7 @@ public class FullPupilCardController extends HttpServlet implements
 		// TODO Auto-generated method stub
 
 		// check and set connection to session
-		checkConnection(req, resp);
+		
 		gradeDAO = new GradeCodeDAO(con);
 		generalDAO = new GeneralDAO(con);
 		this.fullPupilDao = new FullPupilCardDAO(con);
@@ -515,8 +516,8 @@ public class FullPupilCardController extends HttpServlet implements
 			} else if (action.equals("export")) {
 
 		//		String[] arrKeys = { "lastName","firstName","gender","gradeName","isReg" };
-				
-				exportExcel(req, resp );
+				reporter = new ReportsController();
+				reporter.exportExcel(req, resp , this);
 
 			}
 
@@ -545,29 +546,7 @@ public class FullPupilCardController extends HttpServlet implements
 
 	}
 
-	protected void exportExcel(HttpServletRequest req, HttpServletResponse resp )
-			throws ServletException, IOException, SQLException {
 
-		resp.setContentType("text/html;charset=UTF-8");
-		Cookie downloadCookie = new Cookie("fileDownload", "true");
-
-		String fileName = req.getParameter("fileName");
-		String fileType = req.getParameter("fileType");
-
-		String htmlfromFunc = getHtmlFromJsonData(req, resp);
-
-		resp.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // this is for Excel 2007
-																								
-		// response.setContentType("application/vnd.ms-excel"); // this is for
-		// Excel 2003
-
-		resp.setHeader("Content-Disposition", "attachment;filename=\""
-				+ fileName + "." + fileType + "\"");
-		resp.addCookie(downloadCookie);
-		PrintWriter out = resp.getWriter();
-		out.print(htmlfromFunc);
-		out.close();
-	}
 
 	protected void checkConnection(HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
@@ -856,7 +835,7 @@ public class FullPupilCardController extends HttpServlet implements
 		return pupils;
 	}
 
-	private List<FullPupilCard> searchPupilList(HttpServletRequest req,
+	protected List<FullPupilCard> searchPupilList(HttpServletRequest req,
 			HttpServletResponse resp, int offset, int rowsPerPage)
 			throws UnsupportedEncodingException {
 		List<FullPupilCard> pupils = new ArrayList<>();
@@ -869,7 +848,7 @@ public class FullPupilCardController extends HttpServlet implements
 		return pupils;
 	}
 
-	private List<FullPupilCard> searchContactList(HttpServletRequest req,
+	public List<FullPupilCard> searchContactList(HttpServletRequest req,
 			HttpServletResponse resp) {
 		List<FullPupilCard> pupils = new ArrayList<>();
 		pupils = this.fullPupilDao.selectSearch(req.getParameter("sidx"),
@@ -1057,137 +1036,5 @@ public class FullPupilCardController extends HttpServlet implements
 			
 			jsonResult.add(user);
 		}
-	}
-
-	
-	public String getHtmlFromJsonData(HttpServletRequest req,
-			HttpServletResponse resp) throws IOException, SQLException {
-		String pageName = req.getParameter("pageName");
-		//int colNum = Integer.parseInt(req.getParameter("colNum"));
-		String query = null;
-		String whereClouse = null;
-		String pageHead = ""; // header for exel file	
-		//String[] arrKeys = new String[colNum] ;
-		
-		ArrayList<Entry<String, String>> arrlist = new ArrayList<Entry<String, String>>();
-		
-		JSONArray jsonList = new JSONArray();
-		
-		switch (pageName) {
-			case "pupils_search":
-				List<FullPupilCard> list = null;
-				query = "SELECT COLUMN_NAME, COLUMN_COMMENT, TABLE_NAME FROM information_schema.columns ";
-				whereClouse = " WHERE (table_name = 'fullPupilCard'); ";
-				
-				list = searchPupilList(req, resp, 0, 0); // get list of rows to add
-				getJsonForExport(jsonList, list);
-				pageHead = "רשימת תלמידים";
-				
-				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","lastName"));
-				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","firstName"));
-				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","gender"));
-				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","gradeName"));
-				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","state"));
-				
-				//pupil cellphone, family homePhoneNum, 
-				
-				/*arrKeys[0] = "lastName";arrKeys[1] = "firstName";arrKeys[2] = "gender";arrKeys[3] = "gradeName";
-				arrKeys[4] = "isReg";*/
-				//arrKeys1 = { "lastName","firstName","gender","gradeName","isReg" };
-				
-				break;
-			case "pupils_phones":
-				
-				List<FullPupilCard> listContact = null;
-				query = "SELECT COLUMN_NAME, COLUMN_COMMENT, TABLE_NAME FROM information_schema.columns ";
-				whereClouse = " WHERE (table_name = 'fullPupilCard'); ";
-				
-				listContact = searchContactList(req, resp); // get list of rows to add
-				getContactListForExport(jsonList, listContact);
-				pageHead = "רשימת תלמידים";
-				//arrKeys[0] = "lastName";arrKeys[1] = "firstName";arrKeys[2] = "gender";arrKeys[3] = "gradeName";
-				//arrKeys[4] = "isReg";
-				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","lastName"));
-				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","firstName"));
-				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","gender"));
-				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","gradeName"));
-				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","state"));
-				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","cellphone"));
-				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","homePhoneNum"));
-				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","p1fname"));
-				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","p1cell"));
-				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","p1mail"));
-				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","p2fname"));
-				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","p2cell"));
-				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","p2mail"));
-				
-				
-				break;
-	
-			default:
-				break;
-		}
-	
-		if (!jsonList.isEmpty() && arrlist.size() > 0) {
-			// start html text with style for table
-				String html = "<!DOCTYPE html><html lang=\"he\" ><head> <meta charset=\"utf-8\" /><style script='css/text'>table.tableList_1 th {border:1px solid #a8da7f; border-bottom:2px solid #a8da7f; text-align:center; vertical-align: middle; padding:5px; background:#e4fad0;}table.tableList_1 td {border:1px solid #a8da7f; text-align: left; vertical-align: top; padding:5px;}</style></head><body dir=\"rtl\"><div class='pageHead_1'>"
-						+ pageHead
-						+ "</div><table border='1' class='tableList_1 t_space' cellspacing='10' cellpadding='0'>";
-				// headers of table
-				String theads = "";
-
-				HashMap<Entry<String, String>, String> keysColComments = DAOUtil.getKeysColmunComments(this.con.getConnection(),query, whereClouse);
-			
-				if(keysColComments != null)
-				for (int i = 0; i < arrlist.size(); i++)
-				{
-					Entry<String, String> key = arrlist.get(i);				
-					String title  = keysColComments.get(key);					
-					theads = theads + "<th>" + title + "</th>";
-				}
-				
-				/*for (int i = 0; i < arrKeys.length; i++)
-				{
-					String s = arrKeys[i];
-					String title  = t.get(s);
-					theads = theads + "<th>" + title + "</th>";
-				}*/
-
-				theads = "<tr>" + theads + "</tr>";
-				html += theads;
-
-				// get all rows and build the html
-				for (Object object : jsonList) {
-					JSONObject obj = (JSONObject) object;
-					html += "<tr>";
-					for (int i = 0; i < arrlist.size(); i++) {
-						Entry<String, String> keyEntry = arrlist.get(i);
-						//String key = arrKeys[i];
-						html += "<td>";
-						if(obj.get(keyEntry) instanceof Boolean){
-							boolean b = (boolean)obj.get(keyEntry);
-							html += b ? "כן" : "לא" + "</td>";
-						}
-						else
-						html += obj.get(keyEntry) + "</td>";
-					}
-					
-					html += "</tr>";
-				}
-
-				html += "</table></body></html>";
-
-				return html;
-			
-		} else {
-
-			resp.setContentType("application/json");
-			resp.setCharacterEncoding("UTF-8");
-			resultToClient.put("msg", 0);
-			resultToClient.put("result", "לא נמצאו נתונים");
-			resp.getWriter().print(resultToClient);
-		}
-
-		return null;
 	}
 }

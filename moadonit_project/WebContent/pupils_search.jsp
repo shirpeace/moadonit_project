@@ -167,6 +167,12 @@
 									onclick="exportData('0','xls', 'list');">
 									<img alt="" src="resources/images/Excel-icon.png" style="border-radius:15%; margin-right: 10px;">
 								</a>
+								
+																 <a
+									href="javascript:void(0);"
+									onclick="exportDataOntime('0','xls', 'list');">
+									<img alt="" src="resources/images/Excel-icon.png" >
+								</a>
 							
 							</div>
 

@@ -1,17 +1,23 @@
 package controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,6 +25,7 @@ import javax.servlet.http.HttpSession;
 
 import model.Activity;
 import model.ActivityType;
+import model.FullPupilCard;
 import model.Pupil;
 import model.PupilActivity;
 import model.PupilActivityPK;
@@ -33,6 +40,7 @@ import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import util.DAOUtil;
 import dao.ActivityDAO;
 import dao.PupilActivityDAO;
+import dao.RegToMoadonitDAO;
 import dao.ReportsDAO;
 @WebServlet("/ReportsController")
 public class ReportsController extends HttpServlet implements
@@ -49,6 +57,8 @@ Serializable {
 	List<PupilActivity> listPupilActivity;
 	List<Activity> listAct;
 	JSONObject resultToClient = new JSONObject();
+	Map<Integer, Object> regTypes;
+	RegToMoadonitDAO regDAO;
 	/**
 	 * 
 	 */
@@ -237,10 +247,25 @@ Serializable {
 				resp.setCharacterEncoding("UTF-8");
 				resp.getWriter().print(resultToClient);
 			}
+			else if(action.equals("export")){
+				
+				exportExcel(req, resp, null);
+				/*boolean r = deletePupilActivity(req, resp);
+				resp.setContentType("application/json");
+				resp.setCharacterEncoding("UTF-8");
+				resp.getWriter().print(resultToClient);*/
+			}
 			
 			//
 		} catch (Exception e) {
 			// TODO: handle exception
+			resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			resp.setContentType("application/json");
+			resp.setCharacterEncoding("UTF-8");
+
+			resultToClient.put("msg", 0);
+			resultToClient.put("result", null);
+			resp.getWriter().print(resultToClient);
 		}
 	}
 	
@@ -424,5 +449,267 @@ Serializable {
 			session.setAttribute("connection", con);
 		}
 
+	}
+	
+	protected void exportExcel(HttpServletRequest req, HttpServletResponse resp, HttpServlet controller )
+			throws ServletException, IOException, SQLException {
+
+		checkConnection(req, resp);
+		
+		resp.setContentType("text/html;charset=UTF-8");
+		Cookie downloadCookie = new Cookie("fileDownload", "true");
+
+		String fileName = req.getParameter("fileName");
+		String fileType = req.getParameter("fileType");
+
+		String htmlfromFunc = getHtmlFromJsonData(req, resp, controller);
+
+		resp.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // this is for Excel 2007
+																								
+		// response.setContentType("application/vnd.ms-excel"); // this is for
+		// Excel 2003
+
+		resp.setHeader("Content-Disposition", "attachment;filename=\""
+				+ fileName + "." + fileType + "\"");
+		
+		PrintWriter out = resp.getWriter();
+		
+		/*Cookie[] cookies = req.getCookies();
+
+		if (cookies != null) {
+		 for (Cookie cookie : cookies) {
+		   if (cookie.getName().equals("fileDownload")) {
+			   cookie.setValue(null);
+               cookie.setMaxAge(0);
+               //cookie.setPath(theSamePathAsYouUsedBeforeIfAny);
+               resp.addCookie(cookie);
+		    }
+		  }
+		}*/
+		
+		if(htmlfromFunc != null){
+			resp.addCookie(downloadCookie);
+			out.print(htmlfromFunc);
+		}
+		else{
+			out.print("Some error!!!!!");
+		}
+				
+		out.close();
+	}
+
+	public String getHtmlFromJsonData(HttpServletRequest req,
+			HttpServletResponse resp, HttpServlet controller) throws IOException, SQLException {
+		String pageName = req.getParameter("pageName");
+		//int colNum = Integer.parseInt(req.getParameter("colNum"));
+		String query = null;
+		String whereClouse = null;
+		String pageHead = ""; // header for exel file	
+		//String[] arrKeys = new String[colNum] ;
+		FullPupilCardController pupilControler;
+		ArrayList<Entry<String, String>> arrlist = new ArrayList<Entry<String, String>>();
+		
+		JSONArray jsonList = new JSONArray();
+		String html = "<!DOCTYPE html><html lang=\"he\" ><head> <meta charset=\"utf-8\" /><style script='css/text'>table.tableList_1 th {border:1px solid #a8da7f; border-bottom:2px solid #a8da7f; text-align:center; vertical-align: middle; padding:5px; background:#e4fad0;}table.tableList_1 td {border:1px solid #a8da7f; text-align: left; vertical-align: top; padding:5px;}</style></head><body dir=\"rtl\">";
+				
+		switch (pageName) {
+			case "pupils_search":
+				List<FullPupilCard> list = null;
+				query = "SELECT COLUMN_NAME, COLUMN_COMMENT, TABLE_NAME FROM information_schema.columns ";
+				whereClouse = " WHERE (table_name = 'fullPupilCard'); ";
+				pupilControler = (FullPupilCardController)controller;
+				list = pupilControler.searchPupilList(req, resp, 0, 0); // get list of rows to add
+				pupilControler.getJsonForExport(jsonList, list);
+				pageHead = "רשימת תלמידים";
+				
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","lastName"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","firstName"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","gender"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","gradeName"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","state"));
+				
+				if (!jsonList.isEmpty() && arrlist.size() > 0) {
+					// start html text with style for table
+						
+						
+						
+						html += buildTableForHtml(html,query,whereClouse,arrlist,jsonList,pageHead);
+						html += "</body></html>";
+						//return html;
+					
+				} else {
+
+					resp.setContentType("application/json");
+					resp.setCharacterEncoding("UTF-8");
+					resultToClient.put("msg", 0);
+					resultToClient.put("result", "לא נמצאו נתונים");
+					resp.getWriter().print(resultToClient);
+				}
+				
+				//pupil cellphone, family homePhoneNum, 
+				
+				/*arrKeys[0] = "lastName";arrKeys[1] = "firstName";arrKeys[2] = "gender";arrKeys[3] = "gradeName";
+				arrKeys[4] = "isReg";*/
+				//arrKeys1 = { "lastName","firstName","gender","gradeName","isReg" };
+				
+				break;
+			case "pupils_phones":
+				
+				List<FullPupilCard> listContact = null;
+				query = "SELECT COLUMN_NAME, COLUMN_COMMENT, TABLE_NAME FROM information_schema.columns ";
+				whereClouse = " WHERE (table_name = 'fullPupilCard'); ";
+				pupilControler = (FullPupilCardController)controller;
+				listContact = pupilControler.searchContactList(req, resp); // get list of rows to add
+				pupilControler.getContactListForExport(jsonList, listContact);
+				pageHead = "רשימת תלמידים";
+				//arrKeys[0] = "lastName";arrKeys[1] = "firstName";arrKeys[2] = "gender";arrKeys[3] = "gradeName";
+				//arrKeys[4] = "isReg";
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","lastName"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","firstName"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","gender"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","gradeName"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","state"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","cellphone"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","homePhoneNum"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","p1fname"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","p1cell"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","p1mail"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","p2fname"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","p2cell"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","p2mail"));
+				
+				if (!jsonList.isEmpty() && arrlist.size() > 0) {
+					// start html text with style for table
+						
+					html += buildTableForHtml(html,query,whereClouse,arrlist,jsonList,pageHead);
+						html += "</body></html>";
+						//return html;
+					
+				} else {
+
+					resp.setContentType("application/json");
+					resp.setCharacterEncoding("UTF-8");
+					resultToClient.put("msg", 0);
+					resultToClient.put("result", "לא נמצאו נתונים");
+					resp.getWriter().print(resultToClient);
+				}
+				
+				break;
+		case "OneTimeReport":
+				//List<FullPupilCard> list = null;
+				query = "SELECT COLUMN_NAME, COLUMN_COMMENT, TABLE_NAME FROM information_schema.columns ";
+				whereClouse = " WHERE (table_name = 'tbl_pupil' or table_name = 'tbl_one_time_reg' or table_name = 'tbl_grade_code' or table_name = 'tbl_reg_types'); ";
+				this.regDAO = new RegToMoadonitDAO(con);
+				regTypes = this.regDAO.getRegTypeCodes();
+				
+				if(this.regTypes == null || this.regTypes.isEmpty())
+					return null;
+				
+				Map<Integer, Object> map = this.regTypes; 
+				
+				//pupilControler = (FullPupilCardController)controller;
+				//list = pupilControler.searchPupilList(req, resp, 0, 0); // get list of rows to add
+				//pupilControler.getJsonForExport(jsonList, list);
+				
+				pageHead = "רישום חד פעמי";
+				html += "<div class='pageHead_1'>"+ pageHead + "</div>";
+				arrlist.add(new AbstractMap.SimpleEntry<>("tbl_grade_code","gradeName"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("tbl_pupil","lastName"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("tbl_pupil","firstName"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("tbl_reg_types","type"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("tbl_one_time_reg","ימים"));				
+				
+				for (Entry<Integer, Object> entry : map.entrySet())
+				{
+					jsonList = this.repDOA.getOneTimeReport(8, 2, entry.getKey());
+					if (!jsonList.isEmpty() && arrlist.size() > 0) {
+						html += buildTableForHtml(html,query,whereClouse,arrlist,jsonList,entry.getValue().toString());							
+					}					
+				}
+				
+				html += "</body></html>";
+				
+
+				
+				//pupil cellphone, family homePhoneNum, 
+				
+				/*arrKeys[0] = "lastName";arrKeys[1] = "firstName";arrKeys[2] = "gender";arrKeys[3] = "gradeName";
+				arrKeys[4] = "isReg";*/
+				//arrKeys1 = { "lastName","firstName","gender","gradeName","isReg" };
+				
+				break;
+			default:
+				break;
+		}
+	
+
+
+		return html;
+	}
+	
+	protected String buildTableForHtml(String html, String query, String whereClouse,ArrayList<Entry<String, String>> arrlist ,
+			JSONArray jsonList, String pageHead ) throws  SQLException 
+	{
+		
+		
+		html	+= "<div class='pageHead_1'>"
+				+ pageHead
+				+ "</div>"
+				+ "<table border='1' class='tableList_1 t_space' cellspacing='10' cellpadding='0'>";
+		// headers of table
+		String theads = "";
+
+		HashMap<Entry<String, String>, String> keysColComments = DAOUtil.getKeysColmunComments(this.con.getConnection(),query, whereClouse);
+	
+		if(keysColComments != null)
+		for (int i = 0; i < arrlist.size(); i++)
+		{
+			Entry<String, String> key = arrlist.get(i);				
+			
+			if(keysColComments.get(key) != null){
+				String title  = keysColComments.get(key);					
+				theads = theads + "<th>" + title + "</th>";
+			}
+			else{
+				theads = theads + "<th>" + key.getValue() + "</th>";
+				System.out.println(key.getValue());
+			}
+		}
+		
+		/*for (int i = 0; i < arrKeys.length; i++)
+		{
+			String s = arrKeys[i];
+			String title  = t.get(s);
+			theads = theads + "<th>" + title + "</th>";
+		}*/
+
+		theads = "<tr>" + theads + "</tr>";
+		html += theads;
+
+		// get all rows and build the html
+		for (Object object : jsonList) {
+			JSONObject obj = (JSONObject) object;
+			html += "<tr>";
+			for (int i = 0; i < arrlist.size(); i++) {
+				Entry<String, String> keyEntry = arrlist.get(i);
+				//String key = arrKeys[i];
+				html += "<td>";
+				if(obj.get(keyEntry) != null){
+					if(obj.get(keyEntry) instanceof Boolean){
+						boolean b = (boolean)obj.get(keyEntry);
+						html += b ? "כן" : "לא" + "</td>";
+					}
+					else
+					html += obj.get(keyEntry) + "</td>";
+				}
+				
+			}
+			
+			html += "</tr>";
+		}
+
+		html += "</table>";
+		
+		return html;
 	}
 }
