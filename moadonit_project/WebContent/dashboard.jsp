@@ -151,7 +151,7 @@
                             </a>
                         </div>
                     </div>
-                        <div class="col-lg-3 col-md-6">
+                    <div class="col-lg-3 col-md-6">
                         <div class="panel panel-red">
                             <a href="settings_main.jsp">
                                 <div class="panel-footer">
@@ -162,10 +162,20 @@
                             </a>
                         </div>
                     </div>
-                    
+                    <div class="col-lg-3 col-md-6">
+                        <div class="panel panel-red">
+                            <a href="reports_page.jsp">
+                                <div class="panel-footer">
+                                   <span class="pull-right">דוחות</span>
+                                    <span class="pull-left"><i class="fa  fa-folder-open fa-5x"></i></span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
                 </div>
                 <!-- /.row -->
-
+				
 
             </div>
             <!-- /.container-fluid -->
