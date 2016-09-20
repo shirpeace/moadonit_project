@@ -189,9 +189,9 @@
 						</div>
 					</div>
 				</div>
-				<!-- /.container-fluid -->
+				
 
-			</div>
+			</div><!-- /.container-fluid -->
 			<!-- /#page-wrapper -->
 
 		</div>

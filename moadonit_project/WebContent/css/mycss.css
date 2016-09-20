@@ -109,3 +109,10 @@ select.input-sm {
     pointer-events: none;
     opacity: 0.4;
 }
+.center-pills { display: inline-block; }
+.nav-pills>li>a {
+    border-style: solid;
+    border-width: 1px;
+    margin-left : 10px;
+    margin-bottom: 5px;
+}
