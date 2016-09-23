@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=windows-1255"
-	pageEncoding="windows-1255"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
@@ -36,7 +36,7 @@
 		}
 	%> 
 
-    <title>ξεςγεπιϊ</title>
+    <title>ΧΧ•ΧΆΧ“Χ•Χ Χ™Χª</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -54,8 +54,18 @@
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     
+    <link rel="stylesheet"
+	href="resources/jquery-ui-1.11.4.custom/jquery-ui.css">
+	
     <link href="css/mycss.css" rel="stylesheet">
 
+	<script src="js/jquery.js"></script>
+	<script src="js/jquery-ui.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	
+	<script src="js/js_report_page.js"></script>
+	
+	<script src="js/jquery.fileDownload.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -73,11 +83,11 @@
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="nav navbar-right top-nav" style="padding-top: 15px; ">
             	<a href="login.jsp?action=logout">
-	            	<i class="fa fa-fw fa-power-off"></i>&nbsp;ιφιΰδ</a>
+	            	<i class="fa fa-fw fa-power-off"></i>&nbsp;Χ™Χ¦Χ™ΧΧ”</a>
             </div>
             <div class="navbar-header" >
             	<a class="navbar-brand" href="dashboard.jsp">
-            	<i class="fa fa-home fa-fw"></i>&nbsp;ξεςγεπιϊ</a>
+            	<i class="fa fa-home fa-fw"></i>&nbsp;ΧΧ•ΧΆΧ“Χ•Χ Χ™Χª</a>
                 
             </div>
             
@@ -85,7 +95,7 @@
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li>
-                        <a href="" style="font-size: 120%; pointer-events: none;"> <i class="fa fa-fw fa-file-o"></i> γεηεϊ</a>
+                        <a href="" style="font-size: 120%; pointer-events: none;"> <i class="fa fa-fw fa-file-o"></i> Χ“Χ•Χ—Χ•Χª</a>
                         <br>
                      </li> 
                     <!--  <li >
@@ -110,14 +120,14 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            γεηεϊ
+                            Χ“Χ•Χ—Χ•Χª
                         </h1>
                         <ol class="breadcrumb">
                             <li>
-                                 <a href="dashboard.jsp"><i class="fa fa-home"></i> ψΰωι</a>
+                                 <a href="dashboard.jsp"><i class="fa fa-home"></i> Χ¨ΧΧ©Χ™</a>
                             </li>
                             <li class="active">
-                                <i class="fa fa-file-o"></i> γεηεϊ
+                                <i class="fa fa-file-o"></i> Χ“Χ•Χ—Χ•Χª
                             </li>
                         </ol>
                     </div>
@@ -127,44 +137,41 @@
                <div class="row"> <!--  pills row -->
             	<div class="col-lg-1 col-md-6"></div>
             	<div class="col-lg-10 col-md-6 text-center">
-				  <ul class="nav nav-pills center-pills">
-				    <li class="active"><a data-toggle="pill" href="#rep1"><span>γεη βαιδ <br>ψιωεν ηγ τςξι</span></a></li>
-				    <li><a data-toggle="pill" href="#rep1"><span>γεη βαιδ <br>ψιωεν μξεςγεπιϊ</span></a></li>
-				    <li><a data-toggle="pill" href="#rep1"><span >γεη βαιδ <br>ψιωεν μηεβιν</span></a></li>
-				    <li><a data-toggle="pill" href="#rep2"><span >πϊεπι ψιωεν <br>μξεςγεπιϊ</span></a></li>
-				    <li><a data-toggle="pill" href="#rep2"><span >πϊεπι ψιωεν <br>μηεβιν</span></a></li>
+				  <ul class="nav nav-pills center-pills" id="ulTabs">
+				    <li id="OnTimeReg" class="active"><a data-toggle="pill" href="#rep1"><span>Χ“Χ•Χ— Χ’Χ‘Χ™Χ” <br>Χ¨Χ™Χ©Χ•Χ Χ—Χ“ Χ¤ΧΆΧΧ™</span></a></li>
+				    <li id="MoadonitReg"><a data-toggle="pill" href="#rep1"><span>Χ“Χ•Χ— Χ’Χ‘Χ™Χ” <br>Χ¨Χ™Χ©Χ•Χ ΧΧΧ•ΧΆΧ“Χ•Χ Χ™Χª</span></a></li>
+				    <li id="CourseReg"><a data-toggle="pill" href="#rep1"><span >Χ“Χ•Χ— Χ’Χ‘Χ™Χ” <br>Χ¨Χ™Χ©Χ•Χ ΧΧ—Χ•Χ’Χ™Χ</span></a></li>
+				    <li id="MoadonitData"><a data-toggle="pill" href="#rep2"><span >Χ ΧªΧ•Χ Χ™ Χ¨Χ™Χ©Χ•Χ <br>ΧΧΧ•ΧΆΧ“Χ•Χ Χ™Χª</span></a></li>
+				    <li id="CourseData"><a data-toggle="pill" href="#rep2"><span >Χ ΧªΧ•Χ Χ™ Χ¨Χ™Χ©Χ•Χ <br>ΧΧ—Χ•Χ’Χ™Χ</span></a></li>
 				  </ul>
 				  
 				  <div class="tab-content">
-				    <div id="rep1" class="tab-pane fade in active">
+				    <div id="rep1" class="tab-pane  active">
 				      
 				      <div class="col-lg-12">
 						<div class="panel panel-default">
 							<div class="panel-heading">
 								<h3 class="panel-title pull-right">
-									<i class="fa fa-info fa-fw"></i> δλπρ τψξθψιν μγεη εμηυ ςμ ιφιψϊ χεαυ ΰχρμ
+									<i class="fa fa-info fa-fw"></i> Χ”Χ›Χ Χ΅ Χ¤Χ¨ΧΧΧ¨Χ™Χ ΧΧ“Χ•Χ— Χ•ΧΧ—Χ¥ ΧΆΧ Χ™Χ¦Χ™Χ¨Χª Χ§Χ•Χ‘Χ¥ ΧΧ§Χ΅Χ
 								</h3>
 							
 								 <div class=" pull-left" id="">
 									 <a
 										href="javascript:void(0);"
-										onclick="exportData('0','xls', 'list');">
+										onclick="OnBntExportClick('xls');">
 										<img alt="" src="resources/images/Excel-icon.png" style="border-radius:15%; margin-right: 10px;">
 									</a>
 								</div>
-								<!-- <button id="resetBtn" class="pull-left btn btn-primary">πχδ ηιτεω</button> -->
+								<!-- <button id="resetBtn" class="pull-left btn btn-primary">Χ Χ§Χ” Χ—Χ™Χ¤Χ•Χ©</button> -->
 								<div class="clearfix"></div>
 							</div>
 							<div class="panel-body">
 								<div class=" col-lg-12" id="forRep1">
 									<div class="form-group col-lg-2">
 									
-										<label for="monthNum">γεη μηεγω</label>
+										<label for="monthNum">Χ“Χ•Χ— ΧΧ—Χ•Χ“Χ©</label>
 										<select class="form-control input-sm" id="monthNum" name="monthNum">
-											<option value="9">9</option>
-											<option value="10">10</option>
-											<option value="11">11</option>
-											<option value="12">12</option>
+											
 											<option value="1">1</option>
 											<option value="2">2</option>
 											<option value="3">3</option>
@@ -173,15 +180,19 @@
 											<option value="6">6</option>
 											<option value="7">7</option>
 											<option value="8">8</option>
+											<option value="9">9</option>
+											<option value="10">10</option>
+											<option value="11">11</option>
+											<option value="12">12</option>
 											
 										</select> 
 									</div>		
 									<div class="form-group col-lg-2">
 									
-										<label for="yearNum">μωπδ</label>
+										<label for="yearNum">ΧΧ©Χ Χ”</label>
 										<select class="form-control input-sm" id="yearNum" name="yearNum">
-											<option value="0">πεληιϊ</option>
-											<option value="1">ϊως"ε</option>
+											<option value="1">Χ Χ•Χ›Χ—Χ™Χª</option>
+											<option value="2">ΧªΧ©ΧΆ"Χ•</option>
 											
 										</select> 
 									</div>							
@@ -190,31 +201,31 @@
 						</div>
 					</div>
 				    </div>
-				    <div id="rep2" class="tab-pane fade">
+				    <div id="rep2" class="tab-pane ">
 				      <div class="col-lg-12">
 						<div class="panel panel-default">
 							<div class="panel-heading">
 								<h3 class="panel-title pull-right">
-									<i class="fa fa-info fa-fw"></i> δλπρ τψξθψιν μγεη εμηυ ςμ ιφιψϊ χεαυ ΰχρμ
+									<i class="fa fa-info fa-fw"></i> Χ”Χ›Χ Χ΅ Χ¤Χ¨ΧΧΧ¨Χ™Χ ΧΧ“Χ•Χ— Χ•ΧΧ—Χ¥ ΧΆΧ Χ™Χ¦Χ™Χ¨Χª Χ§Χ•Χ‘Χ¥ ΧΧ§Χ΅Χ
 								</h3>
 							
 								 <div class=" pull-left" id="">
 									 <a
 										href="javascript:void(0);"
-										onclick="exportData('0','xls', 'list');">
+										onclick="OnBntExportClick('xls');">
 										<img alt="" src="resources/images/Excel-icon.png" style="border-radius:15%; margin-right: 10px;">
 									</a>
 								</div>
-								<!-- <button id="resetBtn" class="pull-left btn btn-primary">πχδ ηιτεω</button> -->
+								<!-- <button id="resetBtn" class="pull-left btn btn-primary">Χ Χ§Χ” Χ—Χ™Χ¤Χ•Χ©</button> -->
 								<div class="clearfix"></div>
 							</div>
 							<div class="panel-body">
 								<div class=" col-lg-12" id="forRep1">
 									<div class="form-group col-lg-2">
 									
-										<label for="monthNum">τψξθψ ΰηψ</label>
+										<label for="monthNum">Χ¤Χ¨ΧΧΧ¨ ΧΧ—Χ¨</label>
 										<select class="form-control input-sm" id="monthNum" name="monthNum">
-											<option value="9">ΰ</option>
+											<option value="9">Χ</option>
 											<option value="10">10</option>
 											<option value="11">11</option>
 											<option value="12">12</option>
@@ -231,10 +242,10 @@
 									</div>
 									<div class="form-group col-lg-2">
 									
-										<label for="yearNum">μωπδ</label>
+										<label for="yearNum">ΧΧ©Χ Χ”</label>
 										<select class="form-control input-sm" id="yearNum" name="yearNum">
-											<option value="0">πεληιϊ</option>
-											<option value="1">ϊως"ε</option>
+											<option value="1">Χ Χ•Χ›Χ—Χ™Χª</option>
+											<option value="2">ΧªΧ©ΧΆ"Χ•</option>
 											
 										</select> 
 									</div>								
@@ -243,11 +254,11 @@
 						</div>
 					</div>
 				    </div>
-				    <div id="menu2" class="tab-pane fade">
+				    <div id="menu2" class="tab-pane ">
 				      <h3>Menu 2</h3>
 				      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
 				    </div>
-				    <div id="menu3" class="tab-pane fade">
+				    <div id="menu3" class="tab-pane ">
 				      <h3>Menu 3</h3>
 				      <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
 				    </div>
@@ -255,8 +266,20 @@
 				</div>
 			</div>
 <!--  pills end --> 
-			
-					
+			<!-- HTML for jQuery UI Modals -->
+								<div id="preparing-file-modal" title="Χ™Χ™Χ¦Χ•Χ Χ”Χ§Χ•Χ‘Χ¥ ..."
+									style="display: none;">
+										Χ™Χ™Χ¦Χ•Χ Χ”Χ§Χ•Χ‘Χ¥ Χ‘ΧªΧ”ΧΧ™Χ, ΧΧ Χ Χ”ΧΧªΧ...
+
+									<!--Throw what you'd like for a progress indicator below-->
+									<div
+										class="ui-progressbar-value ui-corner-left ui-corner-right"
+										style="width: 100%; height: 22px; margin-top: 20px;"><img alt="" src="resources/images/ajax-loader.gif"></div>
+								</div>
+
+								<div id="error-modal" title="Error" style="display: none;">
+									Χ§Χ™Χ™ΧΧª Χ©Χ’Χ™ΧΧ” Χ‘Χ™Χ™Χ¦Χ•Χ Χ”Χ§Χ•Χ‘Χ¥, ΧΧ Χ Χ Χ΅Χ” Χ©Χ•Χ‘Β‘</div>
+
                  </div>
             </div>
 		</div>
@@ -265,16 +288,11 @@
     </div>
     <!-- /#wrapper -->
 
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
-
+    
     <!-- Morris Charts JavaScript -->
-    <script src="js/plugins/morris/raphael.min.js"></script>
+    <!-- <script src="js/plugins/morris/raphael.min.js"></script>
     <script src="js/plugins/morris/morris.min.js"></script>
-    <script src="js/plugins/morris/morris-data.js"></script>
+    <script src="js/plugins/morris/morris-data.js"></script> -->
 
 </body>
 

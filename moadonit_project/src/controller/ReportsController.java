@@ -510,7 +510,7 @@ Serializable {
 		ArrayList<Entry<String, String>> arrlist = new ArrayList<Entry<String, String>>();
 		
 		JSONArray jsonList = new JSONArray();
-		String html = "<!DOCTYPE html><html lang=\"he\" ><head> <meta charset=\"utf-8\" /><style script='css/text'>table.tableList_1 th {border:1px solid #a8da7f; border-bottom:2px solid #a8da7f; text-align:center; vertical-align: middle; padding:5px; background:#e4fad0;}table.tableList_1 td {border:1px solid #a8da7f; text-align: left; vertical-align: top; padding:5px;}</style></head><body dir=\"rtl\">";
+		String html = "<!DOCTYPE html><html lang=\"he\" ><head> <meta charset=\"utf-8\" /><style script='css/text'>table.tableList_1 th {border:1px solid #a8da7f; border-bottom:2px solid #a8da7f; text-align:center; vertical-align: middle; padding:5px; background:#e4fad0;}table.tableList_1 td {border:1px solid #a8da7f; text-align: left; vertical-align: top; padding:5px;} div.tableTitle {  font-size: 16px; font-weight: bold; vertical-align: middle}</style></head><body dir=\"rtl\">";
 				
 		switch (pageName) {
 			case "pupils_search":
@@ -533,7 +533,7 @@ Serializable {
 						
 						
 						
-						html += buildTableForHtml(html,query,whereClouse,arrlist,jsonList,pageHead);
+						html += buildTableForHtml(query,whereClouse,arrlist,jsonList,pageHead);
 						html += "</body></html>";
 						//return html;
 					
@@ -581,7 +581,7 @@ Serializable {
 				if (!jsonList.isEmpty() && arrlist.size() > 0) {
 					// start html text with style for table
 						
-					html += buildTableForHtml(html,query,whereClouse,arrlist,jsonList,pageHead);
+					html += buildTableForHtml(query,whereClouse,arrlist,jsonList,pageHead);
 						html += "</body></html>";
 						//return html;
 					
@@ -599,6 +599,8 @@ Serializable {
 				//List<FullPupilCard> list = null;
 				query = "SELECT COLUMN_NAME, COLUMN_COMMENT, TABLE_NAME FROM information_schema.columns ";
 				whereClouse = " WHERE (table_name = 'tbl_pupil' or table_name = 'tbl_one_time_reg' or table_name = 'tbl_grade_code' or table_name = 'tbl_reg_types'); ";
+				int month = Integer.parseInt(req.getParameter("month"));
+				int year = Integer.parseInt(req.getParameter("year"));
 				this.regDAO = new RegToMoadonitDAO(con);
 				regTypes = this.regDAO.getRegTypeCodes();
 				
@@ -612,7 +614,7 @@ Serializable {
 				//pupilControler.getJsonForExport(jsonList, list);
 				
 				pageHead = "רישום חד פעמי";
-				html += "<div class='pageHead_1'>"+ pageHead + "</div>";
+				html += "<div class='tableTitle'>"+ pageHead + "</div>";
 				arrlist.add(new AbstractMap.SimpleEntry<>("tbl_grade_code","gradeName"));
 				arrlist.add(new AbstractMap.SimpleEntry<>("tbl_pupil","lastName"));
 				arrlist.add(new AbstractMap.SimpleEntry<>("tbl_pupil","firstName"));
@@ -621,9 +623,9 @@ Serializable {
 				
 				for (Entry<Integer, Object> entry : map.entrySet())
 				{
-					jsonList = this.repDOA.getOneTimeReport(8, 2, entry.getKey());
+					jsonList = this.repDOA.getOneTimeReport(month, year, entry.getKey());
 					if (!jsonList.isEmpty() && arrlist.size() > 0) {
-						html += buildTableForHtml(html,query,whereClouse,arrlist,jsonList,entry.getValue().toString());							
+						html += buildTableForHtml(query,whereClouse,arrlist,jsonList,entry.getValue().toString());							
 					}					
 				}
 				
@@ -647,12 +649,12 @@ Serializable {
 		return html;
 	}
 	
-	protected String buildTableForHtml(String html, String query, String whereClouse,ArrayList<Entry<String, String>> arrlist ,
+	protected String buildTableForHtml( String query, String whereClouse,ArrayList<Entry<String, String>> arrlist ,
 			JSONArray jsonList, String pageHead ) throws  SQLException 
 	{
 		
 		
-		html	+= "<div class='pageHead_1'>"
+		String html	= "<div class='tableTitle'>"
 				+ pageHead
 				+ "</div>"
 				+ "<table border='1' class='tableList_1 t_space' cellspacing='10' cellpadding='0'>";
