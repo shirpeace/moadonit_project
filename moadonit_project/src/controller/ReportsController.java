@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +37,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
+import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 import util.DAOUtil;
 import dao.ActivityDAO;
@@ -54,6 +56,7 @@ Serializable {
 	JSONArray jsonArry;
 	ReportsDAO repDOA;
 	PupilActivityDAO pupilActDAO;
+	ActivityDAO actDOA;
 	List<PupilActivity> listPupilActivity;
 	List<Activity> listAct;
 	JSONObject resultToClient = new JSONObject();
@@ -139,8 +142,8 @@ Serializable {
 		p.setPupilNum(1);
 		p.setFirstName(resultSet.getString("firstName"));
 		p.setLastName(resultSet.getString("lastName"));
+
 		
-		pa.setTblPupil(p);
 			 * */
 			obj.put("activityNum", pa.getTblActivity().getActivityNum());
 			obj.put("activityName", pa.getTblActivity().getActivityName());
@@ -155,13 +158,68 @@ Serializable {
 		}
 		return result;
 	}
+	
+	@SuppressWarnings("unchecked")
+	protected JSONArray getJsonPupilActForExport( List<PupilActivity> list){
+		
+		JSONArray result = new JSONArray();
+		//activityNum, activityName, pupilNum, startDate, regDate, endDate, firstName, lastName 
+		for (PupilActivity pa : list) {
+			
+			JSONObject obj = new JSONObject();
+			/*
+			 *PupilActivity pa = new PupilActivity();
+		PupilActivityPK pk = new PupilActivityPK();
+		pk.setActivityNum(1);
+		pk.setPupilNum(1);
+		pa.setId(pk);
+		
+		Activity act = new Activity();
+		ActivityType type = new ActivityType();
+		type.setTypeID(resultSet.getInt("activityType"));
+		act.setTblActivityType(type);
+		act.setActivityName(resultSet.getString("activityName"));
+		
+		pa.setTblActivity(act);
+		
+		pa.setRegDate(resultSet.getDate("regDate"));
+		pa.setStartDate(resultSet.getDate("startDate"));
+		pa.setEndDate(resultSet.getDate("endDate"));
+		
+		Pupil p = new Pupil();
+		p.setPupilNum(1);
+		p.setFirstName(resultSet.getString("firstName"));
+		p.setLastName(resultSet.getString("lastName"));
+		
+		pa.setTblPupil(p);
+		
+		
+			 * */
+			obj.put(new AbstractMap.SimpleEntry<>("tbl_activity","activityNum"), pa.getTblActivity().getActivityNum());
+			obj.put(new AbstractMap.SimpleEntry<>("tbl_activity","activityName") , pa.getTblActivity().getActivityName());
+			obj.put(new AbstractMap.SimpleEntry<>("tbl_pupil","pupilNum") , pa.getTblPupil().getPupilNum());
+			obj.put(new AbstractMap.SimpleEntry<>("tbl_pupil_activities","startDate") , new java.sql.Date(pa.getStartDate().getTime()));
+/*			obj.put(new AbstractMap.SimpleEntry<>("tbl_pupil_activities","regDate") , new java.sql.Date(pa.getRegDate().getTime()) );*/
+			obj.put(new AbstractMap.SimpleEntry<>("tbl_pupil_activities","endDate") , pa.getEndDate() == null ? "" : new java.sql.Date(pa.getEndDate().getTime()));
+			obj.put(new AbstractMap.SimpleEntry<>("tbl_pupil","firstName") , pa.getTblPupil().getFirstName());
+			obj.put(new AbstractMap.SimpleEntry<>("tbl_pupil","lastName") , pa.getTblPupil().getLastName());
+			obj.put(new AbstractMap.SimpleEntry<>("tbl_grade_code","gradeName") , pa.getTblPupil().getTblGradeInYears1().get(0).getTblGradeCode().getGradeName());
+			obj.put(new AbstractMap.SimpleEntry<>("tbl_gender_ref","genderName") , pa.getTblPupil().getTblGenderRef().getGenderName());
+			result.add(obj);
+
+		}
+		return result;
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		req.setCharacterEncoding("UTF-8");
 		checkConnection(req, resp);
 		this.repDOA = new ReportsDAO(con);
+		this.actDOA = new ActivityDAO(con);
 		String action = req.getParameter("action");
 		String jsonResponse = "";
 		this.jsonArry = new JSONArray();
@@ -174,8 +232,7 @@ Serializable {
 					
 				}else{
 					
-					//load all data
-				    
+					//load all data				
 					
 				}
 				
@@ -254,6 +311,24 @@ Serializable {
 				resp.setContentType("application/json");
 				resp.setCharacterEncoding("UTF-8");
 				resp.getWriter().print(resultToClient);*/
+			}
+			else if (action.equals("getCourseForReport")){
+				List<Activity> list = getCourses();
+				jsonArry = new JSONArray();
+				if(!list.isEmpty()){
+					for (Activity activity : list) {
+						JSONObject o = new JSONObject();
+						o.put("activityName", activity.getActivityName());
+						o.put("activityNum", activity.getActivityNum());
+						jsonArry.add(o);
+					}
+					
+					jsonResponse = jsonArry.toJSONString();
+					resp.setContentType("application/json");
+					resp.setCharacterEncoding("UTF-8");
+					resp.getWriter().print(jsonResponse);
+
+				}
 			}
 			
 			//
@@ -511,7 +586,8 @@ Serializable {
 		
 		JSONArray jsonList = new JSONArray();
 		String html = "<!DOCTYPE html><html lang=\"he\" ><head> <meta charset=\"utf-8\" /><style script='css/text'>table.tableList_1 th {border:1px solid #a8da7f; border-bottom:2px solid #a8da7f; text-align:center; vertical-align: middle; padding:5px; background:#e4fad0;}table.tableList_1 td {border:1px solid #a8da7f; text-align: left; vertical-align: top; padding:5px;} div.tableTitle {  font-size: 16px; font-weight: bold; vertical-align: middle}</style></head><body dir=\"rtl\">";
-				
+		int month;
+		int year;
 		switch (pageName) {
 			case "pupils_search":
 				List<FullPupilCard> list = null;
@@ -599,8 +675,8 @@ Serializable {
 				//List<FullPupilCard> list = null;
 				query = "SELECT COLUMN_NAME, COLUMN_COMMENT, TABLE_NAME FROM information_schema.columns ";
 				whereClouse = " WHERE (table_name = 'tbl_pupil' or table_name = 'tbl_one_time_reg' or table_name = 'tbl_grade_code' or table_name = 'tbl_reg_types'); ";
-				int month = Integer.parseInt(req.getParameter("month"));
-				int year = Integer.parseInt(req.getParameter("year"));
+				 month = Integer.parseInt(req.getParameter("month"));
+				 year = Integer.parseInt(req.getParameter("year"));
 				this.regDAO = new RegToMoadonitDAO(con);
 				regTypes = this.regDAO.getRegTypeCodes();
 				
@@ -640,6 +716,43 @@ Serializable {
 				//arrKeys1 = { "lastName","firstName","gender","gradeName","isReg" };
 				
 				break;
+		case "CourseData":
+			resp.setContentType("text/html;charset=UTF-8");
+			query = "SELECT COLUMN_NAME, COLUMN_COMMENT, TABLE_NAME FROM information_schema.columns ";
+			whereClouse = " WHERE (table_name = 'tbl_pupil' or table_name = 'tbl_pupil_activities' or table_name = 'tbl_grade_code' or table_name = 'tbl_activity' or table_name = 'tbl_gender_ref'); ";
+			 String values = req.getParameter("options"); //get values of selected courses and split them
+			 String[] arr = values.split(",");
+			
+			 year = Integer.parseInt(req.getParameter("year"));
+			 
+			pageHead = "תלמידים בחוגים";
+			html += "<div class='tableTitle'>"+ pageHead + "</div>";
+			arrlist.add(new AbstractMap.SimpleEntry<>("tbl_grade_code","gradeName"));
+			arrlist.add(new AbstractMap.SimpleEntry<>("tbl_pupil","lastName"));
+			arrlist.add(new AbstractMap.SimpleEntry<>("tbl_pupil","firstName"));
+			/*arrlist.add(new AbstractMap.SimpleEntry<>("fullPupilCard","gender"));*/
+			arrlist.add(new AbstractMap.SimpleEntry<>("tbl_gender_ref","genderName"));
+			//arrlist.add(new AbstractMap.SimpleEntry<>("tbl_activity","activityName"));
+			arrlist.add(new AbstractMap.SimpleEntry<>("tbl_pupil_activities","startDate"));
+			
+			arrlist.add(new AbstractMap.SimpleEntry<>("tbl_pupil_activities","endDate"));
+
+			 for (int i = 0; i < arr.length; i++) {
+				 	// get each course id, name
+					String[] courseVal = arr[i].split(";");
+					int id = Integer.parseInt(courseVal[0]);
+					String name = courseVal[1];
+					
+					// get registered pupil for each course and add them to the result json array
+					jsonList = this.getJsonPupilActForExport(getPupilInCourse(id));
+					if (!jsonList.isEmpty() && arrlist.size() > 0) {
+						html += buildTableForHtml(query,whereClouse,arrlist,jsonList,name);							
+					}
+				}
+		
+			
+			html += "</body></html>";
+			break;
 			default:
 				break;
 		}
@@ -714,4 +827,23 @@ Serializable {
 		
 		return html;
 	}
+	
+	private List<Activity> getCourses() {
+		// TODO Auto-generated method stub
+		List<Activity> result = new ArrayList<>();		
+		result = this.actDOA.selectActivites(0);
+		return result;
+	}
+	
+	private List<PupilActivity> getPupilInCourse(int actID) {
+		// TODO Auto-generated method stub
+
+		this.pupilActDAO = new PupilActivityDAO(con);
+		List<PupilActivity> list = this.pupilActDAO.getPupilInCourse(actID,
+				null);
+
+		return list;
+	}
+	
+	
 }

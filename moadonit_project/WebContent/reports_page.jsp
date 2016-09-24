@@ -12,7 +12,8 @@
 <head>
 
    <!--  <meta charset="utf-8"> -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -57,11 +58,16 @@
     <link rel="stylesheet"
 	href="resources/jquery-ui-1.11.4.custom/jquery-ui.css">
 	
+	<link rel="stylesheet" href="css/bootstrap-select.css">
+	
     <link href="css/mycss.css" rel="stylesheet">
 
 	<script src="js/jquery.js"></script>
 	<script src="js/jquery-ui.js"></script>
 	<script src="js/bootstrap.min.js"></script>
+	<script src="js/bootstrap-select.js"></script>
+	<script src="js/defaults-he_HE.js"></script> <!-- translation files for bootstrap-select-->
+	
 	
 	<script src="js/js_report_page.js"></script>
 	
@@ -142,7 +148,7 @@
 				    <li id="MoadonitReg"><a data-toggle="pill" href="#rep1"><span>דוח גביה <br>רישום למועדונית</span></a></li>
 				    <li id="CourseReg"><a data-toggle="pill" href="#rep1"><span >דוח גביה <br>רישום לחוגים</span></a></li>
 				    <li id="MoadonitData"><a data-toggle="pill" href="#rep2"><span >נתוני רישום <br>למועדונית</span></a></li>
-				    <li id="CourseData"><a data-toggle="pill" href="#rep2"><span >נתוני רישום <br>לחוגים</span></a></li>
+				    <li id="CourseData"><a data-toggle="pill" href="#rep3"><span >נתוני רישום <br>לחוגים</span></a></li>
 				  </ul>
 				  
 				  <div class="tab-content">
@@ -191,8 +197,8 @@
 									
 										<label for="yearNum">לשנה</label>
 										<select class="form-control input-sm" id="yearNum" name="yearNum">
-											<option value="1">נוכחית</option>
-											<option value="2">תשע"ו</option>
+											<option value="0">נוכחית</option>
+											<option value="1">תשע"ו</option>
 											
 										</select> 
 									</div>							
@@ -224,7 +230,7 @@
 									<div class="form-group col-lg-2">
 									
 										<label for="monthNum">פרמטר אחר</label>
-										<select class="form-control input-sm" id="monthNum" name="monthNum">
+										<select class="form-control input-sm" id="monthNum" name="monthNum" >
 											<option value="9">א</option>
 											<option value="10">10</option>
 											<option value="11">11</option>
@@ -246,6 +252,60 @@
 										<select class="form-control input-sm" id="yearNum" name="yearNum">
 											<option value="1">נוכחית</option>
 											<option value="2">תשע"ו</option>
+											
+										</select> 
+									</div>								
+								</div>
+							</div>
+						</div>
+					</div>
+				    </div>
+				     <div id="rep3" class="tab-pane ">
+				      <div class="col-lg-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title pull-right">
+									<i class="fa fa-info fa-fw"></i> הכנס פרמטרים לדוח ולחץ על יצירת קובץ אקסל
+								</h3>
+							
+								 <div class=" pull-left" id="">
+									 <a
+										href="javascript:void(0);"
+										onclick="OnBntExportClick('xls');">
+										<img alt="" src="resources/images/Excel-icon.png" style="border-radius:15%; margin-right: 10px;">
+									</a>
+								</div>
+								<!-- <button id="resetBtn" class="pull-left btn btn-primary">נקה חיפוש</button> -->
+								<div class="clearfix"></div>
+							</div>
+							<div class="panel-body">
+								<div class=" col-lg-12" id="forRep1">
+									
+									<div class="form-group col-lg-2" style="margin-right: 15px;">
+									
+										<label for="yearNum">לשנה</label>
+										<select class="form-control input-sm" id="yearNum" name="yearNum">
+											<option value="1">נוכחית</option>
+											<option value="2">תשע"ו</option>
+											
+										</select> 
+									</div>
+									<div class="form-group col-lg-2">
+									
+										<label for="monthNum">חוגים</label>
+										<select class="selectpicker"  style="margin-left: 15px;" data-size="8" data-width="250px"  multiple data-actions-box="true" id="courseList" name="courseList"  >
+											<!-- <option value="9">כדורגל</option>
+											<option value="10">כדורעף</option>
+											<option value="11">כדורסל</option>
+											<option value="12">כדוריד</option>
+											<option value="1">קראטה</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+											<option value="4">4</option>
+											<option value="5">5</option>
+											<option value="6">6</option>
+											<option value="7">7</option>
+											<option value="8">8</option> -->
 											
 										</select> 
 									</div>								

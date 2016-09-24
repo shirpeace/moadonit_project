@@ -10,6 +10,7 @@ import java.util.List;
 import model.Activity;
 import model.ActivityGroup;
 import model.ActivityType;
+import model.GenderRef;
 import model.GradeCode;
 import model.GradeInYear;
 import model.GradeInYearPK;
@@ -189,6 +190,10 @@ public class PupilActivityDAO extends AbstractDAO {
 		p.setPupilNum(resultSet.getInt("pupilNum"));
 		p.setFirstName(resultSet.getString("firstName"));
 		p.setLastName(resultSet.getString("lastName"));
+		GenderRef gen = new GenderRef();
+		gen.setGenderName(resultSet.getString("genderName"));
+		gen.setGender(resultSet.getInt("gender"));
+		p.setTblGenderRef(gen);
 
 		pa.setTblPupil(p);
 
