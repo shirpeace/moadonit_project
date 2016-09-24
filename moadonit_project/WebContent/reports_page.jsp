@@ -191,8 +191,8 @@
 									
 										<label for="yearNum">לשנה</label>
 										<select class="form-control input-sm" id="yearNum" name="yearNum">
-											<option value="1">נוכחית</option>
-											<option value="2">תשע"ו</option>
+											<option value="0">נוכחית</option>
+											<option value="1">תשע"ו</option>
 											
 										</select> 
 									</div>							
