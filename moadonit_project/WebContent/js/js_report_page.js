@@ -26,6 +26,36 @@ jQuery(document).ready(function() {
 		
 	});
 	
+	 $('#monthPick').datepicker({
+		    format: "dd/mm/yyyy",
+		    language: "he" ,
+		     startDate: '01/01/2000',
+		    maxViewMode: 1,
+		    minViewMode: 1,
+		    todayBtn: false,
+		    keyboardNavigation: false,
+		    daysOfWeekDisabled: "1,2,3,4,5,6",
+		    todayHighlight: true,
+		    toggleActive: true,
+		    autoclose: true
+		   
+		}); 
+	 
+	 $('#dayPick').datepicker({
+		    format: "dd/mm/yyyy",
+		    language: "he" ,
+		     startDate: '01/01/2000',
+		    maxViewMode: 0,
+		    minViewMode: 0,
+		    todayBtn: false,
+		    keyboardNavigation: false,
+		    daysOfWeekDisabled: "5,6",
+		    todayHighlight: true,
+		    toggleActive: true,
+		    autoclose: true
+		   
+		}); 
+	
 });
 
 function OnBntExportClick(type){
@@ -33,38 +63,59 @@ function OnBntExportClick(type){
 	if(selectedTab){
 		switch (selectedTab) {
 		    case "OnTimeReg":
-		    	exportDataOntime(type);
+		    	exportDataOntime(type, "OneTimeReport");
 		        break;
 		    case "MoadonitReg":
 		    	console.log(selectedTab);
+		    	exportMoadonitPay(type, "MoadonitPay");
 		        break;
 		    case "CourseReg":
 		    	console.log(selectedTab);
 		        break;
 		    case "MoadonitData":
 		    	console.log(selectedTab);
+		    	exportMoadonitData(type, "MoadonitDataReport");
 		        break;
 		    case "CourseData":
 		    	console.log(selectedTab);
-		    	exportCourseData(type);
+		    	exportCourseData(type, "CourseRegistrationReport");
 		        break;	   
 		}
 	}
 }
 
-function exportDataOntime(type){
+function exportMoadonitPay(type, fileName){
+	
+	var month =  $('#monthPick').val();
+	var monthTime =  getDateFromValue(month).getTime();
+	var params = {  fileType : type, fileName: fileName , action: "export" , pageName : "MoadonitPay", month : monthTime };
+	
+	exportData(type, params);
+	
+}
+
+function exportMoadonitData(type, fileName){
+	var month =  $('#dayPick').val();
+	var monthTime =  getDateFromValue(month).getTime();
+	var params = {  fileType : type, fileName: fileName , action: "export" , pageName : "MoadonitData", month : monthTime };
+	
+	exportData(type, params);
+	
+}
+
+function exportDataOntime(type, fileName){
 
 	var month = $('#monthNum').val(), year =$('#yearNum').val();
-	var params = {  fileType : type, fileName: 'exportFile' , action: "export" , pageName : "OneTimeReport", month : month, year : year };
+	var params = {  fileType : type, fileName: fileName , action: "export" , pageName : "OneTimeReport", month : month, year : year };
 	
 	exportData(type, params); 
 } 
 
-function exportCourseData(type){
+function exportCourseData(type, fileName){
 
 	var month = $('#monthNum').val(), year =$('#yearNum').val();
 	var arr = getSelectedOptions();
-	var params = {  fileType : type, fileName: 'exportFile' , action: "export" , pageName : "CourseData", options : arr, year : year };	
+	var params = {  fileType : type, fileName: fileName , action: "export" , pageName : "CourseData", options : arr, year : year };	
 	exportData(type, params); 
 } 
 
@@ -101,6 +152,7 @@ function getSelectedOptions(){
     	activity.activityNum = $(this).val();
     	activity.activityName = $(this).text();
     	array[idx++] = activity;*/
+
     	val += $(this).val() + ";" + $(this).text() + ",";
     });
     

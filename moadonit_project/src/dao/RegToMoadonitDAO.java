@@ -42,6 +42,7 @@ public class RegToMoadonitDAO extends AbstractDAO {
 	private String getActiveRegForPupil = "{ call ms2016.getActiveRegByPupilId( ? ) }";
 	private String update = "{ call ms2016.updateRegToMoadonitForPupil(?,? ,? , ?,? , ?, ?, ?,?,?) }";
 	private String delete = "DELETE FROM tbl_reg_to_moadonit where pupilNum = ? and startDate = ? and activeYear =  ms2016.get_currentYearID()";
+	private String getMoadonitGroupsToDate = "{ call ms2016.getMoadonitGroupsToDate(?) }";
 
 	public boolean update(RegToMoadonit regToUpdate, Date oldDate) throws DAOException {
         if (regToUpdate.getId() == null) {
@@ -201,6 +202,27 @@ public class RegToMoadonitDAO extends AbstractDAO {
 				int key = resultSet.getInt("typeNum");
 				String value = resultSet.getString("type");
 				result.put(key, value);
+			}
+
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+		
+		return result;
+		
+		//SELECT * FROM ms2016.tbl_reg_types;
+	}
+	
+	public Map<Integer,Object> getMoadonitGroupsToDate(Date regDate){
+		
+		Map<Integer,Object> result = new HashMap<Integer, Object>();
+		try (PreparedStatement statement = DAOUtil.prepareCallbackStatement(this.con.getConnection(), getMoadonitGroupsToDate,new Object[] { regDate });
+				ResultSet resultSet = statement.executeQuery();) {
+
+			while (resultSet.next()) {
+				int key = resultSet.getInt("activityNum");
+				String name = resultSet.getString("activityName");
+				result.put(key, name);
 			}
 
 		} catch (SQLException e) {

@@ -24,9 +24,6 @@ public class PupilActivity implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date regDate;
 
-	@Temporal(TemporalType.DATE)
-	private Date startDate;
-
 	//bi-directional many-to-one association to Activity
 	@ManyToOne
 	@JoinColumn(name="activityNum")
@@ -67,14 +64,6 @@ public class PupilActivity implements Serializable {
 
 	public void setRegDate(Date regDate) {
 		this.regDate = regDate;
-	}
-
-	public Date getStartDate() {
-		return this.startDate;
-	}
-
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
 	}
 
 	public Activity getTblActivity() {

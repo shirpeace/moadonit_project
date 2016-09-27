@@ -190,7 +190,7 @@ public class ActivityController extends HttpServlet implements Serializable {
 						"dateToSearch").toString()));
 		this.pupilActDAO = new PupilActivityDAO(con);
 		List<PupilActivity> list = this.pupilActDAO.getPupilInCourse(actID,
-				dateToSearch);
+				dateToSearch, 0);
 
 		return list;
 	}
@@ -229,8 +229,7 @@ public class ActivityController extends HttpServlet implements Serializable {
 			obj.put("activityNum", pa.getTblActivity().getActivityNum());
 			obj.put("activityName", pa.getTblActivity().getActivityName());
 			obj.put("pupilNum", pa.getTblPupil().getPupilNum());
-			obj.put("startDate", pa.getStartDate() == null ? null : pa
-					.getStartDate().getTime());
+			obj.put("startDate", pa.getId().getStartDate() == null ? null : pa.getId().getStartDate().getTime());
 			obj.put("regDate", pa.getRegDate() == null ? null : pa.getRegDate()
 					.getTime());
 			obj.put("endDate", pa.getEndDate() == null ? null : pa.getEndDate()
@@ -407,7 +406,7 @@ public class ActivityController extends HttpServlet implements Serializable {
 			pa.setTblUser(u);
 			
 			//check dates before save
-			if(DAOUtil.getZeroTimeDate(pa.getEndDate()).before(DAOUtil.getZeroTimeDate(pa.getStartDate()))){
+			if(DAOUtil.getZeroTimeDate(pa.getEndDate()).before(DAOUtil.getZeroTimeDate(pa.getId().getStartDate()))){
 				resultToClient.put("msg", 0);
 				resultToClient.put("result", "תאריך ההתחלה חייב להיות לפני תאריך סיום");
 				

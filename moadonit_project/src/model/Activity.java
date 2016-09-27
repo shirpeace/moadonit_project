@@ -58,6 +58,10 @@ public class Activity implements Serializable {
 	@OneToMany(mappedBy="tblActivity")
 	private List<RegToMoadonit> tblRegToMoadonits;
 
+	//bi-directional many-to-one association to MoadonitGroup
+	@OneToMany(mappedBy="tblActivity")
+	private List<MoadonitGroup> tblMoadonitGroups;
+
 	public Activity() {
 	}
 
@@ -197,6 +201,28 @@ public class Activity implements Serializable {
 		tblRegToMoadonit.setTblActivity(null);
 
 		return tblRegToMoadonit;
+	}
+
+	public List<MoadonitGroup> getTblMoadonitGroups() {
+		return this.tblMoadonitGroups;
+	}
+
+	public void setTblMoadonitGroups(List<MoadonitGroup> tblMoadonitGroups) {
+		this.tblMoadonitGroups = tblMoadonitGroups;
+	}
+
+	public MoadonitGroup addTblMoadonitGroup(MoadonitGroup tblMoadonitGroup) {
+		getTblMoadonitGroups().add(tblMoadonitGroup);
+		tblMoadonitGroup.setTblActivity(this);
+
+		return tblMoadonitGroup;
+	}
+
+	public MoadonitGroup removeTblMoadonitGroup(MoadonitGroup tblMoadonitGroup) {
+		getTblMoadonitGroups().remove(tblMoadonitGroup);
+		tblMoadonitGroup.setTblActivity(null);
+
+		return tblMoadonitGroup;
 	}
 
 }

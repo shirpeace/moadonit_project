@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +42,7 @@ import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 import util.DAOUtil;
 import dao.ActivityDAO;
+import dao.GeneralDAO;
 import dao.PupilActivityDAO;
 import dao.RegToMoadonitDAO;
 import dao.ReportsDAO;
@@ -148,7 +150,7 @@ Serializable {
 			obj.put("activityNum", pa.getTblActivity().getActivityNum());
 			obj.put("activityName", pa.getTblActivity().getActivityName());
 			obj.put("pupilNum", pa.getTblPupil().getPupilNum());
-			obj.put("startDate", pa.getStartDate().getTime());
+			obj.put("startDate", pa.getId().getStartDate().getTime());
 			obj.put("regDate", pa.getRegDate().getTime());
 			obj.put("endDate", pa.getEndDate() == null ? null : pa.getEndDate().getTime());
 			obj.put("firstName", pa.getTblPupil().getFirstName());
@@ -198,7 +200,7 @@ Serializable {
 			obj.put(new AbstractMap.SimpleEntry<>("tbl_activity","activityNum"), pa.getTblActivity().getActivityNum());
 			obj.put(new AbstractMap.SimpleEntry<>("tbl_activity","activityName") , pa.getTblActivity().getActivityName());
 			obj.put(new AbstractMap.SimpleEntry<>("tbl_pupil","pupilNum") , pa.getTblPupil().getPupilNum());
-			obj.put(new AbstractMap.SimpleEntry<>("tbl_pupil_activities","startDate") , new java.sql.Date(pa.getStartDate().getTime()));
+			obj.put(new AbstractMap.SimpleEntry<>("tbl_pupil_activities","startDate") , new java.sql.Date(pa.getId().getStartDate().getTime()));
 /*			obj.put(new AbstractMap.SimpleEntry<>("tbl_pupil_activities","regDate") , new java.sql.Date(pa.getRegDate().getTime()) );*/
 			obj.put(new AbstractMap.SimpleEntry<>("tbl_pupil_activities","endDate") , pa.getEndDate() == null ? "" : new java.sql.Date(pa.getEndDate().getTime()));
 			obj.put(new AbstractMap.SimpleEntry<>("tbl_pupil","firstName") , pa.getTblPupil().getFirstName());
@@ -334,10 +336,10 @@ Serializable {
 			//
 		} catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
 			resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			resp.setContentType("application/json");
-			resp.setCharacterEncoding("UTF-8");
-
+			resp.setCharacterEncoding("UTF-8");			
 			resultToClient.put("msg", 0);
 			resultToClient.put("result", null);
 			resp.getWriter().print(resultToClient);
@@ -583,11 +585,13 @@ Serializable {
 		//String[] arrKeys = new String[colNum] ;
 		FullPupilCardController pupilControler;
 		ArrayList<Entry<String, String>> arrlist = new ArrayList<Entry<String, String>>();
-		
+		Calendar calendar = Calendar.getInstance();
 		JSONArray jsonList = new JSONArray();
 		String html = "<!DOCTYPE html><html lang=\"he\" ><head> <meta charset=\"utf-8\" /><style script='css/text'>table.tableList_1 th {border:1px solid #a8da7f; border-bottom:2px solid #a8da7f; text-align:center; vertical-align: middle; padding:5px; background:#e4fad0;}table.tableList_1 td {border:1px solid #a8da7f; text-align: left; vertical-align: top; padding:5px;} div.tableTitle {  font-size: 16px; font-weight: bold; vertical-align: middle}</style></head><body dir=\"rtl\">";
 		int month;
 		int year;
+		Long monthTime;
+		Map<Integer, Object> map;
 		switch (pageName) {
 			case "pupils_search":
 				List<FullPupilCard> list = null;
@@ -683,7 +687,7 @@ Serializable {
 				if(this.regTypes == null || this.regTypes.isEmpty())
 					return null;
 				
-				Map<Integer, Object> map = this.regTypes; 
+				map  = this.regTypes; 
 				
 				//pupilControler = (FullPupilCardController)controller;
 				//list = pupilControler.searchPupilList(req, resp, 0, 0); // get list of rows to add
@@ -744,7 +748,7 @@ Serializable {
 					String name = courseVal[1];
 					
 					// get registered pupil for each course and add them to the result json array
-					jsonList = this.getJsonPupilActForExport(getPupilInCourse(id));
+					jsonList = this.getJsonPupilActForExport(getPupilInCourse(id,year));
 					if (!jsonList.isEmpty() && arrlist.size() > 0) {
 						html += buildTableForHtml(query,whereClouse,arrlist,jsonList,name);							
 					}
@@ -753,6 +757,108 @@ Serializable {
 			
 			html += "</body></html>";
 			break;
+		case	"MoadonitPay":
+			resp.setContentType("text/html;charset=UTF-8");
+			query = "SELECT COLUMN_NAME, COLUMN_COMMENT, TABLE_NAME FROM information_schema.columns ";
+			whereClouse = " WHERE (table_name = 'tbl_pupil' or table_name = 'tbl_reg_to_moadonit' or table_name = 'tbl_grade_code' or table_name = 'tbl_gender_ref'); ";
+			
+			 
+			 monthTime = Long.parseLong(req.getParameter("month"));
+			 
+			 Date d = new Date(monthTime);
+			 
+			 calendar = Calendar.getInstance();
+			 calendar.clear();
+			 calendar.setTime(d);
+			 
+			 Date fDay = calendar.getTime();
+			 calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+			 Date eDay = calendar.getTime();
+			 
+			pageHead = "דוח חיוב מועדונית";
+			html += "<div class='tableTitle'>"+ pageHead + "</div>";
+			arrlist.add(new AbstractMap.SimpleEntry<>("tbl_grade_code","gradeName"));
+			arrlist.add(new AbstractMap.SimpleEntry<>("tbl_pupil","lastName"));
+			arrlist.add(new AbstractMap.SimpleEntry<>("tbl_pupil","firstName"));
+			arrlist.add(new AbstractMap.SimpleEntry<>("tbl_gender_ref","genderName"));
+			arrlist.add(new AbstractMap.SimpleEntry<>("tbl_reg_to_moadonit","startDate"));	
+			arrlist.add(new AbstractMap.SimpleEntry<>("tbl_reg_to_moadonit","מספר ימים לחיוב"));	
+			arrlist.add(new AbstractMap.SimpleEntry<>("tbl_reg_to_moadonit","ימים בשבוע"));	
+			arrlist.add(new AbstractMap.SimpleEntry<>("tbl_reg_to_moadonit","הערות"));				
+			
+			this.regDAO = new RegToMoadonitDAO(con);
+			regTypes = this.regDAO.getRegTypeCodes();
+			
+			if(this.regTypes == null || this.regTypes.isEmpty())
+				return null;
+			
+		    map = this.regTypes; 
+		
+		    for (Entry<Integer, Object> entry : map.entrySet())
+			{
+		    	if(entry.getKey() == 1) continue;
+				jsonList = this.repDOA.MoadonitPay(fDay, eDay, entry.getKey());
+				if (!jsonList.isEmpty() && arrlist.size() > 0) {
+					html += buildTableForHtml(query,whereClouse,arrlist,jsonList,entry.getValue().toString());							
+				}					
+			}
+			
+			html += "</body></html>";
+			break;	
+		case "MoadonitData":
+			resp.setContentType("text/html;charset=UTF-8");
+			query = "SELECT COLUMN_NAME, COLUMN_COMMENT, TABLE_NAME FROM information_schema.columns ";
+			whereClouse = " WHERE (table_name = 'tbl_pupil' or table_name = 'tbl_reg_to_moadonit'"
+					+ " or table_name = 'tbl_grade_code' or table_name = 'tbl_gender_ref' or table_name = 'tbl_food_type' "
+					+ "or table_name = 'tbl_register_pupil'); ";
+			
+			 
+			 monthTime = Long.parseLong(req.getParameter("month"));
+			 
+			 Date s = new Date(monthTime);
+			 
+			 /*calendar = Calendar.getInstance();
+			 calendar.clear();
+			 calendar.setTime(s);
+			 
+			 Date fDay = calendar.getTime();
+			 calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+			 Date eDay = calendar.getTime();*/
+			 
+			pageHead = "דוח קבוצות מועדונית";
+			html += "<div class='tableTitle'>"+ pageHead + "</div>";
+			
+			arrlist.add(new AbstractMap.SimpleEntry<>("tbl_grade_code","gradeName"));
+			arrlist.add(new AbstractMap.SimpleEntry<>("tbl_pupil","lastName"));
+			arrlist.add(new AbstractMap.SimpleEntry<>("tbl_pupil","firstName"));
+			arrlist.add(new AbstractMap.SimpleEntry<>("tbl_gender_ref","genderName"));
+			arrlist.add(new AbstractMap.SimpleEntry<>("tbl_register_pupil","healthProblems"));
+			arrlist.add(new AbstractMap.SimpleEntry<>("tbl_register_pupil","ethiopian"));
+			arrlist.add(new AbstractMap.SimpleEntry<>("tbl_register_pupil","staffChild"));
+			arrlist.add(new AbstractMap.SimpleEntry<>("tbl_register_pupil","foodSensitivity"));
+			arrlist.add(new AbstractMap.SimpleEntry<>("tbl_register_pupil","otherComments"));
+			arrlist.add(new AbstractMap.SimpleEntry<>("tbl_food_type","סוג מנה"));
+			arrlist.add(new AbstractMap.SimpleEntry<>("tbl_reg_to_moadonit","ימי רישום"));
+			arrlist.add(new AbstractMap.SimpleEntry<>("tbl_reg_to_moadonit","הערות לרישום"));
+	
+			
+			this.regDAO = new RegToMoadonitDAO(con);
+			map = this.regDAO.getMoadonitGroupsToDate(s);
+			
+			if(map == null || map.isEmpty())
+				return null;					   
+		
+		    for (Entry<Integer, Object> entry : map.entrySet())
+			{
+		    	if(entry.getKey() == 1) continue;
+				jsonList = this.repDOA.getPupilsForMoadonitGroup( entry.getKey(), s);
+				if (!jsonList.isEmpty() && arrlist.size() > 0) {
+					html += buildTableForHtml(query,whereClouse,arrlist,jsonList,entry.getValue().toString());							
+				}					
+			}
+			
+			html += "</body></html>";
+			break;		
 			default:
 				break;
 		}
@@ -835,12 +941,12 @@ Serializable {
 		return result;
 	}
 	
-	private List<PupilActivity> getPupilInCourse(int actID) {
+	private List<PupilActivity> getPupilInCourse(int actID, int year) {
 		// TODO Auto-generated method stub
 
 		this.pupilActDAO = new PupilActivityDAO(con);
 		List<PupilActivity> list = this.pupilActDAO.getPupilInCourse(actID,
-				null);
+				null,year);
 
 		return list;
 	}

@@ -50,6 +50,8 @@ public class ReportsDAO extends AbstractDAO {
 	private String getcapacityToCourses = "select a.activityNum, activityName, pupilCapacity " 
 			+ " from tbl_course c inner join tbl_activity a on c.activityNum = a.activityNum ;";
 	private String getOneTimeReport = "{ call ms2016.get_OneTimeReport(?, ?,?) }";
+	private String getMoadonitPay = "{ call ms2016.getRegDaysForMonth(?, ?,?) }";
+	private String getPupilsForMoadonitGroup = "{ call ms2016.getPupilsForMoadonitGroup( ?,? )}" ;
 	
 
 	@SuppressWarnings("unchecked")
@@ -183,6 +185,77 @@ public class ReportsDAO extends AbstractDAO {
 				user.put(new AbstractMap.SimpleEntry<>("tbl_reg_types","type"),resultSet.getString("type"));
 				user.put(new AbstractMap.SimpleEntry<>("tbl_one_time_reg","ימים"),resultSet.getInt("days"));				
 							
+				list.add(user);
+				
+			}
+
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+		
+		return list; 
+	}
+
+	@SuppressWarnings("unchecked")
+	public JSONArray MoadonitPay(Date fDay, Date eDay, Integer RegType) {
+		// TODO Auto-generated method stub
+		JSONArray list = new JSONArray();
+		//pupilNum, , , , , , numOfDays, RegDays, Comments
+		try (PreparedStatement statement = DAOUtil.prepareCallbackStatement(
+				this.con.getConnection(), getMoadonitPay, new Object[] { fDay ,  eDay , RegType });
+				ResultSet resultSet = statement.executeQuery();) {
+
+			while (resultSet.next()) {
+				
+				JSONObject user = new JSONObject();
+				user.put(new AbstractMap.SimpleEntry<>("tbl_grade_code","gradeName"),resultSet.getString("gradeName"));
+				user.put(new AbstractMap.SimpleEntry<>("tbl_pupil","lastName"),resultSet.getString("lastName"));
+				user.put(new AbstractMap.SimpleEntry<>("tbl_pupil","firstName"),resultSet.getString("firstName"));
+				//user.put(new AbstractMap.SimpleEntry<>("tbl_reg_types","type"),resultSet.getString("type"));
+				user.put(new AbstractMap.SimpleEntry<>("tbl_gender_ref","genderName"),resultSet.getString("genderName"));
+				user.put(new AbstractMap.SimpleEntry<>("tbl_reg_to_moadonit","startDate"),resultSet.getDate("startDate"));
+				user.put(new AbstractMap.SimpleEntry<>("tbl_reg_to_moadonit","מספר ימים לחיוב"),resultSet.getInt("numOfDays"));
+				user.put(new AbstractMap.SimpleEntry<>("tbl_reg_to_moadonit","ימי רישום"),resultSet.getString("RegDays"));
+				user.put(new AbstractMap.SimpleEntry<>("tbl_reg_to_moadonit","הערות"),resultSet.getString("Comments"));
+							
+				list.add(user);
+				
+			}
+
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+		
+		return list; 
+	}
+
+	@SuppressWarnings("unchecked")
+	public JSONArray getPupilsForMoadonitGroup(Integer activityNum, Date date) {
+		// TODO Auto-generated method stub
+		JSONArray list = new JSONArray();		
+		try (PreparedStatement statement = DAOUtil.prepareCallbackStatement(
+				this.con.getConnection(), getPupilsForMoadonitGroup, new Object[] { activityNum ,  date });
+				ResultSet resultSet = statement.executeQuery();) {
+
+			while (resultSet.next()) {
+				
+				JSONObject user = new JSONObject();
+				
+				String ethi = resultSet.getInt("ethiopian") == 1 ? "כן" : "";
+
+				user.put(new AbstractMap.SimpleEntry<>("tbl_grade_code","gradeName"),resultSet.getString("gradeName"));
+				user.put(new AbstractMap.SimpleEntry<>("tbl_pupil","lastName"),resultSet.getString("lastName"));
+				user.put(new AbstractMap.SimpleEntry<>("tbl_pupil","firstName"),resultSet.getString("firstName"));
+				user.put(new AbstractMap.SimpleEntry<>("tbl_gender_ref","genderName"),resultSet.getString("genderName"));
+				user.put(new AbstractMap.SimpleEntry<>("tbl_register_pupil","healthProblems"),GeneralDAO.getValIfNotNull(resultSet.getString("healthProblems")) );
+				user.put(new AbstractMap.SimpleEntry<>("tbl_register_pupil","ethiopian"), ethi );
+				user.put(new AbstractMap.SimpleEntry<>("tbl_register_pupil","staffChild"),GeneralDAO.getValIfNotNull(resultSet.getString("staffChild")));
+				user.put(new AbstractMap.SimpleEntry<>("tbl_register_pupil","foodSensitivity"),GeneralDAO.getValIfNotNull(resultSet.getString("foodSensitivity")));
+				user.put(new AbstractMap.SimpleEntry<>("tbl_register_pupil","otherComments"),GeneralDAO.getValIfNotNull(resultSet.getString("otherComments")));
+				user.put(new AbstractMap.SimpleEntry<>("tbl_food_type","סוג מנה"),resultSet.getString("food"));
+				user.put(new AbstractMap.SimpleEntry<>("tbl_reg_to_moadonit","ימי רישום"),resultSet.getString("RegDays"));
+				user.put(new AbstractMap.SimpleEntry<>("tbl_reg_to_moadonit","הערות לרישום"),resultSet.getString("Comments"));
+		
 				list.add(user);
 				
 			}

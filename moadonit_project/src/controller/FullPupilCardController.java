@@ -298,7 +298,7 @@ public class FullPupilCardController extends HttpServlet implements
 
 						String jsonResponse = jsonPupilList.toJSONString();
 						jsonResponse = "{\"page\":1,\"total\":\"1\",\"records\":"
-								+ data.size()
+								+ list.size()
 								+ ",\"rows\":"
 								+ jsonResponse + "}";
 
@@ -326,7 +326,7 @@ public class FullPupilCardController extends HttpServlet implements
 
 						String jsonResponse = jsonPupilList.toJSONString();
 						jsonResponse = "{\"page\":1,\"total\":\"1\",\"records\":"
-								+ data.size()
+								+ list.size()
 								+ ",\"rows\":"
 								+ jsonResponse + "}";
 

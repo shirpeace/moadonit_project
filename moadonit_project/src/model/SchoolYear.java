@@ -23,6 +23,9 @@ public class SchoolYear implements Serializable {
 	private Date endDate;
 
 	@Temporal(TemporalType.DATE)
+	private Date lastDateToReg;
+
+	@Temporal(TemporalType.DATE)
 	private Date startDate;
 
 	private String yearName;
@@ -64,6 +67,14 @@ public class SchoolYear implements Serializable {
 
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+	}
+
+	public Date getLastDateToReg() {
+		return this.lastDateToReg;
+	}
+
+	public void setLastDateToReg(Date lastDateToReg) {
+		this.lastDateToReg = lastDateToReg;
 	}
 
 	public Date getStartDate() {

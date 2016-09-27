@@ -27,7 +27,7 @@ public class PupilActivityDAO extends AbstractDAO {
 		// TODO Auto-generated constructor stub
 	}
 
-	private String getPupilInCourse = "{ call ms2016.getPupilInCourse( ?, ? ) }";
+	private String getPupilInCourse = "{ call ms2016.getPupilInCourse( ?, ? , ?) }";
 	private String insertPupilActivity = "{ call ms2016.insertPupilActivity(?,?,?,?,?,?) }";
 	private String update = "{ call ms2016.updatePupilInCourse(?,? ,? , ?,? , ?) }";
 	private String delete = "DELETE FROM tbl_pupil_activities where pupilNum = ? and activityNum = ? ";
@@ -45,13 +45,13 @@ public class PupilActivityDAO extends AbstractDAO {
 	 * @throws IllegalArgumentException
 	 * @throws DAOException
 	 */
-	public List<PupilActivity> getPupilInCourse(int id, Date date)
+	public List<PupilActivity> getPupilInCourse(int id, Date date, int year)
 			throws IllegalArgumentException, DAOException {
 		List<PupilActivity> list = new ArrayList<>();
 
 		try (PreparedStatement statement = DAOUtil
 				.prepareCallbackStatement(this.con.getConnection(),
-						getPupilInCourse, new Object[] { id, date });
+						getPupilInCourse, new Object[] { id, date, year });
 				ResultSet resultSet = statement.executeQuery();) {
 
 			while (resultSet.next()) {
@@ -127,8 +127,10 @@ public class PupilActivityDAO extends AbstractDAO {
 		PupilActivityPK pk = new PupilActivityPK();
 		pk.setActivityNum(resultSet.getInt("activityNum"));
 		pk.setPupilNum(resultSet.getInt("pupilNum"));
+		pk.setStartDate(resultSet.getDate("startDate"));
+		
 		pa.setId(pk);
-		pa.setStartDate(resultSet.getDate("startDate"));
+		//pa.setStartDate(resultSet.getDate("startDate"));
 
 		List<PupilActivity> list = new ArrayList<PupilActivity>();
 		list.add(pa);
@@ -147,6 +149,8 @@ public class PupilActivityDAO extends AbstractDAO {
 		PupilActivityPK pk = new PupilActivityPK();
 		pk.setActivityNum(resultSet.getInt("activityNum"));
 		pk.setPupilNum(resultSet.getInt("pupilNum"));
+		pk.setStartDate(resultSet.getDate("startDate"));
+		
 		pa.setId(pk);
 
 		Activity act = new Activity();
@@ -165,7 +169,7 @@ public class PupilActivityDAO extends AbstractDAO {
 		pa.setTblActivity(act);
 
 		pa.setRegDate(resultSet.getDate("regDate"));
-		pa.setStartDate(resultSet.getDate("startDate"));
+		//pa.setStartDate(resultSet.getDate("startDate"));
 		pa.setEndDate(resultSet.getDate("endDate"));
 
 		GradeInYearPK giypk = new GradeInYearPK();
@@ -213,7 +217,7 @@ public class PupilActivityDAO extends AbstractDAO {
 
 		Object[] values = { pa.getId().getPupilNum(),
 				pa.getId().getActivityNum(),
-				DAOUtil.toSqlDate(pa.getStartDate()),
+				DAOUtil.toSqlDate(pa.getId().getStartDate()),
 				DAOUtil.toSqlDate(pa.getRegDate()),
 				pa.getTblUser().getUserID(), 
 				DAOUtil.toSqlDate(pa.getEndDate()) };
@@ -248,7 +252,7 @@ public class PupilActivityDAO extends AbstractDAO {
 		}
 
 		Object[] values = { pa.getId().getPupilNum(),
-				pa.getId().getActivityNum(), pa.getStartDate(),
+				pa.getId().getActivityNum(), pa.getId().getStartDate(),
 				pa.getRegDate(), pa.getTblUser().getUserID(), pa.getEndDate()
 
 		};

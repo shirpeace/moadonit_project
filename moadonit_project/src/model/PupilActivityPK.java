@@ -18,6 +18,9 @@ public class PupilActivityPK implements Serializable {
 	@Column(insertable=false, updatable=false)
 	private int activityNum;
 
+	@Temporal(TemporalType.DATE)
+	private java.util.Date startDate;
+
 	public PupilActivityPK() {
 	}
 	public int getPupilNum() {
@@ -32,6 +35,12 @@ public class PupilActivityPK implements Serializable {
 	public void setActivityNum(int activityNum) {
 		this.activityNum = activityNum;
 	}
+	public java.util.Date getStartDate() {
+		return this.startDate;
+	}
+	public void setStartDate(java.util.Date startDate) {
+		this.startDate = startDate;
+	}
 
 	public boolean equals(Object other) {
 		if (this == other) {
@@ -43,7 +52,8 @@ public class PupilActivityPK implements Serializable {
 		PupilActivityPK castOther = (PupilActivityPK)other;
 		return 
 			(this.pupilNum == castOther.pupilNum)
-			&& (this.activityNum == castOther.activityNum);
+			&& (this.activityNum == castOther.activityNum)
+			&& this.startDate.equals(castOther.startDate);
 	}
 
 	public int hashCode() {
@@ -51,6 +61,7 @@ public class PupilActivityPK implements Serializable {
 		int hash = 17;
 		hash = hash * prime + this.pupilNum;
 		hash = hash * prime + this.activityNum;
+		hash = hash * prime + this.startDate.hashCode();
 		
 		return hash;
 	}

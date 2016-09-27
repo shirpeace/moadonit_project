@@ -164,15 +164,15 @@
 									</a> -->
 								 <a
 									href="javascript:void(0);"
-									onclick="exportData('0','xls', 'list');">
+									onclick="exportData('0','xls', 'list','רשימת תלמידים','pupil list');">
 									<img alt="" src="resources/images/Excel-icon.png" style="border-radius:15%; margin-right: 10px;">
 								</a>
 								
-																 <a
+								<!-- 								 <a
 									href="javascript:void(0);"
 									onclick="exportDataOntime('0','xls', 'list');">
 									<img alt="" src="resources/images/Excel-icon.png" >
-								</a>
+								</a> -->
 							
 							</div>
 

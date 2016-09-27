@@ -186,4 +186,8 @@ public class GeneralDAO extends AbstractDAO {
 		return list;
 	}
 
+	public static String getValIfNotNull(String val){
+		
+		return val != null  ? val : "";
+	}
 }

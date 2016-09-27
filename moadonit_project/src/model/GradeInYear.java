@@ -48,6 +48,10 @@ public class GradeInYear implements Serializable {
 	@ManyToMany(mappedBy="tblGradeInYears2")
 	private List<Pupil> tblPupils2;
 
+	//bi-directional many-to-one association to MoadonitGroup
+	@OneToMany(mappedBy="tblGradeInYear")
+	private List<MoadonitGroup> tblMoadonitGroups;
+
 	public GradeInYear() {
 	}
 
@@ -97,6 +101,28 @@ public class GradeInYear implements Serializable {
 
 	public void setTblPupils2(List<Pupil> tblPupils2) {
 		this.tblPupils2 = tblPupils2;
+	}
+
+	public List<MoadonitGroup> getTblMoadonitGroups() {
+		return this.tblMoadonitGroups;
+	}
+
+	public void setTblMoadonitGroups(List<MoadonitGroup> tblMoadonitGroups) {
+		this.tblMoadonitGroups = tblMoadonitGroups;
+	}
+
+	public MoadonitGroup addTblMoadonitGroup(MoadonitGroup tblMoadonitGroup) {
+		getTblMoadonitGroups().add(tblMoadonitGroup);
+		tblMoadonitGroup.setTblGradeInYear(this);
+
+		return tblMoadonitGroup;
+	}
+
+	public MoadonitGroup removeTblMoadonitGroup(MoadonitGroup tblMoadonitGroup) {
+		getTblMoadonitGroups().remove(tblMoadonitGroup);
+		tblMoadonitGroup.setTblGradeInYear(null);
+
+		return tblMoadonitGroup;
 	}
 
 }

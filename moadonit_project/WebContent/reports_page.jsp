@@ -60,6 +60,7 @@
 	
 	<link rel="stylesheet" href="css/bootstrap-select.css">
 	
+	<link href="css/datepicker.css" rel="stylesheet">
     <link href="css/mycss.css" rel="stylesheet">
 
 	<script src="js/jquery.js"></script>
@@ -68,10 +69,16 @@
 	<script src="js/bootstrap-select.js"></script>
 	<script src="js/defaults-he_HE.js"></script> <!-- translation files for bootstrap-select-->
 	
+	<script src="js/bootstrap-datepicker.js"></script> 
+	<script src="js/i18n/bootstrap-datepicker.he.min.js"></script> 
 	
+	<script src="js/bootbox.js"></script>
+	
+	<script src="js/js_logic.js"></script>
 	<script src="js/js_report_page.js"></script>
 	
 	<script src="js/jquery.fileDownload.js"></script>
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -141,22 +148,24 @@
                 <!-- /.row -->
 <!--  pills start -->
                <div class="row"> <!--  pills row -->
+               <br>
             	<div class="col-lg-1 col-md-6"></div>
             	<div class="col-lg-10 col-md-6 text-center">
 				  <ul class="nav nav-pills center-pills" id="ulTabs">
 				    <li id="OnTimeReg" class="active"><a data-toggle="pill" href="#rep1"><span>דוח גביה <br>רישום חד פעמי</span></a></li>
-				    <li id="MoadonitReg"><a data-toggle="pill" href="#rep1"><span>דוח גביה <br>רישום למועדונית</span></a></li>
+				    <li id="MoadonitReg"><a data-toggle="pill" href="#rep4"><span>דוח גביה <br>רישום למועדונית</span></a></li>
 				    <li id="CourseReg"><a data-toggle="pill" href="#rep1"><span >דוח גביה <br>רישום לחוגים</span></a></li>
 				    <li id="MoadonitData"><a data-toggle="pill" href="#rep2"><span >נתוני רישום <br>למועדונית</span></a></li>
 				    <li id="CourseData"><a data-toggle="pill" href="#rep3"><span >נתוני רישום <br>לחוגים</span></a></li>
 				  </ul>
 				  
 				  <div class="tab-content">
-				    <div id="rep1" class="tab-pane  active">
-				      
+				    <div id="rep1" class="tab-pane  active">				      
 				      <div class="col-lg-12">
+				      <br>
 						<div class="panel panel-default">
 							<div class="panel-heading">
+							<br>
 								<h3 class="panel-title pull-right">
 									<i class="fa fa-info fa-fw"></i> הכנס פרמטרים לדוח ולחץ על יצירת קובץ אקסל
 								</h3>
@@ -174,7 +183,8 @@
 							<div class="panel-body">
 								<div class=" col-lg-12" id="forRep1">
 									<div class="form-group col-lg-2">
-									
+										
+						
 										<label for="monthNum">דוח לחודש</label>
 										<select class="form-control input-sm" id="monthNum" name="monthNum">
 											
@@ -189,9 +199,9 @@
 											<option value="9">9</option>
 											<option value="10">10</option>
 											<option value="11">11</option>
-											<option value="12">12</option>
-											
-										</select> 
+											<option value="12">12</option>											
+										</select>
+										 
 									</div>		
 									<div class="form-group col-lg-2">
 									
@@ -209,8 +219,10 @@
 				    </div>
 				    <div id="rep2" class="tab-pane ">
 				      <div class="col-lg-12">
+				      <br>
 						<div class="panel panel-default">
 							<div class="panel-heading">
+							<br>
 								<h3 class="panel-title pull-right">
 									<i class="fa fa-info fa-fw"></i> הכנס פרמטרים לדוח ולחץ על יצירת קובץ אקסל
 								</h3>
@@ -229,41 +241,22 @@
 								<div class=" col-lg-12" id="forRep1">
 									<div class="form-group col-lg-2">
 									
-										<label for="monthNum">פרמטר אחר</label>
-										<select class="form-control input-sm" id="monthNum" name="monthNum" >
-											<option value="9">א</option>
-											<option value="10">10</option>
-											<option value="11">11</option>
-											<option value="12">12</option>
-											<option value="1">1</option>
-											<option value="2">2</option>
-											<option value="3">3</option>
-											<option value="4">4</option>
-											<option value="5">5</option>
-											<option value="6">6</option>
-											<option value="7">7</option>
-											<option value="8">8</option>
-											
-										</select> 
-									</div>
-									<div class="form-group col-lg-2">
 									
-										<label for="yearNum">לשנה</label>
-										<select class="form-control input-sm" id="yearNum" name="yearNum">
-											<option value="1">נוכחית</option>
-											<option value="2">תשע"ו</option>
-											
-										</select> 
+										<label for="dayPick">דוח לחודש</label>
+										<input  type="text" class="form-control" id="dayPick" name="dayPick" >
+										 
 									</div>								
 								</div>
 							</div>
 						</div>
 					</div>
 				    </div>
-				     <div id="rep3" class="tab-pane ">
+				    <div id="rep3" class="tab-pane ">
 				      <div class="col-lg-12">
+				      <br>
 						<div class="panel panel-default">
 							<div class="panel-heading">
+							<br>
 								<h3 class="panel-title pull-right">
 									<i class="fa fa-info fa-fw"></i> הכנס פרמטרים לדוח ולחץ על יצירת קובץ אקסל
 								</h3>
@@ -314,6 +307,38 @@
 						</div>
 					</div>
 				    </div>
+				    <div id="rep4" class="tab-pane ">				      
+				      <div class="col-lg-12">
+				      <br>
+						<div class="panel panel-default">
+							<div class="panel-heading">
+							<br>
+								<h3 class="panel-title pull-right">
+									<i class="fa fa-info fa-fw"></i> הכנס פרמטרים לדוח ולחץ על יצירת קובץ אקסל
+								</h3>
+							
+								 <div class=" pull-left" id="">
+									 <a
+										href="javascript:void(0);"
+										onclick="OnBntExportClick('xls');">
+										<img alt="" src="resources/images/Excel-icon.png" style="border-radius:15%; margin-right: 10px;">
+									</a>
+								</div>
+								<!-- <button id="resetBtn" class="pull-left btn btn-primary">נקה חיפוש</button> -->
+								<div class="clearfix"></div>
+							</div>
+							<div class="panel-body">
+								<div class=" col-lg-12" id="forRep1">
+									<div class="form-group col-lg-2"> 
+										<label for="monthPick">דוח לחודש</label>
+										<input  type="text" class="form-control" id="monthPick" name="monthPick" >
+										 
+									</div>								
+								</div>
+							</div>
+						</div>
+					</div>
+				    </div>
 				    <div id="menu2" class="tab-pane ">
 				      <h3>Menu 2</h3>
 				      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
@@ -326,6 +351,7 @@
 				</div>
 			</div>
 <!--  pills end --> 
+<br><br><br>
 			<!-- HTML for jQuery UI Modals -->
 								<div id="preparing-file-modal" title="ייצוא הקובץ ..."
 									style="display: none;">

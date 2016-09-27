@@ -595,7 +595,7 @@ public class PupilRegistrationController extends HttpServlet implements
 					String val = "";
 					
 					String value = act.getStartTime().toString().substring(0,5) +  ","+
-							act.getEndTime().toString().substring(0,5) + "," +act.getTblPupilActivities().get(0).getStartDate() ;
+							act.getEndTime().toString().substring(0,5) + "," +act.getTblPupilActivities().get(0).getId().getStartDate() ;
 					row = null;
 					
 					if (map.isEmpty()) {
@@ -604,32 +604,32 @@ public class PupilRegistrationController extends HttpServlet implements
 						endA = act.getEndTime();
 						
 						if(act.getWeekDay().equals("א")){
-							row = createRow("sunday", act.getActivityName() , act.getTblPupilActivities().get(0).getStartDate().getTime()
+							row = createRow("sunday", act.getActivityName() , act.getTblPupilActivities().get(0).getId().getStartDate().getTime()
 									, value,  "שם החוג");
 														
 						}
 
 						
 						if(act.getWeekDay().equals("ב")){
-							row = createRow("monday", act.getActivityName() , act.getTblPupilActivities().get(0).getStartDate().getTime()
+							row = createRow("monday", act.getActivityName() , act.getTblPupilActivities().get(0).getId().getStartDate().getTime()
 									, value,  "שם החוג");
 						}
 
 						
 						if (act.getWeekDay().equals("ג")) {
-							row = createRow("tuesday", act.getActivityName() , act.getTblPupilActivities().get(0).getStartDate().getTime()
+							row = createRow("tuesday", act.getActivityName() , act.getTblPupilActivities().get(0).getId().getStartDate().getTime()
 									, value,  "שם החוג");
 						}
 
 						
 						if (act.getWeekDay().equals("ד")) {
-							row = createRow("wednesday", act.getActivityName() , act.getTblPupilActivities().get(0).getStartDate().getTime()
+							row = createRow("wednesday", act.getActivityName() , act.getTblPupilActivities().get(0).getId().getStartDate().getTime()
 									, value,  "שם החוג");
 						}
 
 						
 						if (act.getWeekDay().equals("ה")) {
-							row = createRow("thursday", act.getActivityName() , act.getTblPupilActivities().get(0).getStartDate().getTime()
+							row = createRow("thursday", act.getActivityName() , act.getTblPupilActivities().get(0).getId().getStartDate().getTime()
 									, value,  "שם החוג");
 						}
 
@@ -714,23 +714,23 @@ public class PupilRegistrationController extends HttpServlet implements
 							
 							if (!isAdded) {
 								if (act.getWeekDay().equals("א")){
-									row = createRow("sunday", act.getActivityName() , act.getTblPupilActivities().get(0).getStartDate().getTime()
+									row = createRow("sunday", act.getActivityName() , act.getTblPupilActivities().get(0).getId().getStartDate().getTime()
 											, value,  "שם החוג");
 								}
 								if (act.getWeekDay().equals("ב")){
-									row = createRow("monday", act.getActivityName() , act.getTblPupilActivities().get(0).getStartDate().getTime()
+									row = createRow("monday", act.getActivityName() , act.getTblPupilActivities().get(0).getId().getStartDate().getTime()
 											, value,  "שם החוג");
 								}
 								if (act.getWeekDay().equals("ג")){
-									row = createRow("tuesday", act.getActivityName() , act.getTblPupilActivities().get(0).getStartDate().getTime()
+									row = createRow("tuesday", act.getActivityName() , act.getTblPupilActivities().get(0).getId().getStartDate().getTime()
 											, value,  "שם החוג");
 								}
 								if (act.getWeekDay().equals("ד")){
-									row = createRow("wednesday", act.getActivityName() , act.getTblPupilActivities().get(0).getStartDate().getTime()
+									row = createRow("wednesday", act.getActivityName() , act.getTblPupilActivities().get(0).getId().getStartDate().getTime()
 											, value,  "שם החוג");
 								}
 								if (act.getWeekDay().equals("ה")){
-									row = createRow("thursday", act.getActivityName() , act.getTblPupilActivities().get(0).getStartDate().getTime()
+									row = createRow("thursday", act.getActivityName() , act.getTblPupilActivities().get(0).getId().getStartDate().getTime()
 											, value,  "שם החוג");
 								}
 							}

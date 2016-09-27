@@ -36,7 +36,9 @@
 		<class>model.Staff</class>
 		<class>model.Teacher</class>
 		<class>model.User</class>
-		<!-- <class>model.FullPupilCard</class> -->
+<!-- 		<class>model.FullPupilCard</class> -->
+		<class>model.MoadonitGroup</class>
+		<class>model.MoadonitGroupPK</class>
 		
 
 

@@ -13,7 +13,8 @@ $().ready(function (){
 		    toggleActive: true,
 		    autoclose: true
 		   
-		}); 
+		});
+	 
 	 $('#weekPick').datepicker('setDate', nextSunday());
 	 sunDate = getDateFromValue($('#weekPick').val());
 	 loadGrid();

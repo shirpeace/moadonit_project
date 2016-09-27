@@ -206,7 +206,7 @@ function onGradeChange(elem){
 		$(elem).attr("class", color); alert($("#gradeSelect"));
 		
 }
-function exportData(cols,file,gridId ,pageHead){
+function exportData(cols,file,gridId ,pageHead, fileName){
 
 	var $grid = $("#" + gridId);
     var postData = $grid.jqGrid('getGridParam', 'postData');
@@ -235,7 +235,7 @@ function exportData(cols,file,gridId ,pageHead){
             $preparingFileModal.dialog('close');
             $("#error-modal").dialog({ modal: true });
         },
-        data : {  fileType : file, fileName: 'exportFile' , action: "export" ,
+        data : {  fileType : file, fileName: fileName , action: "export" ,
 			        	firstName : firstName ,gender : gender, 
 			        	isReg:  isReg , lastName : lastName ,
 			        	gradeName :  gradeName,sord : postData.sord, sidx : postData.sidx,pageName : "pupils_search", colNum : 5

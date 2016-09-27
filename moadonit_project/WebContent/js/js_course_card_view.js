@@ -841,10 +841,11 @@ function AddSelectedPupil() {
 				 
 				 for (var i = 0, ok = 0, error = 0; i < selectedIds.length; i++) {		    		
 						var PupilActivity = new Object();
-						PupilActivity.id = {pupilNum : selectedIds[i] ,activityNum: activityNum };
+						var tempDate = $( '#startDate' ).datepicker( "getDate" );
+						PupilActivity.id = {pupilNum : selectedIds[i] ,activityNum: activityNum, startDate : tempDate };
 						PupilActivity.endDate = $( '#endDate' ).datepicker( "getDate" ); 
 						PupilActivity.regDate = $( '#regDate' ).datepicker( "getDate" );
-						PupilActivity.startDate = $( '#startDate' ).datepicker( "getDate" );
+						//PupilActivity.startDate = $( '#startDate' ).datepicker( "getDate" );
 						PupilActivity.tblPupil = { pupilNum : selectedIds[i] };
 						PupilActivity.tblUser = null;						
 						var result  = addPupilToCourse(PupilActivity, 'insertPupilActivity'); // fire ajax funw to add row on server
@@ -1108,10 +1109,11 @@ function createPostData(activityID, rowData,isEdit){
 	var pupilActivity = new Object();
 	var _pupilNum = (rowData.pupilNum !== undefined) ? rowData.pupilNum : jQuery('#list').jqGrid ('getCell', rowData.id, 'pupilNum') ;
 	var regDate = (rowData.regDate !== undefined) ? rowData.regDate : jQuery('#list').jqGrid ('getCell', rowData.id, 'regDate') ;
-			   
+	var tempDate = getDateFromValue(rowData.startDate);
 	pupilActivity.id = {			
 		pupilNum : _pupilNum ,
-		activityNum : activityID
+		activityNum : activityID,
+		startDate : tempDate
 	}; // pk
 
 			
@@ -1121,7 +1123,7 @@ function createPostData(activityID, rowData,isEdit){
 	
 	pupilActivity.tblUser = null;	
 	pupilActivity.regDate = getDateFromValue(  regDate);
-	pupilActivity.startDate = getDateFromValue(rowData.startDate);
+	//pupilActivity.startDate = getDateFromValue(rowData.startDate);
 	pupilActivity.endDate = getDateFromValue(rowData.endDate);	
 	
 	return pupilActivity;
