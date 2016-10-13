@@ -82,6 +82,7 @@
     
     <script src="js/js_logic.js"></script>
     <script src="js/js_course_card_view.js"></script> 
+    
 	
     
     <script src="js/jquery.are-you-sure.js"></script> 
@@ -159,22 +160,16 @@
              <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
-                   <li>
-                        <a href="" style="font-size: 120%; pointer-events: none;"> <i class="fa fa-futbol-o"></i> פרטי חוג</a>
-                        <br>
-                     </li> 
-                     <li class="active">
-                        <a href= "pupil_card_view.jsp" id="detailsLink"><i class="fa fa-fw fa-list-alt"></i> פרטי חוג</a>
-                     </li> 
-                   <!--   <li>
-                        <a href= "pupil_week_view.jsp" id="scheduleLink"><i class="fa fa-fw fa-th"></i> רשומים</a>
-                     </li>
-                     <li>
-                        <a href= "pupil_week_view.jsp" id="regLink" ><i class="fa fa-fw fa-edit"></i> עריכת רישום</a>
-                     </li>  
                     <li>
-                        <a href= "pupil_one_time_act.jsp" id="oneTimeLink"><i class="fa fa-fw fa-plus-square-o"></i> פעילות חד פעמית</a>
-                     </li>  -->
+                       <a href="" style="font-size: 120%; pointer-events: none;"> <i class="fa fa-futbol-o"></i> פרטי חוג</a>
+                       <br>
+                    </li> 
+                    <li class="active">
+                       <a href= "pupil_card_view.jsp" id="detailsLink"><i class="fa fa-fw fa-list-alt"></i> פרטי חוג</a>
+                    </li> 
+                    <li>
+                    	<a href="course_add.jsp"><i class="fa fa-fw fa-edit"></i>הוספת חדש</a>
+                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -188,11 +183,49 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
+                <form role="form" id="ajaxform">
+           		<fieldset >
                 <div class="row">
                     <div class="col-lg-12">
-                        <h2 class="page-header" id="nameTitle" style="margin: 0px 0 0px; border-bottom: 1px solid #a6b7bd">                     
-                        </h2>
-                        <ol class="breadcrumb">
+                    <div class="col-lg-4" id="headerDiv">
+                    	 <h2 class="page-header" id="nameTitle" style="margin: 0px 0 0px; border-bottom: 1px solid #a6b7bd">   </h2>
+                    </div>
+                      <div  id="headerEditDiv" style= "display: none"> 
+                      		<div class="col-lg-3">
+						<div class="form-group">
+							<label for="activityGroupHead">שם החוג</label> 
+								<select class="form-control input-sm" 
+								id="activityGroupHead" name="activityGroupHead" >
+								<option value=""></option>
+								<option value="1">א</option>
+								<option value="2">ב</option>
+								<option value="3">ג</option>
+								<option value="4">ד</option>
+								<option value="5">ה</option>								
+							</select>
+						</div> 
+					</div>
+					<div class="col-lg-2">
+						<div class="checkbox">
+						<br>
+							<label for="newGroup">חוג חדש</label> 
+							<input type="checkbox" id="newGroup" name="newGroup" >
+						</div>
+					</div> 
+					 <div class="col-lg-3">
+						 <div class="form-group" style="display: none;" id="newActivityGroupDiv">
+						 	<label for="newActivityGroupHead">הכנס שם חוג </label> 
+								<input type="text" class="form-control input-sm" name="newActivityGroupHead"  id="newActivityGroupHead" >
+						</div> 
+					</div>  
+                      </div>
+                    
+                        
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                    	<ol class="breadcrumb">
                             <li>
                                  <a href="dashboard.jsp"><i class="fa fa-home"></i> ראשי</a>
                             </li>
@@ -210,9 +243,8 @@
                 </div>
                 <!-- /.row -->
 
-     <!--         copy content from pupil_add change buttons text & fonctionality -->
-           		<form role="form" id="ajaxform">
-           		<fieldset >
+     
+           		
 		<!-- row 1 col 1 -->
 					<div class="col-lg-12" style="border-bottom: 1px solid #a6b7bd">
 						<div class="col-lg-12">
@@ -221,17 +253,7 @@
 									<label for="activityName">שם הקבוצה</label> <input type="text" 
 										class="form-control input-sm" name="activityName"  id="activityName" >
 								</div>
-								<div class="form-group">
-									<label for="activityGroup">חוג</label> 
-										<select class="form-control input-sm" 
-										id="activityGroup" name="activityGroup" >
-										<option value="1">א</option>
-										<option value="2">ב</option>
-										<option value="3">ג</option>
-										<option value="4">ד</option>
-										<option value="5">ה</option>								
-									</select>
-								</div>
+								
 							<!-- 	<div class="form-group" >
 									<label for="activityGroupNew"> חוג חדש</label> <input type="text" 
 										class="form-control input-sm" name="activityGroupNew"  id="activityGroupNew" >
@@ -327,9 +349,9 @@
 									<input type="submit" id="deleteBtn" name="deleteBtn"
 									class="btn btn-primary" value="מחיקה">
 								
-									<input type="submit" id="addCourse" name="clearBtn"
-									 class="btn btn-primary" value="הוסף חדש">
-									<!-- <button id="testBtn">test</button> -->
+								<!-- 	<input type="submit" id="addCourse" name="addCourse"
+									 class="btn btn-primary" value="הוסף חדש"> -->
+									
 								</div>
 								
 								<div class="form-group " id="editModeBtn" style="display: none">

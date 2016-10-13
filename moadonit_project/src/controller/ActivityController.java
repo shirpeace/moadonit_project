@@ -360,9 +360,9 @@ public class ActivityController extends HttpServlet implements Serializable {
 			//
 		} catch (Exception e) {
 			e.printStackTrace();
-			/*resultToClient.put("msg", 0);
+			resultToClient.put("msg", 0);
 			resultToClient
-					.put("result", "שגיאה בשמירת הנתונים");*/
+					.put("result", "שגיאה בשמירת הנתונים");
 			resp.setContentType("application/json");
 			resp.setCharacterEncoding("UTF-8");
 			resp.getWriter().print(resultToClient);

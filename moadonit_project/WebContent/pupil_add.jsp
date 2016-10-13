@@ -127,9 +127,9 @@
 					</a> <br></li>
 					<li><a href="pupils_search.jsp"><i
 							class="fa fa-fw fa-search"></i> חיפוש</a></li>
-					<li><a href="pupils_phones.jsp"><i
-							class="fa fa-fw fa-phone"></i> דפי קשר</a></li>
-					<li class="active"><a href="pupil_add.jsp"><i
+					<!-- <li><a href="pupils_phones.jsp"><i
+							class="fa fa-fw fa-phone"></i> דפי קשר</a></li> -->
+					<li class="active"><a href="#"><i
 							class="fa fa-fw fa-edit"></i> הוספת חדש</a></li>
 				</ul>
 			</div>

@@ -131,6 +131,9 @@
                     <li>
                         <a href= "pupil_one_time_act.jsp" id="oneTimeLink"><i class="fa fa-fw fa-plus-square-o"></i> פעילות חד פעמית</a>
                      </li> 
+                     <li>
+                     	<a href="pupil_add.jsp"><i class="fa fa-fw fa-edit"></i> הוספת חדש</a>
+                     </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -393,9 +396,9 @@
 									<input type="button" id="deleteBtn" name="deleteBtn"
 									class="btn btn-primary" value="מחיקה">
 								
-									<input type="button" id="addPupil" name="addPupil"
-									 class="btn btn-primary" value="הוסף חדש">
-									<!-- <button id="testBtn">test</button> -->
+									<!-- <input type="button" id="addPupil" name="addPupil"
+									 class="btn btn-primary" value="הוסף חדש"> -->
+									
 								</div>
 								
 								<div class="form-group " id="editModeBtn" style="display: none">

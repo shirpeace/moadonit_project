@@ -123,9 +123,9 @@
 			<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav side-nav" id="menuSideBar">
-					<li><a href="" style="font-size: 120%; pointer-events: none;" >
-							<i class="fa fa-fw fa-users"></i> כרטיס תלמיד
-					</a> <br></li>
+					<li>
+						<a href="" style="font-size: 120%; pointer-events: none;" ><i class="fa fa-fw fa-users"></i> כרטיס תלמיד </a> <br>
+					</li>
 					<li><a href="pupil_card_view.jsp" id="detailsLink" ><i
 							class="fa fa-fw fa-list-alt" ></i> פרטים אישיים</a></li>
 					<li><a href="pupil_week_view.jsp" id="scheduleLink"><i
@@ -135,6 +135,9 @@
 					<li>
                         <a href= "pupil_one_time_act.jsp" id="oneTimeLink"><i class="fa fa-fw fa-plus-square-o"></i> פעילות חד פעמית</a>
                      </li>  
+                     <li>
+                     	<a href="pupil_add.jsp"><i class="fa fa-fw fa-edit"></i> הוספת חדש</a>
+                     </li>
 				</ul>
 			</div>
 			<!-- /.navbar-collapse -->
