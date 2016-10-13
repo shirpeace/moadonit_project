@@ -67,7 +67,8 @@
 <script src="js/bootstrap.min.js"></script>
 <script src="js/i18n/grid.locale-he.js"></script>
  <script src="js/jquery.jqGrid.min.js"></script>
-
+ <script src="js/jQuery.jqGrid.setColWidth.js"></script>
+ <script src="js/jQuery.jqGrid.autoWidthColumns.js"></script>
 <!-- bootbox code -->
 <script src="js/bootbox.js"></script>
 <script src="js/bootstrap-datepicker.js"></script> 

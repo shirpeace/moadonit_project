@@ -579,7 +579,7 @@ Serializable {
 			HttpServletResponse resp, HttpServlet controller) throws IOException, SQLException {
 		String pageName = req.getParameter("pageName");
 		//int colNum = Integer.parseInt(req.getParameter("colNum"));
-		String query = null;
+		String query = "SELECT COLUMN_NAME, COLUMN_COMMENT, TABLE_NAME, DATA_TYPE, COLUMN_KEY ,EXTRA FROM information_schema.columns ";
 		String whereClouse = null;
 		String pageHead = ""; // header for exel file	
 		//String[] arrKeys = new String[colNum] ;
@@ -595,7 +595,7 @@ Serializable {
 		switch (pageName) {
 			case "pupils_search":
 				List<FullPupilCard> list = null;
-				query = "SELECT COLUMN_NAME, COLUMN_COMMENT, TABLE_NAME FROM information_schema.columns ";
+				//query = "SELECT COLUMN_NAME, COLUMN_COMMENT, TABLE_NAME FROM information_schema.columns ";
 				whereClouse = " WHERE (table_name = 'fullPupilCard'); ";
 				pupilControler = (FullPupilCardController)controller;
 				list = pupilControler.searchPupilList(req, resp, 0, 0); // get list of rows to add
@@ -636,7 +636,7 @@ Serializable {
 			case "pupils_phones":
 				
 				List<FullPupilCard> listContact = null;
-				query = "SELECT COLUMN_NAME, COLUMN_COMMENT, TABLE_NAME FROM information_schema.columns ";
+				//query = "SELECT COLUMN_NAME, COLUMN_COMMENT, TABLE_NAME FROM information_schema.columns ";
 				whereClouse = " WHERE (table_name = 'fullPupilCard'); ";
 				pupilControler = (FullPupilCardController)controller;
 				listContact = pupilControler.searchContactList(req, resp); // get list of rows to add
@@ -677,7 +677,7 @@ Serializable {
 				break;
 		case "OneTimeReport":
 				//List<FullPupilCard> list = null;
-				query = "SELECT COLUMN_NAME, COLUMN_COMMENT, TABLE_NAME FROM information_schema.columns ";
+				//query = "SELECT COLUMN_NAME, COLUMN_COMMENT, TABLE_NAME FROM information_schema.columns ";
 				whereClouse = " WHERE (table_name = 'tbl_pupil' or table_name = 'tbl_one_time_reg' or table_name = 'tbl_grade_code' or table_name = 'tbl_reg_types'); ";
 				 month = Integer.parseInt(req.getParameter("month"));
 				 year = Integer.parseInt(req.getParameter("year"));
@@ -722,7 +722,7 @@ Serializable {
 				break;
 		case "CourseData":
 			resp.setContentType("text/html;charset=UTF-8");
-			query = "SELECT COLUMN_NAME, COLUMN_COMMENT, TABLE_NAME FROM information_schema.columns ";
+			//query = "SELECT COLUMN_NAME, COLUMN_COMMENT, TABLE_NAME FROM information_schema.columns ";
 			whereClouse = " WHERE (table_name = 'tbl_pupil' or table_name = 'tbl_pupil_activities' or table_name = 'tbl_grade_code' or table_name = 'tbl_activity' or table_name = 'tbl_gender_ref'); ";
 			 String values = req.getParameter("options"); //get values of selected courses and split them
 			 String[] arr = values.split(",");
@@ -759,7 +759,7 @@ Serializable {
 			break;
 		case	"MoadonitPay":
 			resp.setContentType("text/html;charset=UTF-8");
-			query = "SELECT COLUMN_NAME, COLUMN_COMMENT, TABLE_NAME FROM information_schema.columns ";
+			//query = "SELECT COLUMN_NAME, COLUMN_COMMENT, TABLE_NAME FROM information_schema.columns ";
 			whereClouse = " WHERE (table_name = 'tbl_pupil' or table_name = 'tbl_reg_to_moadonit' or table_name = 'tbl_grade_code' or table_name = 'tbl_gender_ref'); ";
 			
 			 
@@ -807,7 +807,7 @@ Serializable {
 			break;	
 		case "MoadonitData":
 			resp.setContentType("text/html;charset=UTF-8");
-			query = "SELECT COLUMN_NAME, COLUMN_COMMENT, TABLE_NAME FROM information_schema.columns ";
+			//query = "SELECT COLUMN_NAME, COLUMN_COMMENT, TABLE_NAME FROM information_schema.columns ";
 			whereClouse = " WHERE (table_name = 'tbl_pupil' or table_name = 'tbl_reg_to_moadonit'"
 					+ " or table_name = 'tbl_grade_code' or table_name = 'tbl_gender_ref' or table_name = 'tbl_food_type' "
 					+ "or table_name = 'tbl_register_pupil'); ";
@@ -880,15 +880,15 @@ Serializable {
 		// headers of table
 		String theads = "";
 
-		HashMap<Entry<String, String>, String> keysColComments = DAOUtil.getKeysColmunComments(this.con.getConnection(),query, whereClouse);
+		HashMap<Entry<String, String>, String[]> keysColComments = DAOUtil.getKeysColmunComments(this.con.getConnection(),query, whereClouse);
 	
 		if(keysColComments != null)
 		for (int i = 0; i < arrlist.size(); i++)
 		{
 			Entry<String, String> key = arrlist.get(i);				
 			
-			if(keysColComments.get(key) != null){
-				String title  = keysColComments.get(key);					
+			if(keysColComments.get(key)[3] != null){
+				String title  = keysColComments.get(key)[3];					
 				theads = theads + "<th>" + title + "</th>";
 			}
 			else{

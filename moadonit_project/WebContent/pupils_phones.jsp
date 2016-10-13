@@ -110,12 +110,12 @@
                      <li>
                         <a href="staff_phones.jsp" ><i class="fa fa-fw fa-phone"></i> צוות המועדונית</a>
                      </li>
-                     <li>
+                     <!-- <li>
                         <a href= "#"><i class="fa fa-fw fa-phone"></i> מורי חוגים</a>
                      </li> 
                      <li>
                         <a href= "#"><i class="fa fa-fw fa-phone"></i> מורי  ביה"ס </a>
-                     </li>  
+                     </li> -->  
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

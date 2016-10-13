@@ -402,6 +402,10 @@ function loadRegistrationGrid(pupilID) {
 				mtype : 'POST',
 				editurl : "PupilRegistration?action=edit&pupilID="+ pupilID,
 				colNames : [ 'תאריך התחלה','תאריך סיום','תאריך רישום','סיבת רישום', 'יום ראשון', 'יום שני','יום שלישי', 'יום רביעי', 'יום חמישי' ,'פעולה'],					
+				beforeProcessing : function (data, status, xhr) {
+					
+					
+				},
 				loadComplete : function(data) {
 					
 					if (parseInt(data.records, 10) == 0) {

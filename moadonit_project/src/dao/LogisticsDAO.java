@@ -3,6 +3,7 @@ package dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import org.json.simple.JSONObject;
 import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 
 import controller.MyConnection;
+import model.GradeCode;
 import model.OneTimeReg;
 import model.Pupil;
 import model.PupilActivity;
@@ -77,7 +79,88 @@ public class LogisticsDAO extends AbstractDAO {
 		return row;
 	}
 	
-	
-	
+	public String selectValues(String Query, HashMap<String,String> options ,String... Fileds ) throws IllegalArgumentException,
+	DAOException {
 
+	//List<Object[]> list = new ArrayList<>();
+	String res = "";
+	
+	try (PreparedStatement statement = DAOUtil.prepareStatement(
+			this.con.getConnection(), Query,false, new Object[] { });
+			ResultSet resultSet = statement.executeQuery();) {
+	
+		while (resultSet.next()) {
+			//res +=  resultSet.getObject(Fileds[0]).toString() + ":" + resultSet.getObject(Fileds[1]).toString();
+			options.put(resultSet.getObject(Fileds[0]).toString(), resultSet.getObject(Fileds[1]).toString());
+			
+			for (int i = 0; i < Fileds.length; i++) {
+				res +=  resultSet.getObject(Fileds[i]).toString() + ":";
+			}
+			
+			res = res.substring(0,res.length()-1);			
+			res+=";";
+			
+		}
+	
+	} catch (SQLException e) {
+		throw new DAOException(e);
+	}
+
+	return res;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public JSONArray GetGridData(String table, ArrayList<Object[]> arrlist) {
+		// TODO Auto-generated method stub
+		JSONArray list = new JSONArray();
+		String Query = "SELECT * FROM " + table + ";"; 
+		//pupilNum, , , , , , numOfDays, RegDays, Comments
+		try (PreparedStatement statement = DAOUtil.prepareStatement(this.con.getConnection(), Query, false, new Object[] {});
+				ResultSet resultSet = statement.executeQuery();) {
+
+			while (resultSet.next()) { //for each data row
+				
+				
+					JSONObject row = new JSONObject();
+					for (int i = 0; i < arrlist.size(); i++) { //for each col
+						Entry<String, String> keyEntry = (Entry<String, String>) arrlist.get(i)[0];
+						HashMap<String, Object> mapProp = (HashMap<String, Object>) arrlist.get(i)[1];
+						HashMap<String,String> optMap = (HashMap<String,String>)arrlist.get(i)[2];
+						if(optMap.isEmpty())
+							if(mapProp.get("Datatype").equals("Date")){
+								java.sql.Date d = null;
+								d = resultSet.getDate(keyEntry.getValue());								
+								row.put(keyEntry.getValue(), d != null ? d.getTime() : "");
+							}
+							else
+							row.put(keyEntry.getValue(), resultSet.getObject(keyEntry.getValue()));
+						else{
+							String val = optMap.get(resultSet.getObject(keyEntry.getValue()).toString());
+							row.put(keyEntry.getValue(), val);
+						}
+					
+					}
+					
+				
+				
+				/*row.put(new AbstractMap.SimpleEntry<>("tbl_grade_code","gradeName"),resultSet.getString("gradeName"));
+				row.put(new AbstractMap.SimpleEntry<>("tbl_pupil","lastName"),resultSet.getString("lastName"));
+				row.put(new AbstractMap.SimpleEntry<>("tbl_pupil","firstName"),resultSet.getString("firstName"));
+				//user.put(new AbstractMap.SimpleEntry<>("tbl_reg_types","type"),resultSet.getString("type"));
+				row.put(new AbstractMap.SimpleEntry<>("tbl_gender_ref","genderName"),resultSet.getString("genderName"));
+				row.put(new AbstractMap.SimpleEntry<>("tbl_reg_to_moadonit","startDate"),resultSet.getDate("startDate"));
+				row.put(new AbstractMap.SimpleEntry<>("tbl_reg_to_moadonit","מספר ימים לחיוב"),resultSet.getInt("numOfDays"));
+				row.put(new AbstractMap.SimpleEntry<>("tbl_reg_to_moadonit","ימי רישום"),resultSet.getString("RegDays"));
+				row.put(new AbstractMap.SimpleEntry<>("tbl_reg_to_moadonit","הערות"),resultSet.getString("Comments"));
+							*/
+				list.add(row);
+				
+			}
+
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+		
+		return list; 
+	}
 }

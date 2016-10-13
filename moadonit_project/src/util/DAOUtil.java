@@ -156,10 +156,17 @@ public final class DAOUtil {
         return res;
     }
     
-    public static HashMap<Entry<String, String>, String> getKeysColmunComments(Connection connection ,String query, String whereClouse) {
-    	HashMap<Entry<String, String>, String> s = new HashMap<Entry<String, String>, String>();
-    
+    public static HashMap<Entry<String, String>, String[]> getKeysColmunComments(Connection connection ,String query, String whereClouse) {
+    	HashMap<Entry<String, String>, String[]> s = new HashMap<Entry<String, String>, String[]>();
+    	
+    	/* DATA_TYPE, COLUMN_KEY ,EXTRA
+    	auto_increment , PRI , 
+    	varchar
+		date
+		int
+		*/
 		
+    	
     	
     	if(query == null ) return null;
     	
@@ -173,12 +180,18 @@ public final class DAOUtil {
 				ResultSet resultSet = statement.executeQuery();) {
 
     		while (resultSet.next()) {
+    			String[] arr = new String[4];
     			String tableName   = resultSet.getString("TABLE_NAME");
     			String colName = resultSet.getString("COLUMN_NAME");
     			
     			AbstractMap.SimpleEntry<String, String> pair = new AbstractMap.SimpleEntry<>(tableName,colName);
     			
-    			s.put(pair, resultSet.getString("COLUMN_COMMENT"));  
+    			arr[0]  = resultSet.getString("DATA_TYPE");
+    			arr[1]  = resultSet.getString("COLUMN_KEY");
+    			arr[2]  = resultSet.getString("EXTRA");
+    			arr[3]  = resultSet.getString("COLUMN_COMMENT");
+    			
+    			s.put(pair, arr );  
     			//keysval.put(pair, resultSet.getString("COLUMN_COMMENT"));    			
 			}
 
