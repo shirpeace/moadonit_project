@@ -179,7 +179,7 @@ public class ActivityDAO extends AbstractDAO {
 						act.getTblCourse().getCategory(), 
 						act.getTblActivityGroup().getActivityGroupNum(), 
 						act.getTblCourse().getPupilCapacity(),
-						act.getTblSchoolYear() != null ? act.getTblSchoolYear().getYearID() : null
+						act.getTblSchoolYear() == null ? null : act.getTblSchoolYear().getYearID() != 0 ? act.getTblSchoolYear().getYearID() : get_currentYearID(),
 					};
 		
 		try (PreparedStatement statement = DAOUtil.prepareCallbackStatement(

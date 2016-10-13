@@ -74,6 +74,9 @@ $(function() {
 	getSelectValuesFromDB("getSatff", "Staff","ActivityController");
 	setSelectValues($('#responsibleStaff'), "Staff");
 	
+	getSelectValuesFromDB("getActGroup", "activityGroup","ActivityController", 1);
+	setSelectValues($('#activityGroupHead'), "activityGroup");
+	
 /*	var dataString = 'activityNum=' + activityNum + '&action=' + "getCourses";
 	loadCourseData(dataString);	*/
 	

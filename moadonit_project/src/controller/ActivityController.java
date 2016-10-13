@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import model.Activity;
+import model.ActivityGroup;
 import model.ActivityType;
 import model.Pupil;
 import model.PupilActivity;
@@ -156,18 +157,41 @@ public class ActivityController extends HttpServlet implements Serializable {
 			} else if (action.equals("getSatff")) {
 				resp.setContentType("application/json");
 				resp.setCharacterEncoding("UTF-8");
-
 				JSONObject jsonObj = getSatff();
 				resp.getWriter().print(jsonObj);
+			} 
+			else if (action.equals("getActGroup")) {
+				resp.setContentType("application/json");
+				resp.setCharacterEncoding("UTF-8");
+
+				JSONObject jsonObj = getActGroup(Integer.parseInt(req.getParameter("activityType")));
+				resp.getWriter().print(jsonObj);
 			}
+			
 			//getPupilInCourse
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
+
+	@SuppressWarnings("unchecked")
+	private JSONObject getActGroup(int atype) {
+		List<ActivityGroup> list = generalDAO.get_actGroup(0, atype);
+
+		String values = " : ;";
+		for (int i = 0; i < list.size(); i++) {
+			ActivityGroup ag = list.get(i);
+			values += ag.getActivityGroupNum() + ":" + ag.getActGroupName() +  ";";
+		}
+		values = values.substring(0, values.length() - 1);
+		JSONObject json = new JSONObject();
+		json.put("value", values);
+		return json;
+	}
+
+	@SuppressWarnings("unchecked")
 	private JSONObject getSatff() {
-		// TODO Auto-generated method stub
 		List<Staff> list = generalDAO.get_Staff(0);
 
 		String values = " : ;";
@@ -314,10 +338,11 @@ public class ActivityController extends HttpServlet implements Serializable {
 				
 			}else if (action.equals("update")) {
 				
-				boolean r = updateCourse(req, resp);
-				if (r) {
+				int r = updateCourse(req, resp);
+				if (r != -1) {
 					resultToClient.put("msg", 1);
 					resultToClient.put("result", null);
+					resultToClient.put("actGroupNum", r);
 				} else {
 					resultToClient.put("msg", 0);
 					resultToClient
@@ -477,12 +502,16 @@ public class ActivityController extends HttpServlet implements Serializable {
 		return result;
 	}
 	
-	private Boolean updateCourse(HttpServletRequest req, HttpServletResponse resp) throws ParseException {
+	private int updateCourse(HttpServletRequest req, HttpServletResponse resp) throws ParseException {
 		Activity act = getActFromReq(req );
 		actDOA = new ActivityDAO(con);
 		Boolean result = actDOA.updateCourse(act);
-
-		return result;
+		int res;
+		if(result)
+			res = act.getTblActivityGroup().getActivityGroupNum();
+		else
+			res = -1;
+		return res;
 	}
 	
 	private Activity getActFromReq(HttpServletRequest req ){
