@@ -810,19 +810,29 @@ dd = dd.replaceAll(".", "/");*/
  */
 function saveCourseData(action, forward) {
 
+
 	var activity = new Object();
 	activity.activityNum = activityNum;
 	activity.activityName = $('#activityName').val();
 	
+	var groupNum ;
+	var isChecked = $('#newGroup').prop("checked");
+	if (isChecked){
+		groupNum = -1;
+	}
+	else groupNum = $('#activityGroupHead').val();
 	activity.tblActivityGroup ={
-			activityGroupNum : $('#activityGroup').val(),
+			activityGroupNum : groupNum,
+			actGroupName : $('#newActivityGroupHead').val(),
 			tblActivityType : {
 				typeID : 1,
 			}
 	};
 
 	activity.weekDay = $('#weekDay').val();
-	activity.schoolYear = 0;
+	activity.tblSchoolYear = {
+			yearID : 0
+	};
 	activity.tblStaff = {
 		staffID : $('#responsibleStaff').val()
 	};
@@ -865,12 +875,16 @@ function saveCourseData(action, forward) {
 							if (data.result != null) activityNum = data.result;
 							if (action === "insert") {
 								if (typeof forward != undefined && forward) {
-									bootbox.alert(
+									bootbox
+											.alert(
 													"נתונים נשמרו בהצלחה, הנך מועבר למסך החוג",
 													function() {
-														// send user to the course page after successful insert
+														// send user to the
+														// pupil page after
+														// successful insert
 														window.location.href = "course_card_view.jsp?activityNum="
-																+ activityNum + "";
+																+ activityNum
+																+ "";
 													});
 								} else {
 									bootbox.alert("נתונים נשמרו בהצלחה",

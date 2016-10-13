@@ -138,7 +138,7 @@
 							class="fa fa-fw fa-phone"></i> מורי חוגים </a></li>
 					<li><a href="course_regs_chart.jsp"><i class="fa fa-fw fa-edit"></i>
 							דוח רשומים </a></li>
-					<li class="active"><a href="course_add.jsp"><i class="fa fa-fw fa-edit"></i>
+					<li class="active"><a href="#"><i class="fa fa-fw fa-edit"></i>
 							הוספת חדש</a></li>
 				</ul>
             </div>
@@ -155,8 +155,8 @@
                 <!-- Page Heading -->
                 <div class="row">
                     <div class="col-lg-12">
-                        <!-- <h2 class="page-header" id="nameTitle" style="margin: 0px 0 0px; border-bottom: 1px solid #a6b7bd">                     
-                        </h2> -->
+                        <h1 class="page-header" id="nameTitle" style="margin: 0px 0 0px; border-bottom: 1px solid #a6b7bd"> הוספת חוג                    
+                        </h1> 
                         <ol class="breadcrumb">
                             <li>
                                  <a href="dashboard.jsp"><i class="fa fa-home"></i> ראשי</a>
@@ -181,7 +181,7 @@
 					<div class="col-lg-12" style="border-bottom: 1px solid #a6b7bd">
 					 	<h2 style="margin: 0px 0 0px; border-bottom: 1px solid #a6b7bd">שם החוג </h2>
 							<div class="col-lg-3">
-								<div class="form-group">
+								 <div class="form-group">
 									<label for="activityGroupHead">בחר חוג קיים</label> 
 										<select class="form-control input-sm" 
 										id="activityGroupHead" name="activityGroupHead" >
@@ -192,15 +192,21 @@
 										<option value="4">ד</option>
 										<option value="5">ה</option>								
 									</select>
+								</div> 
+							</div>
+							<div class="col-lg-2">
+								<div class="checkbox">
+								<br>
+									<label for="newGroup">חוג חדש</label> 
+									<input type="checkbox" id="newGroup" name="newGroup" >
 								</div>
-							</div>
-							<div class="col-lg-3">
-								<!-- <div class="form-group">
-									<label for="newActivityGroupHead">או הכנס שם חוג חדש</label> 
-										<input type="text" 
-										class="form-control input-sm" name="newActivityGroupHead"  id="newActivityGroupHead" >
-								</div> -->
-							</div>
+							</div> 
+							 <div class="col-lg-3">
+								 <div class="form-group" style="display: none;" id="newActivityGroupDiv">
+								 	<label for="newActivityGroupHead">הכנס שם חוג </label> 
+										<input type="text" class="form-control input-sm" name="newActivityGroupHead"  id="newActivityGroupHead" >
+								</div> 
+							</div> 
 					</div>
 					
 				</div>
@@ -216,24 +222,9 @@
 						<div class="col-lg-12">
 							<div class="col-lg-2">
 								<div class="form-group">
-									<label for="activityName">שם הקבוצה</label> <input type="text" 
-										class="form-control input-sm" name="activityName"  id="activityName" >
+									<label for="activityName">שם הקבוצה</label> 
+									<input type="text" class="form-control input-sm" name="activityName"  id="activityName" >
 								</div>
-								<!-- <div class="form-group">
-									<label for="activityGroup">חוג</label> 
-										<select class="form-control input-sm" 
-										id="activityGroup" name="activityGroup" >
-										<option value="1">א</option>
-										<option value="2">ב</option>
-										<option value="3">ג</option>
-										<option value="4">ד</option>
-										<option value="5">ה</option>								
-									</select>
-								</div> -->
-							<!-- 	<div class="form-group" >
-									<label for="activityGroupNew"> חוג חדש</label> <input type="text" 
-										class="form-control input-sm" name="activityGroupNew"  id="activityGroupNew" >
-								</div> -->
 								<div class="form-group">
 									<label for="regularOrPrivate">סוג</label>
 										<select class="form-control input-sm" 

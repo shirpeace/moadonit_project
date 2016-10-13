@@ -26,7 +26,21 @@ $.extend($.jgrid.inlineEdit, { restoreAfterError: false });
 $(function() {
 
 	moment.locale(); // he
+	
+	$('#newGroup').click(function() {
+		var isChecked = this.checked;
+		if (isChecked) {
+			$("#newActivityGroupDiv").toggle(true);
+			$("#activityGroupHead").prop("disabled", true);
 
+		} else {
+			$("#newActivityGroupDiv").toggle(false);
+			$("#newActivityGroupHead").val('');
+			$("#activityGroupHead").prop("disabled", false);
+		}
+
+	});
+	
 	$('#startTime').timepicker({
 
 		closeOnWindowScroll : true,
@@ -134,7 +148,7 @@ $(function() {
 						required : true,
 						minlength : 2,
 						maxlength : 20,
-						nameValidator : true
+					//	nameValidator : true
 					// custom validation from additional-methods.js
 					},
 					responsibleStaff : {
@@ -151,7 +165,16 @@ $(function() {
 					extraPrice : {
 						required : "#extraPriceChk:checked",
 						digits : true
-					}
+					},
+					activityGroupHead: {
+				        required : "#newGroup:not(:checked)"
+				        
+						
+				    },
+				    newActivityGroupHead: {
+				        required: "#newGroup:checked"
+				    	
+				    }
 
 				},
 				errorElement : "span",
@@ -301,19 +324,12 @@ function setPageBtns() {
 
 				// validate and process form here
 				var form = $("#ajaxform");
-				// var dateVal = $("#date_of_birth").combodate('getValue',
-				// null);
-				// form.validate();
+				
 				if (form.valid()) {
-					// if(dateVal == null || dateVal == "")
-					// return false;
-
 					result = saveCourseData("update", false);
 					if (result === true) {
 						formDisable('ajaxform');
 						currentPageState = state.READ;
-						
-		//				$('.page-header').html("חוג " + $('#activityName').val() + " ");
 						$('.page-header').html($('#activityGroup').find("option:selected").text() + "  -  " + $('#activityName').val() );
 						/* $('#ajaxform').trigger('reinitialize.areYouSure'); */
 					}
@@ -358,6 +374,9 @@ function formEnable(form) {
 	 $("#ajaxform :radio").prop("disabled", false);
 	 $("#viewModeBtn").hide();
 	 $("#editModeBtn").show();
+	 $("#headerDiv").hide();
+	 $("#headerEditDiv").show();
+	 
 	 
 	/* $('#ajaxform').areYouSure( { message: "ישנם שינויים שלא נשמרו !"} ); */
 }
@@ -371,6 +390,8 @@ function formDisable(form) {
 	$("#ajaxform :radio").prop("disabled", true);
 	$("#editModeBtn").hide();
 	$("#viewModeBtn").show();
+	$("#headerDiv").show();
+	$("#headerEditDiv").hide();
 	
 }
 

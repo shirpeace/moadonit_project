@@ -23,7 +23,21 @@ var validator , validator1;
 $(function() {
 
 	moment.locale(); // he
+	
+	$('#newGroup').click(function() {
+		var isChecked = this.checked;
+		if (isChecked) {
+			$("#newActivityGroupDiv").toggle(true);
+			$("#activityGroupHead").prop("disabled", true);
 
+		} else {
+			$("#newActivityGroupDiv").toggle(false);
+			$("#newActivityGroupHead").val('');
+			$("#activityGroupHead").prop("disabled", false);
+		}
+
+	});
+	
 	$('#startTime').timepicker({
 
 		closeOnWindowScroll : true,
@@ -56,16 +70,6 @@ $(function() {
 
 	});
 
-/*	$('#detailsLink').attr('href',
-			'course_card_view.jsp?activityNum=' + activityNum);*/
-	/*
-	 * 
-	 * $('#scheduleLink').attr('href','pupil_week_view.jsp?li=1&pupil=' +
-	 * activityNum); $('#regLink').attr('href','pupil_week_view.jsp?li=2&pupil=' +
-	 * activityNum);
-	 * $('#oneTimeLink').attr('href','pupil_week_view.jsp?li=3&pupil=' +
-	 * activityNum);
-	 */
 
 	getSelectValuesFromDB("getSatff", "Staff","ActivityController");
 	setSelectValues($('#responsibleStaff'), "Staff");
@@ -101,8 +105,8 @@ $(function() {
 						required : true						
 					},
 					endTime : {
-						required : true,
-						isTimeOK: true				
+						required : true/*,
+						isTimeOK: true				*/
 					},
 					responsibleStaff : {
 						required : true						
@@ -120,17 +124,12 @@ $(function() {
 						digits : true
 					},
 					activityGroupHead: {
-				       /* required : function(element) {
-				            return $("#newActivityGroupHead").is(':filled');
-				            }*/
-						required : "#newActivityGroupHead:filled"
+				        required : "#newGroup:not(:checked)"
 				        
 						
 				    },
 				    newActivityGroupHead: {
-				        required: function(element) {
-				            return $("#activityGroupHead").is(':empty');
-				        }
+				        required: "#newGroup:checked"
 				    	
 				    }
 
@@ -151,7 +150,14 @@ $(function() {
 		return false;
 	});*/
 
-	
+/*	 validator.addMethod("isTimeOK", function() { 
+			var start = $("#startTime").val();
+			var end = $("#endTime").val();
+			if (start>=end)
+				return false;
+			else
+				return true;
+		}, "שעת התחלה אחרי שעת סיום"); */
 });
 /*function isTimeOK(){
 	var start = $("#startTime").val();
@@ -162,106 +168,34 @@ $(function() {
 		return true;
 	
 };*/
-$.validator.addMethod("isTimeOK", function() { 
-	var start = $("#startTime").val();
-	var end = $("#endTime").val();
-	if (start>=end)
-		return false;
-	else
-		return true;
-}, "שעת התחלה אחרי שעת סיום");
-/*function setCourseData(courseData) {
-
-	if (courseData != undefined) {
-
-	//	$('.page-header').html("חוג " + courseData.activityName + " ");
-		$('.page-header').html(courseData.activityGroup+ "  -  " + courseData.activityName );
-		//activityGroup
-		
-		 course details import 
-		$('#activityName').val(courseData.activityName);
-		$('#weekDay').val(courseData.weekDay);
-		$('#startTime').val(courseData.startTime);
-		$('#endTime').val(courseData.endTime);
-		
-		$('#activityGroup').val(courseData.activityGroup);
-
-		$('#pricePerMonth').val(courseData.pricePerMonth);
-		$('#extraPrice').val(courseData.extraPrice);
-		$("#capacity").val(courseData.pupilCapacity);
-		$("#responsibleStaff").val(courseData.staffID);
-		$("#activityGroup").val(courseData.activityGNum);
-
-		if (courseData.extraPrice !== null) {
-			$('#extraPriceChk').prop('checked', true);
-			$("#extraPriceDiv").toggle(true);
-			$("#extraPrice").val(courseData.extraPrice);
-		} else {
-			$('#extraPriceChk').prop('checked', false);
-			$("#extraPriceDiv").toggle(false);
-		}
-
-		if (courseData.regularOrPrivate
-				&& courseData.regularOrPrivate == 'רגיל') {
-			$('#regularOrPrivate :nth-child(1)').prop('selected', true);
-		} else
-			$('#regularOrPrivate :nth-child(2)').prop('selected', true);
-
-	}
-}*/
-
-/*function loadCourseData(dataString) {
-	setPageBtns();
-
-	$("fieldset :input").prop("disabled", true);
-	$("fieldset input").prop("disabled", false);
-	$("fieldset :input").attr('readonly', 'readonly');
-	$("fieldset :checkbox").prop("disabled", true);
-	$("fieldset :radio").prop("disabled", true);
-	$("#editModeBtn").hide();
-
-	$.ajax({
-		async : false,
-		type : 'GET',
-		datatype : 'jsonp',
-		url : "ActivityController",
-		data : dataString,
-		success : function(data) {
-			if (data != undefined) {
-				courseData = data.rows[0];
-				activityNum = courseData.activityNum;
-
-				setCourseData(courseData);
-
-			} else
-				alert("לא קיימים נתונים");
-		},
-		error : function(e) {
-			console.log("error");
-
-		}
-
-	});
-	
-}*/
 
 
-function saveCourseData(action, forward) {
+
+
+/*function saveCourseData(action, forward) {
 
 	var activity = new Object();
 	activity.activityNum = activityNum;
 	activity.activityName = $('#activityName').val();
 	
+	var groupNum ;
+	var isChecked = $('#newGroup').prop("checked");
+	if (isChecked){
+		groupNum = -1;
+	}
+	else groupNum = $('#activityGroupHead').val();
 	activity.tblActivityGroup ={
-			activityGroupNum : $('#activityGroupHead').val(),
-			actGroupName : $('#activityGroupHead').find("option:selected").text(),
+			activityGroupNum : groupNum,
+			actGroupName : $('#newActivityGroupHead').val(),
 			tblActivityType : {
 				typeID : 1,
 			}
 	};
 
 	activity.weekDay = $('#weekDay').val();
-	activity.schoolYear = 0;
+	activity.tblSchoolYear = {
+			yearID : 0
+	};
 	activity.tblStaff = {
 		staffID : $('#responsibleStaff').val()
 	};
@@ -292,10 +226,10 @@ function saveCourseData(action, forward) {
 
 				success : function(data) {
 					if (data != undefined) {
-						/* alert(data); */
-						/**
+						 alert(data); 
+						*//**
 						 * FIX error of update/
-						 */
+						 *//*
 						if (!data.msg) {
 							result = true;
 						}
@@ -351,7 +285,7 @@ function saveCourseData(action, forward) {
 
 	return result;
 
-}
+}*/
 
 function setPageBtns() {
 	bootbox.setDefaults({
@@ -384,7 +318,8 @@ function setPageBtns() {
 		validator.resetForm();
 		 
 		$(this).closest('form')[0].reset();
-//		setGradeBgColor($('#grade'));
+		$("#newActivityGroupDiv").toggle(false);
+		$("#activityGroupHead").prop("disabled", false);
 		 return false;
 	});
  
@@ -395,7 +330,7 @@ function setPageBtns() {
 		// validate and process form here
 		 var form = $("#ajaxform");
 		 if (form.valid()) {	
-		//	result =  savePupilCardData("insert",false);
+			result =  saveCourseData("insert", false);
 			 if (result) {
 				 $("#clearBtn").click();
 			}
