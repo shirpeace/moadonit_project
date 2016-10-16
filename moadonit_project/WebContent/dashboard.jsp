@@ -153,7 +153,7 @@
                     </div>
                     <div class="col-lg-3 col-md-6">
                         <div class="panel panel-red">
-                            <a href="settings_main.jsp">
+                            <a href="settings_general_tables.jsp">
                                 <div class="panel-footer">
                                    <span class="pull-right">ניהול מערכת</span>
                                     <span class="pull-left"><i class="fa  fa-folder-open fa-5x"></i></span>

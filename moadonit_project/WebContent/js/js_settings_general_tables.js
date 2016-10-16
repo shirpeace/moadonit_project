@@ -1,8 +1,9 @@
 var selectedTab;
 var pupilID;
 var tableName, query, whereclause, columnsData;
-var colname = new Array() ;
+var colname = new Array() ; // column array for jqgrid
 var tablePk;
+var  cols; // original column array from server
 jQuery(document).ready(function() {	
 	selectedTab = "OnTimeReg";
 	$('#ulTabs').on('click', 'a', function(e) {
@@ -71,93 +72,7 @@ jQuery(document).ready(function() {
 });
 
 
-var onclickSubmitLocal = function (options, postdata) {debugger;
-    var $this = $(this), p = $(this).jqGrid("getGridParam"),// p = this.p,
-        idname = p.prmNames.id,
-        id = this.id,
-        idInPostdata = id + "_id",
-        rowid = postdata[idInPostdata],
-        addMode = rowid === "_empty",
-        oldValueOfSortColumn,
-        newId,
-        idOfTreeParentNode;
-
-    // postdata has row id property with another name. we fix it:
-    if (addMode) {
-        // generate new id
-        newId = $.jgrid.randId();
-        while ($("#" + newId).length !== 0) {
-            newId = $.jgrid.randId();
-        }
-        postdata[idname] = String(newId);
-    } else if (postdata[idname] === undefined) {
-        // set id property only if the property not exist
-        postdata[idname] = rowid;
-    }
-    delete postdata[idInPostdata];
-
-    // prepare postdata for tree grid
-    if (p.treeGrid === true) {
-        if (addMode) {
-            idOfTreeParentNode = p.treeGridModel === "adjacency" ? p.treeReader.parent_id_field : "parent_id";
-            postdata[idOfTreeParentNode] = p.selrow;
-        }
-
-        $.each(p.treeReader, function () {
-            if (postdata.hasOwnProperty(this)) {
-                delete postdata[this];
-            }
-        });
-    }
-
-    // decode data if there encoded with autoencode
-    if (p.autoencode) {
-        $.each(postdata, function (n, v) {
-            postdata[n] = $.jgrid.htmlDecode(v); // TODO: some columns could be skipped
-        });
-    }
-
-    // save old value from the sorted column
-    oldValueOfSortColumn = p.sortname === "" ? undefined : $this.jqGrid("getCell", rowid, p.sortname);
-
-    // save the data in the grid
-    if (p.treeGrid === true) {
-        if (addMode) {
-            $this.jqGrid("addChildNode", newId, p.selrow, postdata);
-        } else {
-            $this.jqGrid("setTreeRow", rowid, postdata);
-        }
-    } else {
-        if (addMode) {
-            $this.jqGrid("addRowData", newId, postdata, options.addedrow);
-        } else {
-            $this.jqGrid("setRowData", rowid, postdata);
-        }
-    }
-
-    if ((addMode && options.closeAfterAdd) || (!addMode && options.closeAfterEdit)) {
-        // close the edit/add dialog
-        $.jgrid.hideModal("#editmod" + $.jgrid.jqID(id), {
-            gb: "#gbox_" + $.jgrid.jqID(id),
-            jqm: options.jqModal,
-            onClose: options.onClose
-        });
-    }
-
-    if (postdata[p.sortname] !== oldValueOfSortColumn) {
-        // if the data are changed in the column by which are currently sorted
-        // we need resort the grid
-        setTimeout(function () {
-            $this.trigger("reloadGrid", [{current: true}]);
-        }, 100);
-    }
-
-    // !!! the most important step: skip ajax request to the server
-    //options.processing = true;
-    return {};
-}
-
-,editSettings = {
+var editSettings = {
         //recreateForm: true,
         jqModal: false,
         reloadAfterSubmit: true,
@@ -215,9 +130,18 @@ var onclickSubmitLocal = function (options, postdata) {debugger;
     };
 
 var mydata = {}, existingProperties = {},
-numberTemplate = {formatter: 'number', sorttype: 'int'},
+floatTemplate = {formatter: 'number', sorttype: 'int'},
+integerTemplate = {formatter: 'integer', sorttype: 'int'},
+inLineErrorfunc = function (rowID, response) {
+	alert(rowID);
+	debugger;
+    // todo: why this does not allow Enter key to continue ase after error:
+	$.jgrid.info_dialog($.jgrid.errors.errcap,'<div class="ui-state-error">'+
+		    response.responseText +'</div>', $.jgrid.edit.bClose,{buttonalign:'right'});
+},
 dateTemplate = {
     editable: true,
+    
     searchoptions: {
         dataInit: function (el) {
             var self = this;
@@ -326,7 +250,10 @@ timeTemplate = {
 		   edit: false,
 		   add: false,
 		   del: true,
-		   search:false
+		   search:false,
+		   refresh:false,
+		   position : "right",
+		   alertcap: "שים לב"
 	}
 	,inlinNavParameters = { 
 			   edit: true,
@@ -338,17 +265,26 @@ timeTemplate = {
 			   cancel: true,
 			   cancelicon:"ui-icon-cancel",
 			   addParams : {useFormatter : false},
-			   editParams : {},
-			   del: true
+			   editParams : { errorfunc: function (rowID, response) {
+				   debugger;
+					alert(response.responseText);
+				    // todo: why this does not allow Enter key to continue ase after error:
+					$.jgrid.info_dialog("שגיאה",'<div class="ui-state-error">'+
+						    response.responseText +'</div>', "סגור",{buttonalign:'right', modal : true});
+					/*$.jgrid.info_dialog($.jgrid.errors.errcap,'<div class="ui-state-error">'+
+						    response.responseText +'</div>', $.jgrid.edit.bClose,{buttonalign:'right'});*/
+				}},
+			   del: true,
 			   
-	};
+			   
+	} ;
 
 /**
  * set the client array of cols (colname Object) wich is used in grid 
  * @param result - the array  object from server with the cols data
  */
 function setColModelFormResult(result){
-	var  cols = JSON.parse(result);
+	 cols = JSON.parse(result);
 	//Loop into the column values collection and push into the array.
 	$.each(cols, function () {
 
@@ -360,7 +296,7 @@ function setColModelFormResult(result){
 	        hidden: this.IsHidden //|| !existingProperties.hasOwnProperty(this.Name)
 	        ,
 	        editable : !this.IsKey,
-	        editoptions: this.DefaultValue != null && this.DefaultValue != "" ? { defaultValue: this.DefaultValue } : {},
+	        //editoptions: this.DefaultValue != null && this.DefaultValue != "" ? { defaultValue: this.DefaultValue } : {},
 	        editrules: { required: this.IsRequired },
 	        label : this.label,
 	        key: this.IsKey,
@@ -368,16 +304,19 @@ function setColModelFormResult(result){
 	    };
 	switch (this.Datatype) {
 	    case 'int':
+	    	/*$.extend(true, cm, { template: integerTemplate }, { editrules: {integer : true} });*/
+	    	 $.extend(true, cm, { template: integerTemplate } , { editrules: { integer: true } });
+	    	 break;
 	    case 'float':
-	        $.extend(true, cm, { template: numberTemplate });
+	        $.extend(true, cm, { template: floatTemplate }  , { editrules: { number: true } });
 	        lastFieldName = cm.name; //Store the fieldName.
 	        break;
 	    case 'Date':
-	        $.extend(true, cm, { template: dateTemplate });
+	        $.extend(true, cm, { template: dateTemplate } , { editrules: { date: true } });
 	        lastFieldName = cm.name;
 	        break;
 	    case 'time':
-	        $.extend(true, cm, { template: timeTemplate });
+	        $.extend(true, cm, { template: timeTemplate } , { editrules: { time: true } });
 	        lastFieldName = cm.name;
 	        break; 
 	    case 'dropdown':
@@ -411,51 +350,151 @@ function getGeneralGrid(){
 				
 				setColModelFormResult(data.cols);
 				
+				
 				// preper the rows data to be used in grid
-				var rows = JSON.parse(data.rows);
+				//var rows = JSON.parse(data.rows);
+				var deleteMessage = function(response,postdata){
+			        var json   = response.responseText; // response text is returned from server.
+			        var result = JSON.parse(json); // convert json object into javascript object.
+			        
+			        return [result.status,result.message,null]; 
+			    };
+			    var grid = $("#list");
 				
-				
-				
-				$("#list").jqGrid(
+			    grid.jqGrid(
 						{
 
 							
-							datatype : "local",
+							url : "LogisticsController?action=getGridRows&tableName=" +tableName,
+							datatype : "json",
+							mtype : 'POST',
 					        colModel: colname,
 							pager : '#pager',
 							autowidth : true,
 							shrinkToFit : true,
 							rowNum : 30,
-							rowList : [],
-							
+							rowList : [],						
 							direction : "rtl",
 							viewrecords : true,
 							gridview : true,
 							height : "100%",
 							width : "100%",
-							editurl : "LogisticsController?action=edit&pupilID=123",
+							editurl : "LogisticsController?tableName=" + tableName,
 							jsonReader : {
 								repeatitems : false,
 							},
 							recreateFilter : true,
+							sortname : tablePk,
 							//pgbuttons : false, // disable page control like next, back
 							// button
 							//pgtext : null, // disable pager text like 'Page 0 of 10'
-							onInitGrid: function () {
-						        
-						        var p = $(this).jqGrid("getGridParam");
-
-						        // set data parameter
-						        p.data = rows;
-						    },
-						    
 							/*new change */
 							localReader: { id: tablePk },
 							prmNames: { id: tablePk },
 							/*new change*/
+							onInitGrid: function () {
+						        
+							       //var p = $(this).jqGrid("getGridParam");
+	
+							        // set data parameter
+							        //p.data = rows;
+							       
+							    
+						    },
+						    loadError : function(xhr,st,err) {
+						    	debugger;
+						    	jQuery("#rsperror").html("Type: "+st+"; Response: "+ xhr.status + " "+xhr.statusText);
+						    },
+							 errorTextFormat: function (response) {
+								 	alert(response.responseText);	 	
+								 	$(this).restoreAfterErorr = false;
+								 	var overlay = $('body > div.ui-widget-overlay'); //.is(":visible");
+									 if (overlay.is(":visible")) {
+										 
+										 
+									}
+								 	bootbox.alert("שגיאה במחיקת רשומה. נא נסה שוב.",
+											function() {
+									});
+								 				
+						            return true;
+						           
+							       
+							 }
+						    /*afterSubmit: function (response, postdata) {
+						    	
+						    	return [false,response.responseText] ;
+								   //debugger;
+									//alert(response.responseText);
+								    // todo: why this does not allow Enter key to continue ase after error:
+									$.jgrid.info_dialog("שגיאה",'<div class="ui-state-error">'+
+										    response.responseText +'</div>', "סגור",{buttonalign:'right', modal : true});
+									$.jgrid.info_dialog($.jgrid.errors.errcap,'<div class="ui-state-error">'+
+										    response.responseText +'</div>', $.jgrid.edit.bClose,{buttonalign:'right'});
+							}*/
+							/*serializeRowData: function(postdata) { 
+								
+								for (var int = 0; int < cols.length; int++) {
+									var col = cols[int];
+									var value;
+									switch (col.Datatype) {
+									    case 'int':
+									    case 'float':
+									      
+									        break;
+									    case 'Date':
+									    case 'time':
+									    	var fieldValue = postdata[col.Name];
+									    	if(fieldValue != undefined){
+										    	value = getDateFromValue(fieldValue);
+										        postdata[col.Name] = value.getTime();
+											}
+									    
+									        break; 
+									    case 'dropdown':
+									      
+									        break;
+									    default:
+									        break;
+									}
+									
+								}
+								return postdata;
+								//return { rtm : JSON.stringify(createPostData(pupilID, postdata,true)), _oldDateVal: oldDateVal.getTime() , _oldEndDate: oldEndDate.getTime() } ;
+					        }*/
+							
 						}).jqGrid("navGrid", "#pager", navParams)
-				 .jqGrid("inlineNav","#pager", inlinNavParameters );
+						.jqGrid("inlineNav","#pager", inlinNavParameters );
+			        
+				$.extend($.jgrid.inlineEdit, { restoreAfterError: false });
+				
+				var originalDelFunc = $.fn.jqGrid.delGridRow;
+			    $.fn.jqGrid.delGridRow = function (rowids, oMuligrid) {
+			        /*var onPreDeleteRowEventHandler = this.getGridParam('onPreDeleteRow'),
+			            consumeFlag = false;*/
+			        $.extend(oMuligrid, { afterSubmit: function(){ retrun [false,"error", null]; } });
+			        originalDelFunc.call(this, rowids, oMuligrid);
+			        
+			       /* if (typeof onPreDeleteRowEventHandler === 'function') {
+			            consumeFlag = !!onPreDeleteRowEventHandler(rowids, oMuligrid);
+			        }
+
+			        if (!consumeFlag) {
+			            originalDelFunc.call(this, rowids, oMuligrid);
+			        }*/
+			    };
 				  
+			    /*grid.jqGrid(
+			            	'setGridParam',
+				            {
+				                onPreDeleteRow: function(rowids, oMuligrid) {
+				                    // remove client data here
+				                	alert("onPreDeleteRow event");
+				                }
+			            		
+				            }
+		      );*/
+			    
 			} else
 				alert("לא קיימים נתונים");
 		},
@@ -613,6 +652,9 @@ function getCourseIds(){
 	});
 }
 
+/******
+ NOT IN USE FROM HERE TO END 
+ ******/
 
 $.each(mydata, function () {
 	var p;
@@ -622,3 +664,90 @@ $.each(mydata, function () {
 	    }
 	}
 });
+
+var onclickSubmitLocal = function (options, postdata) {debugger;
+var $this = $(this), p = $(this).jqGrid("getGridParam"),// p = this.p,
+    idname = p.prmNames.id,
+    id = this.id,
+    idInPostdata = id + "_id",
+    rowid = postdata[idInPostdata],
+    addMode = rowid === "_empty",
+    oldValueOfSortColumn,
+    newId,
+    idOfTreeParentNode;
+
+// postdata has row id property with another name. we fix it:
+if (addMode) {
+    // generate new id
+    newId = $.jgrid.randId();
+    while ($("#" + newId).length !== 0) {
+        newId = $.jgrid.randId();
+    }
+    postdata[idname] = String(newId);
+} else if (postdata[idname] === undefined) {
+    // set id property only if the property not exist
+    postdata[idname] = rowid;
+}
+delete postdata[idInPostdata];
+
+// prepare postdata for tree grid
+if (p.treeGrid === true) {
+    if (addMode) {
+        idOfTreeParentNode = p.treeGridModel === "adjacency" ? p.treeReader.parent_id_field : "parent_id";
+        postdata[idOfTreeParentNode] = p.selrow;
+    }
+
+    $.each(p.treeReader, function () {
+        if (postdata.hasOwnProperty(this)) {
+            delete postdata[this];
+        }
+    });
+}
+
+// decode data if there encoded with autoencode
+if (p.autoencode) {
+    $.each(postdata, function (n, v) {
+        postdata[n] = $.jgrid.htmlDecode(v); // TODO: some columns could be skipped
+    });
+}
+
+// save old value from the sorted column
+oldValueOfSortColumn = p.sortname === "" ? undefined : $this.jqGrid("getCell", rowid, p.sortname);
+
+// save the data in the grid
+if (p.treeGrid === true) {
+    if (addMode) {
+        $this.jqGrid("addChildNode", newId, p.selrow, postdata);
+    } else {
+        $this.jqGrid("setTreeRow", rowid, postdata);
+    }
+} else {
+    if (addMode) {
+        $this.jqGrid("addRowData", newId, postdata, options.addedrow);
+    } else {
+        $this.jqGrid("setRowData", rowid, postdata);
+    }
+}
+
+if ((addMode && options.closeAfterAdd) || (!addMode && options.closeAfterEdit)) {
+    // close the edit/add dialog
+    $.jgrid.hideModal("#editmod" + $.jgrid.jqID(id), {
+        gb: "#gbox_" + $.jgrid.jqID(id),
+        jqm: options.jqModal,
+        onClose: options.onClose
+    });
+}
+
+if (postdata[p.sortname] !== oldValueOfSortColumn) {
+    // if the data are changed in the column by which are currently sorted
+    // we need resort the grid
+    setTimeout(function () {
+        $this.trigger("reloadGrid", [{current: true}]);
+    }, 100);
+}
+
+// !!! the most important step: skip ajax request to the server
+//options.processing = true;
+return {};
+};
+

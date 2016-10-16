@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.swing.text.StyledEditorKit.BoldAction;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -79,6 +81,25 @@ public class LogisticsDAO extends AbstractDAO {
 		return row;
 	}
 	
+	public int executeSql(String query, String oper){
+		int result = -1;
+		
+		try (PreparedStatement statement = DAOUtil.prepareStatement(
+				this.con.getConnection(), query,false, new Object[] { });) {
+		
+			result  = statement.executeUpdate();
+					
+		
+		} catch (SQLException e) {
+			if(e.getErrorCode() == 1451){
+				throw new DAOException("לא ניתן למחוק רשומה זו ,הרשומה משמשת כנתון בטבלאות אחרות",e);
+			}
+			throw new DAOException(e);
+		}
+		
+		return result;
+	}
+	
 	public String selectValues(String Query, HashMap<String,String> options ,String... Fileds ) throws IllegalArgumentException,
 	DAOException {
 
@@ -109,11 +130,37 @@ public class LogisticsDAO extends AbstractDAO {
 	return res;
 	}
 	
+	public int getTableRowCount(String Query ) throws IllegalArgumentException,
+	DAOException {
+
+		int count = -1;
+		
+		try (PreparedStatement statement = DAOUtil.prepareStatement(
+				this.con.getConnection(), Query,false, new Object[] { });
+				ResultSet resultSet = statement.executeQuery();) {
+		
+			while (resultSet.next()) {
+				//res +=  resultSet.getObject(Fileds[0]).toString() + ":" + resultSet.getObject(Fileds[1]).toString();
+				count = resultSet.getInt(1);
+				
+			}
+		
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+	
+		return count;
+	}
+	
 	@SuppressWarnings("unchecked")
-	public JSONArray GetGridData(String table, ArrayList<Object[]> arrlist) {
+	public JSONArray GetGridData(String table, ArrayList<Object[]> arrlist , String sind, String sord, int rowOffset, int rowsPerPage ) {
 		// TODO Auto-generated method stub
 		JSONArray list = new JSONArray();
-		String Query = "SELECT * FROM " + table + ";"; 
+		String Query = "SELECT * FROM " + table + " "; 
+		if(rowOffset == 0 && rowsPerPage == 0)
+			Query += " ORDER BY "+ sind +" "+ sord ;		
+		else
+			Query += " ORDER BY "+ sind +" "+ sord + " LIMIT " + rowOffset + ", " + rowsPerPage + "";
 		//pupilNum, , , , , , numOfDays, RegDays, Comments
 		try (PreparedStatement statement = DAOUtil.prepareStatement(this.con.getConnection(), Query, false, new Object[] {});
 				ResultSet resultSet = statement.executeQuery();) {

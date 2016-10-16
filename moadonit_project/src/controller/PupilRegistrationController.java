@@ -757,10 +757,10 @@ public class PupilRegistrationController extends HttpServlet implements
 
 			for (RegToMoadonit regPupil : this.pupilRegList) {
 				JSONObject user = new JSONObject();
-
+				
 				user.put("startDate", regPupil.getId().getStartDate().getTime());
-				user.put("registerDate", regPupil.getRegisterDate().getTime());
-				user.put("endDate", regPupil.getEndDate().getTime());
+				user.put("registerDate",regPupil.getRegisterDate() != null ?  regPupil.getRegisterDate().getTime() : "");				
+				user.put("endDate", regPupil.getEndDate() != null ? regPupil.getEndDate().getTime() : "");
 				user.put("sunday", getRegTypeName(regPupil.getTblRegType1().getTypeNum()));
 				user.put("monday", getRegTypeName(regPupil.getTblRegType2().getTypeNum()));
 				user.put("tuesday", getRegTypeName(regPupil.getTblRegType3().getTypeNum()));

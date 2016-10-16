@@ -108,7 +108,7 @@ public class FullPupilCardController extends HttpServlet implements
 		// TODO Auto-generated method stub
 
 		// check and set connection to session
-		
+		checkConnection(req, resp);
 		gradeDAO = new GradeCodeDAO(con);
 		generalDAO = new GeneralDAO(con);
 		this.fullPupilDao = new FullPupilCardDAO(con);
@@ -265,7 +265,9 @@ public class FullPupilCardController extends HttpServlet implements
 		this.regPupilDao = new RegisterPupilDAO(con);
 		this.fullPupilDao = new FullPupilCardDAO(con);
 		this.gradePupilDAO = new GradePupilDAO(con);
-
+		this.gradeDAO = new GradeCodeDAO(con);
+		this.generalDAO = new GeneralDAO(con);
+		
 		action = req.getParameter("action");
 		rows = req.getParameter("rows") != null ? Integer.parseInt(req
 				.getParameter("rows")) : 0;

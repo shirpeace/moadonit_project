@@ -326,6 +326,7 @@ public class RegToMoadonitDAO extends AbstractDAO {
 		                throw new DAOException("Deleting registration failed, no rows affected.");		                
 		            } else {
 		            	regToUpdate.setId(null);
+		            	
 		            	return true;
 		            }
 		        } catch (SQLException e) {

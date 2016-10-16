@@ -136,15 +136,19 @@
 			<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav side-nav">
-					<li><a href="" style="font-size: 120%; pointer-events: none;">
-							<i class="fa fa-fw fa-users"></i> תלמידים
-					</a> <br></li>
-					<li class="active"><a href="pupils_search.jsp"><i
-							class="fa fa-fw fa-search"></i> חיפוש</a></li>
-					<!-- <li><a href="pupils_phones.jsp"><i
-							class="fa fa-fw fa-phone"></i> דפי קשר</a></li> -->
-					<li><a href="pupil_add.jsp"><i class="fa fa-fw fa-edit"></i>
-							הוספת חדש</a></li>
+					 <li>
+                        <a href="#" style="font-size: 120%; pointer-events: none;"> <i class="fa fa-fw fa-cutlery"></i> ניהול מערכת</a>
+                        <br>
+                     </li> 
+                     <li class="active">
+                        <a href= "#"><i class="fa fa-fw fa-file-o"></i>  טבלאות מערכת</a>
+                     </li> 
+                     <li>
+                        <a href= "cater_order.jsp"><i class="fa fa-fw fa-file-o"></i> קייטרינג</a>
+                     </li> 
+                     <li>
+                        <a href= "#"><i class="fa fa-fw fa-file-text-o"></i> צוות המועדונית</a>
+                     </li>
 				</ul>
 			</div>
 			<!-- /.navbar-collapse -->
@@ -370,7 +374,7 @@
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h3 class="panel-title pull-right">
-								<i class="fa fa-info fa-fw"></i> כל התלמידים
+								<i class="fa fa-info fa-fw"></i> פרטי טבלה
 							</h3>
 							<!-- <label for="isReg" class="pull-left" >�¨�©��</label> <select
 															class="form-control pull-left col-lg-1"  id="isReg" name="sunday"
@@ -385,11 +389,11 @@
 									onclick="exportData('0','pdf', 'list');">
 									<img alt="" src="resources/images/pdf-icon.png">
 									</a> -->
-								 <a
+							<!-- 	 <a
 									href="javascript:void(0);"
 									onclick="exportData('0','xls', 'list','רשימת תלמידים','pupil list');">
 									<img alt="" src="resources/images/Excel-icon.png" style="border-radius:15%; margin-right: 10px;">
-								</a>
+								</a> -->
 								
 								<!-- 								 <a
 									href="javascript:void(0);"
@@ -399,7 +403,7 @@
 							
 							</div>
 
-							<button id="resetBtn" class="pull-left btn btn-primary">נקה חיפוש</button>
+							<!-- <button id="resetBtn" class="pull-left btn btn-primary">נקה חיפוש</button> -->
 							<div class="clearfix"></div>
 						</div>
 						<div class="panel-body">
@@ -409,7 +413,7 @@
                                 </div> -->
 						
 							<div class="table-responsive col-lg-12">
-								<table class="table table-bordered table-hover table-striped"
+								<table class="table table-bordered table-hover "
 									id="list" >
 
 									<tr>

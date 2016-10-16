@@ -35,6 +35,7 @@ import model.User;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 
 import util.DAOUtil;
@@ -143,7 +144,7 @@ public class LogisticsController extends HttpServlet implements Serializable {
 	}
 
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -151,19 +152,29 @@ public class LogisticsController extends HttpServlet implements Serializable {
 		req.setCharacterEncoding("UTF-8");
 		checkConnection(req, resp);
 		this.logDAO = new LogisticsDAO(con);
-		String action = req.getParameter("action");
+		String action = req.getParameter("action");		
+		String oper = req.getParameter("oper");		
+		
 		String tableName = req.getParameter("tableName");
 		String query = req.getParameter("query");
 		String whereclause = req.getParameter("whereclause");
-		String jsonResponse = "";
+		int rows = req.getParameter("rows") != null ? Integer.parseInt(req
+				.getParameter("rows")) : 0;
+		int page = req.getParameter("page") != null ? Integer.parseInt(req
+				.getParameter("page")) : 0;
+		String sidx  = req.getParameter("sidx");
+		String sord = req.getParameter("sord");
 		
-		this.jsonArry = new JSONArray();
-		this.jsonData = new JSONArray(); 
 		try {
-			if (action.equals("getMetaData")){
-				ArrayList<Object[]> arrlist = new ArrayList<Object[]>();
+			ArrayList<Object[]> arrlist = new ArrayList<Object[]>();
+			
+			if (action != null && action.equals("getMetaData")){
+				this.jsonArry = new JSONArray();
+				this.jsonData = new JSONArray(); 
+				
 				arrlist =  this.getData(tableName, query, whereclause, jsonData);
-				this.jsonData = this.logDAO.GetGridData( tableName,  arrlist);
+				setDataInSession(req, resp, arrlist, "arrlist");				
+				//this.jsonData = this.logDAO.GetGridData( tableName,  arrlist ,sidx, sord ,rows* (page - 1), rows);
 				
 				
 				for (Object[] objects : arrlist) {
@@ -178,7 +189,7 @@ public class LogisticsController extends HttpServlet implements Serializable {
 				    	Entry<String, Object> pair = (Entry<String, Object>)it.next();
 				        o.put(pair.getKey(),  pair.getValue());
 				    	System.out.println(pair.getKey() + " = " + pair.getValue());
-				        it.remove(); // avoids a ConcurrentModificationException
+				        //it.remove(); // avoids a ConcurrentModificationException
 				        
 				    }
 				    
@@ -188,37 +199,257 @@ public class LogisticsController extends HttpServlet implements Serializable {
 				
 				
 				resultToClient.put("cols", this.jsonArry.toJSONString());
-				resultToClient.put("rows", this.jsonData.toJSONString());
-
+				//resultToClient.put("rows", this.jsonData.toJSONString());
+				setDataInSession(req, resp, jsonArry , "ColData");
+				
 				resp.setContentType("application/json");
 				resp.setCharacterEncoding("UTF-8");
 				resp.getWriter().print(resultToClient);
 				
 			}
-			else if (action.equals("getGridData")){
-				switch (tableName) {
-				case "tbl_staff":
-					
-					break;
+			else if (action != null && action.equals("getGridRows")){
+				
+				arrlist = (ArrayList<Object[]>) getDataInSession(req, resp, "arrlist");	
+				this.jsonData = this.logDAO.GetGridData( tableName,  arrlist ,sidx, sord ,rows* (page - 1), rows);
+				String jsonResponse = this.jsonData.toJSONString();
+				
+				int totalCount = this.logDAO.getTableRowCount("select count(*) from " + tableName);
+				int totalPages;
+				if (totalCount > 0) {
+					if (totalCount % rows == 0) {
+						totalPages = totalCount / rows;
+					} else {
+						totalPages = (totalCount / rows) + 1;
+					}
 
-				default:
-					break;
+				} else {
+					totalPages = 0;
+				}
+				
+				jsonResponse = "{\"page\":" + page + ",\"total\":"
+						+ totalPages + ",\"records\":" + totalCount
+						+ ",\"rows\":" + jsonResponse + "}";
+
+				resp.setContentType("application/json");
+				resp.setCharacterEncoding("UTF-8");
+				resp.getWriter().print(jsonResponse);
+			}
+
+			if(oper != null){
+				String sql ="";
+				String where = "where ";
+				tableName = req.getParameter("tableName");
+				
+				if(jsonArry == null || jsonArry.size()== 0){
+					jsonArry = (JSONArray)getDataInSession(req, resp, "ColData");
+
+				}
+				
+				if(oper.equals("edit")){
+					this.updateRowInTable( sql, tableName, where, req, resp);
+
+				}
+				else if(oper.equals("add")){
+					insertRowInTable(sql, tableName, req, resp);
+				}
+				else if(oper.equals("del")){
+					deleteRowInTable(sql, tableName,where, req, resp);
 				}
 			}
-			
 			//
-		} catch (Exception e) {
+		}catch (SQLException e) {
+			// TODO Auto-generated catch block
+			resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			resp.setContentType("application/json");
+			resp.setCharacterEncoding("UTF-8");
+
+			resultToClient.put("msg", 0);
+			resultToClient.put("result", null);
+			resp.getWriter().print(resultToClient);
+
+			e.printStackTrace();
+		} 
+		catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 			resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			resp.setContentType("application/json");
 			resp.setCharacterEncoding("UTF-8");			
-			resultToClient.put("msg", 0);
-			resultToClient.put("result", null);
-			resp.getWriter().print(resultToClient);
+			
+			resp.getWriter().print(e.getMessage());
 		}
 	}
+	private int deleteRowInTable(String sql,String tableName,String where, HttpServletRequest req,
+			HttpServletResponse resp) throws IOException, SQLException {
 	
+		int result;
+		sql = "DELETE FROM " + tableName +" ";
+		for (Iterator iterator = jsonArry.iterator(); iterator.hasNext();) {
+			JSONObject col = (JSONObject) iterator.next();
+			
+			boolean isKey = (boolean)col.get("IsKey");
+			if(isKey){
+				if(req.getParameter((String)col.get("Name")) != null){
+			    	where +=  " " + (String)col.get("Name") + " = " + req.getParameter((String)col.get("Name"))  + " AND";						    	
+		    	}
+			}			
+		}
+		
+		if(sql.endsWith(" ,"))
+			sql = sql.substring(0, sql.length()-2);
+		
+		if(where.endsWith(" AND"))
+			where = where.substring(0, where.length()-4);
+		
+		sql += " " + where;
+		return result = this.logDAO.executeSql(sql, null);
+		
+	}
+	
+	private int insertRowInTable(String sql,String tableName,  HttpServletRequest req,
+			HttpServletResponse resp) throws IOException, SQLException {
+		
+		int result;
+		sql = "INSERT INTO " + tableName + "( ";
+		String values = "VALUES ( ";
+		
+		for (Iterator iterator = jsonArry.iterator(); iterator.hasNext();) {
+			JSONObject col = (JSONObject) iterator.next();
+			
+				boolean isKey = (boolean)col.get("IsKey");
+				if(isKey && !(boolean)col.get("IsRequired")){
+					continue;
+				}
+			
+				if(req.getParameter((String)col.get("Name")) != null){
+					String fieldValue = req.getParameter((String)col.get("Name"));
+					if(col.get("Datatype").equals("String") || col.get("Datatype").equals("Time")){
+						
+						sql += " " + (String)col.get("Name") + ",";
+						
+						values += " '" + fieldValue + "',";
+					}
+					else if(col.get("Datatype").equals("Date")){
+						if(fieldValue.trim().length() > 0){
+							String[] s = req.getParameter((String)col.get("Name")).split("/");
+							String datVal = s[2] + "-" +s[1] + "-" +s[0];
+							
+							sql += " " + (String)col.get("Name") + ",";
+							
+							values += " '" + datVal + "',";
+						}
+						else{
+							sql += " " + (String)col.get("Name") + ",";
+							
+							values += " '" + fieldValue + "',";
+						}
+						
+					}
+					else{
+						sql += " " + (String)col.get("Name") + ",";
+						
+						values += " " + fieldValue + ",";
+					}
+		    		
+		    	}
+			
+			
+		}
+		
+		if(sql.endsWith(","))
+			sql = sql.substring(0, sql.length()-1);
+		
+		if(values.endsWith(","))
+			values = values.substring(0, values.length()-1);
+		
+		sql += " )" + values + " )";
+		
+		return result = this.logDAO.executeSql(sql, null);
+		
+	}
+	
+	private int updateRowInTable(String sql,String tableName,String where,  HttpServletRequest req,
+			HttpServletResponse resp) throws IOException, SQLException {
+		
+		int result;
+		sql = "UPDATE " + tableName + " SET ";
+		for (Iterator iterator = jsonArry.iterator(); iterator.hasNext();) {
+			JSONObject col = (JSONObject) iterator.next();
+			
+			boolean isKey = (boolean)col.get("IsKey");
+			if(isKey){
+				if(req.getParameter((String)col.get("Name")) != null){
+			    	where +=  " " + (String)col.get("Name") + " = " + req.getParameter((String)col.get("Name"))  + " AND";						    	
+		    	}
+			}
+			else{
+				if(req.getParameter((String)col.get("Name")) != null){
+					String fieldValue = req.getParameter((String)col.get("Name"));
+					if(col.get("Datatype").equals("String") || col.get("Datatype").equals("Time")){
+						
+					    sql += " " + (String)col.get("Name") + " = '" + req.getParameter((String)col.get("Name")) + "' ,";
+					}
+					else if(col.get("Datatype").equals("Date")){
+						if(fieldValue.trim().length() > 0){
+							String[] s = fieldValue.split("/");
+							String datVal = s[2] + "-" +s[1] + "-" +s[0];
+							sql += " " + (String)col.get("Name") + " = '" + datVal + "' ,";
+						}
+						else{
+							sql += " " + (String)col.get("Name") + " = null ,";
+						}
+						
+					}
+					else{
+						if(fieldValue.trim().length() > 0){
+							sql += " " + (String)col.get("Name") + " = " + fieldValue + " ,";
+						}
+						else{
+							sql += " " + (String)col.get("Name") + " = null ,";
+						}
+						
+					}
+		    		
+		    	}
+			}
+			
+		}
+		
+		if(sql.endsWith(" ,"))
+			sql = sql.substring(0, sql.length()-2);
+		
+		if(where.endsWith(" AND"))
+			where = where.substring(0, where.length()-4);
+		
+		sql += " " + where;
+		return result = this.logDAO.executeSql(sql, null);
+		
+	}
+	
+	protected Object getDataInSession(HttpServletRequest req,
+			HttpServletResponse resp, String Key) throws ServletException, IOException {
+		HttpSession session = req.getSession();
+		Object data = null;
+		if (session.getAttribute(Key) != null) {
+			data =  session.getAttribute(Key);			
+		} 
+		
+		return data;
+	}
+	
+	
+	protected void setDataInSession(HttpServletRequest req,
+			HttpServletResponse resp,Object jsonArryCols , String Key) throws ServletException, IOException {
+		HttpSession session = req.getSession();
+
+			try {
+				session.setAttribute(Key, jsonArryCols);
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
 	
 	@SuppressWarnings("unchecked")
 	protected ArrayList<Object[]> getData(String tableName,String query,String whereclause, JSONArray gridData){
@@ -239,8 +470,12 @@ public class LogisticsController extends HttpServlet implements Serializable {
 				
 				String name = key.getValue();
 				boolean isKey = keysColComments.get(key)[1].equals("PRI")  ?  true : false;
-				boolean isH = keysColComments.get(key)[1].equals("PRI") &&  keysColComments.get(key)[2].equals("auto_increment")  ?  true : false  ;
-				boolean isR = false;
+				boolean isHidden = false, isRequired = false;
+				if(isKey){
+					 isHidden = keysColComments.get(key)[2].equals("auto_increment")  ?  true : false  ;
+					 isRequired = !isHidden;
+				}
+				
 				String type = GetColType(keysColComments.get(key)[0]);
 				String label = "";
 				String comboQuery = "";
@@ -273,7 +508,7 @@ public class LogisticsController extends HttpServlet implements Serializable {
 				
 				HashMap<String,String> comboOptions = new HashMap<String, String>();
 				
-				HashMap<String, Object> mapProp = setColOptions(name,label, isKey,isH, isR, null, type, comboQuery,comboOptions, comboFields  );
+				HashMap<String, Object> mapProp = setColOptions(name,label, isKey,isHidden, isRequired, null, type, comboQuery,comboOptions, comboFields  );
 				arrlist.add(new Object[] { key , mapProp, comboOptions });
 				
 				//arrlist.get(0)[1] = setColOptions(name,label, isKey,isH, isR, null, type, comboQuery, comboFields );
