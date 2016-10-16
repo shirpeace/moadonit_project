@@ -315,7 +315,8 @@ Serializable {
 				resp.getWriter().print(resultToClient);*/
 			}
 			else if (action.equals("getCourseForReport")){
-				List<Activity> list = getCourses();
+				int year = Integer.parseInt(req.getParameter("year"));
+				List<Activity> list = getCourses(year);
 				jsonArry = new JSONArray();
 				if(!list.isEmpty()){
 					for (Activity activity : list) {
@@ -590,6 +591,7 @@ Serializable {
 		String html = "<!DOCTYPE html><html lang=\"he\" ><head> <meta charset=\"utf-8\" /><style script='css/text'>table.tableList_1 th {border:1px solid #a8da7f; border-bottom:2px solid #a8da7f; text-align:center; vertical-align: middle; padding:5px; background:#e4fad0;}table.tableList_1 td {border:1px solid #a8da7f; text-align: left; vertical-align: top; padding:5px;} div.tableTitle {  font-size: 16px; font-weight: bold; vertical-align: middle}</style></head><body dir=\"rtl\">";
 		int month;
 		int year;
+		Date d;
 		Long monthTime;
 		Map<Integer, Object> map;
 		switch (pageName) {
@@ -679,8 +681,22 @@ Serializable {
 				//List<FullPupilCard> list = null;
 				//query = "SELECT COLUMN_NAME, COLUMN_COMMENT, TABLE_NAME FROM information_schema.columns ";
 				whereClouse = " WHERE (table_name = 'tbl_pupil' or table_name = 'tbl_one_time_reg' or table_name = 'tbl_grade_code' or table_name = 'tbl_reg_types'); ";
-				 month = Integer.parseInt(req.getParameter("month"));
-				 year = Integer.parseInt(req.getParameter("year"));
+				/* month = Integer.parseInt(req.getParameter("month"));
+				 year = Integer.parseInt(req.getParameter("year"));*/
+				monthTime = Long.parseLong(req.getParameter("month"));
+				 
+				  d = new Date(monthTime);
+				 
+				 calendar = Calendar.getInstance();
+				 calendar.clear();
+				 calendar.setTime(d);
+				 month = (calendar.get(Calendar.MONTH)+1);
+				 year = calendar.get(Calendar.YEAR);
+				// Date fDay = calendar.getTime();
+				// calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+				// Date eDay = calendar.getTime();
+				 
+				
 				this.regDAO = new RegToMoadonitDAO(con);
 				regTypes = this.regDAO.getRegTypeCodes();
 				
@@ -693,7 +709,8 @@ Serializable {
 				//list = pupilControler.searchPupilList(req, resp, 0, 0); // get list of rows to add
 				//pupilControler.getJsonForExport(jsonList, list);
 				
-				pageHead = "רישום חד פעמי";
+			//	pageHead = "רישום חד פעמי";
+				pageHead = "דוח רישום חד פעמי לחודש "+ month +"/" + year;
 				html += "<div class='tableTitle'>"+ pageHead + "</div>";
 				arrlist.add(new AbstractMap.SimpleEntry<>("tbl_grade_code","gradeName"));
 				arrlist.add(new AbstractMap.SimpleEntry<>("tbl_pupil","lastName"));
@@ -765,7 +782,7 @@ Serializable {
 			 
 			 monthTime = Long.parseLong(req.getParameter("month"));
 			 
-			 Date d = new Date(monthTime);
+			  d = new Date(monthTime);
 			 
 			 calendar = Calendar.getInstance();
 			 calendar.clear();
@@ -775,7 +792,7 @@ Serializable {
 			 calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 			 Date eDay = calendar.getTime();
 			 
-			pageHead = "דוח חיוב מועדונית";
+			pageHead = "דוח חיוב מועדונית לחודש "+ (calendar.get(Calendar.MONTH)+1) +"/" + calendar.get(Calendar.YEAR);
 			html += "<div class='tableTitle'>"+ pageHead + "</div>";
 			arrlist.add(new AbstractMap.SimpleEntry<>("tbl_grade_code","gradeName"));
 			arrlist.add(new AbstractMap.SimpleEntry<>("tbl_pupil","lastName"));
@@ -783,7 +800,7 @@ Serializable {
 			arrlist.add(new AbstractMap.SimpleEntry<>("tbl_gender_ref","genderName"));
 			arrlist.add(new AbstractMap.SimpleEntry<>("tbl_reg_to_moadonit","startDate"));	
 			arrlist.add(new AbstractMap.SimpleEntry<>("tbl_reg_to_moadonit","מספר ימים לחיוב"));	
-			arrlist.add(new AbstractMap.SimpleEntry<>("tbl_reg_to_moadonit","ימים בשבוע"));	
+			arrlist.add(new AbstractMap.SimpleEntry<>("tbl_reg_to_moadonit","ימי רישום"));	
 			arrlist.add(new AbstractMap.SimpleEntry<>("tbl_reg_to_moadonit","הערות"));				
 			
 			this.regDAO = new RegToMoadonitDAO(con);
@@ -817,15 +834,15 @@ Serializable {
 			 
 			 Date s = new Date(monthTime);
 			 
-			 /*calendar = Calendar.getInstance();
+			 calendar = Calendar.getInstance();
 			 calendar.clear();
 			 calendar.setTime(s);
 			 
-			 Date fDay = calendar.getTime();
+			 /*Date fDay = calendar.getTime();
 			 calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 			 Date eDay = calendar.getTime();*/
 			 
-			pageHead = "דוח קבוצות מועדונית";
+			pageHead = "דוח קבוצות מועדונית לתאריך "+ calendar.get(Calendar.DAY_OF_MONTH)+ "/" +(calendar.get(Calendar.MONTH)+1) +"/" + calendar.get(Calendar.YEAR);
 			html += "<div class='tableTitle'>"+ pageHead + "</div>";
 			
 			arrlist.add(new AbstractMap.SimpleEntry<>("tbl_grade_code","gradeName"));
@@ -887,13 +904,13 @@ Serializable {
 		{
 			Entry<String, String> key = arrlist.get(i);				
 			
-			if(keysColComments.get(key)[3] != null){
+			if(keysColComments.get(key) != null){
 				String title  = keysColComments.get(key)[3];					
 				theads = theads + "<th>" + title + "</th>";
 			}
 			else{
 				theads = theads + "<th>" + key.getValue() + "</th>";
-				System.out.println(key.getValue());
+			//	System.out.println(key.getValue());
 			}
 		}
 		
@@ -934,10 +951,9 @@ Serializable {
 		return html;
 	}
 	
-	private List<Activity> getCourses() {
-		// TODO Auto-generated method stub
+	private List<Activity> getCourses(int year) {
 		List<Activity> result = new ArrayList<>();		
-		result = this.actDOA.selectActivites(0);
+		result = this.actDOA.selectActivites(0, year);
 		return result;
 	}
 	

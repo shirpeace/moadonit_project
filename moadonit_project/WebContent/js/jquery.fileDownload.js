@@ -32,7 +32,7 @@ $.extend({
     //$.fileDownload('/path/to/url/', options)
     //  see directly below for possible 'options'
     fileDownload: function (fileUrl, options) {
-debugger;
+
         //provide some reasonable defaults to any unspecified options below
         var settings = $.extend({
 

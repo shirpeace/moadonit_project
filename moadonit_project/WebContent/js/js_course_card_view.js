@@ -127,6 +127,9 @@ $(function() {
 	getSelectValuesFromDB("getSatff", "Staff","ActivityController");
 	setSelectValues($('#responsibleStaff'), "Staff");
 	
+	getSelectValuesFromDB("getActGroup", "activityGroup","ActivityController", 1);
+	setSelectValues($('#activityGroupHead'), "activityGroup");
+	
 	var dataString = 'activityNum=' + activityNum + '&action=' + "getCourses";
 	loadCourseData(dataString);	
 	/* set the validation for form */ 
@@ -245,7 +248,8 @@ function setCourseData(courseData) {
 		$('#startTime').val(courseData.startTime);
 		$('#endTime').val(courseData.endTime);
 		
-		$('#activityGroup').val(courseData.activityGroup);
+	//	$('#activityGroup').val(courseData.activityGroup);
+		$('#activityGroupHead').val(courseData.activityGNum);
 
 		$('#pricePerMonth').val(courseData.pricePerMonth);
 		$('#extraPrice').val(courseData.extraPrice);

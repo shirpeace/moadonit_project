@@ -8,7 +8,7 @@ var currentUserId =	 '<%=session.getAttribute("userid")%>';
 //$.jgrid.defaults.responsive = true;
 //$.jgrid.defaults.styleUI = 'Bootstrap';
 var gradeData;
-var grades, FoodTypes , FamilyRelation, RegSource, Staff;
+var grades, FoodTypes , FamilyRelation, RegSource, Staff , activityGroup;
 var RegDatesToValid = { startDate:null, lastDateToReg : null , numOfDaysToModify : null};
 // define state for the editable page
 	var state = {
@@ -147,6 +147,8 @@ function isDateValidToReg(dateParam, endParam, idx , btn){
 		 
 		 setRegMsg(html,true, "alert alert-warning" , btn, true);
 		 return false;
+		
+		 
 /*		 if(btn){ // validate for outer form
 			 setRegMsg(html,true, "alert alert-warning" , btn, true);
 			 return false;
@@ -385,10 +387,12 @@ function setSelectValues(selectObj, valObj){
  * @param funcName - name of function to trigger in controller
  * @param objVal - javascript object name to set
  */
-function getSelectValuesFromDB(funcName,objName,ContorlName)
+function getSelectValuesFromDB(funcName,objName,ContorlName, actType)
 {
 
 	var url = ContorlName + "?action=" + funcName;
+	if (actType != undefined)
+		url += "&activityType=" + actType;
 	$.ajax({
   		async: false,
 		type: 'GET',
@@ -892,9 +896,21 @@ function saveCourseData(action, forward) {
 											});
 								}
 
-							} else {
+							} else { //if action=update
 								bootbox.alert("נתונים עודכנו בהצלחה",
 										function() {
+											getSelectValuesFromDB("getActGroup", "activityGroup","ActivityController", 1);
+											setSelectValues($('#activityGroupHead'), "activityGroup");
+											if(data.actGroupNum != null){
+												$('#activityGroupHead').val(data.actGroupNum);
+												$('.page-header').html($('#activityGroupHead option:selected' ).text() + "  -  " + $('#activityName' ).val() );
+											}
+											else
+												bootbox
+												.alert(
+														"על מנת להציג את הנתונים המעודכנים. לחץ על רענן בדפדפן.",
+														function() {
+														});
 										});
 
 							}

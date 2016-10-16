@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
 
+import model.ActivityGroup;
 import model.FamilyRelation;
 import model.FoodType;
 import model.GenderRef;
@@ -29,6 +30,7 @@ public class GeneralDAO extends AbstractDAO {
 	private String callfamilyRelationProc = "{ call ms2016.get_family_Relation(?) }"; // tbl_family_relation
 	private String callgetRegSourceProc = "{ call ms2016.get_Reg_Source(?) }"; //
 	private String get_Staff = "{ call ms2016.get_Staff(?) }"; // get_Staff
+	private String get_actGroup = "{ call ms2016.get_actGroup(? , ?) }"; // get_actGroup
 
 	private String getRegDatesToValid = "{ call ms2016.getRegDatesToValid() }"; // ;
 
@@ -37,6 +39,27 @@ public class GeneralDAO extends AbstractDAO {
 		// TODO Auto-generated constructor stub
 	}
 
+	public List<ActivityGroup> get_actGroup(int id, int atype) throws IllegalArgumentException,
+	DAOException {
+
+	List<ActivityGroup> list = new ArrayList<>();
+	try (PreparedStatement statement = DAOUtil
+			.prepareCallbackStatement(this.con.getConnection(),
+					get_actGroup, new Object[] { id , atype});
+			ResultSet resultSet = statement.executeQuery();) {
+	
+		while (resultSet.next()) {
+			ActivityGroup p = mapActGroup(resultSet);
+			list.add(p);
+		}
+
+} catch (SQLException e) {
+	throw new DAOException(e);
+}
+
+return list;
+}
+	
 	public List<Staff> get_Staff(int id) throws IllegalArgumentException,
 			DAOException {
 
@@ -123,7 +146,6 @@ public class GeneralDAO extends AbstractDAO {
 
 	private FamilyRelation mapFamilyRelation(ResultSet resultSet)
 			throws SQLException {
-		// TODO Auto-generated method stub
 		FamilyRelation fr = new FamilyRelation();
 		fr.setIdFamilyRelation(resultSet.getByte("id_family_relation"));
 		fr.setRelation(resultSet.getString("relation"));
@@ -149,9 +171,7 @@ public class GeneralDAO extends AbstractDAO {
 	}
 
 	private Staff mapStaff(ResultSet resultSet) throws IllegalArgumentException, SQLException {
-		// TODO Auto-generated method stub
 		Staff p = new Staff();
-		//staffID, firstName, lastName, cellphone, email
 		p.setStaffID(resultSet.getInt("staffID"));
 		p.setFirstName(resultSet.getString("firstName"));
 		p.setLastName(resultSet.getString("lastName"));
@@ -161,9 +181,16 @@ public class GeneralDAO extends AbstractDAO {
 		return p;
 	}
 	
+	private ActivityGroup mapActGroup(ResultSet resultSet) throws IllegalArgumentException, SQLException {
+		ActivityGroup p = new ActivityGroup();
+		p.setActivityGroupNum(resultSet.getInt("activityGroupNum"));
+		p.setActGroupName(resultSet.getString("actGroupName"));
+		
+		return p;
+	}
+	
 	public List<Object> getRegDatesToValid() throws IllegalArgumentException,
 			DAOException {
-		// TODO Auto-generated method stub
 		List<Object> list = new ArrayList<>();
 		try (PreparedStatement statement = DAOUtil.prepareCallbackStatement(
 				this.con.getConnection(), getRegDatesToValid, new Object[] {});

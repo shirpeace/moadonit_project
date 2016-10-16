@@ -168,7 +168,7 @@
                                 <h3 class="panel-title"><i class="fa fa-search fa-fw"></i> תכנית שבועית</h3>
                             </div>
                             <div class="panel-body">
-                               <table class="table table-bordered table-hover table-striped"
+                               <table class="table table-bordered table-hover "
 									id="list" style="height: 50px">
 										<tr>
 											<td></td>
@@ -177,9 +177,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-2">
+                   <!--  <div class="col-lg-2">
                     	<input type="button" id="saveBtn" name="saveBtn" class="btn btn-primary " value="תיעוד הזמנה">
-                    </div>
+                    </div> -->
             </div>
 
         <!-- /#page-wrapper -->

@@ -197,7 +197,7 @@
 									<br>	
 									<input id="date_of_birth" name="date_of_birth" 
 									class=".ignore" data-smartDays="true" data-firstItem="name"
-										data-format="DD-MM-YYYY" data-template="D MMM YYYY" > 
+										data-format="DD-MM-YYYY" data-template="DD MMM YYYY" > 
 								</div>
 								<div class="form-group col-lg-5">
 									

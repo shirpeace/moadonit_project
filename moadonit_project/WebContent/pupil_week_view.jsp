@@ -203,7 +203,7 @@
 							</div>
 							<div class="panel-body">
 								<div class="table-responsive col-lg-12">
-									<table class="table table-bordered table-hover table-striped"
+									<table class="table table-bordered table-hover "
 										id="list">
 
 										<tr>
