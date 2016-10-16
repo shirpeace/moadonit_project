@@ -155,7 +155,7 @@
                                 </div> -->
                                 
 							<div class=" col-lg-12">
-								<table class="table table-bordered table-hover table-striped"
+								<table class="table table-bordered table-hover "
 									id="list" style="height: 50px">
 
 									<tr>

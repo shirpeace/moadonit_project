@@ -25,7 +25,7 @@ public class ActivityDAO extends AbstractDAO {
 		super(con);
 	}
 
-	private String selectCourses = "{call ms2016.getCourses (?)}";
+	private String selectCourses = "{call ms2016.getCourses (?, ?)}";
 	private String searchCoursesByParam = "{ call ms2016.searchCoursesByParam( ? , ? , ?, ? , ?, ?, ? , ?, ? ,? ) }";
 	private String getCurrentYearEndDate = "select getCurrentYearEndDate() as endDate";
 	private String get_currentYearID = "select ms2016.get_currentYearID()";
@@ -99,12 +99,12 @@ public class ActivityDAO extends AbstractDAO {
 	 * @throws IllegalArgumentException
 	 * @throws DAOException
 	 */
-	public List<Activity> selectActivites(int id)
+	public List<Activity> selectActivites(int id, int year)
 			throws IllegalArgumentException, DAOException {
 		List<Activity> list = new ArrayList<>();
 
 		try (PreparedStatement statement = DAOUtil.prepareCallbackStatement(
-				this.con.getConnection(), selectCourses, new Object[] { id });
+				this.con.getConnection(), selectCourses, new Object[] { id , year });
 				ResultSet resultSet = statement.executeQuery();) {
 
 			while (resultSet.next()) {

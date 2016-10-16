@@ -147,6 +147,8 @@ function isDateValidToReg(dateParam, endParam, idx , btn){
 		 
 		 setRegMsg(html,true, "alert alert-warning" , btn, true);
 		 return false;
+		
+		 
 /*		 if(btn){ // validate for outer form
 			 setRegMsg(html,true, "alert alert-warning" , btn, true);
 			 return false;

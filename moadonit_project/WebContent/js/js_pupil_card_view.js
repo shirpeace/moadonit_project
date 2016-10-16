@@ -56,7 +56,7 @@ $(function(){
 	   	loadPupilCard(dataString);	
 	    
 		
-	    /* set the validattion for form */
+	    /* set the validation for form */
 		var validator = $("#ajaxform").validate({
 			
 			errorPlacement: function(error, element) {

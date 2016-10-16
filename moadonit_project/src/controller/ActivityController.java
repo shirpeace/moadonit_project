@@ -617,7 +617,7 @@ public class ActivityController extends HttpServlet implements Serializable {
 		// TODO Auto-generated method stub
 		List<Activity> result = new ArrayList<>();
 		int actID = Integer.parseInt(req.getParameter("activityNum"));
-		result = this.actDOA.selectActivites(actID);
+		result = this.actDOA.selectActivites(actID, 0);
 		return result;
 	}
 	

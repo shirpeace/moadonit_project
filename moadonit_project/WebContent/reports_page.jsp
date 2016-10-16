@@ -78,6 +78,11 @@
 	<script src="js/js_report_page.js"></script>
 	
 	<script src="js/jquery.fileDownload.js"></script>
+	
+	<!-- form validation plugin -->
+	<script src="js/jquery.validate.js"></script>
+	<script src="js/additional-methods.js"></script>
+	<script src="js/messages_he.js"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -153,7 +158,7 @@
             	<div class="col-lg-10 col-md-6 text-center">
 				  <ul class="nav nav-pills center-pills" id="ulTabs">
 				    <li id="OnTimeReg" class="active"><a data-toggle="pill" href="#rep1"><span>דוח גביה <br>רישום חד פעמי</span></a></li>
-				    <li id="MoadonitReg"><a data-toggle="pill" href="#rep4"><span>דוח גביה <br>רישום למועדונית</span></a></li>
+				    <li id="MoadonitReg"><a data-toggle="pill" href="#rep1"><span>דוח גביה <br>רישום למועדונית</span></a></li>
 				    <li id="CourseReg"><a data-toggle="pill" href="#rep1"><span >דוח גביה <br>רישום לחוגים</span></a></li>
 				    <li id="MoadonitData"><a data-toggle="pill" href="#rep2"><span >נתוני רישום <br>למועדונית</span></a></li>
 				    <li id="CourseData"><a data-toggle="pill" href="#rep3"><span >נתוני רישום <br>לחוגים</span></a></li>
@@ -182,36 +187,13 @@
 							</div>
 							<div class="panel-body">
 								<div class=" col-lg-12" id="forRep1">
-									<div class="form-group col-lg-2">
-										
-						
-										<label for="monthNum">דוח לחודש</label>
-										<select class="form-control input-sm" id="monthNum" name="monthNum">
-											
-											<option value="1">1</option>
-											<option value="2">2</option>
-											<option value="3">3</option>
-											<option value="4">4</option>
-											<option value="5">5</option>
-											<option value="6">6</option>
-											<option value="7">7</option>
-											<option value="8">8</option>
-											<option value="9">9</option>
-											<option value="10">10</option>
-											<option value="11">11</option>
-											<option value="12">12</option>											
-										</select>
+									<form id="rep1form">
+									<div class="form-group col-lg-2"> 
+										<label for="monthPick">דוח לחודש</label>
+										<input  type="text" class="form-control" id="monthPick" name="monthPick" >
 										 
-									</div>		
-									<div class="form-group col-lg-2">
-									
-										<label for="yearNum">לשנה</label>
-										<select class="form-control input-sm" id="yearNum" name="yearNum">
-											<option value="0">נוכחית</option>
-											<option value="1">תשע"ו</option>
-											
-										</select> 
-									</div>							
+									</div>	
+									</form>		
 								</div>
 							</div>
 						</div>
@@ -239,13 +221,14 @@
 							</div>
 							<div class="panel-body">
 								<div class=" col-lg-12" id="forRep1">
+									<form id="rep2form">
 									<div class="form-group col-lg-2">
 									
-									
-										<label for="dayPick">דוח לחודש</label>
+										<label for="dayPick">דוח לתאריך</label>
 										<input  type="text" class="form-control" id="dayPick" name="dayPick" >
 										 
-									</div>								
+									</div>	
+									</form>							
 								</div>
 							</div>
 						</div>
@@ -273,81 +256,30 @@
 							</div>
 							<div class="panel-body">
 								<div class=" col-lg-12" id="forRep1">
-									
+									<form id="rep3form">
 									<div class="form-group col-lg-2" style="margin-right: 15px;">
 									
 										<label for="yearNum">לשנה</label>
 										<select class="form-control input-sm" id="yearNum" name="yearNum">
-											<option value="1">נוכחית</option>
-											<option value="2">תשע"ו</option>
+											<option value="0">נוכחית</option>
+											<option value="1">תשע"ו</option>
 											
 										</select> 
 									</div>
 									<div class="form-group col-lg-2">
 									
-										<label for="monthNum">חוגים</label>
+										<label for="courseList">חוגים</label>
 										<select class="selectpicker"  style="margin-left: 15px;" data-size="8" data-width="250px"  multiple data-actions-box="true" id="courseList" name="courseList"  >
-											<!-- <option value="9">כדורגל</option>
-											<option value="10">כדורעף</option>
-											<option value="11">כדורסל</option>
-											<option value="12">כדוריד</option>
-											<option value="1">קראטה</option>
-											<option value="2">2</option>
-											<option value="3">3</option>
-											<option value="4">4</option>
-											<option value="5">5</option>
-											<option value="6">6</option>
-											<option value="7">7</option>
-											<option value="8">8</option> -->
-											
 										</select> 
-									</div>								
+									</div>	
+									</form>							
 								</div>
 							</div>
 						</div>
 					</div>
-				    </div>
-				    <div id="rep4" class="tab-pane ">				      
-				      <div class="col-lg-12">
-				      <br>
-						<div class="panel panel-default">
-							<div class="panel-heading">
-							<br>
-								<h3 class="panel-title pull-right">
-									<i class="fa fa-info fa-fw"></i> הכנס פרמטרים לדוח ולחץ על יצירת קובץ אקסל
-								</h3>
-							
-								 <div class=" pull-left" id="">
-									 <a
-										href="javascript:void(0);"
-										onclick="OnBntExportClick('xls');">
-										<img alt="" src="resources/images/Excel-icon.png" style="border-radius:15%; margin-right: 10px;">
-									</a>
-								</div>
-								<!-- <button id="resetBtn" class="pull-left btn btn-primary">נקה חיפוש</button> -->
-								<div class="clearfix"></div>
-							</div>
-							<div class="panel-body">
-								<div class=" col-lg-12" id="forRep1">
-									<div class="form-group col-lg-2"> 
-										<label for="monthPick">דוח לחודש</label>
-										<input  type="text" class="form-control" id="monthPick" name="monthPick" >
-										 
-									</div>								
-								</div>
-							</div>
-						</div>
-					</div>
-				    </div>
-				    <div id="menu2" class="tab-pane ">
-				      <h3>Menu 2</h3>
-				      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
-				    </div>
-				    <div id="menu3" class="tab-pane ">
-				      <h3>Menu 3</h3>
-				      <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
 				    </div>
 				  </div>
+				
 				</div>
 			</div>
 <!--  pills end --> 

@@ -49,7 +49,7 @@ public class ReportsDAO extends AbstractDAO {
 	private String getBoyRegsToCourses = "{ call getBoyRegsToCourses() }";
 	private String getcapacityToCourses = "select a.activityNum, activityName, pupilCapacity " 
 			+ " from tbl_course c inner join tbl_activity a on c.activityNum = a.activityNum ;";
-	private String getOneTimeReport = "{ call ms2016.get_OneTimeReport(?, ?,?) }";
+	private String get_OneTimeReport = "{ call ms2016.get_OneTimeReport(?, ?,?) }";
 	private String getMoadonitPay = "{ call ms2016.getRegDaysForMonth(?, ?,?) }";
 	private String getPupilsForMoadonitGroup = "{ call ms2016.getPupilsForMoadonitGroup( ?,? )}" ;
 	
@@ -173,7 +173,7 @@ public class ReportsDAO extends AbstractDAO {
 		JSONArray list = new JSONArray();
 
 		try (PreparedStatement statement = DAOUtil.prepareCallbackStatement(
-				this.con.getConnection(), getOneTimeReport, new Object[] { month , year , RegType });
+				this.con.getConnection(), get_OneTimeReport, new Object[] { month , year , RegType });
 				ResultSet resultSet = statement.executeQuery();) {
 
 			while (resultSet.next()) {

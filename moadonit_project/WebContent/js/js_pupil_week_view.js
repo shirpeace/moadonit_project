@@ -724,7 +724,7 @@ function loadRegistrationGrid(pupilID) {
 						},
 						{name : 'actions', index: 'actions', formatter:'actions', align: "center",	sortable:false,formatter:'actions',						
 						    formatoptions: {
-						        keys: true,
+						       /* keys: true,*/
 						        editbutton: true,
 						        onEdit:function(rowid) {
 		                            //do somethinf if you need on edit button click

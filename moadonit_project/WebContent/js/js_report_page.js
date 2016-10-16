@@ -8,13 +8,13 @@ jQuery(document).ready(function() {
 		
 			switch (this.parentElement.id) {
 			    case "OnTimeReg":
-			    	
+			    	$('#monthPick').val("");
 			        break;
 			    case "MoadonitReg":
-			    	
+			    	$('#monthPick').val("");
 			        break;
 			    case "CourseReg":
-			    	
+			    	$('#monthPick').val("");
 			        break;
 			    case "MoadonitData":
 			    	
@@ -55,32 +55,94 @@ jQuery(document).ready(function() {
 		    autoclose: true
 		   
 		}); 
+	    /* set the validation for forms */
+		var validator1 = $("#rep1form").validate({
+			
+			errorPlacement: function(error, element) {				
+				error.css("color", "red");				
+				$( element )
+					.closest( "form" )
+						.find( "label[for='" + element.attr( "id" ) + "']" )
+							.append(  error );
+			},
+			rules: {   
+				monthPick : {  
+					required: true,
+					},
+			},
+			errorElement: "span",
+
+		});
+		var validator2 = $("#rep2form").validate({
+			
+			errorPlacement: function(error, element) {
+				// Append error within linked label					
+				error.css("color", "red");				
+				$( element )
+					.closest( "form" )
+						.find( "label[for='" + element.attr( "id" ) + "']" )
+							.append(  error );
+			},
+			rules: {   
+				dayPick : {  
+					required: true,
+					},
+			},
+			errorElement: "span",
+
+		});
+		
+		var validator3 = $("#rep3form").validate({
+			
+			errorPlacement: function(error, element) {
+				// Append error within linked label					
+				error.css("color", "red");				
+				$( element )
+					.closest( "form" )
+						.find( "label[for='" + element.attr( "id" ) + "']" )
+							.append(  error );
+			},
+			rules: {   
+				yearNum : {  
+					required: true,
+					
+					},
+				courseList : {  
+					required: true,
+					
+					},
+			},
+			errorElement: "span",
+
+		});
 	
 });
 
 function OnBntExportClick(type){
-	
 	if(selectedTab){
-		switch (selectedTab) {
-		    case "OnTimeReg":
-		    	exportDataOntime(type, "OneTimeReport");
-		        break;
-		    case "MoadonitReg":
-		    	console.log(selectedTab);
-		    	exportMoadonitPay(type, "MoadonitPay");
-		        break;
-		    case "CourseReg":
-		    	console.log(selectedTab);
-		        break;
-		    case "MoadonitData":
-		    	console.log(selectedTab);
-		    	exportMoadonitData(type, "MoadonitDataReport");
-		        break;
-		    case "CourseData":
-		    	console.log(selectedTab);
-		    	exportCourseData(type, "CourseRegistrationReport");
-		        break;	   
-		}
+		
+			switch (selectedTab) {
+			    case "OnTimeReg":
+			    	if ($("#rep1form").valid()) 
+			    		exportDataOntime(type, "OneTimeReport");
+			        break;
+			    case "MoadonitReg":
+			    	if ($("#rep1form").valid()) 
+			    		exportMoadonitPay(type, "MoadonitPay");
+			        break;
+			    case "CourseReg":
+			    	console.log(selectedTab);
+			        break;
+			    case "MoadonitData":
+			    	if ($("#rep2form").valid()) 
+			    		exportMoadonitData(type, "MoadonitDataReport");
+			        break;
+			    case "CourseData":
+			    	if ($("#rep3form").valid()) 
+			    		exportCourseData(type, "CourseRegistrationReport");
+			        break;	   
+			}
+		
 	}
 }
 
@@ -105,8 +167,10 @@ function exportMoadonitData(type, fileName){
 
 function exportDataOntime(type, fileName){
 
-	var month = $('#monthNum').val(), year =$('#yearNum').val();
-	var params = {  fileType : type, fileName: fileName , action: "export" , pageName : "OneTimeReport", month : month, year : year };
+	var month =  $('#monthPick').val();
+	var monthTime =  getDateFromValue(month).getTime();
+	// var month = $('#monthNum').val(), year =$('#yearNum').val();
+	var params = {  fileType : type, fileName: fileName , action: "export" , pageName : "OneTimeReport", month : monthTime/*, year : year*/ };
 	
 	exportData(type, params); 
 } 
@@ -161,13 +225,13 @@ function getSelectedOptions(){
 
 
 function getCourseIds(){
-	
+	var year =$('#yearNum').val();
 	$.ajax({
 		async : false,
 		type : 'POST',
 		datatype : 'jsonp',
 		url : "ReportsController",
-		data : { action : "getCourseForReport" },
+		data : { action : "getCourseForReport" , year : year},
 		success : function(data) {
 			if (data != undefined) {
 				var values = [];

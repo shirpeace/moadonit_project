@@ -21,7 +21,8 @@ $().ready(function (){
 	 
 	 $('#weekPick').change(function(){
 		sunDate = getDateFromValue(this.value);
-		loadGrid();
+		//loadGrid();
+		$("#list").jqGrid("setGridParam",{url : "LogisticsController?action=getAmounts&sunday="+sunDate.getTime()}).trigger('reloadGrid');
 	});
 	 
 		
@@ -39,7 +40,7 @@ function nextSunday() {
 
 function loadGrid(){
 	var grid = $("#list");
-	  $("#list").jqGrid({
+	grid.jqGrid({
           url : "LogisticsController?action=getAmounts&sunday="+sunDate.getTime(),
           datatype : "json",
           mtype : 'GET',
