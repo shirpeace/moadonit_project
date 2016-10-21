@@ -75,10 +75,14 @@ $(function() {
 	    
 	}); 
 	
+	var d = new Date();
+	var currMonth = d.getMonth();
+	var currYear = d.getFullYear();
+	var startDate = new Date(currYear,currMonth,1);
 	$('#startDate').datepicker({
 	    format: "dd/mm/yyyy",
 	    language: "he" ,
-	     startDate: "today",
+	     startDate: startDate,
 	    maxViewMode: 0,
 	    minViewMode: 0,
 	    todayBtn: true,

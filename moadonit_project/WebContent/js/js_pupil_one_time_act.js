@@ -1,4 +1,5 @@
 var currentDate;
+var regTypes ;
 
 $(function() {
 		$('#detailsLink').attr('href','pupil_card_view.jsp?li=0&pupil=' + pupilID);
@@ -31,20 +32,39 @@ $(function() {
 			return false;
 		});
 		
+		regTypes = getRegTypesData();
+		$('#typePick').find('option').remove();
+		$.each(regTypes, function(key, value) {  // iterate over the values that we fetched 
+			var  name, obj = value;
+	        for (name in obj) { // iterate the keys of the object that represent the option data and get the key and value
+	            if (obj.hasOwnProperty(name)) { // if the key is direct key of object , not inherited 
+	            	// build an option and add it to select
+	            	$('#typePick').append($("<option></option>")
+		                    .attr("value",name)
+		                    .text(obj[name])); 
+	            }
+	        }  
+		});	
+		
 		loadPupilOneAct(dataString);			
 		loadhistoryRegsGrid(pupilID); 
 		
+		var d = new Date();
+		var currMonth = d.getMonth();
+		var currYear = d.getFullYear();
+		var startDate = new Date(currYear,currMonth,1);
 		 $('#datePick').datepicker({
 		    format: "dd/mm/yyyy",
 		    language: "he" ,
-		     startDate: "today",
+		     startDate: startDate,
 		    maxViewMode: 0,
 		    minViewMode: 0,
 		    todayBtn: true,
 		    keyboardNavigation: false,
 		    daysOfWeekDisabled: "5,6",
 		    todayHighlight: true,
-		    toggleActive: true 
+		    toggleActive: true ,
+		    autoclose: true
 		}); 
 		 
 			/* set the validattion for form */
@@ -135,13 +155,13 @@ function loadhistoryRegsGrid(pupilID) {
 			   afterSubmit: function (response, postdata) {
 				   response = $.parseJSON(response.responseText);
 				   // delete row
-				   var msg = "פעולה זו תמחק את הרישום החד-פעמי לחלוטין, גם מדוח החיובים החודשי. האם למחוק בכל זאת?";
+				/*   var msg = "פעולה זו תמחק את הרישום החד-פעמי לחלוטין, גם מדוח החיובים החודשי. האם למחוק בכל זאת?";
 				   bootbox.confirm(msg, function(result) {
 						if (result === true) { 
 							 retrn = true;//delete func ;
 								 if(retrn === true){
 						             bootbox.alert("רשומה נמחקה בהצלחה", function() {});
-						             grid.delRowData(rowData.id);
+						 //            grid.delRowData(rowData.id);
 								 }
 								 else
 									 bootbox.alert("שגיאה במחיקת הרשומה", function() {});
@@ -149,7 +169,7 @@ function loadhistoryRegsGrid(pupilID) {
 					});
 	               
 			        
-				   console.log(response);
+				   console.log(response);*/
 			        return [true, "success"];
 			    },
 			    afterComplete: function (response, postdata, formid) {

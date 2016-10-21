@@ -330,7 +330,10 @@ function setPageBtns(){
 				 	result = savePupilCardData("update",false);			
 					if(result === true){
 						formDisable();
-						$('.page-header').html($('#fName').val() + " " + $('#lName').val());
+					//	$('.page-header').html($('#fName').val() + " " + $('#lName').val());
+						var dataString = 'id='+ pupilID + '&action=' + "get";
+					   	loadPupilCard(dataString);	
+						setPupilCardData(pupilData);
 						/*$('#ajaxform').trigger('reinitialize.areYouSure');*/
 					}
 					
