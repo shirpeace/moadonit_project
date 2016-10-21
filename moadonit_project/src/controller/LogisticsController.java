@@ -302,8 +302,8 @@ public class LogisticsController extends HttpServlet implements Serializable {
 			where = where.substring(0, where.length()-4);
 		
 		sql += " " + where;
+		//return result = 1; //this.logDAO.executeSql(sql, null);
 		return result = this.logDAO.executeSql(sql, null);
-		
 	}
 	
 	private int insertRowInTable(String sql,String tableName,  HttpServletRequest req,
@@ -323,7 +323,7 @@ public class LogisticsController extends HttpServlet implements Serializable {
 			
 				if(req.getParameter((String)col.get("Name")) != null){
 					String fieldValue = req.getParameter((String)col.get("Name"));
-					if(col.get("Datatype").equals("String") || col.get("Datatype").equals("Time")){
+					if(col.get("Datatype").equals("String") || col.get("Datatype").equals("Time") || col.get("Datatype").equals("phone")){
 						
 						sql += " " + (String)col.get("Name") + ",";
 						
@@ -366,6 +366,7 @@ public class LogisticsController extends HttpServlet implements Serializable {
 		
 		return result = this.logDAO.executeSql(sql, null);
 		
+		
 	}
 	
 	private int updateRowInTable(String sql,String tableName,String where,  HttpServletRequest req,
@@ -385,7 +386,7 @@ public class LogisticsController extends HttpServlet implements Serializable {
 			else{
 				if(req.getParameter((String)col.get("Name")) != null){
 					String fieldValue = req.getParameter((String)col.get("Name"));
-					if(col.get("Datatype").equals("String") || col.get("Datatype").equals("Time")){
+					if(col.get("Datatype").equals("String") || col.get("Datatype").equals("Time") || col.get("Datatype").equals("phone")){
 						
 					    sql += " " + (String)col.get("Name") + " = '" + req.getParameter((String)col.get("Name")) + "' ,";
 					}
@@ -500,9 +501,32 @@ public class LogisticsController extends HttpServlet implements Serializable {
 						 comboFields = new String[] { "paymentID", "paymentName"};
 						 type = "dropdown";
 					 }
+					 else if (key.getValue().equals("cellphone")){
+				
+						 type = "phone";
+					 }
 					 
 				}
-				else if (key.getKey().equals("")) {
+				else if (key.getKey().equals("tbl_moadonit_groups")) {
+					if (key.getValue().equals("activityNum")){
+						 comboQuery =  "SELECT activityNum ,activityName FROM ms2016.tbl_activity where activityGroup = 4  and schoolYear = get_currentYearID()";
+						 comboFields = new String[] { "activityNum", "activityName"};
+						 type = "dropdown";
+						
+					}
+					else if (key.getValue().equals("yearID")){
+						isHidden = true;
+					}
+					else if (key.getValue().equals("gradeID")){
+						 isRequired = false;
+						 comboQuery =  "SELECT * FROM ms2016.tbl_grade_code";
+						 comboFields = new String[] { "gradeID", "gradeName", "gradeColor"};
+						 type = "custom";
+					}					
+					else if (key.getValue().equals("endMonth") || key.getValue().equals("startMonth")){
+						isHidden = true;
+					}
+					//  
 					
 				}
 				
@@ -534,7 +558,7 @@ public class LogisticsController extends HttpServlet implements Serializable {
 		    jsonResult.add(o);
 		}*/
 			
-		//gridData = this.logDAO.GetGridData( tableName,  arrlist)	;
+		//gridData = this.logDAO.GetGridData( tableName,  arrlist)	;  cellphone, email
 		return arrlist;
 	}
 	

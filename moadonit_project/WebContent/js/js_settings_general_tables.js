@@ -3,38 +3,53 @@ var pupilID;
 var tableName, query, whereclause, columnsData;
 var colname = new Array() ; // column array for jqgrid
 var tablePk;
-var  cols; // original column array from server
+var  cols, valuesFroCell; // original column array from server
+
 jQuery(document).ready(function() {	
-	selectedTab = "OnTimeReg";
+	
+	selectedTab = "tbl_reg_types";
+	tableName =  "tbl_reg_types";
+	query = "SELECT COLUMN_NAME, COLUMN_COMMENT, TABLE_NAME, DATA_TYPE, COLUMN_KEY ,EXTRA FROM information_schema.columns ";
+	whereclause = " WHERE (table_name = 'tbl_reg_types'); ";
+	reCreateTable();
+	getGeneralGrid();
+
+	
 	$('#ulTabs').on('click', 'a', function(e) {
 	    //e.preventDefault();
 		selectedTab = this.parentElement.id; 
 		
+		
 			switch (this.parentElement.id) {
-			    case "OnTimeReg":
-			    	
+			    case "tbl_reg_types":
+			    	tableName =  "tbl_reg_types";			    	
+			    	whereclause = " WHERE (table_name = 'tbl_reg_types'); ";			    				    				    	
 			        break;
-			    case "MoadonitReg":
-			    	
+			    case "tbl_food_type":
+			    	tableName =  "tbl_food_type";			    	
+			    	whereclause = " WHERE (table_name = 'tbl_food_type'); ";	
 			        break;
-			    case "CourseReg":
-			    	
+			    case "tbl_family_relation":
+			    	tableName =  "tbl_family_relation";			    	
+			    	whereclause = " WHERE (table_name = 'tbl_family_relation'); ";
 			        break;
-			    case "MoadonitData":
-			    	
+			    case "tbl_job_type":
+			    	tableName =  "tbl_job_type";
+			    	whereclause = " WHERE (table_name = 'tbl_job_type'); ";
 			        break;
-			    case "CourseData":
-			    	 getCourseIds();
+			    case "tbl_payment_type":
+			    	tableName =  "tbl_payment_type";
+			    	whereclause = " WHERE (table_name = 'tbl_payment_type'); ";
 			        break;	
-			    case "Search":
-					//loadPupilSearch();
-			    	//colname =[{ name: "staffID", sorttype: "int", key: true }];
-			    	tableName =  "tbl_staff";
-			    	query = "SELECT COLUMN_NAME, COLUMN_COMMENT, TABLE_NAME, DATA_TYPE, COLUMN_KEY ,EXTRA FROM information_schema.columns ";
-			    	whereclause = " WHERE (table_name = 'tbl_staff'); ";
-			    	getGeneralGrid();
-			        break;	
+			    case "tbl_moadonit_groups":
+			    	tableName =  "tbl_moadonit_groups";
+			    	whereclause = " WHERE (table_name = 'tbl_moadonit_groups'); ";
+			    				    				    	
+			    	break;	
 			}
+			
+			reCreateTable();
+	    	getGeneralGrid();
 		
 	});
 	
@@ -71,6 +86,16 @@ jQuery(document).ready(function() {
 
 });
 
+function reCreateTable(){
+	
+	var container = $("#tableContainer"); 
+	container.empty();
+	var table = $("<table/>").attr('id','list').addClass('table table-bordered table-hover ').append("<tr><td></td></tr>");;
+	container.append(table);
+	var pager = $("<div/>").attr('id','pager');
+	container.append(pager);
+	return container;
+}
 
 var editSettings = {
         //recreateForm: true,
@@ -133,8 +158,8 @@ var mydata = {}, existingProperties = {},
 floatTemplate = {formatter: 'number', sorttype: 'int'},
 integerTemplate = {formatter: 'integer', sorttype: 'int'},
 inLineErrorfunc = function (rowID, response) {
-	alert(rowID);
-	debugger;
+	//alert(rowID);
+	
     // todo: why this does not allow Enter key to continue ase after error:
 	$.jgrid.info_dialog($.jgrid.errors.errcap,'<div class="ui-state-error">'+
 		    response.responseText +'</div>', $.jgrid.edit.bClose,{buttonalign:'right'});
@@ -208,6 +233,10 @@ dateTemplate = {
 	}
     , formatoptions: { newformat: "d/m/Y" }
 },
+phoneTemplate = {
+	    editable: true,
+	    editrules: { custom :true , custom_func: validatePhone}
+},
 dropdownTemplate = {
     edittype: "select",
     editable: true,
@@ -245,7 +274,22 @@ timeTemplate = {
 					});
 	        }
 	    }
-	}, 
+	},
+	addParams = {	
+		useFormatter : false,
+		position: "last", 
+		addRowParams: { 
+						  successfunc :  function (){
+								 var $self = $(this);
+						            setTimeout(function () {
+					                $self.trigger("reloadGrid");
+					            }, 50);
+					     }  
+				
+			}
+	        
+	    }
+	, 
 	navParams = {
 		   edit: false,
 		   add: false,
@@ -264,20 +308,57 @@ timeTemplate = {
 			   saveicon:"ui-icon-disk",
 			   cancel: true,
 			   cancelicon:"ui-icon-cancel",
-			   addParams : {useFormatter : false},
+			   addParams : addParams,
 			   editParams : { errorfunc: function (rowID, response) {
-				   debugger;
-					alert(response.responseText);
-				    // todo: why this does not allow Enter key to continue ase after error:
-					$.jgrid.info_dialog("שגיאה",'<div class="ui-state-error">'+
-						    response.responseText +'</div>', "סגור",{buttonalign:'right', modal : true});
-					/*$.jgrid.info_dialog($.jgrid.errors.errcap,'<div class="ui-state-error">'+
-						    response.responseText +'</div>', $.jgrid.edit.bClose,{buttonalign:'right'});*/
-				}},
+					  
+						//alert(response.responseText);
+					    // todo: why this does not allow Enter key to continue ase after error:
+						$.jgrid.info_dialog("שגיאה",'<div class="ui-state-error">'+
+							    response.responseText +'</div>', "סגור",{buttonalign:'right', modal : true});
+						/*$.jgrid.info_dialog($.jgrid.errors.errcap,'<div class="ui-state-error">'+
+							    response.responseText +'</div>', $.jgrid.edit.bClose,{buttonalign:'right'});*/
+					}/*, successfunc : function (response) {
+					   debugger;
+						alert(response.responseText);
+						
+					}*/
+			   },
 			   del: true,
 			   
 			   
 	} ;
+
+function validatePhone (val,cellName,nm,valref){
+	var phoneno = /^(05[0-9]{1})[-]?([0-9]{3})[-]?([0-9]{4})$/;  
+	var p = $(this).jqGrid("getGridParam");
+	  if((val.match(phoneno)) ) 
+      {  
+		  return [true,""]; 
+      }  
+      else  
+      {  
+    	  return [false, "מספר טלפון לא תקין"];
+      }  
+}
+
+function formatGradeCell(rowId, val, rawObject, cm, rdata){
+	//"style" : "background:"+colors.future+";","data-isHistory": false
+	var cellVal='';
+	if(valuesFroCell){
+		var valuesFroCellCopy = valuesFroCell.split(";");
+	    $.each(valuesFroCellCopy, function(key, value) {  
+	    	value  = value.split(":");
+	    	
+    		if(val == value[1]){
+    			cellVal =  'style="background-color:'+ value[2]+'; font-weight:bold;"';	    			
+    		//$select.append('<option style="background-color:'+ value[2]+'" value=' + value[0] + '>' + value[1] + '</option>');
+    		}
+	    	
+	    });
+	}
+	
+	return cellVal;
+}
 
 /**
  * set the client array of cols (colname Object) wich is used in grid 
@@ -285,16 +366,20 @@ timeTemplate = {
  */
 function setColModelFormResult(result){
 	 cols = JSON.parse(result);
-	//Loop into the column values collection and push into the array.
+	 colname  = new Array();
+	 var width= null;
+	if(selectedTab === "tbl_reg_types")
+		width = 50;
+	 //Loop into the column values collection and push into the array.
 	$.each(cols, function () {
-
+	
 	//Check the datatype of the column.
 	if(this.IsKey)
 		tablePk = this.Name;
 	var cm = {
+			//width : width == null ? "auto" : width,
 	        name: this.Name,
-	        hidden: this.IsHidden //|| !existingProperties.hasOwnProperty(this.Name)
-	        ,
+	        hidden: this.IsHidden ,//|| !existingProperties.hasOwnProperty(this.Name)
 	        editable : !this.IsKey,
 	        //editoptions: this.DefaultValue != null && this.DefaultValue != "" ? { defaultValue: this.DefaultValue } : {},
 	        editrules: { required: this.IsRequired },
@@ -330,6 +415,13 @@ function setColModelFormResult(result){
 	        */
 	        );
 	        break;
+	    case 'custom':
+	        valuesFroCell = this.ValueList.slice(0, -1);
+	        $.extend(true, cm, { cellattr: formatGradeCell } );
+	        break;    
+	    case 'phone':
+	        $.extend(true, cm, { template: phoneTemplate } );
+	        break;
 	    default:
 	        break;
 	}
@@ -350,15 +442,6 @@ function getGeneralGrid(){
 				
 				setColModelFormResult(data.cols);
 				
-				
-				// preper the rows data to be used in grid
-				//var rows = JSON.parse(data.rows);
-				var deleteMessage = function(response,postdata){
-			        var json   = response.responseText; // response text is returned from server.
-			        var result = JSON.parse(json); // convert json object into javascript object.
-			        
-			        return [result.status,result.message,null]; 
-			    };
 			    var grid = $("#list");
 				
 			    grid.jqGrid(
@@ -372,7 +455,7 @@ function getGeneralGrid(){
 							pager : '#pager',
 							autowidth : true,
 							shrinkToFit : true,
-							rowNum : 30,
+							rowNum : 15,
 							rowList : [],						
 							direction : "rtl",
 							viewrecords : true,
@@ -385,6 +468,7 @@ function getGeneralGrid(){
 							},
 							recreateFilter : true,
 							sortname : tablePk,
+							autoencode: true,
 							//pgbuttons : false, // disable page control like next, back
 							// button
 							//pgtext : null, // disable pager text like 'Page 0 of 10'
@@ -402,25 +486,9 @@ function getGeneralGrid(){
 							    
 						    },
 						    loadError : function(xhr,st,err) {
-						    	debugger;
+						    	
 						    	jQuery("#rsperror").html("Type: "+st+"; Response: "+ xhr.status + " "+xhr.statusText);
 						    },
-							 errorTextFormat: function (response) {
-								 	alert(response.responseText);	 	
-								 	$(this).restoreAfterErorr = false;
-								 	var overlay = $('body > div.ui-widget-overlay'); //.is(":visible");
-									 if (overlay.is(":visible")) {
-										 
-										 
-									}
-								 	bootbox.alert("שגיאה במחיקת רשומה. נא נסה שוב.",
-											function() {
-									});
-								 				
-						            return true;
-						           
-							       
-							 }
 						    /*afterSubmit: function (response, postdata) {
 						    	
 						    	return [false,response.responseText] ;
@@ -466,23 +534,50 @@ function getGeneralGrid(){
 						}).jqGrid("navGrid", "#pager", navParams)
 						.jqGrid("inlineNav","#pager", inlinNavParameters );
 			        
-				$.extend($.jgrid.inlineEdit, { restoreAfterError: false });
-				
-				var originalDelFunc = $.fn.jqGrid.delGridRow;
+				$.extend($.jgrid.inlineEdit, { restoreAfterError: false } );					
+/*				var originalDelFunc = $.fn.jqGrid.delGridRow;
 			    $.fn.jqGrid.delGridRow = function (rowids, oMuligrid) {
-			        /*var onPreDeleteRowEventHandler = this.getGridParam('onPreDeleteRow'),
-			            consumeFlag = false;*/
-			        $.extend(oMuligrid, { afterSubmit: function(){ retrun [false,"error", null]; } });
+			        var onPreDeleteRowEventHandler = this.getGridParam('onPreDeleteRow'),
+			            consumeFlag = false;
+			        $.extend(oMuligrid, { afterSubmit: function(response, postdata){ 
+			        	
+			        	var $this = $(this), id = $.jgrid.jqID(this.id), p = this.p,
+		                newPage = p.page;
+			        	
+			        	 $.jgrid.hideModal("#delmod" + id, {});
+
+			             if (p.lastpage > 1) {// on the multipage grid reload the grid
+			                 if (p.reccount === 0 && newPage === p.lastpage) {
+			                     // if after deliting there are no rows on the current page
+			                     // which is the last page of the grid
+			                     newPage--; // go to the previous page
+			                 }
+			                 // reload grid to make the row from the next page visable.
+			                 $this.trigger("reloadGrid", [{page: newPage}]);
+			             }
+			             
+			             if(response.status == 200){
+			            		$.jgrid.info_dialog("הודעה",'<div class="ui-state-default">'+
+									    "רשומה נמחקה בהצלחה" +'</div>', "סגור",{buttonalign:'right'});
+			             }else{
+			            		$.jgrid.info_dialog("הודעה",'<div class="ui-state-error">'+
+									    response.responseText +'</div>', "סגור",{buttonalign:'right'});
+			             }
+			             
+			        
+			        	}
+			        }
+			        );
 			        originalDelFunc.call(this, rowids, oMuligrid);
 			        
-			       /* if (typeof onPreDeleteRowEventHandler === 'function') {
+			        if (typeof onPreDeleteRowEventHandler === 'function') {
 			            consumeFlag = !!onPreDeleteRowEventHandler(rowids, oMuligrid);
 			        }
 
 			        if (!consumeFlag) {
 			            originalDelFunc.call(this, rowids, oMuligrid);
-			        }*/
-			    };
+			        }
+			    };*/
 				  
 			    /*grid.jqGrid(
 			            	'setGridParam',
@@ -665,7 +760,7 @@ $.each(mydata, function () {
 	}
 });
 
-var onclickSubmitLocal = function (options, postdata) {debugger;
+var onclickSubmitLocal = function (options, postdata) {
 var $this = $(this), p = $(this).jqGrid("getGridParam"),// p = this.p,
     idname = p.prmNames.id,
     id = this.id,

@@ -164,7 +164,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<h1 class="page-header">
-							חיפוש תלמידים  <small></small>
+						טבלאות מערכת  <small></small>
 						</h1>
 						<ol class="breadcrumb">
 							<li><a href="dashboard.jsp"><i class="fa fa-home"></i>
@@ -180,288 +180,56 @@
             	<!-- <div class="col-lg-1 col-md-6"></div> -->
             	<div class="col-lg-12 col-md-6 text-center">
 				  <ul class="nav nav-pills center-pills" id="ulTabs">
-				    <li id="OnTimeReg" class="active"><a data-toggle="pill" href="#rep1"><span>דוח גביה <br>רישום חד פעמי</span></a></li>
-				    <li id="MoadonitReg"><a data-toggle="pill" href="#rep4"><span>דוח גביה <br>רישום למועדונית</span></a></li>
-				    <li id="CourseReg"><a data-toggle="pill" href="#rep1"><span >דוח גביה <br>רישום לחוגים</span></a></li>
-				    <li id="MoadonitData"><a data-toggle="pill" href="#rep2"><span >נתוני רישום <br>למועדונית</span></a></li>
-				    <li id="CourseData"><a data-toggle="pill" href="#rep3"><span >נתוני רישום <br>לחוגים</span></a></li>
-				    <li id="Search"><a data-toggle="pill" href="#menu2"><span >הצגת <br>תלמידים</span></a></li>
+				    <li id="tbl_reg_types" class="active"><a data-toggle="pill" href="#tblData"><span>סוגי <br>רישום</span></a></li>
+				    <li id="tbl_food_type"><a data-toggle="pill" href="#tblData"><span>סוגי <br>ארוחות</span></a></li>
+				    <li id="tbl_family_relation"><a data-toggle="pill" href="#tblData"><span >סוגי קרבה <br>משפחתית</span></a></li>
+				    <li id="tbl_job_type"><a data-toggle="pill" href=#tblData><span >סוגי <br>משרות</span></a></li>
+				    <li id="tbl_payment_type"><a data-toggle="pill" href="#tblData"><span>סוגי <br>תשלום</span></a></li>
+				    <!-- <li id="tbl_pupil_state"><a data-toggle="pill" href="#tblData"><span >סטטוס <br>תלמיד</span></a></li> -->
+				    
+				    <li id="tbl_moadonit_groups"><a data-toggle="pill" href="#tblData"><span >שיוך כיתות <br>לקבוצות מועדונית</span></a></li>
+				    <li id="tbl_pupil_state"><a data-toggle="pill" href="#tblData"><span >סטטוס <br>תלמיד</span></a></li>
+				    <li id="tbl_pupil_state"><a data-toggle="pill" href="#tblData"><span >סטטוס <br>תלמיד</span></a></li>
+				    <li id="tbl_pupil_state"><a data-toggle="pill" href="#tblData"><span >סטטוס <br>תלמיד</span></a></li>
+				    <li id="tbl_pupil_state"><a data-toggle="pill" href="#tblData"><span >סטטוס <br>תלמיד</span></a></li>
 				  </ul>
 				  
 				  <div class="tab-content">
-				    <div id="rep1" class="tab-pane  active">				      
-				      <div class="col-lg-12">
-				      <br>
-						<div class="panel panel-default">
-							<div class="panel-heading">
-							<br>
-								<h3 class="panel-title pull-right">
-									<i class="fa fa-info fa-fw"></i> הכנס פרמטרים לדוח ולחץ על יצירת קובץ אקסל
-								</h3>
-							
-								 <div class=" pull-left" id="">
-									 <a
-										href="javascript:void(0);"
-										onclick="OnBntExportClick('xls');">
-										<img alt="" src="resources/images/Excel-icon.png" style="border-radius:15%; margin-right: 10px;">
-									</a>
-								</div>
-								<!-- <button id="resetBtn" class="pull-left btn btn-primary">נקה חיפוש</button> -->
-								<div class="clearfix"></div>
-							</div>
-							<div class="panel-body">
-								<div class=" col-lg-12" id="forRep1">
-									<div class="form-group col-lg-2">
-										
-						
-										<label for="monthNum">דוח לחודש</label>
-										<select class="form-control input-sm" id="monthNum" name="monthNum">
-											
-											<option value="1">1</option>
-											<option value="2">2</option>
-											<option value="3">3</option>
-											<option value="4">4</option>
-											<option value="5">5</option>
-											<option value="6">6</option>
-											<option value="7">7</option>
-											<option value="8">8</option>
-											<option value="9">9</option>
-											<option value="10">10</option>
-											<option value="11">11</option>
-											<option value="12">12</option>											
-										</select>
-										 
-									</div>		
-									<div class="form-group col-lg-2">
-									
-										<label for="yearNum">לשנה</label>
-										<select class="form-control input-sm" id="yearNum" name="yearNum">
-											<option value="0">נוכחית</option>
-											<option value="1">תשע"ו</option>
-											
-										</select> 
-									</div>							
-								</div>
-							</div>
-						</div>
-					</div>
-				    </div>
-				    <div id="rep2" class="tab-pane ">
-				      <div class="col-lg-12">
-				      <br>
-						<div class="panel panel-default">
-							<div class="panel-heading">
-							<br>
-								<h3 class="panel-title pull-right">
-									<i class="fa fa-info fa-fw"></i> הכנס פרמטרים לדוח ולחץ על יצירת קובץ אקסל
-								</h3>
-							
-								 <div class=" pull-left" id="">
-									 <a
-										href="javascript:void(0);"
-										onclick="OnBntExportClick('xls');">
-										<img alt="" src="resources/images/Excel-icon.png" style="border-radius:15%; margin-right: 10px;">
-									</a>
-								</div>
-								<!-- <button id="resetBtn" class="pull-left btn btn-primary">נקה חיפוש</button> -->
-								<div class="clearfix"></div>
-							</div>
-							<div class="panel-body">
-								<div class=" col-lg-12" id="forRep1">
-									<div class="form-group col-lg-2">
-									
-									
-										<label for="dayPick">דוח לחודש</label>
-										<input  type="text" class="form-control" id="dayPick" name="dayPick" >
-										 
-									</div>								
-								</div>
-							</div>
-						</div>
-					</div>
-				    </div>
-				    <div id="rep3" class="tab-pane ">
-				      <div class="col-lg-12">
-				      <br>
-						<div class="panel panel-default">
-							<div class="panel-heading">
-							<br>
-								<h3 class="panel-title pull-right">
-									<i class="fa fa-info fa-fw"></i> הכנס פרמטרים לדוח ולחץ על יצירת קובץ אקסל
-								</h3>
-							
-								 <div class=" pull-left" id="">
-									 <a
-										href="javascript:void(0);"
-										onclick="OnBntExportClick('xls');">
-										<img alt="" src="resources/images/Excel-icon.png" style="border-radius:15%; margin-right: 10px;">
-									</a>
-								</div>
-								<!-- <button id="resetBtn" class="pull-left btn btn-primary">נקה חיפוש</button> -->
-								<div class="clearfix"></div>
-							</div>
-							<div class="panel-body">
-								<div class=" col-lg-12" id="forRep1">
-									
-									<div class="form-group col-lg-2" style="margin-right: 15px;">
-									
-										<label for="yearNum">לשנה</label>
-										<select class="form-control input-sm" id="yearNum" name="yearNum">
-											<option value="1">נוכחית</option>
-											<option value="2">תשע"ו</option>
-											
-										</select> 
-									</div>
-									<div class="form-group col-lg-2">
-									
-										<label for="monthNum">חוגים</label>
-										<select class="selectpicker"  style="margin-left: 15px;" data-size="8" data-width="250px"  multiple data-actions-box="true" id="courseList" name="courseList"  >
-											<!-- <option value="9">כדורגל</option>
-											<option value="10">כדורעף</option>
-											<option value="11">כדורסל</option>
-											<option value="12">כדוריד</option>
-											<option value="1">קראטה</option>
-											<option value="2">2</option>
-											<option value="3">3</option>
-											<option value="4">4</option>
-											<option value="5">5</option>
-											<option value="6">6</option>
-											<option value="7">7</option>
-											<option value="8">8</option> -->
-											
-										</select> 
-									</div>								
-								</div>
-							</div>
-						</div>
-					</div>
-				    </div>
-				    <div id="rep4" class="tab-pane ">				      
-				      <div class="col-lg-12">
-				      <br>
-						<div class="panel panel-default">
-							<div class="panel-heading">
-							<br>
-								<h3 class="panel-title pull-right">
-									<i class="fa fa-info fa-fw"></i> הכנס פרמטרים לדוח ולחץ על יצירת קובץ אקסל
-								</h3>
-							
-								 <div class=" pull-left" id="">
-									 <a
-										href="javascript:void(0);"
-										onclick="OnBntExportClick('xls');">
-										<img alt="" src="resources/images/Excel-icon.png" style="border-radius:15%; margin-right: 10px;">
-									</a>
-								</div>
-								<!-- <button id="resetBtn" class="pull-left btn btn-primary">נקה חיפוש</button> -->
-								<div class="clearfix"></div>
-							</div>
-							<div class="panel-body">
-								<div class=" col-lg-12" id="forRep1">
-									<div class="form-group col-lg-2"> 
-										<label for="monthPick">דוח לחודש</label>
-										<input  type="text" class="form-control" id="monthPick" name="monthPick" >
-										 
-									</div>								
-								</div>
-							</div>
-						</div>
-					</div>
-				    </div>
-				    <div id="menu2" class="tab-pane ">
+
+				    <div id="tblData" class="tab-pane active">
 				     
-				<div class="col-lg-12">
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<h3 class="panel-title pull-right">
-								<i class="fa fa-info fa-fw"></i> פרטי טבלה
-							</h3>
-							<!-- <label for="isReg" class="pull-left" >�¨�©��</label> <select
-															class="form-control pull-left col-lg-1"  id="isReg" name="sunday"
-															 >
-															<option value="0"></option>
-															<option value="1">�¨�©��</option>
-															<option value="2">�� �¨�©��</option>
-														</select> -->
-
-							 <div class="form-group pull-left" id="viewModeBtn">
-							<!-- 	<a href="javascript:void(0);"
-									onclick="exportData('0','pdf', 'list');">
-									<img alt="" src="resources/images/pdf-icon.png">
-									</a> -->
-							<!-- 	 <a
-									href="javascript:void(0);"
-									onclick="exportData('0','xls', 'list','רשימת תלמידים','pupil list');">
-									<img alt="" src="resources/images/Excel-icon.png" style="border-radius:15%; margin-right: 10px;">
-								</a> -->
-								
-								<!-- 								 <a
-									href="javascript:void(0);"
-									onclick="exportDataOntime('0','xls', 'list');">
-									<img alt="" src="resources/images/Excel-icon.png" >
-								</a> -->
-							
-							</div>
-
-							<!-- <button id="resetBtn" class="pull-left btn btn-primary">נקה חיפוש</button> -->
-							<div class="clearfix"></div>
-						</div>
-						<div class="panel-body">
-
-							<!--  <div class="text-right">
-                                    <a href="#">View All Transactions <i class="fa fa-arrow-circle-right"></i></a>
-                                </div> -->
-						
-							<div class="table-responsive col-lg-12">
-								<table class="table table-bordered table-hover "
-									id="list" >
-
-									<tr>
-										<td></td>
-									</tr>
-								</table>
-
-								<div id="pager"></div>
-								<form id="formstyle" action="" method="post" name="formstyle">
-									<input type="hidden" name="pdfBuffer" id="pdfBuffer" value="" />
-									<input type="hidden" name="fileName" id="fileName"
-										value="GridPDF" /> <input type="hidden" name="fileType"
-										id="fileType" value="" />
-										
-										<input type="hidden" name="firstName" id="firstName" value="" />
-										<input type="hidden" name="lastName" id="lastName" value="" />
-										<input type="hidden" name="gender" id="gender" value="" />
-										<input type="hidden" name="isReg" id="isReg" value="" />
-										<input type="hidden" name="gradeName" id="gradeName" value="" />
-										<input type="hidden" name="sord" id="sord" value="" />
-										<input type="hidden" name="sidx" id="sidx" value="" />
-
-								</form>
-
-								<!-- HTML for jQuery UI Modals -->
-								<div id="preparing-file-modal" title="ייצוא הקובץ ..."
-									style="display: none;">
-										ייצוא הקובץ בתהליך, אנא המתן...
-
-									<!--Throw what you'd like for a progress indicator below-->
-									<div
-										class="ui-progressbar-value ui-corner-left ui-corner-right"
-										style="width: 100%; height: 22px; margin-top: 20px;"><img alt="" src="resources/images/ajax-loader.gif"></div>
+						<div class="col-lg-12">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h3 class="panel-title pull-right">
+										<i class="fa fa-info fa-fw"></i> פרטי טבלה
+									</h3>
+									<div class="clearfix"></div>
 								</div>
-
-								<div id="error-modal" title="Error" style="display: none;">
-									קיימת שגיאה בייצוא הקובץ, אנא נסה שוב</div>
+								<div class="panel-body">
+		
+								
+									<div class="table-responsive col-lg-12" id="tableContainer">
+									<!-- 	<table class="table table-bordered table-hover "
+											id="list" >
+		
+											<tr>
+												<td></td>
+											</tr>
+										</table>
+		
+										<div id="pager"></div>
+										
+		
+										 -->
+									</div>
+		
+								</div>
 							</div>
-
 						</div>
-					</div>
-				</div>
 				     </div>
-				    <div id="menu3" class="tab-pane ">
-				      <h3>Menu 3</h3>
-				      <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-				    </div>
-				  </div>
+
+				     
 				</div>
 			</div>
 			
