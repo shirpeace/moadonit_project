@@ -7,7 +7,7 @@
 var currentUserId =	 '<%=session.getAttribute("userid")%>';	
 //$.jgrid.defaults.responsive = true;
 //$.jgrid.defaults.styleUI = 'Bootstrap';
-var gradeData;
+var gradeData, currentYearObject;
 var grades, FoodTypes , FamilyRelation, RegSource, Staff , activityGroup;
 var RegDatesToValid = { startDate:null, lastDateToReg : null , numOfDaysToModify : null};
 // define state for the editable page
@@ -521,7 +521,29 @@ function formatDateInGrid(cellValue, opts, rwd) {
 	}
 }
 
+function getCurrentYearObject()
+{
+	$.ajax({
+  		async: false,
+		type: 'GET',
+		datatype: 'jsonp',
+        url: "LogisticsController?action=getCurrentYearObject",
+        
+        success: function(data) {
+        	if(data != undefined){
+        		currentYearObject =data;
 
+        	}
+        	else
+        		console.log("no data for currentYearObject");
+        },
+        error: function(e) {
+        	console.log("error loading currentYearObject");
+
+        }
+        
+      }); 	
+}
 
 // i think we dont use this func
 /* action to update/insert pupil*/

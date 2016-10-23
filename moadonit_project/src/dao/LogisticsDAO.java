@@ -43,6 +43,7 @@ public class LogisticsDAO extends AbstractDAO {
 	private static final long serialVersionUID = 1L;
 	
 	private String getWeekFoodAmout = "{ call ms2016.getWeekFoodAmout( ? )}";
+	private String getCurrentYear = "SELECT * FROM ms2016.tbl_school_years where yearID = get_currentYearID()";
 
 	@SuppressWarnings("unchecked")
 	public JSONArray getWeekFoodAmout(java.sql.Date sunday) {
@@ -157,14 +158,31 @@ public class LogisticsDAO extends AbstractDAO {
 		// TODO Auto-generated method stub
 		JSONArray list = new JSONArray();
 		
-		if(Query == null){
-			 Query = "SELECT * FROM " + table + " "; 
+		if(Query == null){	
+			Query = "SELECT * FROM " + table + " "; 
+			if(rowOffset == 0 && rowsPerPage == 0)
+				Query += " ORDER BY "+ sind +" "+ sord ;		
+			else
+				Query += " ORDER BY "+ sind +" "+ sord + " LIMIT " + rowOffset + ", " + rowsPerPage + "";
+		}else{
+			 
+			 if(rowOffset == 0 && rowsPerPage == 0){
+				 if(table.equals("tbl_moadonit_groups"))	
+					 Query += " ORDER BY gradeID, yearID " ;	
+				 else
+					 Query += " ORDER BY "+ sind +" "+ sord ;
+			 }else{
+				 if(table.equals("tbl_moadonit_groups"))
+					 Query += " ORDER BY gradeID, yearID LIMIT " + rowOffset + ", " + rowsPerPage + "";
+				 else if(table.equals("tbl_grade_in_year")){
+					 Query += " ORDER BY gradeID LIMIT " + rowOffset + ", " + rowsPerPage + "";
+				 }
+				 else
+					 Query += " ORDER BY "+ sind +" "+ sord + " LIMIT " + rowOffset + ", " + rowsPerPage +"" ;
+			 }
 		}
 		
-		if(rowOffset == 0 && rowsPerPage == 0)
-			Query += " ORDER BY "+ sind +" "+ sord ;		
-		else
-			Query += " ORDER BY "+ sind +" "+ sord + " LIMIT " + rowOffset + ", " + rowsPerPage + "";
+		
 		//pupilNum, , , , , , numOfDays, RegDays, Comments
 		try (PreparedStatement statement = DAOUtil.prepareStatement(this.con.getConnection(), Query, false, new Object[] {});
 				ResultSet resultSet = statement.executeQuery();) {
@@ -230,5 +248,30 @@ public class LogisticsDAO extends AbstractDAO {
 		}
 
 		
+	}
+
+	@SuppressWarnings("unchecked")
+	public JSONObject getCurrentYearObject() {
+		// TODO Auto-generated method stub
+		JSONObject result = new JSONObject();
+		try (PreparedStatement statement = DAOUtil.prepareStatement(this.con.getConnection(),
+						getCurrentYear,false, new Object[] {});
+				        ResultSet resultSet = statement.executeQuery();)
+		{
+			
+			while (resultSet.next()) { 
+				//yearID, yearName, startDate, endDate, lastDateToReg
+				result.put("yearID", resultSet.getInt("yearID"));
+				result.put("yearName", resultSet.getString("yearName"));
+				result.put("startDate", resultSet.getDate("startDate").getTime());
+				result.put("endDate", resultSet.getDate("endDate").getTime());
+				result.put("lastDateToReg", resultSet.getDate("lastDateToReg").getTime());
+				
+			}
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+		
+		return result;
 	}
 }

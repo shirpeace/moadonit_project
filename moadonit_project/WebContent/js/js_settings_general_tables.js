@@ -7,6 +7,18 @@ var  cols, valuesFroCell; // original column array from server
 
 jQuery(document).ready(function() {	
 	
+	var yearDiv = $("#yearTag > span");
+	if(yearDiv.length > 0){
+		getCurrentYearObject(); // js_logic
+		
+		if(currentYearObject != undefined && typeof currentYearObject === 'object'){
+			yearDiv.html(currentYearObject.yearName);
+			
+		}
+		
+	}
+	
+	
 	selectedTab = "tbl_reg_types";
 	tableName =  "tbl_reg_types";
 	query = "SELECT COLUMN_NAME, COLUMN_COMMENT, TABLE_NAME, DATA_TYPE, COLUMN_KEY ,EXTRA FROM information_schema.columns ";
@@ -14,6 +26,7 @@ jQuery(document).ready(function() {
 	reCreateTable();
 	getGeneralGrid();
 
+	
 	
 	$('#ulTabs').on('click', 'a', function(e) {
 	    //e.preventDefault();
@@ -57,6 +70,10 @@ jQuery(document).ready(function() {
 			    	tableName =  "tbl_grade_code";
 			    	whereclause = " WHERE (table_name = 'tbl_grade_code'); ";
 			    	break;	
+			    case "tbl_grade_in_year":
+			    	tableName =  "tbl_grade_in_year";
+			    	whereclause = " WHERE (table_name = 'tbl_grade_in_year'); ";
+			    	break;			    	
 			}
 			
 			reCreateTable();
