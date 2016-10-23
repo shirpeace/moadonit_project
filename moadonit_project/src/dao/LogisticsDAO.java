@@ -44,7 +44,8 @@ public class LogisticsDAO extends AbstractDAO {
 	
 	private String getWeekFoodAmout = "{ call ms2016.getWeekFoodAmout( ? )}";
 	private String getCurrentYear = "SELECT * FROM ms2016.tbl_school_years where yearID = get_currentYearID()";
-
+	private String getStaffDetails = "{ call ms2016.getStaffDetails() }";
+	
 	@SuppressWarnings("unchecked")
 	public JSONArray getWeekFoodAmout(java.sql.Date sunday) {
 		JSONArray list = new JSONArray();
@@ -273,5 +274,36 @@ public class LogisticsDAO extends AbstractDAO {
 		}
 		
 		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	public JSONArray getStaffDetails() {
+		JSONArray list = new JSONArray();
+		try (PreparedStatement statement = DAOUtil.prepareCallbackStatement(
+				this.con.getConnection(), getStaffDetails, new Object[] {});
+				ResultSet resultSet = statement.executeQuery();) {
+
+			while (resultSet.next()) {
+				
+				JSONObject user = new JSONObject();
+				user.put(new AbstractMap.SimpleEntry<>("tbl_staff","firstName"),resultSet.getString("firstName"));
+				user.put(new AbstractMap.SimpleEntry<>("tbl_staff","lastName"),resultSet.getString("lastName"));
+				user.put(new AbstractMap.SimpleEntry<>("tbl_staff","cellphone"),resultSet.getString("cellphone"));
+				user.put(new AbstractMap.SimpleEntry<>("tbl_staff","email"),resultSet.getString("email"));
+				user.put(new AbstractMap.SimpleEntry<>("tbl_staff","tekenHours"),resultSet.getFloat("tekenHours"));				
+				user.put(new AbstractMap.SimpleEntry<>("tbl_staff","hourSalary"),resultSet.getFloat("hourSalary"));
+				user.put(new AbstractMap.SimpleEntry<>("tbl_staff","startWorkDate"),resultSet.getDate("startWorkDate"));
+				user.put(new AbstractMap.SimpleEntry<>("tbl_job_type","jobName"),resultSet.getString("jobName"));
+				user.put(new AbstractMap.SimpleEntry<>("tbl_payment_type","paymentName"),resultSet.getString("paymentName"));				
+				
+				list.add(user);
+				
+			}
+
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+		
+		return list; 
 	}
 }

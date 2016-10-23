@@ -105,6 +105,36 @@ function exportData(cols,file,gridId ,pageHead){
    
 }
 
+function exportStaff(type){
+	var params = {  fileType : type, fileName: 'staffDetails' , action: "export" , pageName : "staffDetails"};	
+	exportData(type, params); 
+} 
+
+function exportData(type, params){
+
+	
+    var $preparingFileModal = $("#preparing-file-modal");
+    
+    $preparingFileModal.dialog({ modal: true });
+    
+   $.fileDownload("ReportsController", {
+        successCallback: function(url) {
+
+            $preparingFileModal.dialog('close');
+        },
+        failCallback: function(responseHtml, url) {
+
+            $preparingFileModal.dialog('close');
+            $("#error-modal").dialog({ modal: true });
+        },
+        data : params,
+        httpMethod: "POST",
+        popupWindowTitle: "ייצוא קובץ...",
+    });
+
+    return false; 
+} 
+
 function loadGrid(){
 	  $("#contact").jqGrid({
           url : "FullPupilCardController?action=contactPage",

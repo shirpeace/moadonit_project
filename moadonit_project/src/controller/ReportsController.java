@@ -32,6 +32,7 @@ import model.Pupil;
 import model.PupilActivity;
 import model.PupilActivityPK;
 import model.RegToMoadonit;
+import model.Staff;
 import model.User;
 
 import org.json.simple.JSONArray;
@@ -43,6 +44,7 @@ import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 import util.DAOUtil;
 import dao.ActivityDAO;
 import dao.GeneralDAO;
+import dao.LogisticsDAO;
 import dao.PupilActivityDAO;
 import dao.RegToMoadonitDAO;
 import dao.ReportsDAO;
@@ -64,6 +66,7 @@ Serializable {
 	JSONObject resultToClient = new JSONObject();
 	Map<Integer, Object> regTypes;
 	RegToMoadonitDAO regDAO;
+	LogisticsDAO logDAO ;
 	/**
 	 * 
 	 */
@@ -677,6 +680,36 @@ Serializable {
 				}
 				
 				break;
+			case "staffDetails":
+				whereClouse = " WHERE (table_name = 'tbl_staff' or table_name = 'tbl_job_type' or table_name = 'tbl_payment_type'); ";
+								
+				this.logDAO = new LogisticsDAO(con);
+				map  = this.regTypes; 
+				
+				pageHead = "דף קשר סגל";
+				html += "<div class='tableTitle'>"+ pageHead + "</div>";
+				//staffID, firstName, lastName, cellphone, email, jobID, tekenHours, hourSalary, paymentID, startWorkDate
+				arrlist.add(new AbstractMap.SimpleEntry<>("tbl_staff","firstName"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("tbl_staff","lastName"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("tbl_staff","cellphone"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("tbl_staff","email"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("tbl_staff","tekenHours"));	
+				arrlist.add(new AbstractMap.SimpleEntry<>("tbl_staff","hourSalary"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("tbl_staff","startWorkDate"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("tbl_job_type","jobName"));
+				arrlist.add(new AbstractMap.SimpleEntry<>("tbl_payment_type","paymentName"));
+				
+				
+				jsonList = this.logDAO.getStaffDetails();
+			
+				if (!jsonList.isEmpty() && arrlist.size() > 0) {
+					html += buildTableForHtml(query,whereClouse,arrlist,jsonList,pageHead);							
+				}					
+				
+				
+				html += "</body></html>";
+				
+				break; // END STAFF
 		case "OneTimeReport":
 				//List<FullPupilCard> list = null;
 				//query = "SELECT COLUMN_NAME, COLUMN_COMMENT, TABLE_NAME FROM information_schema.columns ";

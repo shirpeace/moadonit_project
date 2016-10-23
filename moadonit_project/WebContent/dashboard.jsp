@@ -39,7 +39,6 @@
     <title>מועדונית</title>
 	 <!-- jQuery -->
     <script src="js/jquery.js"></script>
-
     
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -151,7 +150,7 @@
                             </a>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6">
+                    <!-- <div class="col-lg-3 col-md-6">
                         <div class="panel panel-red">
                             <a href="settings_general_tables.jsp">
                                 <div class="panel-footer">
@@ -161,7 +160,7 @@
                                 </div>
                             </a>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="col-lg-3 col-md-6">
                         <div class="panel panel-red">
                             <a href="reports_page.jsp">
@@ -176,6 +175,21 @@
                 </div>
                 <!-- /.row -->
 				
+				<div class="row "> <!-- third button row -->
+                    <div class="col-lg-2 col-md-6  pull-left">
+                        <div class="panel panel-grey ">
+                            <a href="settings_general_tables.jsp">
+                                <div class="panel-footer ">
+                                   <span class="pull-right">ניהול מערכת</span>
+                                   <br>
+                                    <span class="pull-left"><i class="fa  fa-cog fa-2x"></i></span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.row -->
 
             </div>
             <!-- /.container-fluid -->
