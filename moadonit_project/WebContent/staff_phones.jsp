@@ -48,6 +48,7 @@
     <link href="css/sb-admin.css" rel="stylesheet">
     <link href="css/sb-admin-rtl.css" rel="stylesheet">
 
+
     <!-- Morris Charts CSS -->
   <!--   <link href="css/plugins/morris.css" rel="stylesheet"> -->
 
@@ -67,7 +68,11 @@
 	
  	
     <script src="js/jquery.jqGrid.min.js"></script> 
-
+    
+   <!--  color pick try -->
+   <link rel="stylesheet" href="css/bootstrap-colorpicker.css">
+	<script src="js/bootstrap-colorpicker.js"></script>
+	<script src="js/bootstrap-colorpicker.min.js"></script>
 	
 	<script src="js/js_pupils_phones.js"></script> 	
 	
@@ -129,6 +134,19 @@
 
                 <!-- Page Heading -->
                 <div class="row">
+                <div class="col-lg-2">
+                <div id="cp2" class="input-group colorpicker-component">
+    <input type="text" value="#00AABB" class="form-control" />
+    <span class="input-group-addon"><i></i></span>
+</div>
+<input type="color" name="color" />
+                </div>
+                
+<script>
+    $(function() {
+        $('#cp2').colorpicker();
+    });
+</script>
                     <div class="col-lg-12">
                         <h1 class="page-header">
                             דפי קשר <small></small>

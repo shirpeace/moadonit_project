@@ -85,6 +85,11 @@
 <script src="js/additional-methods.js"></script>
 <script src="js/messages_he.js"></script>
 
+<!-- colorpicker  -->
+<link rel="stylesheet" href="css/bootstrap-colorpicker.css">
+<script src="js/bootstrap-colorpicker.js"></script>
+<script src="js/bootstrap-colorpicker.min.js"></script>
+	
 <script src="js/js_logic.js"></script>
 
 <script src="js/js_pupils_search.js"></script>
@@ -188,10 +193,10 @@
 				    <!-- <li id="tbl_pupil_state"><a data-toggle="pill" href="#tblData"><span >סטטוס <br>תלמיד</span></a></li> -->
 				    
 				    <li id="tbl_moadonit_groups"><a data-toggle="pill" href="#tblData"><span >שיוך כיתות <br>לקבוצות מועדונית</span></a></li>
-				    <li id="tbl_pupil_state"><a data-toggle="pill" href="#tblData"><span >סטטוס <br>תלמיד</span></a></li>
-				    <li id="tbl_pupil_state"><a data-toggle="pill" href="#tblData"><span >סטטוס <br>תלמיד</span></a></li>
-				    <li id="tbl_pupil_state"><a data-toggle="pill" href="#tblData"><span >סטטוס <br>תלמיד</span></a></li>
-				    <li id="tbl_pupil_state"><a data-toggle="pill" href="#tblData"><span >סטטוס <br>תלמיד</span></a></li>
+				    <!-- <li id="tbl_pupil_state"><a data-toggle="pill" href="#tblData"><span >סטטוס <br>תלמיד</span></a></li> -->
+				    <li id="tbl_school_years"><a data-toggle="pill" href="#tblData"><span >שנות <br>לימוד</span></a></li>
+				    <li id="tbl_general_parameters"><a data-toggle="pill" href="#tblData"><span >פרמטרים <br>כלליים</span></a></li>
+				    <li id="tbl_grade_code"><a data-toggle="pill" href="#tblData"><span >כיתות <br>ביה"ס</span></a></li>
 				  </ul>
 				  
 				  <div class="tab-content">

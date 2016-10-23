@@ -5,6 +5,8 @@ package controller;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import javax.servlet.ServletException;
@@ -17,8 +19,7 @@ import javax.servlet.http.HttpSession;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import java.sql.PreparedStatement;
-
+import dao.GeneralDAO;
 import dao.LoginDAO;
 
 /**
@@ -34,7 +35,7 @@ public class loginController extends HttpServlet implements Serializable {
 	private String msg;
 	private String action;
 	private boolean loggedIn = false;
-
+	GeneralDAO generalDAO;
 	/**
 	 * 
 	 */
@@ -56,6 +57,7 @@ public class loginController extends HttpServlet implements Serializable {
 			JSONArray users = new JSONArray();
 
 			MyConnection con = null;
+			
 			HttpSession session = request.getSession();
 			if (session.getAttribute("connection") != null) {
 				con = (MyConnection) session.getAttribute("connection");
@@ -63,7 +65,7 @@ public class loginController extends HttpServlet implements Serializable {
 				con = new MyConnection();
 				session.setAttribute("connection", con);
 			}
-
+			generalDAO = new GeneralDAO(con);
 			user = request.getParameter("user");
 			pass = request.getParameter("pass");
 			action = request.getParameter("action");
@@ -90,6 +92,9 @@ public class loginController extends HttpServlet implements Serializable {
 					
 					this.loggedIn = true;
 					this.msg = "OK";
+					java.util.Date d = new java.util.Date();
+					
+					generalDAO.updateWhoIsReg(new java.sql.Date(d.getTime()));
 					session.setAttribute("userid", u);
 					response.setContentType("application/json");
 					response.setCharacterEncoding("UTF-8");

@@ -153,10 +153,14 @@ public class LogisticsDAO extends AbstractDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public JSONArray GetGridData(String table, ArrayList<Object[]> arrlist , String sind, String sord, int rowOffset, int rowsPerPage ) {
+	public JSONArray GetGridData(String table, ArrayList<Object[]> arrlist , String sind, String sord, int rowOffset, int rowsPerPage ,String Query) {
 		// TODO Auto-generated method stub
 		JSONArray list = new JSONArray();
-		String Query = "SELECT * FROM " + table + " "; 
+		
+		if(Query == null){
+			 Query = "SELECT * FROM " + table + " "; 
+		}
+		
 		if(rowOffset == 0 && rowsPerPage == 0)
 			Query += " ORDER BY "+ sind +" "+ sord ;		
 		else
@@ -209,5 +213,22 @@ public class LogisticsDAO extends AbstractDAO {
 		}
 		
 		return list; 
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void update_moadonit_group(String sql, Object[] values) {
+	
+
+		try (PreparedStatement statement = DAOUtil
+				.prepareCallbackStatement(this.con.getConnection(),
+						sql, values);
+				ResultSet resultSet = statement.executeQuery();) {
+
+
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+
+		
 	}
 }

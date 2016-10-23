@@ -33,7 +33,8 @@ public class GeneralDAO extends AbstractDAO {
 	private String get_actGroup = "{ call ms2016.get_actGroup(? , ?) }"; // get_actGroup
 
 	private String getRegDatesToValid = "{ call ms2016.getRegDatesToValid() }"; // ;
-
+	private String updateWhoIsReg = "{ call ms2016.updateWhoIsReg(?) }";
+	
 	public GeneralDAO(MyConnection con) {
 		super(con);
 		// TODO Auto-generated constructor stub
@@ -216,5 +217,19 @@ return list;
 	public static String getValIfNotNull(String val){
 		
 		return val != null  ? val : "";
+	}
+
+	public void updateWhoIsReg(Date date) {
+		try (PreparedStatement statement = DAOUtil.prepareCallbackStatement(
+				this.con.getConnection(), updateWhoIsReg, new Object[] {date});
+				) {
+
+			int resultSet = statement.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DAOException(e);
+			
+		}
 	}
 }

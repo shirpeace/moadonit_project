@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.swing.text.html.HTMLDocument.HTMLReader.HiddenAction;
 
 import model.Activity;
 import model.ActivityType;
@@ -188,7 +189,7 @@ public class LogisticsController extends HttpServlet implements Serializable {
 				    while (it.hasNext()) {
 				    	Entry<String, Object> pair = (Entry<String, Object>)it.next();
 				        o.put(pair.getKey(),  pair.getValue());
-				    	System.out.println(pair.getKey() + " = " + pair.getValue());
+				    	//System.out.println(pair.getKey() + " = " + pair.getValue());
 				        //it.remove(); // avoids a ConcurrentModificationException
 				        
 				    }
@@ -210,7 +211,15 @@ public class LogisticsController extends HttpServlet implements Serializable {
 			else if (action != null && action.equals("getGridRows")){
 				
 				arrlist = (ArrayList<Object[]>) getDataInSession(req, resp, "arrlist");	
-				this.jsonData = this.logDAO.GetGridData( tableName,  arrlist ,sidx, sord ,rows* (page - 1), rows);
+				
+				String qry = null;
+				if(tableName.equals("tbl_moadonit_groups")){
+					qry="select gradeID, yearID, activityNum, startMonth, endMonth, ID "
+							+ "FROM ms2016.tbl_moadonit_groups t1 where endMonth =  ( SELECT max(endMonth)  "
+							+ "FROM ms2016.tbl_moadonit_groups t2 where t1.gradeID = t2.gradeID and t1.yearID=t2.yearID  "
+							+ "group by gradeID, yearID) "; 
+				}
+				this.jsonData = this.logDAO.GetGridData( tableName,  arrlist ,sidx, sord ,rows* (page - 1), rows, qry);
 				String jsonResponse = this.jsonData.toJSONString();
 				
 				int totalCount = this.logDAO.getTableRowCount("select count(*) from " + tableName);
@@ -373,58 +382,66 @@ public class LogisticsController extends HttpServlet implements Serializable {
 			HttpServletResponse resp) throws IOException, SQLException {
 		
 		int result;
-		sql = "UPDATE " + tableName + " SET ";
-		for (Iterator iterator = jsonArry.iterator(); iterator.hasNext();) {
-			JSONObject col = (JSONObject) iterator.next();
+		if(tableName.equals("tbl_moadonit_groups")){
+			int actNum = Integer.parseInt(req.getParameter("activityNum"));			
+			int rowKey = Integer.parseInt(req.getParameter("ID"));
 			
-			boolean isKey = (boolean)col.get("IsKey");
-			if(isKey){
-				if(req.getParameter((String)col.get("Name")) != null){
-			    	where +=  " " + (String)col.get("Name") + " = " + req.getParameter((String)col.get("Name"))  + " AND";						    	
-		    	}
-			}
-			else{
-				if(req.getParameter((String)col.get("Name")) != null){
-					String fieldValue = req.getParameter((String)col.get("Name"));
-					if(col.get("Datatype").equals("String") || col.get("Datatype").equals("Time") || col.get("Datatype").equals("phone")){
-						
-					    sql += " " + (String)col.get("Name") + " = '" + req.getParameter((String)col.get("Name")) + "' ,";
-					}
-					else if(col.get("Datatype").equals("Date")){
-						if(fieldValue.trim().length() > 0){
-							String[] s = fieldValue.split("/");
-							String datVal = s[2] + "-" +s[1] + "-" +s[0];
-							sql += " " + (String)col.get("Name") + " = '" + datVal + "' ,";
-						}
-						else{
-							sql += " " + (String)col.get("Name") + " = null ,";
-						}
-						
-					}
-					else{
-						if(fieldValue.trim().length() > 0){
-							sql += " " + (String)col.get("Name") + " = " + fieldValue + " ,";
-						}
-						else{
-							sql += " " + (String)col.get("Name") + " = null ,";
-						}
-						
-					}
-		    		
-		    	}
-			}
-			
+			this.logDAO.update_moadonit_group("{ call ms2016.update_moadonit_group( ? ,?)}", new Object[] {actNum,rowKey});
+			return result = 0;
 		}
-		
-		if(sql.endsWith(" ,"))
-			sql = sql.substring(0, sql.length()-2);
-		
-		if(where.endsWith(" AND"))
-			where = where.substring(0, where.length()-4);
-		
-		sql += " " + where;
-		return result = this.logDAO.executeSql(sql, null);
-		
+		else{
+			sql = "UPDATE " + tableName + " SET ";
+			for (Iterator iterator = jsonArry.iterator(); iterator.hasNext();) {
+				JSONObject col = (JSONObject) iterator.next();
+				
+				boolean isKey = (boolean)col.get("IsKey");
+				if(isKey){
+					if(req.getParameter((String)col.get("Name")) != null){
+				    	where +=  " " + (String)col.get("Name") + " = " + req.getParameter((String)col.get("Name"))  + " AND";						    	
+			    	}
+				}
+				else{
+					if(req.getParameter((String)col.get("Name")) != null){
+						String fieldValue = req.getParameter((String)col.get("Name"));
+						if(col.get("Datatype").equals("String") || col.get("Datatype").equals("Time") || col.get("Datatype").equals("phone") || col.get("Datatype").equals("colorpicker")){
+							
+						    sql += " " + (String)col.get("Name") + " = '" + req.getParameter((String)col.get("Name")) + "' ,";
+						}
+						else if(col.get("Datatype").equals("Date")){
+							if(fieldValue.trim().length() > 0){
+								String[] s = fieldValue.split("/");
+								String datVal = s[2] + "-" +s[1] + "-" +s[0];
+								sql += " " + (String)col.get("Name") + " = '" + datVal + "' ,";
+							}
+							else{
+								sql += " " + (String)col.get("Name") + " = null ,";
+							}
+							
+						}
+						else{
+							if(fieldValue.trim().length() > 0){
+								sql += " " + (String)col.get("Name") + " = " + fieldValue + " ,";
+							}
+							else{
+								sql += " " + (String)col.get("Name") + " = null ,";
+							}
+							
+						}
+			    		
+			    	}
+				}
+				
+			}
+			
+			if(sql.endsWith(" ,"))
+				sql = sql.substring(0, sql.length()-2);
+			
+			if(where.endsWith(" AND"))
+				where = where.substring(0, where.length()-4);
+			
+			sql += " " + where;
+			return result = this.logDAO.executeSql(sql, null);
+		}
 	}
 	
 	protected Object getDataInSession(HttpServletRequest req,
@@ -472,9 +489,11 @@ public class LogisticsController extends HttpServlet implements Serializable {
 				String name = key.getValue();
 				boolean isKey = keysColComments.get(key)[1].equals("PRI")  ?  true : false;
 				boolean isHidden = false, isRequired = false;
+				boolean editable=true;
 				if(isKey){
 					 isHidden = keysColComments.get(key)[2].equals("auto_increment")  ?  true : false  ;
 					 isRequired = !isHidden;
+					 editable = !isHidden;
 				}
 				
 				String type = GetColType(keysColComments.get(key)[0]);
@@ -519,6 +538,7 @@ public class LogisticsController extends HttpServlet implements Serializable {
 					}
 					else if (key.getValue().equals("gradeID")){
 						 isRequired = false;
+						 editable = false;
 						 comboQuery =  "SELECT * FROM ms2016.tbl_grade_code";
 						 comboFields = new String[] { "gradeID", "gradeName", "gradeColor"};
 						 type = "custom";
@@ -529,10 +549,31 @@ public class LogisticsController extends HttpServlet implements Serializable {
 					//  
 					
 				}
+				else if(key.getKey().equals("tbl_grade_code")){
+					if (key.getValue().equals("gradeID")){
+						isHidden = true;
+						editable = false;
+					}
+					else if (key.getValue().equals("gradeColor")){
+						type = "colorpicker";
+					}
+					else if (key.getValue().equals("gradeName")){
+						editable = false;
+					}
+					//
+				}
+				/*else if (key.getKey().equals("tbl_general_parameters")) {
+					if (key.getValue().equals("activityNum")){
+						 comboQuery =  "SELECT activityNum ,activityName FROM ms2016.tbl_activity where activityGroup = 4  and schoolYear = get_currentYearID()";
+						 comboFields = new String[] { "activityNum", "activityName"};
+						 type = "dropdown";
+						
+					}
+				}*/
 				
 				HashMap<String,String> comboOptions = new HashMap<String, String>();
 				
-				HashMap<String, Object> mapProp = setColOptions(name,label, isKey,isHidden, isRequired, null, type, comboQuery,comboOptions, comboFields  );
+				HashMap<String, Object> mapProp = setColOptions(name,label, isKey,isHidden, isRequired, editable, null, type, comboQuery,comboOptions, comboFields  );
 				arrlist.add(new Object[] { key , mapProp, comboOptions });
 				
 				//arrlist.get(0)[1] = setColOptions(name,label, isKey,isH, isR, null, type, comboQuery, comboFields );
@@ -588,7 +629,7 @@ public class LogisticsController extends HttpServlet implements Serializable {
 		
 		return r;
 	}
-	private HashMap<String, Object> setColOptions(String name ,String label, boolean IsKey, boolean IsHidden,boolean IsRequired, Object DefaultValue, String Datatype, String query,HashMap<String,String> options,  String... fields){
+	private HashMap<String, Object> setColOptions(String name ,String label, boolean IsKey, boolean IsHidden,boolean IsRequired,  boolean editable, Object DefaultValue, String Datatype, String query,HashMap<String,String> options,  String... fields){
 		
 		HashMap<String, Object> hash = new HashMap<String, Object>();
 		hash.put("Name",name);
@@ -600,6 +641,7 @@ public class LogisticsController extends HttpServlet implements Serializable {
 		hash.put("ValueListQuery",query);
 		hash.put("ValueList",":;");
 		hash.put("label",label);
+		hash.put("editable",editable);
 		
 		if(hash.get("ValueListQuery") != null && !query.trim().equals("") && fields != null && fields.length > 0){
 				if(logDAO != null){

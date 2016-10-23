@@ -44,7 +44,18 @@ jQuery(document).ready(function() {
 			    case "tbl_moadonit_groups":
 			    	tableName =  "tbl_moadonit_groups";
 			    	whereclause = " WHERE (table_name = 'tbl_moadonit_groups'); ";
-			    				    				    	
+			    	break;
+			    case "tbl_school_years":
+			    	tableName =  "tbl_school_years";
+			    	whereclause = " WHERE (table_name = 'tbl_school_years'); ";
+			    	break;
+			    case "tbl_general_parameters":
+			    	tableName =  "tbl_general_parameters";
+			    	whereclause = " WHERE (table_name = 'tbl_general_parameters'); ";
+			    	break;	
+			    case "tbl_grade_code":
+			    	tableName =  "tbl_grade_code";
+			    	whereclause = " WHERE (table_name = 'tbl_grade_code'); ";
 			    	break;	
 			}
 			
@@ -164,12 +175,55 @@ inLineErrorfunc = function (rowID, response) {
 	$.jgrid.info_dialog($.jgrid.errors.errcap,'<div class="ui-state-error">'+
 		    response.responseText +'</div>', $.jgrid.edit.bClose,{buttonalign:'right'});
 },
+colorpickerTemplate = {
+		/*stype: "color",*/
+		/*edittype: "color",*/
+	    searchoptions: {
+	        dataInit: function (el) {
+	           /* var self = this;
+	            $(el).colorpicker();
+	            $(el).colorpicker().on('changeColor', function(e) {
+	            	console.log(self);
+	                //do things when color is changed
+	            });*/
+	        }
+	    },
+	    editoptions: {
+	        dataInit: function (el) {
+	            var self = this , x, y ;
+	            el.type = "color";
+	            /*$(el).colorpicker();
+	           
+	            $(el).colorpicker().on('changeColor', function(e) {
+	            	console.log(self);
+	                //do things when color is changed
+	            });
+	            
+	            $(el).colorpicker().on('showPicker', function(e) {
+	            	console.log(self);
+	            	var rectObject  = e.currentTarget.getBoundingClientRect();
+	            	var d = $(".colorpicker.dropdown-menu");
+	            	//d.css({top: rectObject.top, left: rectObject.left, position:'absolute'});
+	                //do things when color is changed
+	            });*/
+	        }
+	        //readonly: 'readonly'
+	    },
+	    formatter : function (cellValue, opts, rwd) {								
+			if (cellValue) {
+				return cellValue;
+			} else {
+				return '';
+			}
+		}
+	},
 dateTemplate = {
     editable: true,
     
     searchoptions: {
         dataInit: function (el) {
             var self = this;
+           
             /*$(el).datepicker({
                 dateFormat: 'dd/mm/yy', maxDate: 0, changeMonth: true, changeYear: true,
                 onSelect: function (dateText, inst) {
@@ -317,11 +371,16 @@ timeTemplate = {
 							    response.responseText +'</div>', "סגור",{buttonalign:'right', modal : true});
 						/*$.jgrid.info_dialog($.jgrid.errors.errcap,'<div class="ui-state-error">'+
 							    response.responseText +'</div>', $.jgrid.edit.bClose,{buttonalign:'right'});*/
-					}/*, successfunc : function (response) {
-					   debugger;
-						alert(response.responseText);
-						
-					}*/
+					}, 
+					successfunc : function (response) {
+					   
+						console.log(response.responseText);
+						var $self = $(this);
+			            setTimeout(function () {
+		                $self.trigger("reloadGrid");
+		            }, 50);
+						return true; 
+					}
 			   },
 			   del: true,
 			   
@@ -357,6 +416,10 @@ function formatGradeCell(rowId, val, rawObject, cm, rdata){
 	    });
 	}
 	
+	if(rawObject.gradeColor){
+		cellVal =  'style="background-color:'+ rawObject.gradeColor+'; font-weight:bold;"';
+	}
+	
 	return cellVal;
 }
 
@@ -380,7 +443,7 @@ function setColModelFormResult(result){
 			//width : width == null ? "auto" : width,
 	        name: this.Name,
 	        hidden: this.IsHidden ,//|| !existingProperties.hasOwnProperty(this.Name)
-	        editable : !this.IsKey,
+	        editable : this.editable,
 	        //editoptions: this.DefaultValue != null && this.DefaultValue != "" ? { defaultValue: this.DefaultValue } : {},
 	        editrules: { required: this.IsRequired },
 	        label : this.label,
@@ -418,6 +481,9 @@ function setColModelFormResult(result){
 	    case 'custom':
 	        valuesFroCell = this.ValueList.slice(0, -1);
 	        $.extend(true, cm, { cellattr: formatGradeCell } );
+	        break;   
+	    case 'colorpicker':
+	        $.extend(true, cm, { template: colorpickerTemplate , cellattr: formatGradeCell} );
 	        break;    
 	    case 'phone':
 	        $.extend(true, cm, { template: phoneTemplate } );
@@ -455,7 +521,7 @@ function getGeneralGrid(){
 							pager : '#pager',
 							autowidth : true,
 							shrinkToFit : true,
-							rowNum : 15,
+							rowNum : 20,
 							rowList : [],						
 							direction : "rtl",
 							viewrecords : true,
