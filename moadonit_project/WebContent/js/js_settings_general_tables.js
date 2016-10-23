@@ -6,7 +6,7 @@ var tablePk;
 var  cols, valuesFroCell; // original column array from server
 
 jQuery(document).ready(function() {	
-	if(page != undefined && page === "tbl_staff"){
+	if(page !== undefined && page === "tbl_staff"){
 		tableName =  "tbl_staff";			    	
     	whereclause = " WHERE (table_name = 'tbl_staff'); ";	
 	}else{
