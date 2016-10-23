@@ -6,7 +6,7 @@ var tablePk;
 var  cols, valuesFroCell; // original column array from server
 
 jQuery(document).ready(function() {	
-	if(page !== undefined && page === "tbl_staff"){
+	if(typeof page != 'undefined'  && page === "tbl_staff"){
 		tableName =  "tbl_staff";			    	
     	whereclause = " WHERE (table_name = 'tbl_staff'); ";	
 	}else{
@@ -14,12 +14,25 @@ jQuery(document).ready(function() {
 		tableName =  "tbl_reg_types";
 		whereclause = " WHERE (table_name = 'tbl_reg_types'); ";
 	}
+
+	var yearDiv = $("#yearTag > span");
+	if(yearDiv.length > 0){
+		getCurrentYearObject(); // js_logic
+		
+		if(currentYearObject != undefined && typeof currentYearObject === 'object'){
+			yearDiv.html(currentYearObject.yearName);
+			
+		}
+		
+	}
+	
 	
 	
 	query = "SELECT COLUMN_NAME, COLUMN_COMMENT, TABLE_NAME, DATA_TYPE, COLUMN_KEY ,EXTRA FROM information_schema.columns ";
 	reCreateTable();
 	getGeneralGrid();
 
+	
 	$('#ulTabs').on('click', 'a', function(e) {
 	    //e.preventDefault();
 		selectedTab = this.parentElement.id; 

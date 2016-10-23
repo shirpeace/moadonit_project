@@ -85,10 +85,6 @@
 <script src="js/additional-methods.js"></script>
 <script src="js/messages_he.js"></script>
 
-<!-- colorpicker  -->
-<link rel="stylesheet" href="css/bootstrap-colorpicker.css">
-<script src="js/bootstrap-colorpicker.js"></script>
-<script src="js/bootstrap-colorpicker.min.js"></script>
 	
 <script src="js/js_logic.js"></script>
 
@@ -137,7 +133,9 @@
 				</a>
 
 			</div>
-
+			<div class="navbar-header pull-left" id="yearTag">
+			 <span class="navbar-brand">שנה </span>
+			</div>
 			<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav side-nav">
@@ -197,6 +195,7 @@
 				    <li id="tbl_school_years"><a data-toggle="pill" href="#tblData"><span >שנות <br>לימוד</span></a></li>
 				    <li id="tbl_general_parameters"><a data-toggle="pill" href="#tblData"><span >פרמטרים <br>כלליים</span></a></li>
 				    <li id="tbl_grade_code"><a data-toggle="pill" href="#tblData"><span >כיתות <br>ביה"ס</span></a></li>
+				    <li id="tbl_grade_in_year"><a data-toggle="pill" href="#tblData"><span >כיתות <br>בשנה נוכחוית</span></a></li>
 				  </ul>
 				  
 				  <div class="tab-content">

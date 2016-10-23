@@ -102,6 +102,13 @@ public class LogisticsController extends HttpServlet implements Serializable {
 						resp.getWriter().print(resultToClient);
 					}
 				
+			}else if (action.equals("getCurrentYearObject")) {
+				JSONObject yearObj = this.logDAO.getCurrentYearObject();
+				jsonResponse = yearObj.toJSONString();
+				
+				resp.setContentType("application/json");
+				resp.setCharacterEncoding("UTF-8");
+				resp.getWriter().print(yearObj);
 			}
 			
 		} catch (Exception e) {
@@ -213,17 +220,30 @@ public class LogisticsController extends HttpServlet implements Serializable {
 				arrlist = (ArrayList<Object[]>) getDataInSession(req, resp, "arrlist");	
 				
 				String qry = null;
-				if(tableName.equals("tbl_moadonit_groups")){
-					qry="select gradeID, yearID, activityNum, startMonth, endMonth, ID "
-							+ "FROM ms2016.tbl_moadonit_groups t1 where endMonth =  ( SELECT max(endMonth)  "
-							+ "FROM ms2016.tbl_moadonit_groups t2 where t1.gradeID = t2.gradeID and t1.yearID=t2.yearID  "
-							+ "group by gradeID, yearID) "; 
-				}
-				this.jsonData = this.logDAO.GetGridData( tableName,  arrlist ,sidx, sord ,rows* (page - 1), rows, qry);
-				String jsonResponse = this.jsonData.toJSONString();
-				
-				int totalCount = this.logDAO.getTableRowCount("select count(*) from " + tableName);
+				int totalCount;
 				int totalPages;
+				String jsonResponse;
+				
+				if(tableName.equals("tbl_moadonit_groups")){
+					qry= "select gradeID, yearID, activityNum, startMonth, endMonth, ID "
+							+ "FROM ms2016.tbl_moadonit_groups t1 where t1.yearID = get_currentYearID() and endMonth = "
+							+ " ( SELECT max(endMonth) FROM ms2016.tbl_moadonit_groups t2 where t1.gradeID = t2.gradeID and t1.yearID=t2.yearID  group by gradeID, yearID) "; 
+				}
+				else if(tableName.equals("tbl_grade_in_year")){
+					qry = "SELECT * FROM ms2016.tbl_grade_in_year where yearID = get_currentYearID() ";
+				}
+				
+				this.jsonData = this.logDAO.GetGridData( tableName,  arrlist ,sidx, sord ,rows* (page - 1), rows, qry);
+				jsonResponse = this.jsonData.toJSONString();
+				
+				if(tableName.equals("tbl_moadonit_groups") || tableName.equals("tbl_grade_in_year")){
+					totalCount = jsonData.size();
+				}
+				else{
+					totalCount = this.logDAO.getTableRowCount("select count(*) from " + tableName);
+				}
+				
+				
 				if (totalCount > 0) {
 					if (totalCount % rows == 0) {
 						totalPages = totalCount / rows;
