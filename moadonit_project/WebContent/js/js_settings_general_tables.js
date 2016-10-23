@@ -6,15 +6,20 @@ var tablePk;
 var  cols, valuesFroCell; // original column array from server
 
 jQuery(document).ready(function() {	
+	if(page != undefined && page === "tbl_staff"){
+		tableName =  "tbl_staff";			    	
+    	whereclause = " WHERE (table_name = 'tbl_staff'); ";	
+	}else{
+		selectedTab = "tbl_reg_types";
+		tableName =  "tbl_reg_types";
+		whereclause = " WHERE (table_name = 'tbl_reg_types'); ";
+	}
 	
-	selectedTab = "tbl_reg_types";
-	tableName =  "tbl_reg_types";
+	
 	query = "SELECT COLUMN_NAME, COLUMN_COMMENT, TABLE_NAME, DATA_TYPE, COLUMN_KEY ,EXTRA FROM information_schema.columns ";
-	whereclause = " WHERE (table_name = 'tbl_reg_types'); ";
 	reCreateTable();
 	getGeneralGrid();
 
-	
 	$('#ulTabs').on('click', 'a', function(e) {
 	    //e.preventDefault();
 		selectedTab = this.parentElement.id; 

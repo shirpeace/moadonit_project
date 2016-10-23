@@ -108,7 +108,7 @@
                         <a href="pupils_phones.jsp" ><i class="fa fa-fw fa-user"></i> תלמידים</a>
                      </li> 
                      <li>
-                        <a href="staff_phones.jsp" ><i class="fa fa-fw fa-phone"></i> צוות המועדונית</a>
+                        <a href="staff_phones.jsp" ><i class="fa fa-fw fa-phone"></i> סגל</a>
                      </li>
                      <!-- <li>
                         <a href= "#"><i class="fa fa-fw fa-phone"></i> מורי חוגים</a>
@@ -153,11 +153,7 @@
 			                            <div class="panel-heading">
 			                                <h3 class="panel-title pull-right"><i class="fa fa-info fa-fw"></i> ניתן לחפש ולסנן רשומות</h3>
 							                <div class="form-group pull-left" id="viewModeBtn">
-											<!-- 	<a href="javascript:void(0);"
-													onclick="exportData('0','pdf', 'list');">
-													<img alt="" src="resources/images/pdf-icon.png">
-													</a> -->
-												 <a
+												<a
 													href="javascript:void(0);"
 													onclick="exportData('0','xls', 'contact');">
 													<img alt="" src="resources/images/Excel-icon.png" style="border-radius:15%; margin-right: 10px;">

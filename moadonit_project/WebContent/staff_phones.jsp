@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
-	pageEncoding="windows-1255"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
@@ -37,7 +37,7 @@
 		}
 	%> 
 
-    <title>ξεςγεπιϊ</title>
+    <title>ΧΧ•ΧΆΧ“Χ•Χ Χ™Χª</title>
   <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
@@ -65,16 +65,14 @@
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/i18n/grid.locale-he.js"></script>
   <!--  <script src="js/i18n/grid.locale-en.js"></script>  -->
-	
+	<script src="js/bootbox.js"></script>
  	
     <script src="js/jquery.jqGrid.min.js"></script> 
     
-   <!--  color pick try -->
-   <link rel="stylesheet" href="css/bootstrap-colorpicker.css">
-	<script src="js/bootstrap-colorpicker.js"></script>
-	<script src="js/bootstrap-colorpicker.min.js"></script>
 	
+	<script src="js/js_logic.js"></script>
 	<script src="js/js_pupils_phones.js"></script> 	
+	<script src="js/js_settings_general_tables.js"></script>
 	
 	<script src="js/jquery.fileDownload.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -94,11 +92,11 @@
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="nav navbar-right top-nav" style="padding-top: 15px; ">
             	<a href="login.jsp?action=logout">
-	            	<i class="fa fa-fw fa-power-off"></i>&nbsp;ιφιΰδ</a>
+	            	<i class="fa fa-fw fa-power-off"></i>&nbsp;Χ™Χ¦Χ™ΧΧ”</a>
             </div>
             <div class="navbar-header" >
             	<a class="navbar-brand" href="dashboard.jsp">
-            	<i class="fa fa-home fa-fw"></i>&nbsp;ξεςγεπιϊ</a>
+            	<i class="fa fa-home fa-fw"></i>&nbsp;ΧΧ•ΧΆΧ“Χ•Χ Χ™Χª</a>
                 
             </div>
             
@@ -106,21 +104,15 @@
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                      <li>
-                        <a href="" style="font-size: 120%; pointer-events: none;"> <i class="fa fa-fw fa-phone"></i> γτι χωψ</a>
+                        <a href="" style="font-size: 120%; pointer-events: none;"> <i class="fa fa-fw fa-phone"></i> Χ“Χ¤Χ™ Χ§Χ©Χ¨</a>
                         <br>
                      </li> 
                      <li>
-                        <a href="pupils_phones.jsp" ><i class="fa fa-fw fa-user"></i> ϊμξιγιν</a>
+                        <a href="pupils_phones.jsp" ><i class="fa fa-fw fa-user"></i> ΧªΧΧΧ™Χ“Χ™Χ</a>
                      </li> 
                      <li class="active">
-                        <a href="staff_phones.jsp" ><i class="fa fa-fw fa-phone"></i> φεεϊ δξεςγεπιϊ</a>
+                        <a href="staff_phones.jsp" ><i class="fa fa-fw fa-phone"></i> Χ΅Χ’Χ</a>
                      </li>
-                     <li>
-                        <a href= "#"><i class="fa fa-fw fa-phone"></i> ξεψι ηεβιν</a>
-                     </li> 
-                     <li>
-                        <a href= "#"><i class="fa fa-fw fa-phone"></i> ξεψι αιδ"ρ</a>
-                     </li>  
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -135,46 +127,35 @@
                 <!-- Page Heading -->
                 <div class="row">
                 <div class="col-lg-2">
-                <div id="cp2" class="input-group colorpicker-component">
-    <input type="text" value="#00AABB" class="form-control" />
-    <span class="input-group-addon"><i></i></span>
-</div>
-<input type="color" name="color" />
                 </div>
-                
-<script>
-    $(function() {
-        $('#cp2').colorpicker();
-    });
-</script>
-                    <div class="col-lg-12">
+         <div class="col-lg-12">
                         <h1 class="page-header">
-                            γτι χωψ <small></small>
+                            Χ“Χ¤Χ™ Χ§Χ©Χ¨ <small></small>
                         </h1>
                         <ol class="breadcrumb">
                             <li>
-                                 <a href="dashboard.jsp"><i class="fa fa-home"></i> ψΰωι</a>
+                                 <a href="dashboard.jsp"><i class="fa fa-home"></i> Χ¨ΧΧ©Χ™</a>
                             </li>
                             <li>
-                                 <a href="pupils_search.jsp"><i class="fa fa-phone"></i> γτι χωψ</a>
+                                 <a href="pupils_search.jsp"><i class="fa fa-phone"></i> Χ“Χ¤Χ™ Χ§Χ©Χ¨</a>
                             </li>
                             <li class="active">
-                                <i class="fa fa-phone"></i> φεεϊ δξεςγεπιϊ
+                                <i class="fa fa-phone"></i> Χ΅Χ’Χ
                             </li>
                         </ol>
                     </div>
                 </div>
                 <!-- /.row -->
 
-                                <div class="col-lg-12">
+                               <!--  <div class="col-lg-12">
 			                        <div class="panel panel-default">
 			                            <div class="panel-heading">
-			                                <h3 class="panel-title pull-right"><i class="fa fa-info fa-fw"></i> πιϊο μητω εμρπο ψωεξεϊ</h3>
+			                                <h3 class="panel-title pull-right"><i class="fa fa-info fa-fw"></i> Χ Χ™ΧªΧ ΧΧ—Χ¤Χ© Χ•ΧΧ΅Χ Χ Χ¨Χ©Χ•ΧΧ•Χª</h3>
 							                <div class="form-group pull-left" id="viewModeBtn">
-											<!-- 	<a href="javascript:void(0);"
+												<a href="javascript:void(0);"
 													onclick="exportData('0','pdf', 'list');">
 													<img alt="" src="resources/images/pdf-icon.png">
-													</a> -->
+													</a>
 												 <a
 													href="javascript:void(0);"
 													onclick="exportData('0','xls', 'contact');">
@@ -182,14 +163,14 @@
 												</a>
 											
 											</div>
-			                                <button id="resetBtn" class="pull-left btn btn-primary">πχδ ηιτεω</button>
+			                                <button id="resetBtn" class="pull-left btn btn-primary">Χ Χ§Χ” Χ—Χ™Χ¤Χ•Χ©</button>
 			                                <div class="clearfix"></div>
 			                            </div>
 			                            <div class="panel-body">
 			                           
-			                               <!--  <div class="text-right">
+			                                <div class="text-right">
 			                                    <a href="#">View All Transactions <i class="fa fa-arrow-circle-right"></i></a>
-			                                </div> -->
+			                                </div>
 			                                <div class="table-responsive col-lg-12">
 			                                    <table class="table table-bordered table-hover table-striped" id="contact">
 			                                
@@ -204,7 +185,53 @@
 										
 									</div>
 								</div>
-			            </div>
+			            </div> -->
+			            
+			            				  <div class="tab-content">
+
+				    <div id="tblData" class="tab-pane active">
+				     
+						<div class="col-lg-12">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h3 class="panel-title pull-right">
+										<i class="fa fa-info fa-fw"></i> Χ¤Χ¨ΧΧ™ Χ΅Χ’ΧΒ
+									</h3>
+									<div class="form-group pull-left" id="viewModeBtn">
+												<a
+													href="javascript:void(0);"
+													onclick="exportStaff('xls');">
+													<img alt="" src="resources/images/Excel-icon.png" style="border-radius:15%; margin-right: 10px;">
+												</a>
+											
+											</div>
+									<div class="clearfix"></div>
+								</div>
+								<div class="panel-body">
+		
+								
+									<div class="table-responsive col-lg-12" id="tableContainer">
+									<!-- 	<table class="table table-bordered table-hover "
+											id="list" >
+		
+											<tr>
+												<td></td>
+											</tr>
+										</table>
+		
+										<div id="pager"></div>
+										
+		
+										 -->
+									</div>
+		
+								</div>
+							</div>
+						</div>
+				     </div>
+
+				     
+				</div>
             </div>
             <!-- /.container-fluid -->
 
@@ -215,11 +242,8 @@
     <!-- /#wrapper -->
 <script type="text/javascript">
 
-/* var currentUserId =	 '${p.pupilNum}' */
-jQuery(document).ready(function() {
-	var pupilID ;
-	//loadPupilSearch();
-});
+	var page = "tbl_staff" ;
+
 </script>
   
 </body>

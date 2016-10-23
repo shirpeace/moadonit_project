@@ -247,7 +247,7 @@
 		</div>
 		<!-- /#wrapper -->
 	</div>
-
+</div>
 
 	<script type="text/javascript">
 		/* var currentUserId =	 '${p.pupilNum}' */
