@@ -155,7 +155,7 @@
 							                <div class="form-group pull-left" id="viewModeBtn">
 												<a
 													href="javascript:void(0);"
-													onclick="exportData('0','xls', 'contact');">
+													onclick="exportPupilcontact('0','xls', 'contact','רשימת טלפונים');">
 													<img alt="" src="resources/images/Excel-icon.png" style="border-radius:15%; margin-right: 10px;">
 												</a>
 											

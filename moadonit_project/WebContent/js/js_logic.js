@@ -24,7 +24,19 @@ var colors  = {
 var rowDataGlobal = [];
 //set the local for bootbox pligin
 bootbox.setLocale("he");
-
+jQuery(document).ready(function() {
+	
+	var yearDiv = $("#yearTag > span");
+	if(yearDiv.length > 0){
+		getCurrentYearObject(); // js_logic
+		
+		if(currentYearObject != null && typeof currentYearObject === 'object'){
+			yearDiv.html(currentYearObject.yearName);
+			
+		}
+		
+	}
+});
 /*************************************************/
 //TODO //*  START  PUPILADD PAGE FUNCTIONS       */
 /*************************************************/

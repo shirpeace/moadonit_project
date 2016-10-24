@@ -59,7 +59,7 @@ function formatGradeCell(rowId, val, rawObject, cm, rdata){
 	return cellVal;
 }
 
-function exportData(cols,file,gridId ,pageHead){
+function exportPupilcontact(cols,type,gridId ,pageHead){
 
 	var $grid = $("#" + gridId);
     var postData = $grid.jqGrid('getGridParam', 'postData');
@@ -75,7 +75,17 @@ function exportData(cols,file,gridId ,pageHead){
     	p1Cell = postData.p1Cell, p2Name =  postData.p2Name, p2Cell = postData.p2Cell;
     }
     
-    var $preparingFileModal = $("#preparing-file-modal");
+    var params = { Controller: "FullPupilCardController",  fileType : type, fileName: 'exportFile' , action: "export" ,
+        	pupilCell : pupilCell, homePhone :  homePhone,
+            p1Name: p1Name, p1Cell : p1Cell, p2Name : p2Name, p2Cell : p2Cell,        	
+        	firstName : firstName ,gender : gender, 
+			        	isReg:  isReg , lastName : lastName ,
+			        	gradeName :  gradeName,sord : postData.sord, sidx : postData.sidx,pageName : "pupils_phones"
+			        	, colNum : 11
+			    };
+    
+    exportData(type, params); 
+   /* var $preparingFileModal = $("#preparing-file-modal");
     
     $preparingFileModal.dialog({ modal: true });       
     
@@ -102,11 +112,11 @@ function exportData(cols,file,gridId ,pageHead){
     });
 
     return false; //this is critical to stop the click event which will trigger a normal file download!
-   
+   */
 }
 
 function exportStaff(type){
-	var params = {  fileType : type, fileName: 'staffDetails' , action: "export" , pageName : "staffDetails"};	
+	var params = { Controller: "ReportsController",  fileType : type, fileName: 'staffDetails' , action: "export" , pageName : "staffDetails"};	
 	exportData(type, params); 
 } 
 
@@ -117,7 +127,7 @@ function exportData(type, params){
     
     $preparingFileModal.dialog({ modal: true });
     
-   $.fileDownload("ReportsController", {
+   $.fileDownload(params.Controller, {
         successCallback: function(url) {
 
             $preparingFileModal.dialog('close');

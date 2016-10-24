@@ -15,16 +15,7 @@ jQuery(document).ready(function() {
 		whereclause = " WHERE (table_name = 'tbl_reg_types'); ";
 	}
 
-	var yearDiv = $("#yearTag > span");
-	if(yearDiv.length > 0){
-		getCurrentYearObject(); // js_logic
-		
-		if(currentYearObject != undefined && typeof currentYearObject === 'object'){
-			yearDiv.html(currentYearObject.yearName);
-			
-		}
-		
-	}
+
 	
 	
 	
@@ -74,6 +65,10 @@ jQuery(document).ready(function() {
 			    case "tbl_grade_code":
 			    	tableName =  "tbl_grade_code";
 			    	whereclause = " WHERE (table_name = 'tbl_grade_code'); ";
+			    	break;	
+			    case "tbl_grade_in_year":
+			    	tableName =  "tbl_grade_in_year";
+			    	whereclause = " WHERE (table_name = 'tbl_grade_in_year'); ";
 			    	break;	
 			}
 			

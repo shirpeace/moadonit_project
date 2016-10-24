@@ -970,8 +970,9 @@ Serializable {
 						boolean b = (boolean)obj.get(keyEntry);
 						html += b ? "כן" : "לא" + "</td>";
 					}
-					else
-					html += obj.get(keyEntry) + "</td>";
+					else{
+						html +=  obj.get(keyEntry) +  "</td>";
+					}
 				}
 				
 			}

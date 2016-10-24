@@ -308,6 +308,7 @@ public class LogisticsController extends HttpServlet implements Serializable {
 			resp.getWriter().print(e.getMessage());
 		}
 	}
+	
 	private int deleteRowInTable(String sql,String tableName,String where, HttpServletRequest req,
 			HttpServletResponse resp) throws IOException, SQLException {
 	
@@ -579,6 +580,20 @@ public class LogisticsController extends HttpServlet implements Serializable {
 					}
 					else if (key.getValue().equals("gradeName")){
 						editable = false;
+					}
+					//
+				}
+				else if(key.getKey().equals("tbl_grade_in_year")){
+					if (key.getValue().equals("yearID")){
+						isHidden = true;
+						editable = false;
+					}
+					else if (key.getValue().equals("gradeID")){
+						 isRequired = false;
+						 editable = false;
+						 comboQuery =  "SELECT * FROM ms2016.tbl_grade_code";
+						 comboFields = new String[] { "gradeID", "gradeName", "gradeColor"};
+						 type = "custom";
 					}
 					//
 				}
