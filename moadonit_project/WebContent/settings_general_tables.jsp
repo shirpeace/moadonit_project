@@ -59,6 +59,7 @@
  <link rel="stylesheet" href="css/ui.jqgrid.css">
 <link rel="stylesheet" href="css/ui.jqgrid-bootstrap-ui.css">
 <link rel="stylesheet" href="css/ui.jqgrid-bootstrap.css">
+<link rel="stylesheet" href="css/jquery.timepicker.css">
  <link href="css/mycss.css" rel="stylesheet">
 
 <!-- jQuery -->
@@ -73,7 +74,7 @@
 <!-- jqgrid Addons -->
  <script src="js/jQuery.jqGrid.setColWidth.js"></script>
  <script src="js/jQuery.jqGrid.autoWidthColumns.js"></script>
- 
+ <script src="js/jquery.timepicker.min.js"></script>
 
 <!-- bootbox code -->
 <script src="js/bootbox.js"></script>
@@ -143,15 +144,19 @@
                         <a href="#" style="font-size: 120%; pointer-events: none;"> <i class="fa fa-fw fa-cutlery"></i> ניהול מערכת</a>
                         <br>
                      </li> 
-                     <li class="active">
-                        <a href= "#"><i class="fa fa-fw fa-file-o"></i>  טבלאות מערכת</a>
+                     <li class="active" id="menu2">
+                        <a href= "#" onclick="prosetsMenu()"><i class="fa fa-fw fa-file-o"></i>  הגדרות מתקדמות</a>
                      </li> 
-                     <li>
+                     <li id="menu1">
+                        <a href= "#"  onclick="yearsetsMenu()"><i class="fa fa-fw fa-file-o"></i>  הגדרות שנה</a>
+                     </li> 
+                    
+                    <!--  <li>
                         <a href= "cater_order.jsp"><i class="fa fa-fw fa-file-o"></i> קייטרינג</a>
                      </li> 
                      <li>
                         <a href= "#"><i class="fa fa-fw fa-file-text-o"></i> צוות המועדונית</a>
-                     </li>
+                     </li> -->
 				</ul>
 			</div>
 			<!-- /.navbar-collapse -->
@@ -183,19 +188,18 @@
             	<!-- <div class="col-lg-1 col-md-6"></div> -->
             	<div class="col-lg-12 col-md-6 text-center">
 				  <ul class="nav nav-pills center-pills" id="ulTabs">
-				    <li id="tbl_reg_types" class="active"><a data-toggle="pill" href="#tblData"><span>סוגי <br>רישום</span></a></li>
-				    <li id="tbl_food_type"><a data-toggle="pill" href="#tblData"><span>סוגי <br>ארוחות</span></a></li>
-				    <li id="tbl_family_relation"><a data-toggle="pill" href="#tblData"><span >סוגי קרבה <br>משפחתית</span></a></li>
-				    <li id="tbl_job_type"><a data-toggle="pill" href=#tblData><span >סוגי <br>משרות</span></a></li>
-				    <li id="tbl_payment_type"><a data-toggle="pill" href="#tblData"><span>סוגי <br>תשלום</span></a></li>
-				    <!-- <li id="tbl_pupil_state"><a data-toggle="pill" href="#tblData"><span >סטטוס <br>תלמיד</span></a></li> -->
+				    <li id="tbl_reg_types" class="active prosets"><a data-toggle="pill" href="#tblData"><span>סוגי <br>רישום</span></a></li>
+				    <li id="tbl_food_type" class="prosets"><a data-toggle="pill" href="#tblData"><span>סוגי <br>ארוחות</span></a></li>
+				    <li id="tbl_family_relation" class="prosets"><a data-toggle="pill" href="#tblData"><span >סוגי קרבה <br>משפחתית</span></a></li>
+				    <li id="tbl_job_type" class="prosets"><a data-toggle="pill" href=#tblData><span >סוגי <br>משרות</span></a></li>
+				    <li id="tbl_payment_type" class="prosets"><a data-toggle="pill" href="#tblData"><span>סוגי <br>תשלום</span></a></li>
+				    <li id="tbl_reg_source" class="prosets"><a data-toggle="pill" href="#tblData"><span>מקורות <br>רישום</span></a></li>
+				    <li id="tbl_grade_code" class="prosets"><a data-toggle="pill" href="#tblData"><span >כיתות <br>ביה"ס</span></a></li>
+				    <li id="tbl_activity" class="prosets"><a data-toggle="pill" href="#tblData"><span >קבוצות <br>מועדונית</span></a></li>
 				    
-				    <li id="tbl_moadonit_groups"><a data-toggle="pill" href="#tblData"><span >שיוך כיתות <br>לקבוצות מועדונית</span></a></li>
-				    <!-- <li id="tbl_pupil_state"><a data-toggle="pill" href="#tblData"><span >סטטוס <br>תלמיד</span></a></li> -->
-				    <li id="tbl_school_years"><a data-toggle="pill" href="#tblData"><span >שנות <br>לימוד</span></a></li>
-				    <li id="tbl_general_parameters"><a data-toggle="pill" href="#tblData"><span >פרמטרים <br>כלליים</span></a></li>
-				    <li id="tbl_grade_code"><a data-toggle="pill" href="#tblData"><span >כיתות <br>ביה"ס</span></a></li>
-				    <li id="tbl_grade_in_year"><a data-toggle="pill" href="#tblData"><span >כיתות <br>בשנה נוכחוית</span></a></li>
+				      <li id="tbl_school_years" class="yearsets"><a data-toggle="pill" href="#tblData"><span >שנות <br>לימוד</span></a></li>
+				    <li id="tbl_moadonit_groups" class="yearsets"><a data-toggle="pill" href="#tblData"><span >שיוך כיתות <br>לקבוצות מועדונית</span></a></li>
+				   <li id="tbl_grade_in_year" class="yearsets"><a data-toggle="pill" href="#tblData"><span >כיתות <br>בשנה נוכחית</span></a></li>
 				  </ul>
 				  
 				  <div class="tab-content">
@@ -230,6 +234,35 @@
 		
 								</div>
 							</div>
+							<div class="panel panel-default" id="yearParamsDiv" style="display: none;">
+								<div class="panel-body">
+									
+										<form id="yearparams" >
+												
+												<div class="row">
+													<div class="form-group col-lg-2">
+														<label for="currYear"> שנה נוכחית של המערכת</label>
+														<input  type="text" class="form-control" id="currYear" name="currYear">
+													</div>
+												</div>
+												<div class="row">
+													<div class="form-group  col-lg-2">
+														<label for="regDays">מספר ימים לשינויי רישום לאורך השנה</label>
+														<input  type="text" class="form-control" id="regDays" name="regDays" >
+													</div>
+												
+													<div class="form-group  col-lg-2">
+														<label for="saveBtn"> </label> <input
+															class="form-control btn btn-primary" id="saveBtn"
+															style="margin-top: 5px;" type="button" value="שמור">															 
+													</div>
+													
+												</div>
+											
+										</form>											
+									
+								</div>
+						</div>
 						</div>
 				     </div>
 

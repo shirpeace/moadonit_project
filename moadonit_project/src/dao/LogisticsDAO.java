@@ -45,7 +45,7 @@ public class LogisticsDAO extends AbstractDAO {
 	private String getWeekFoodAmout = "{ call ms2016.getWeekFoodAmout( ? )}";
 	private String getCurrentYear = "SELECT * FROM ms2016.tbl_school_years where yearID = get_currentYearID()";
 	private String getStaffDetails = "{ call ms2016.getStaffDetails() }";
-	
+	private String getGeneralParams = "SELECT paramID, paramValue FROM ms2016.tbl_general_parameters";
 	@SuppressWarnings("unchecked")
 	public JSONArray getWeekFoodAmout(java.sql.Date sunday) {
 		JSONArray list = new JSONArray();
@@ -253,7 +253,6 @@ public class LogisticsDAO extends AbstractDAO {
 
 	@SuppressWarnings("unchecked")
 	public JSONObject getCurrentYearObject() {
-		// TODO Auto-generated method stub
 		JSONObject result = new JSONObject();
 		try (PreparedStatement statement = DAOUtil.prepareStatement(this.con.getConnection(),
 						getCurrentYear,false, new Object[] {});
@@ -305,5 +304,29 @@ public class LogisticsDAO extends AbstractDAO {
 		}
 		
 		return list; 
+	}
+
+	@SuppressWarnings("unchecked")
+	public JSONObject getGeneralParams() {
+		JSONObject result = new JSONObject();
+		
+		try (PreparedStatement statement = DAOUtil.prepareStatement(
+				this.con.getConnection(), getGeneralParams ,false, new Object[] { });) {
+		
+			ResultSet resultSet  = statement.executeQuery();
+			while (resultSet.next()) {
+				if (resultSet.getInt("paramID") == 1)
+					result.put( "currYear" ,resultSet.getInt("paramValue"));
+				else if (resultSet.getInt("paramID") == 2)
+					result.put( "regDays" ,resultSet.getInt("paramValue"));
+				
+			}
+					
+		
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+		
+		return result;
 	}
 }

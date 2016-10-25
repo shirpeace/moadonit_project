@@ -10,14 +10,12 @@ jQuery(document).ready(function() {
 		tableName =  "tbl_staff";			    	
     	whereclause = " WHERE (table_name = 'tbl_staff'); ";	
 	}else{
+		$(".yearsets").hide();
 		selectedTab = "tbl_reg_types";
 		tableName =  "tbl_reg_types";
 		whereclause = " WHERE (table_name = 'tbl_reg_types'); ";
 	}
 
-
-	
-	
 	
 	query = "SELECT COLUMN_NAME, COLUMN_COMMENT, TABLE_NAME, DATA_TYPE, COLUMN_KEY ,EXTRA FROM information_schema.columns ";
 	reCreateTable();
@@ -27,7 +25,7 @@ jQuery(document).ready(function() {
 	$('#ulTabs').on('click', 'a', function(e) {
 	    //e.preventDefault();
 		selectedTab = this.parentElement.id; 
-		
+		$("#yearParamsDiv").hide();
 		
 			switch (this.parentElement.id) {
 			    case "tbl_reg_types":
@@ -57,6 +55,7 @@ jQuery(document).ready(function() {
 			    case "tbl_school_years":
 			    	tableName =  "tbl_school_years";
 			    	whereclause = " WHERE (table_name = 'tbl_school_years'); ";
+			    	$("#yearParamsDiv").show();
 			    	break;
 			    case "tbl_general_parameters":
 			    	tableName =  "tbl_general_parameters";
@@ -70,45 +69,82 @@ jQuery(document).ready(function() {
 			    	tableName =  "tbl_grade_in_year";
 			    	whereclause = " WHERE (table_name = 'tbl_grade_in_year'); ";
 			    	break;	
+			    case "tbl_reg_source":
+			    	tableName =  "tbl_reg_source";
+			    	whereclause = " WHERE (table_name = 'tbl_reg_source'); ";
+			    	break;
+			    case "tbl_activity":
+			    	tableName =  "tbl_activity";
+			    	whereclause = " WHERE (table_name = 'tbl_activity'); ";
+			    	break;
+			    	//tbl_activity
 			}
 			
 			reCreateTable();
 	    	getGeneralGrid();
-		
+	    	
+	    	
 	});
 	
-	 $('#monthPick').datepicker({
-		    format: "dd/mm/yyyy",
-		    language: "he" ,
-		     startDate: '01/01/2000',
-		    maxViewMode: 1,
-		    minViewMode: 1,
-		    todayBtn: false,
-		    keyboardNavigation: false,
-		    daysOfWeekDisabled: "1,2,3,4,5,6",
-		    todayHighlight: true,
-		    toggleActive: true,
-		    autoclose: true
-		   
-		}); 
-	 
-	 $('#dayPick').datepicker({
-		    format: "dd/mm/yyyy",
-		    language: "he" ,
-		     startDate: '01/01/2000',
-		    maxViewMode: 0,
-		    minViewMode: 0,
-		    todayBtn: false,
-		    keyboardNavigation: false,
-		    daysOfWeekDisabled: "5,6",
-		    todayHighlight: true,
-		    toggleActive: true,
-		    autoclose: true
-		   
-		}); 
-	 
-
+prepareYearsForm();
+	
 });
+
+function prepareYearsForm(){
+	$.ajax({
+  		async: false,
+		type: 'GET',
+		datatype: 'jsonp',
+        url: "LogisticsController",
+        
+        data: { 
+        	action : "getRegDaysParam",
+        	  },
+        	
+        success: function(data) {
+        	if(data != undefined){
+        		$("#currYear").val(data.currYear);
+        		$("#regDays").val(data.regDays);
+    				
+    		};
+        },
+        error: function(e) {
+        	result = false;
+        	console.log(e);
+		        	bootbox.alert("שגיאה בשמירת הנתונים, נא בדוק את הערכים ונסה שוב.", function() {	   	        		 
+		        	});			
+        }
+        
+      }); 
+}
+
+function yearsetsMenu(){
+	$("#menu2").removeClass("active");
+	$("#menu1").addClass("active");
+	$(".yearsets").show();
+	$(".prosets").hide();
+	
+	$( "#tbl_school_years > a" ).trigger( "click" );
+	/*tableName =  "tbl_school_years";
+	whereclause = " WHERE (table_name = 'tbl_school_years'); ";
+	$("#yearParamsDiv").show();
+	reCreateTable();
+	getGeneralGrid();*/
+}
+
+function prosetsMenu(){
+	$("#menu1").removeClass("active");
+	$("#menu2").addClass("active");
+	$(".prosets").show();
+	$(".yearsets").hide();
+	$( "#tbl_reg_types > a" ).trigger( "click" );
+	/*$("#yearParamsDiv").hide();
+	selectedTab = "tbl_reg_types";
+	tableName =  "tbl_reg_types";
+	whereclause = " WHERE (table_name = 'tbl_reg_types'); ";
+	reCreateTable();
+	getGeneralGrid();*/
+}
 
 function reCreateTable(){
 	
@@ -329,7 +365,7 @@ timeTemplate = {
       	  
         },
 	    editoptions: {
-	        dataInit: function (el) {
+	        dataInit: function (element) {
 	        	 $(element).timepicker({
 					    
 					    closeOnWindowScroll : true,
@@ -457,7 +493,7 @@ function setColModelFormResult(result){
 	        name: this.Name,
 	        hidden: this.IsHidden ,//|| !existingProperties.hasOwnProperty(this.Name)
 	        editable : this.editable,
-	        //editoptions: this.DefaultValue != null && this.DefaultValue != "" ? { defaultValue: this.DefaultValue } : {},
+	        editoptions: this.DefaultValue != null && this.DefaultValue != "" ? { defaultValue: this.DefaultValue } : {},
 	        editrules: { required: this.IsRequired },
 	        label : this.label,
 	        key: this.IsKey,
@@ -564,6 +600,7 @@ function getGeneralGrid(){
 							       
 							    
 						    },
+						    
 						    loadError : function(xhr,st,err) {
 						    	
 						    	jQuery("#rsperror").html("Type: "+st+"; Response: "+ xhr.status + " "+xhr.statusText);
@@ -579,36 +616,22 @@ function getGeneralGrid(){
 									$.jgrid.info_dialog($.jgrid.errors.errcap,'<div class="ui-state-error">'+
 										    response.responseText +'</div>', $.jgrid.edit.bClose,{buttonalign:'right'});
 							}*/
-							/*serializeRowData: function(postdata) { 
+							serializeRowData: function(postdata) { 
 								
-								for (var int = 0; int < cols.length; int++) {
-									var col = cols[int];
-									var value;
-									switch (col.Datatype) {
-									    case 'int':
-									    case 'float':
-									      
-									        break;
-									    case 'Date':
-									    case 'time':
-									    	var fieldValue = postdata[col.Name];
-									    	if(fieldValue != undefined){
-										    	value = getDateFromValue(fieldValue);
-										        postdata[col.Name] = value.getTime();
-											}
-									    
-									        break; 
-									    case 'dropdown':
-									      
-									        break;
-									    default:
-									        break;
-									}
-									
+								switch (tableName) {
+							    case 'tbl_activity':
+							    	if(currentYearObject != null && typeof currentYearObject === 'object')
+						    		{
+							    		postdata.schoolYear =  currentYearObject.yearID;
+						    		}
+							        break;
+							    default:
+							        break;
 								}
+								
 								return postdata;
 								//return { rtm : JSON.stringify(createPostData(pupilID, postdata,true)), _oldDateVal: oldDateVal.getTime() , _oldEndDate: oldEndDate.getTime() } ;
-					        }*/
+					        }
 							
 						}).jqGrid("navGrid", "#pager", navParams)
 						.jqGrid("inlineNav","#pager", inlinNavParameters );
@@ -681,7 +704,7 @@ function getGeneralGrid(){
 	});
 	
 }
-function OnBntExportClick(type){
+/*function OnBntExportClick(type){
 	
 	if(selectedTab){
 		switch (selectedTab) {
@@ -705,9 +728,9 @@ function OnBntExportClick(type){
 		        break;	   
 		}
 	}
-}
+}*/
 
-function exportMoadonitPay(type, fileName){
+/*function exportMoadonitPay(type, fileName){
 	
 	var month =  $('#monthPick').val();
 	var monthTime =  getDateFromValue(month).getTime();
@@ -771,10 +794,10 @@ function getSelectedOptions(){
 	var array = [], idx = 0;
 	var val = "";
     $('#courseList option:selected').each(function() {
-    	/*var activity = new Object();
+    	var activity = new Object();
     	activity.activityNum = $(this).val();
     	activity.activityName = $(this).text();
-    	array[idx++] = activity;*/
+    	array[idx++] = activity;
 
     	val += $(this).val() + ";" + $(this).text() + ",";
     });
@@ -825,7 +848,7 @@ function getCourseIds(){
 
 	});
 }
-
+*/
 /******
  NOT IN USE FROM HERE TO END 
  ******/

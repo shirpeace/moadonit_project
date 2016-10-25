@@ -110,6 +110,14 @@ public class LogisticsController extends HttpServlet implements Serializable {
 				resp.setCharacterEncoding("UTF-8");
 				resp.getWriter().print(yearObj);
 			}
+			else if (action.equals("getRegDaysParam")) {
+				JSONObject params = this.logDAO.getGeneralParams();
+			//	jsonResponse = params.toJSONString();
+				
+				resp.setContentType("application/json");
+				resp.setCharacterEncoding("UTF-8");
+				resp.getWriter().print(params);
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -232,11 +240,15 @@ public class LogisticsController extends HttpServlet implements Serializable {
 				else if(tableName.equals("tbl_grade_in_year")){
 					qry = "SELECT * FROM ms2016.tbl_grade_in_year where yearID = get_currentYearID() ";
 				}
+				else if(tableName.equals("tbl_activity")){
+					//activityGroup, activityName, responsibleStaff
+					qry = "SELECT * FROM ms2016.tbl_activity where schoolYear = get_currentYearID() and activityGroup = 4 ";
+				}
 				
 				this.jsonData = this.logDAO.GetGridData( tableName,  arrlist ,sidx, sord ,rows* (page - 1), rows, qry);
 				jsonResponse = this.jsonData.toJSONString();
 				
-				if(tableName.equals("tbl_moadonit_groups") || tableName.equals("tbl_grade_in_year")){
+				if(tableName.equals("tbl_moadonit_groups") || tableName.equals("tbl_grade_in_year") || tableName.equals("tbl_activity")){
 					totalCount = jsonData.size();
 				}
 				else{
@@ -496,11 +508,6 @@ public class LogisticsController extends HttpServlet implements Serializable {
 		JSONArray jsonResult = new JSONArray();
 		
 		ArrayList<Object[]> arrlist = new ArrayList<Object[]>();
-		/*arrlist.add(new Object[] { new AbstractMap.SimpleEntry<>("tbl_general_parameters","paramID")});
-		arrlist.add(new Object[] { new AbstractMap.SimpleEntry<>("tbl_general_parameters","paramName")});
-		arrlist.add(new Object[] { new AbstractMap.SimpleEntry<>("tbl_general_parameters","paramValue")});
-		arrlist.add(new Object[] { new AbstractMap.SimpleEntry<>("tbl_general_parameters","startDate")});
-		arrlist.add(new Object[] { new AbstractMap.SimpleEntry<>("tbl_general_parameters","endDate")});*/
 		
 		HashMap<Entry<String, String>, String[]> keysColComments = DAOUtil.getKeysColmunComments(this.con.getConnection(),query, whereclause);
 		
@@ -511,6 +518,7 @@ public class LogisticsController extends HttpServlet implements Serializable {
 				boolean isKey = keysColComments.get(key)[1].equals("PRI")  ?  true : false;
 				boolean isHidden = false, isRequired = false;
 				boolean editable=true;
+				Object DefaultValue = null;
 				if(isKey){
 					 isHidden = keysColComments.get(key)[2].equals("auto_increment")  ?  true : false  ;
 					 isRequired = !isHidden;
@@ -597,18 +605,30 @@ public class LogisticsController extends HttpServlet implements Serializable {
 					}
 					//
 				}
-				/*else if (key.getKey().equals("tbl_general_parameters")) {
-					if (key.getValue().equals("activityNum")){
-						 comboQuery =  "SELECT activityNum ,activityName FROM ms2016.tbl_activity where activityGroup = 4  and schoolYear = get_currentYearID()";
-						 comboFields = new String[] { "activityNum", "activityName"};
-						 type = "dropdown";
-						
+				else if (key.getKey().equals("tbl_activity")) { //for moadonitGroups table in administration page
+					if ( key.getValue().equals("weekDay") || key.getValue().equals("startTime") || key.getValue().equals("endTime")){
+						isHidden = true;
+						editable = false;
 					}
-				}*/
+					else if(key.getValue().equals("responsibleStaff")){
+						comboQuery =  "SELECT staffID, concat(lastName,' ' ,firstName) as staffName FROM ms2016.tbl_staff";
+						 comboFields = new String[] { "staffID", "staffName"};
+						 type = "dropdown";
+						 
+					}
+					else if (key.getValue().equals("activityGroup") ){
+						isHidden = true;
+						DefaultValue =  4;
+					}
+					else if ( key.getValue().equals("schoolYear")){
+						isHidden = true;
+						//DefaultValue =  "get_currentYearID()";
+					}
+				}
 				
 				HashMap<String,String> comboOptions = new HashMap<String, String>();
 				
-				HashMap<String, Object> mapProp = setColOptions(name,label, isKey,isHidden, isRequired, editable, null, type, comboQuery,comboOptions, comboFields  );
+				HashMap<String, Object> mapProp = setColOptions(name,label, isKey,isHidden, isRequired, editable, DefaultValue, type, comboQuery,comboOptions, comboFields  );
 				arrlist.add(new Object[] { key , mapProp, comboOptions });
 				
 				//arrlist.get(0)[1] = setColOptions(name,label, isKey,isH, isR, null, type, comboQuery, comboFields );
