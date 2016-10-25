@@ -27,8 +27,8 @@ bootbox.setLocale("he");
 jQuery(document).ready(function() {
 	
 	var yearDiv = $("#yearTag > span");
+	getCurrentYearObject(); // js_logic
 	if(yearDiv.length > 0){
-		getCurrentYearObject(); // js_logic
 		
 		if(currentYearObject != null && typeof currentYearObject === 'object'){
 			yearDiv.html(currentYearObject.yearName);
