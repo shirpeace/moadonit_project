@@ -275,6 +275,30 @@ public class LogisticsController extends HttpServlet implements Serializable {
 				resp.setCharacterEncoding("UTF-8");
 				resp.getWriter().print(jsonResponse);
 			}
+			else if (action != null && action.equals("saveRegDaysParam")) {
+				int yearID = req.getParameter("daysToReg") != null ? Integer.parseInt(req.getParameter("yearID")) : -1;
+				int daysToReg = req.getParameter("daysToReg") != null ? Integer.parseInt(req.getParameter("daysToReg")) : -1;
+				JSONObject r = new JSONObject();
+				if(yearID != -1 && daysToReg != -1){
+					int affectedRows = this.logDAO.saveRegDaysParam(yearID, daysToReg);
+					if(affectedRows >= 0){
+						r.put("msg", 1);
+						r.put("result", "נתונים נשמרו בהצלחה");
+					}
+					else{
+						r.put("msg", 0);
+						r.put("result", "קיימת שגיאה בשמירת שינויים");
+					}
+					
+				}else{
+					r.put("msg", 0);
+					r.put("result", "קיימת שגיאה בשמירת שינויים");
+				}
+				
+				resp.setContentType("application/json");
+				resp.setCharacterEncoding("UTF-8");
+				resp.getWriter().print(r);
+			}
 
 			if(oper != null){
 				String sql ="";

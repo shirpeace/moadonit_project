@@ -134,10 +134,10 @@
 					</a> <br></li>
 					<li><a href="course_search.jsp"><i
 							class="fa fa-fw fa-search"></i> חיפוש </a></li>
-					<li><a href="#"><i
-							class="fa fa-fw fa-phone"></i> מורי חוגים </a></li>
-					<li><a href="course_regs_chart.jsp"><i class="fa fa-fw fa-edit"></i>
-							דוח רשומים </a></li>
+					<li><a href="staff_phones.jsp"><i
+							class="fa fa-fw fa-phone"></i> סגל </a></li>
+					<!-- <li><a href="course_regs_chart.jsp"><i class="fa fa-fw fa-edit"></i>
+							דוח רשומים </a></li> -->
 					<li class="active"><a href="#"><i class="fa fa-fw fa-edit"></i>
 							הוספת חדש</a></li>
 				</ul>

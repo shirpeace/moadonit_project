@@ -177,7 +177,7 @@
 						<ol class="breadcrumb">
 							<li><a href="dashboard.jsp"><i class="fa fa-home"></i>
 									ראשי</a></li>
-							<li class="active"><i class="fa fa-users"></i> תלמידים</li>
+							<li class="active"><i class="fa  fa-cog"></i> טבלאות מערכת</li>
 						</ol>
 					</div>
 				</div>
@@ -191,15 +191,16 @@
 				    <li id="tbl_reg_types" class="active prosets"><a data-toggle="pill" href="#tblData"><span>סוגי <br>רישום</span></a></li>
 				    <li id="tbl_food_type" class="prosets"><a data-toggle="pill" href="#tblData"><span>סוגי <br>ארוחות</span></a></li>
 				    <li id="tbl_family_relation" class="prosets"><a data-toggle="pill" href="#tblData"><span >סוגי קרבה <br>משפחתית</span></a></li>
-				    <li id="tbl_job_type" class="prosets"><a data-toggle="pill" href=#tblData><span >סוגי <br>משרות</span></a></li>
+				    <li id="tbl_job_type" class="prosets"><a data-toggle="pill" href=#tblData><span >סוגי <br>תפקידים</span></a></li>
 				    <li id="tbl_payment_type" class="prosets"><a data-toggle="pill" href="#tblData"><span>סוגי <br>תשלום</span></a></li>
 				    <li id="tbl_reg_source" class="prosets"><a data-toggle="pill" href="#tblData"><span>מקורות <br>רישום</span></a></li>
 				    <li id="tbl_grade_code" class="prosets"><a data-toggle="pill" href="#tblData"><span >כיתות <br>ביה"ס</span></a></li>
 				    <li id="tbl_activity" class="prosets"><a data-toggle="pill" href="#tblData"><span >קבוצות <br>מועדונית</span></a></li>
 				    
 				      <li id="tbl_school_years" class="yearsets"><a data-toggle="pill" href="#tblData"><span >שנות <br>לימוד</span></a></li>
-				    <li id="tbl_moadonit_groups" class="yearsets"><a data-toggle="pill" href="#tblData"><span >שיוך כיתות <br>לקבוצות מועדונית</span></a></li>
 				   <li id="tbl_grade_in_year" class="yearsets"><a data-toggle="pill" href="#tblData"><span >כיתות <br>בשנה נוכחית</span></a></li>
+				    <li id="tbl_moadonit_groups" class="yearsets"><a data-toggle="pill" href="#tblData"><span >שיוך כיתות <br>לקבוצות מועדונית</span></a></li>
+				   
 				  </ul>
 				  
 				  <div class="tab-content">
@@ -242,7 +243,8 @@
 												<div class="row">
 													<div class="form-group col-lg-2">
 														<label for="currYear"> שנה נוכחית של המערכת</label>
-														<input  type="text" class="form-control" id="currYear" name="currYear">
+														<!-- <input  type="text" class="form-control" id="currYear" name="currYear"> -->
+														<select onchange="ondayChange(this)" class="form-control " id="currYear" name="currYear" > </select>
 													</div>
 												</div>
 												<div class="row">
@@ -253,7 +255,7 @@
 												
 													<div class="form-group  col-lg-2">
 														<label for="saveBtn"> </label> <input
-															class="form-control btn btn-primary" id="saveBtn"
+															class="form-control btn btn-primary" id="saveBtn" onclick="saveRegDaysParam()"
 															style="margin-top: 5px;" type="button" value="שמור">															 
 													</div>
 													
