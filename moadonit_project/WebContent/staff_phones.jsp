@@ -137,7 +137,7 @@
                                  <a href="dashboard.jsp"><i class="fa fa-home"></i> ראשי</a>
                             </li>
                             <li>
-                                 <a href="pupils_search.jsp"><i class="fa fa-phone"></i> דפי קשר</a>
+                                 <a href="#"><i class="fa fa-phone"></i> דפי קשר</a>
                             </li>
                             <li class="active">
                                 <i class="fa fa-phone"></i> סגל

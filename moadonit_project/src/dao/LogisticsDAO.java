@@ -46,6 +46,8 @@ public class LogisticsDAO extends AbstractDAO {
 	private String getCurrentYear = "SELECT * FROM ms2016.tbl_school_years where yearID = get_currentYearID()";
 	private String getStaffDetails = "{ call ms2016.getStaffDetails() }";
 	private String getGeneralParams = "SELECT paramID, paramValue FROM ms2016.tbl_general_parameters";
+	private String updateCurrentYearAndDaysToReg = "{ call ms2016.updateCurrentYearAndDaysToReg(?,?) }";
+	
 	@SuppressWarnings("unchecked")
 	public JSONArray getWeekFoodAmout(java.sql.Date sunday) {
 		JSONArray list = new JSONArray();
@@ -324,6 +326,25 @@ public class LogisticsDAO extends AbstractDAO {
 					
 		
 		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+		
+		return result;
+	}
+
+	public int saveRegDaysParam(int yearID, int daysToReg) {
+		// TODO Auto-generated method stub
+		int result = -1;
+		
+		try (PreparedStatement statement = DAOUtil.prepareCallbackStatement(
+				this.con.getConnection(), updateCurrentYearAndDaysToReg, new Object[] { yearID,daysToReg });) {
+		
+			result  = statement.executeUpdate();
+		
+		} catch (SQLException e) {
+			if(e.getErrorCode() == 1451){
+				throw new DAOException("לא ניתן למחוק רשומה זו ,הרשומה משמשת כנתון בטבלאות אחרות",e);
+			}
 			throw new DAOException(e);
 		}
 		

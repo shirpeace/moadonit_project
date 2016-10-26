@@ -3,7 +3,7 @@ var pupilID;
 var tableName, query, whereclause, columnsData;
 var colname = new Array() ; // column array for jqgrid
 var tablePk;
-var  cols, valuesFroCell; // original column array from server
+var  cols, valuesFroCell, gridRowsData; // original column array from server
 
 jQuery(document).ready(function() {	
 	if(typeof page != 'undefined'  && page === "tbl_staff"){
@@ -30,63 +30,84 @@ jQuery(document).ready(function() {
 			switch (this.parentElement.id) {
 			    case "tbl_reg_types":
 			    	tableName =  "tbl_reg_types";			    	
-			    	whereclause = " WHERE (table_name = 'tbl_reg_types'); ";			    				    				    	
+			    	whereclause = " WHERE (table_name = 'tbl_reg_types'); ";
+			    	reCreateTable();
+			    	getGeneralGrid();
 			        break;
 			    case "tbl_food_type":
 			    	tableName =  "tbl_food_type";			    	
-			    	whereclause = " WHERE (table_name = 'tbl_food_type'); ";	
+			    	whereclause = " WHERE (table_name = 'tbl_food_type'); ";
+			    	reCreateTable();
+			    	getGeneralGrid();
 			        break;
 			    case "tbl_family_relation":
 			    	tableName =  "tbl_family_relation";			    	
 			    	whereclause = " WHERE (table_name = 'tbl_family_relation'); ";
+			    	reCreateTable();
+			    	getGeneralGrid();
 			        break;
 			    case "tbl_job_type":
 			    	tableName =  "tbl_job_type";
 			    	whereclause = " WHERE (table_name = 'tbl_job_type'); ";
+			    	reCreateTable();
+			    	getGeneralGrid();
 			        break;
 			    case "tbl_payment_type":
 			    	tableName =  "tbl_payment_type";
 			    	whereclause = " WHERE (table_name = 'tbl_payment_type'); ";
+			    	reCreateTable();
+			    	getGeneralGrid();
 			        break;	
 			    case "tbl_moadonit_groups":
 			    	tableName =  "tbl_moadonit_groups";
 			    	whereclause = " WHERE (table_name = 'tbl_moadonit_groups'); ";
+			    	reCreateTable();
+			    	getGeneralGrid();
 			    	break;
 			    case "tbl_school_years":
 			    	tableName =  "tbl_school_years";
 			    	whereclause = " WHERE (table_name = 'tbl_school_years'); ";
 			    	$("#yearParamsDiv").show();
+			    	reCreateTable();
+			    	getGeneralGrid();
 			    	break;
 			    case "tbl_general_parameters":
 			    	tableName =  "tbl_general_parameters";
 			    	whereclause = " WHERE (table_name = 'tbl_general_parameters'); ";
+			    	reCreateTable();
+			    	getGeneralGrid();
 			    	break;	
 			    case "tbl_grade_code":
 			    	tableName =  "tbl_grade_code";
 			    	whereclause = " WHERE (table_name = 'tbl_grade_code'); ";
+			    	reCreateTable();
+			    	getGeneralGrid();
 			    	break;	
 			    case "tbl_grade_in_year":
 			    	tableName =  "tbl_grade_in_year";
 			    	whereclause = " WHERE (table_name = 'tbl_grade_in_year'); ";
+			    	reCreateTable();
+			    	getGeneralGrid();
 			    	break;	
 			    case "tbl_reg_source":
 			    	tableName =  "tbl_reg_source";
 			    	whereclause = " WHERE (table_name = 'tbl_reg_source'); ";
+			    	reCreateTable();
+			    	getGeneralGrid();
 			    	break;
 			    case "tbl_activity":
 			    	tableName =  "tbl_activity";
 			    	whereclause = " WHERE (table_name = 'tbl_activity'); ";
+			    	reCreateTable();
+			    	getGeneralGrid();
 			    	break;
 			    	//tbl_activity
 			}
 			
-			reCreateTable();
-	    	getGeneralGrid();
+			
 	    	
 	    	
 	});
-	
-prepareYearsForm();
 	
 });
 
@@ -103,13 +124,50 @@ function prepareYearsForm(){
         	
         success: function(data) {
         	if(data != undefined){
-        		$("#currYear").val(data.currYear);
+        		var selectYear = $("#currYear");
+        		selectYear.empty();
+        		for (var int = 0; int < gridRowsData.rows.length; int++) {
+	            	selectYear.append($("<option></option>")
+		                    .attr("value",gridRowsData.rows[int].yearID)
+		                    .text(gridRowsData.rows[int].yearName)).val(data.currYear);
+	            	
+				}
+        	
         		$("#regDays").val(data.regDays);
     				
-    		};
+    		}
         },
         error: function(e) {
         	result = false;
+        	console.log(e);
+		        	bootbox.alert("שגיאה בשמירת הנתונים, נא בדוק את הערכים ונסה שוב.", function() {	   	        		 
+		        	});			
+        }
+        
+      }); 
+}
+
+function saveRegDaysParam(){
+	$.ajax({
+  		async: false,
+		type: 'POST',
+		datatype: 'jsonp',
+        url: "LogisticsController",
+        
+        data: { 
+        	action : "saveRegDaysParam",
+        	yearID : $("#currYear").val(),
+        	daysToReg : $("#regDays").val()
+        	  },
+        	
+        success: function(data) {
+        	if (data != undefined) {
+				/* alert(data); */
+        		bootbox.alert(data.result, function() {	   	        		 
+	        	});	
+			}
+        },
+        error: function(e) {
         	console.log(e);
 		        	bootbox.alert("שגיאה בשמירת הנתונים, נא בדוק את הערכים ונסה שוב.", function() {	   	        		 
 		        	});			
@@ -631,13 +689,75 @@ function getGeneralGrid(){
 								
 								return postdata;
 								//return { rtm : JSON.stringify(createPostData(pupilID, postdata,true)), _oldDateVal: oldDateVal.getTime() , _oldEndDate: oldEndDate.getTime() } ;
-					        }
+					        },
+							rowattr : function(rd) {
+								
+								if(typeof tableName !== "undefined" && tableName === "tbl_reg_types" ){
+									
+									if(rd.typeNum == 1 ||  rd.typeNum == 2){ // 
+										return {
+											"class" : 'not-editable-row',
+											/*"style" : "background:#9E9F9F;",*/
+											"data-uneditable": true
+										};
+									}
+								}
+
+							},
+							onSelectRow: function(id) { 
+							
+								var btnSave, btncancel, btnEdit, btnDel;
+								btnSave = $("#list_ilsave"); 
+								btncancel = $("#list_ilcancel");
+								btnEdit = $("#list_iledit");
+								btnDel = $("#del_list");
+								
+								if(typeof tableName !== "undefined" && tableName === "tbl_reg_types" ){
+									if (id && (id == 1 || id == 2)) {
+										var grid = $("#list");
+										//grid.jqGrid('restoreRow', id);
+										
+										var isUneditable = $('#gview_list div #'+ id).attr('data-uneditable');
+										
+										if (isUneditable === 'true') {											
+											if(btnEdit.length > 0 )
+												btnEdit.addClass("disabledbutton");			
+											if(btnDel.length > 0 )
+												btnDel.addClass("disabledbutton");			
+										}														
+										
+									}else{
+										if(btnEdit.length > 0 &&  btnEdit.hasClass("disabledbutton"))
+											btnEdit.removeClass("disabledbutton");	
+										if(btnDel.length > 0 &&  btnDel.hasClass("disabledbutton"))
+											btnDel.removeClass("disabledbutton");	
+									}
+								}else{
+									if(btnEdit.length > 0 &&  btnEdit.hasClass("disabledbutton"))
+										btnEdit.removeClass("disabledbutton");	
+									if(btnDel.length > 0 &&  btnDel.hasClass("disabledbutton"))
+										btnDel.removeClass("disabledbutton");	
+								}
+																
+					        },
+							loadComplete : function(data) {
+								
+								gridRowsData = data;
+								if(typeof tableName !== "undefined" && tableName === "tbl_school_years" ){									
+									prepareYearsForm();
+									
+								}
+						    	
+								/*  END hide edit/delete buttons for history records */
+							}
 							
 						}).jqGrid("navGrid", "#pager", navParams)
 						.jqGrid("inlineNav","#pager", inlinNavParameters );
 			        
 				$.extend($.jgrid.inlineEdit, { restoreAfterError: false } );					
-/*				var originalDelFunc = $.fn.jqGrid.delGridRow;
+/*				
+ * 	var allRowsInGrid = $('#list4').jqGrid('getGridParam','data');
+ * 				var originalDelFunc = $.fn.jqGrid.delGridRow;
 			    $.fn.jqGrid.delGridRow = function (rowids, oMuligrid) {
 			        var onPreDeleteRowEventHandler = this.getGridParam('onPreDeleteRow'),
 			            consumeFlag = false;

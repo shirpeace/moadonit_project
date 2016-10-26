@@ -547,7 +547,7 @@ Serializable {
 
 		resp.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // this is for Excel 2007
 																								
-		// response.setContentType("application/vnd.ms-excel"); // this is for
+		// resp.setContentType("application/vnd.ms-excel"); // this is for
 		// Excel 2003
 
 		resp.setHeader("Content-Disposition", "attachment;filename=\""
@@ -930,7 +930,8 @@ Serializable {
 		// headers of table
 		String theads = "";
 
-		HashMap<Entry<String, String>, String[]> keysColComments = DAOUtil.getKeysColmunComments(this.con.getConnection(),query, whereClouse);
+		HashMap<Entry<String, String>, String[]> keysColComments = null;
+		keysColComments = DAOUtil.getKeysColmunComments(this.con.getConnection(),query, whereClouse);
 	
 		if(keysColComments != null)
 		for (int i = 0; i < arrlist.size(); i++)
