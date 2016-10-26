@@ -590,8 +590,8 @@ public class LogisticsController extends HttpServlet implements Serializable {
 						isHidden = true;
 					}
 					else if (key.getValue().equals("gradeID")){
-						 isRequired = false;
-						 editable = false;
+						 isRequired = true;
+						 editable = true;
 						 comboQuery =  "SELECT * FROM ms2016.tbl_grade_code";
 						 comboFields = new String[] { "gradeID", "gradeName", "gradeColor"};
 						 type = "custom";

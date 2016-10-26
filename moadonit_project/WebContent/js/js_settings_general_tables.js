@@ -587,7 +587,12 @@ function setColModelFormResult(result){
 	        break;
 	    case 'custom':
 	        valuesFroCell = this.ValueList.slice(0, -1);
-	        $.extend(true, cm, { cellattr: formatGradeCell } );
+	       
+	        $.extend(true, cm,   { template: dropdownTemplate,
+	           /* editoptions: { value:  valuesFroCell, defaultValue: this.DefaultValue },*/
+	           /* searchoptions: { value: ":All;" + values },*/  
+	            cellattr: formatGradeCell 
+	        });
 	        break;   
 	    case 'colorpicker':
 	        $.extend(true, cm, { template: colorpickerTemplate , cellattr: formatGradeCell} );
