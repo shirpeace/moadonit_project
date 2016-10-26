@@ -108,7 +108,7 @@
                         <a href="pupils_phones.jsp" ><i class="fa fa-fw fa-user"></i> תלמידים</a>
                      </li> 
                      <li>
-                        <a href="staff_phones.jsp" ><i class="fa fa-fw fa-phone"></i> סגל</a>
+                        <a href="staff_phones.jsp" ><i class="fa fa-fw fa-check-square-o"></i> סגל</a>
                      </li>
                      <!-- <li>
                         <a href= "#"><i class="fa fa-fw fa-phone"></i> מורי חוגים</a>

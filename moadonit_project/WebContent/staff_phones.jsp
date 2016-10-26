@@ -111,7 +111,7 @@
                         <a href="pupils_phones.jsp" ><i class="fa fa-fw fa-user"></i> תלמידים</a>
                      </li> 
                      <li class="active">
-                        <a href="staff_phones.jsp" ><i class="fa fa-fw fa-phone"></i> סגל</a>
+                        <a href="staff_phones.jsp" ><i class="fa fa-fw fa-check-square-o"></i> סגל</a>
                      </li>
                 </ul>
             </div>
@@ -140,7 +140,7 @@
                                  <a href="#"><i class="fa fa-phone"></i> דפי קשר</a>
                             </li>
                             <li class="active">
-                                <i class="fa fa-phone"></i> סגל
+                                <i class="fa fa-check-square-o"></i> סגל
                             </li>
                         </ol>
                     </div>

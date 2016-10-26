@@ -141,14 +141,14 @@
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav side-nav">
 					 <li>
-                        <a href="#" style="font-size: 120%; pointer-events: none;"> <i class="fa fa-fw fa-cutlery"></i> ניהול מערכת</a>
+                        <a href="#" style="font-size: 120%; pointer-events: none;"> <i class="fa fa-fw fa-cogs"></i> ניהול מערכת</a>
                         <br>
                      </li> 
                      <li class="active" id="menu2">
-                        <a href= "#" onclick="prosetsMenu()"><i class="fa fa-fw fa-file-o"></i>  הגדרות מתקדמות</a>
+                        <a href= "#" onclick="prosetsMenu()"><i class="fa fa-fw fa-cog"></i>  הגדרות מתקדמות</a>
                      </li> 
                      <li id="menu1">
-                        <a href= "#"  onclick="yearsetsMenu()"><i class="fa fa-fw fa-file-o"></i>  הגדרות שנה</a>
+                        <a href= "#"  onclick="yearsetsMenu()"><i class="fa fa-fw fa-cog"></i>  הגדרות שנה</a>
                      </li> 
                     
                     <!--  <li>
@@ -177,7 +177,7 @@
 						<ol class="breadcrumb">
 							<li><a href="dashboard.jsp"><i class="fa fa-home"></i>
 									ראשי</a></li>
-							<li class="active"><i class="fa  fa-cog"></i> טבלאות מערכת</li>
+							<li class="active"><i class="fa  fa-cog"></i> ניהול מערכת</li>
 						</ol>
 					</div>
 				</div>

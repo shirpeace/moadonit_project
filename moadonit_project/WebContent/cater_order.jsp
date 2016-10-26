@@ -108,16 +108,16 @@
              <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
-                    <li>
-                        <a href="" style="font-size: 120%; pointer-events: none;"> <i class="fa fa-fw fa-cutlery"></i> קייטרינג</a>
+                     <li>
+                        <a href="" style="font-size: 120%; pointer-events: none;"> <i class="fa fa-fw fa-file-o"></i> דוחות</a>
                         <br>
                      </li> 
-                     <li class="active">
-                        <a href= "#"><i class="fa fa-fw fa-file-o"></i> הזמנה</a>
+                      <li>
+                        <a href= "reports_page.jsp"><i class="fa fa-fw fa-file-o"></i> דוחות</a>
                      </li> 
-                     <li>
-                        <a href= "#"><i class="fa fa-fw fa-file-text-o"></i> דוח הזמנות</a>
-                     </li>
+                     <li class="active" >
+                        <a href= "#"><i class="fa fa-fw fa-cutlery"></i> תכנון קייטרינג </a>
+                     </li> 
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -141,7 +141,7 @@
                                  <a href="dashboard.jsp"><i class="fa fa-home"></i> ראשי</a>
                             </li>
                             <li>
-                                 <a href="settings_main.jsp"><i class="fa fa-folder-open"></i> ניהול</a>
+                                 <a href="reports_page.jsp"><i class="fa fa-file-o"></i> דוחות</a>
                             </li>
                             <li class="active">
                                  <i class="fa fa-cutlery"></i> קייטרינג

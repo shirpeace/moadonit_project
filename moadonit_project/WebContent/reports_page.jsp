@@ -116,12 +116,12 @@
                         <a href="" style="font-size: 120%; pointer-events: none;"> <i class="fa fa-fw fa-file-o"></i> דוחות</a>
                         <br>
                      </li> 
-                    <!--  <li >
-                        <a href= "#"><i class="fa fa-fw fa-file-o"></i> </a>
+                      <li class="active" >
+                        <a href= "#"><i class="fa fa-fw fa-file-o"></i> דוחות</a>
                      </li> 
                      <li>
-                        <a href= "#"><i class="fa fa-fw fa-file-text-o"></i> </a>
-                     </li> -->
+                        <a href= "cater_order.jsp"><i class="fa fa-fw fa-cutlery"></i> תכנון קייטרינג </a>
+                     </li> 
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
