@@ -243,7 +243,7 @@ public class Pupil implements Serializable {
 	public void setTblRegisterPupil(RegisterPupil tblRegisterPupil) {
 		this.tblRegisterPupil = tblRegisterPupil;
 	}
-
+	
 	//bi-directional many-to-one association to GradePupil
 	@OneToMany(mappedBy="tblPupil")
 	private List<GradePupil> tblGradePupils;
@@ -255,4 +255,5 @@ public class Pupil implements Serializable {
 	public void setTblGradePupils(List<GradePupil> tblGradePupils) {
 		this.tblGradePupils = tblGradePupils;
 	}
+
 }

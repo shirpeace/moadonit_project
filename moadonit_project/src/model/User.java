@@ -30,6 +30,11 @@ public class User implements Serializable {
 	@OneToMany(mappedBy="tblUser")
 	private List<RegToMoadonit> tblRegToMoadonits;
 
+	//bi-directional many-to-one association to UserType
+	@ManyToOne
+	@JoinColumn(name="userTypeID")
+	private UserType tblUserType;
+
 	public User() {
 	}
 
@@ -99,6 +104,14 @@ public class User implements Serializable {
 		tblRegToMoadonit.setTblUser(null);
 
 		return tblRegToMoadonit;
+	}
+
+	public UserType getTblUserType() {
+		return this.tblUserType;
+	}
+
+	public void setTblUserType(UserType tblUserType) {
+		this.tblUserType = tblUserType;
 	}
 
 }

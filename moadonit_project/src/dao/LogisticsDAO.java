@@ -47,6 +47,9 @@ public class LogisticsDAO extends AbstractDAO {
 	private String getStaffDetails = "{ call ms2016.getStaffDetails() }";
 	private String getGeneralParams = "SELECT paramID, paramValue FROM ms2016.tbl_general_parameters";
 	private String updateCurrentYearAndDaysToReg = "{ call ms2016.updateCurrentYearAndDaysToReg(?,?) }";
+	private String insertIntoGradeCode = "{ CALL insertIntoGradeCode(?, ?,?) }";
+	private String deleteFromGradeCode = "{ CALL deleteFromGradeCode(?) }";
+
 	
 	@SuppressWarnings("unchecked")
 	public JSONArray getWeekFoodAmout(java.sql.Date sunday) {
@@ -207,8 +210,17 @@ public class LogisticsDAO extends AbstractDAO {
 							else
 							row.put(keyEntry.getValue(), resultSet.getObject(keyEntry.getValue()));
 						else{
-							String val = optMap.get(resultSet.getObject(keyEntry.getValue()).toString());
-							row.put(keyEntry.getValue(), val);
+							if(resultSet.getObject(keyEntry.getValue()) !=  null){
+								Object val  = resultSet.getObject(keyEntry.getValue());
+								val = optMap.get(val != null ? val.toString() : "");
+								row.put(keyEntry.getValue(), val);
+							}
+							else{
+								row.put(keyEntry.getValue(), "");
+							}
+							/*Object val  = resultSet.getObject(keyEntry.getValue()) !=  null  ? resultSet.getObject(keyEntry.getValue()) : null;
+						    val = optMap.get(val != null ? val.toString() : "");
+							row.put(keyEntry.getValue(), val);*/
 						}
 					
 					}
@@ -349,5 +361,39 @@ public class LogisticsDAO extends AbstractDAO {
 		}
 		
 		return result;
+	}
+
+	public int insertIntoGradeCode(String gradeName, String gradeColor, int shichva) {
+		 
+		int affectedRows = -1;
+		try (PreparedStatement statement = DAOUtil
+				.prepareCallbackStatement(this.con.getConnection(),
+						insertIntoGradeCode, new Object[] { gradeName,  gradeColor ,shichva });
+				 ) {
+
+			affectedRows = statement.executeUpdate();
+
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+		
+		return affectedRows;
+	}
+
+	public int deleteFromGradeCode(int gradeID) {
+		// TODO Auto-generated method stub
+		int affectedRows = -1;
+		try (PreparedStatement statement = DAOUtil
+				.prepareCallbackStatement(this.con.getConnection(),
+						deleteFromGradeCode, new Object[] { gradeID});
+				 ) {
+
+			affectedRows = statement.executeUpdate();
+
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+		
+		return affectedRows;
 	}
 }

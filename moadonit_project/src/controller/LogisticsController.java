@@ -348,90 +348,115 @@ public class LogisticsController extends HttpServlet implements Serializable {
 	private int deleteRowInTable(String sql,String tableName,String where, HttpServletRequest req,
 			HttpServletResponse resp) throws IOException, SQLException {
 	
-		int result;
-		sql = "DELETE FROM " + tableName +" ";
-		for (Iterator iterator = jsonArry.iterator(); iterator.hasNext();) {
-			JSONObject col = (JSONObject) iterator.next();
+		
+		int result= -1;
+		if(tableName.equals("tbl_grade_code")){
+			// call procedure on db
+
+			int gradeID = Integer.parseInt(req.getParameter("gradeID"));
+			result = this.logDAO.deleteFromGradeCode(gradeID);
+
+		}else{
 			
-			boolean isKey = (boolean)col.get("IsKey");
-			if(isKey){
-				if(req.getParameter((String)col.get("Name")) != null){
-			    	where +=  " " + (String)col.get("Name") + " = " + req.getParameter((String)col.get("Name"))  + " AND";						    	
-		    	}
-			}			
+			sql = "DELETE FROM " + tableName +" ";
+			for (Iterator iterator = jsonArry.iterator(); iterator.hasNext();) {
+				JSONObject col = (JSONObject) iterator.next();
+				
+				boolean isKey = (boolean)col.get("IsKey");
+				if(isKey){
+					if(req.getParameter((String)col.get("Name")) != null){
+				    	where +=  " " + (String)col.get("Name") + " = " + req.getParameter((String)col.get("Name"))  + " AND";						    	
+			    	}
+				}			
+			}
+			
+			if(sql.endsWith(" ,"))
+				sql = sql.substring(0, sql.length()-2);
+			
+			if(where.endsWith(" AND"))
+				where = where.substring(0, where.length()-4);
+			
+			sql += " " + where;
+			//return result = 1; //this.logDAO.executeSql(sql, null);
+			result = this.logDAO.executeSql(sql, null);
 		}
-		
-		if(sql.endsWith(" ,"))
-			sql = sql.substring(0, sql.length()-2);
-		
-		if(where.endsWith(" AND"))
-			where = where.substring(0, where.length()-4);
-		
-		sql += " " + where;
-		//return result = 1; //this.logDAO.executeSql(sql, null);
-		return result = this.logDAO.executeSql(sql, null);
+
+		return result;
 	}
 	
 	private int insertRowInTable(String sql,String tableName,  HttpServletRequest req,
 			HttpServletResponse resp) throws IOException, SQLException {
 		
-		int result;
-		sql = "INSERT INTO " + tableName + "( ";
-		String values = "VALUES ( ";
+		int result = -1;
 		
-		for (Iterator iterator = jsonArry.iterator(); iterator.hasNext();) {
-			JSONObject col = (JSONObject) iterator.next();
+		if(tableName.equals("tbl_grade_code")){
+			// call procedure on db
+			String gradeName = req.getParameter("gradeName");
+			String gradeColor = req.getParameter("gradeColor");
+			int shichva = Integer.parseInt(req.getParameter("shichva"));
+			result = this.logDAO.insertIntoGradeCode(gradeName, gradeColor,shichva);
+
+		}
+		else{
+			// create insert query
+			sql = "INSERT INTO " + tableName + "( ";
+			String values = "VALUES ( ";
 			
-				boolean isKey = (boolean)col.get("IsKey");
-				if(isKey && !(boolean)col.get("IsRequired")){
-					continue;
-				}
-			
-				if(req.getParameter((String)col.get("Name")) != null){
-					String fieldValue = req.getParameter((String)col.get("Name"));
-					if(col.get("Datatype").equals("String") || col.get("Datatype").equals("Time") || col.get("Datatype").equals("phone")){
-						
-						sql += " " + (String)col.get("Name") + ",";
-						
-						values += " '" + fieldValue + "',";
+			for (Iterator iterator = jsonArry.iterator(); iterator.hasNext();) {
+				JSONObject col = (JSONObject) iterator.next();
+				
+					boolean isKey = (boolean)col.get("IsKey");
+					if(isKey && !(boolean)col.get("IsRequired")){
+						continue;
 					}
-					else if(col.get("Datatype").equals("Date")){
-						if(fieldValue.trim().length() > 0){
-							String[] s = req.getParameter((String)col.get("Name")).split("/");
-							String datVal = s[2] + "-" +s[1] + "-" +s[0];
+				
+					if(req.getParameter((String)col.get("Name")) != null){
+						String fieldValue = req.getParameter((String)col.get("Name"));
+						if(col.get("Datatype").equals("String") || col.get("Datatype").equals("Time") || col.get("Datatype").equals("phone")){
 							
-							sql += " " + (String)col.get("Name") + ",";
-							
-							values += " '" + datVal + "',";
-						}
-						else{
 							sql += " " + (String)col.get("Name") + ",";
 							
 							values += " '" + fieldValue + "',";
 						}
-						
-					}
-					else{
-						sql += " " + (String)col.get("Name") + ",";
-						
-						values += " " + fieldValue + ",";
-					}
-		    		
-		    	}
+						else if(col.get("Datatype").equals("Date")){
+							if(fieldValue.trim().length() > 0){
+								String[] s = req.getParameter((String)col.get("Name")).split("/");
+								String datVal = s[2] + "-" +s[1] + "-" +s[0];
+								
+								sql += " " + (String)col.get("Name") + ",";
+								
+								values += " '" + datVal + "',";
+							}
+							else{
+								sql += " " + (String)col.get("Name") + ",";
+								
+								values += " '" + fieldValue + "',";
+							}
+							
+						}
+						else{
+							sql += " " + (String)col.get("Name") + ",";
+							
+							values += " " + fieldValue + ",";
+						}
+			    		
+			    	}
+				
+				
+			}
 			
+			if(sql.endsWith(","))
+				sql = sql.substring(0, sql.length()-1);
 			
+			if(values.endsWith(","))
+				values = values.substring(0, values.length()-1);
+			
+			sql += " )" + values + " )";
+			
+			 result = this.logDAO.executeSql(sql, null);
 		}
-		
-		if(sql.endsWith(","))
-			sql = sql.substring(0, sql.length()-1);
-		
-		if(values.endsWith(","))
-			values = values.substring(0, values.length()-1);
-		
-		sql += " )" + values + " )";
-		
-		return result = this.logDAO.executeSql(sql, null);
-		
+
+		return result;
 		
 	}
 	
@@ -581,7 +606,7 @@ public class LogisticsController extends HttpServlet implements Serializable {
 				}
 				else if (key.getKey().equals("tbl_moadonit_groups")) {
 					if (key.getValue().equals("activityNum")){
-						 comboQuery =  "SELECT activityNum ,activityName FROM ms2016.tbl_activity where activityGroup = 4  and schoolYear = get_currentYearID()";
+						 comboQuery =  "SELECT activityNum ,activityName FROM ms2016.tbl_activity where activityGroup = 4  and schoolYear = get_currentYearID() order by activityName";
 						 comboFields = new String[] { "activityNum", "activityName"};
 						 type = "dropdown";
 						
@@ -590,8 +615,8 @@ public class LogisticsController extends HttpServlet implements Serializable {
 						isHidden = true;
 					}
 					else if (key.getValue().equals("gradeID")){
-						 isRequired = true;
-						 editable = true;
+						 isRequired = false;
+						 editable = false;
 						 comboQuery =  "SELECT * FROM ms2016.tbl_grade_code";
 						 comboFields = new String[] { "gradeID", "gradeName", "gradeColor"};
 						 type = "custom";
@@ -611,7 +636,14 @@ public class LogisticsController extends HttpServlet implements Serializable {
 						type = "colorpicker";
 					}
 					else if (key.getValue().equals("gradeName")){
-						editable = false;
+						editable = true;
+					}
+					else if (key.getValue().equals("shichva")){
+						 isRequired = true;
+						 editable = true;
+						 comboQuery =  "SELECT * FROM ms2016.tbl_shichva";
+						 comboFields = new String[] { "shichvaValue", "shicvaName"};
+						 type = "dropdown";
 					}
 					//
 				}

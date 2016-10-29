@@ -15,8 +15,8 @@ import java.util.List;
 public class GradeInYear implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@EmbeddedId
-	private GradeInYearPK id;
+	@Id
+	private int gradeYearID;
 
 	private String teacherName;
 
@@ -44,23 +44,23 @@ public class GradeInYear implements Serializable {
 	@JoinColumn(name="yearID")
 	private SchoolYear tblSchoolYear;
 
-	//bi-directional many-to-many association to Pupil
-	@ManyToMany(mappedBy="tblGradeInYears2")
-	private List<Pupil> tblPupils2;
-
 	//bi-directional many-to-one association to MoadonitGroup
 	@OneToMany(mappedBy="tblGradeInYear")
 	private List<MoadonitGroup> tblMoadonitGroups;
 
+	//bi-directional many-to-many association to Pupil
+	@ManyToMany(mappedBy="tblGradeInYears2")
+	private List<Pupil> tblPupils2;
+
 	public GradeInYear() {
 	}
 
-	public GradeInYearPK getId() {
-		return this.id;
+	public int getGradeYearID() {
+		return this.gradeYearID;
 	}
 
-	public void setId(GradeInYearPK id) {
-		this.id = id;
+	public void setGradeYearID(int gradeYearID) {
+		this.gradeYearID = gradeYearID;
 	}
 
 	public String getTeacherName() {
@@ -95,14 +95,6 @@ public class GradeInYear implements Serializable {
 		this.tblSchoolYear = tblSchoolYear;
 	}
 
-	public List<Pupil> getTblPupils2() {
-		return this.tblPupils2;
-	}
-
-	public void setTblPupils2(List<Pupil> tblPupils2) {
-		this.tblPupils2 = tblPupils2;
-	}
-
 	public List<MoadonitGroup> getTblMoadonitGroups() {
 		return this.tblMoadonitGroups;
 	}
@@ -123,6 +115,14 @@ public class GradeInYear implements Serializable {
 		tblMoadonitGroup.setTblGradeInYear(null);
 
 		return tblMoadonitGroup;
+	}
+
+	public List<Pupil> getTblPupils2() {
+		return this.tblPupils2;
+	}
+
+	public void setTblPupils2(List<Pupil> tblPupils2) {
+		this.tblPupils2 = tblPupils2;
 	}
 
 }

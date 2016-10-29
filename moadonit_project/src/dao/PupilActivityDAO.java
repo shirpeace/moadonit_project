@@ -17,6 +17,7 @@ import model.GradeInYearPK;
 import model.Pupil;
 import model.PupilActivity;
 import model.PupilActivityPK;
+import model.SchoolYear;
 import util.DAOUtil;
 import controller.MyConnection;
 
@@ -172,12 +173,13 @@ public class PupilActivityDAO extends AbstractDAO {
 		//pa.setStartDate(resultSet.getDate("startDate"));
 		pa.setEndDate(resultSet.getDate("endDate"));
 
-		GradeInYearPK giypk = new GradeInYearPK();
-		giypk.setYearID(resultSet.getInt("yearID"));
-		giypk.setGradeID(resultSet.getInt("gradeID")); //gradeID
+		SchoolYear sy = new SchoolYear();
+		sy.setYearID(resultSet.getInt("yearID"));
+		
 		
 		GradeInYear gy = new GradeInYear();
-		gy.setId(giypk);
+		
+		gy.setTblSchoolYear(sy);
 		
 		GradeCode gc = new GradeCode();
 		gc.setGradeID(resultSet.getInt("gradeID"));

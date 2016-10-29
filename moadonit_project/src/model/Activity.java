@@ -50,6 +50,10 @@ public class Activity implements Serializable {
 	@OneToOne(mappedBy="tblActivity")
 	private Course tblCourse;
 
+	//bi-directional many-to-one association to MoadonitGroup
+	@OneToMany(mappedBy="tblActivity")
+	private List<MoadonitGroup> tblMoadonitGroups;
+
 	//bi-directional many-to-one association to PupilActivity
 	@OneToMany(mappedBy="tblActivity")
 	private List<PupilActivity> tblPupilActivities;
@@ -57,10 +61,6 @@ public class Activity implements Serializable {
 	//bi-directional many-to-one association to RegToMoadonit
 	@OneToMany(mappedBy="tblActivity")
 	private List<RegToMoadonit> tblRegToMoadonits;
-
-	//bi-directional many-to-one association to MoadonitGroup
-	@OneToMany(mappedBy="tblActivity")
-	private List<MoadonitGroup> tblMoadonitGroups;
 
 	public Activity() {
 	}
@@ -159,6 +159,28 @@ public class Activity implements Serializable {
 		this.tblCourse = tblCourse;
 	}
 
+	public List<MoadonitGroup> getTblMoadonitGroups() {
+		return this.tblMoadonitGroups;
+	}
+
+	public void setTblMoadonitGroups(List<MoadonitGroup> tblMoadonitGroups) {
+		this.tblMoadonitGroups = tblMoadonitGroups;
+	}
+
+	public MoadonitGroup addTblMoadonitGroup(MoadonitGroup tblMoadonitGroup) {
+		getTblMoadonitGroups().add(tblMoadonitGroup);
+		tblMoadonitGroup.setTblActivity(this);
+
+		return tblMoadonitGroup;
+	}
+
+	public MoadonitGroup removeTblMoadonitGroup(MoadonitGroup tblMoadonitGroup) {
+		getTblMoadonitGroups().remove(tblMoadonitGroup);
+		tblMoadonitGroup.setTblActivity(null);
+
+		return tblMoadonitGroup;
+	}
+
 	public List<PupilActivity> getTblPupilActivities() {
 		return this.tblPupilActivities;
 	}
@@ -201,28 +223,6 @@ public class Activity implements Serializable {
 		tblRegToMoadonit.setTblActivity(null);
 
 		return tblRegToMoadonit;
-	}
-
-	public List<MoadonitGroup> getTblMoadonitGroups() {
-		return this.tblMoadonitGroups;
-	}
-
-	public void setTblMoadonitGroups(List<MoadonitGroup> tblMoadonitGroups) {
-		this.tblMoadonitGroups = tblMoadonitGroups;
-	}
-
-	public MoadonitGroup addTblMoadonitGroup(MoadonitGroup tblMoadonitGroup) {
-		getTblMoadonitGroups().add(tblMoadonitGroup);
-		tblMoadonitGroup.setTblActivity(this);
-
-		return tblMoadonitGroup;
-	}
-
-	public MoadonitGroup removeTblMoadonitGroup(MoadonitGroup tblMoadonitGroup) {
-		getTblMoadonitGroups().remove(tblMoadonitGroup);
-		tblMoadonitGroup.setTblActivity(null);
-
-		return tblMoadonitGroup;
 	}
 
 }

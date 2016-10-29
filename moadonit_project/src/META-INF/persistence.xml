@@ -39,6 +39,9 @@
 <!-- 		<class>model.FullPupilCard</class> -->
 		<class>model.MoadonitGroup</class>
 		<class>model.MoadonitGroupPK</class>
+		<class>model.JobType</class>
+		<class>model.PaymentType</class>
+		<class>model.UserType</class>
 		
 
 
