@@ -33,10 +33,11 @@
 	
 	%> 
 	
-	<script type="text/javascript">
-			
-			var currentUserId =	 '${ session.getAttribute("userid") }';
-		
+	<script type="text/javascript">			
+			var currentUserId =	 '<%=session.getAttribute("userid")%>';			
+			var userData;
+			if(typeof currentUserId != "undefined")
+				userData = JSON.parse(currentUserId);
 		</script>
 <title>מועדונית</title>
 
@@ -137,7 +138,7 @@
                         <a href= "pupil_one_time_act.jsp" id="oneTimeLink"><i class="fa fa-fw fa-plus-square-o"></i> פעילות חד פעמית</a>
                      </li>  
                      <li>
-                     	<a href="pupil_add.jsp"><i class="fa fa-fw fa-edit"></i> הוספת חדש</a>
+                     	<a href="pupil_add.jsp" id="addNew"><i class="fa fa-fw fa-edit"></i> הוספת חדש</a>
                      </li>
 				</ul>
 			</div>
@@ -260,7 +261,7 @@
 				<div class="row">
 					<!-- <div class="col-lg-1"></div> -->
 					<div class="col-lg-12">
-						<div class="panel panel-default">
+						<div class="panel panel-default" id="newRegPanel">
 							<div class="panel-heading">								
 								<a href="#" id="regHeaderlink">
 								<!-- <a href="#editReg" data-toggle="collapse" data-target="#editReg" -->

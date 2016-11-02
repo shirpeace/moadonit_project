@@ -1,6 +1,10 @@
 var grades;
 var gridSelectedGrade;
+/* var currentUserId =	 '${p.pupilNum}' */
+jQuery(document).ready(function() {
 
+	setUserAccess();
+});
 /**
  * format the cell of grade, add
  * @param rowId
@@ -28,6 +32,14 @@ function formatGradeCell(rowId, val, rawObject, cm, rdata){
 	return cellVal;
 }
 
+function setUserAccess(){
+	if(typeof userData != "undefined" && typeof userData.userTypeID != "undefined" && userData.userTypeID != 1){
+		//hide all actions!!!
+		$("#addNew").parent().hide();
+		
+	}
+	
+}
 
 function loadPupilSearch() {
 	$.ajax({

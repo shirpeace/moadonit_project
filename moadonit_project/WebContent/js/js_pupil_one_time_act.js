@@ -97,7 +97,25 @@ $(function() {
 				errorElement: "span",
 				
 			});
+			
+			setUserAccess();
 });
+
+function setUserAccess(){
+	if(typeof userData != "undefined" && typeof userData.userTypeID != "undefined" && userData.userTypeID != 1){
+		//hide all actions!!!
+		$("#divOneTimeReg").hide();
+		//$("#regLink").parent.hide();
+		$("#regLink").parent().hide();
+		$("#addNew").parent().hide();
+		
+		//hide grdi column
+		var grid = $("#listRegistration");	
+		grid.jqGrid('hideCol',["actions"]);
+		
+	}
+	
+}
 
 function loadPupilOneAct(dataString) {
 	$.ajax({

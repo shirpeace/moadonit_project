@@ -19,6 +19,9 @@
 
 	<script type="text/javascript">
 		var currentUserId =	 '<%=session.getAttribute("userid")%>';	
+		var userData;
+		if(typeof currentUserId != "undefined")
+			userData = JSON.parse(currentUserId);
 		
 	</script>
 	
@@ -39,7 +42,9 @@
     <title>מועדונית</title>
 	 <!-- jQuery -->
     <script src="js/jquery.js"></script>
+    <script src="js/jquery-ui.js"></script>
     
+    <script src="js/js_dashboard.js"></script>
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
@@ -175,10 +180,10 @@
                 </div>
                 <!-- /.row -->
 				
-				<div class="row "> <!-- third button row -->
+				<div class="row " id="divSys"> <!-- third button row -->
                     <div class="col-lg-2 col-md-6  pull-left">
                         <div class="panel panel-grey ">
-                            <a href="settings_general_tables.jsp">
+                            <a  href="settings_general_tables.jsp">
                                 <div class="panel-footer ">
                                    <span class="pull-right">ניהול מערכת</span>
                                    <br>

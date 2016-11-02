@@ -19,7 +19,9 @@
 	
 <script type="text/javascript">
 		var currentUserId =	 '<%=session.getAttribute("userid")%>';	
-		
+		var userData;
+		if(typeof currentUserId != "undefined")
+			userData = JSON.parse(currentUserId);
 	</script>
 	
 	<%
@@ -387,7 +389,7 @@
 							
 			<!-- row 2 col 4 -->				
 							<div class="col-lg-9"></div>
-							<div class="col-lg-3" >
+							<div class="col-lg-3" id="actionBtns">
 								
 								<div class="form-group " id="viewModeBtn">
 									<input type="button" id="editBtn" name="editBtn"

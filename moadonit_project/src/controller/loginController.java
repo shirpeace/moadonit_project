@@ -85,8 +85,9 @@ public class loginController extends HttpServlet implements Serializable {
 					JSONObject u = new JSONObject();
 					
 					u.put("username",rs.getString("userName"));
-					u.put("password",rs.getString("password"));
-					u.put("userID",rs.getInt("userID"));
+					//u.put("password",rs.getString("password"));
+					u.put("userID",rs.getInt("userID"));//userTypeID
+					u.put("userTypeID",rs.getInt("userTypeID"));
 
 					//users.add(u);
 					
@@ -98,7 +99,7 @@ public class loginController extends HttpServlet implements Serializable {
 					session.setAttribute("userid", u);
 					response.setContentType("application/json");
 					response.setCharacterEncoding("UTF-8");
-					response.getWriter().print(users);
+					response.getWriter().print(u);
 					
 				} else {
 					response.setContentType("application/json");

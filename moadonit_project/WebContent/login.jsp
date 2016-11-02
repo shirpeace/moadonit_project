@@ -72,9 +72,9 @@
     <![endif]-->
 <script>
 	var currentUserId =	 '<%=session.getAttribute("userid")%>';
-	function register() {
+	/* function register() {
 		window.open("Register.jsp", "_self");
-	}
+	} */
 </script>
 
 <%
@@ -149,11 +149,13 @@
 		        url: "loginController",
 		        data: dataString,
 		        success: function(data) {
-		        	if(data != undefined){
+		        	if(data != undefined && data.userID != undefined){
 		        		window.location.href = "dashboard.jsp";
 		        		//window.location.assign(data);
+		        		
 		        	
-		        	
+		        	}else{
+		        		$('#FormError').html("שם משתמש או סיסמא שגויים").show();
 		        	}
 		        },
 		        error: function(e) {

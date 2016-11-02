@@ -21,6 +21,9 @@
 
 <script type="text/javascript">
 		var currentUserId =	 '<%=session.getAttribute("userid")%>';
+		var userData;
+		if(typeof currentUserId != "undefined")
+			userData = JSON.parse(currentUserId);
 </script>
 
 <%
@@ -114,7 +117,7 @@
 							class="fa fa-fw fa-search"></i> חיפוש</a></li>
 					<!-- <li><a href="pupils_phones.jsp"><i
 							class="fa fa-fw fa-phone"></i> דפי קשר</a></li> -->
-					<li><a href="pupil_add.jsp"><i class="fa fa-fw fa-edit"></i>
+					<li><a href="pupil_add.jsp" id="addNew"><i class="fa fa-fw fa-edit"></i>
 							הוספת חדש</a></li>
 				</ul>
 			</div>
@@ -241,12 +244,8 @@
 
 
 	<script type="text/javascript">
-		/* var currentUserId =	 '${p.pupilNum}' */
-		jQuery(document).ready(function() {
-			var pupilID;
-			loadPupilSearch();
-			
-		});
+	var pupilID;
+	loadPupilSearch();
 	</script>
 
 

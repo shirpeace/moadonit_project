@@ -18,7 +18,9 @@
 
 <script type="text/javascript">
 		var currentUserId =	 '<%=session.getAttribute("userid")%>';	
-		
+		var userData;
+		if(typeof currentUserId != "undefined")
+			userData = JSON.parse(currentUserId);
 	</script>
 	
 	<%
@@ -151,7 +153,7 @@
                 <div  class="row">
 					<div class="col-lg-1"></div>
 	                <div class="col-lg-8">
-                        <div class="panel panel-default">
+                        <div class="panel panel-default" id="divOneTimeReg">
                             <div class="panel-heading">
                                 <h3 class="panel-title"><i class="fa fa-info fa-fw"></i> צור רישום חד פעמי</h3>
                             </div>

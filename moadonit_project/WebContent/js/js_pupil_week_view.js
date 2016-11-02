@@ -26,6 +26,19 @@ function ondayChange(selectElem){
 	
 }
 
+function setUserAccess(){
+	if(typeof userData != "undefined" && typeof userData.userTypeID != "undefined" && userData.userTypeID != 1){
+		//hide all actions!!!
+		$("#newRegPanel").hide();
+		//$("#regLink").parent.hide();
+		$("#regLink").parent().hide();
+		$("#addNew").parent().hide();
+		
+		//hide grdi column
+		$("#listRegistration").jqGrid('hideCol',["actions"]);
+	}
+	
+}
 /**
  * on checkbox of all week change
  * @param checkElem
@@ -1249,4 +1262,5 @@ $(function() {
 			 return false;
 		});		
 		
+		setUserAccess();
 });

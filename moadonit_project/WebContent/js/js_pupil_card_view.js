@@ -4,7 +4,6 @@
 /*************************************************/
 
 /*   the current user the us logged if to the system */
-var currentUserId =	 '<%=session.getAttribute("userid")%>';	
 
 
 //define state for the editable page
@@ -179,9 +178,17 @@ $(function(){
 			return false;
 		});
 	    		
-       
+		setUserAccess();
 });
 
+function setUserAccess(){
+	if(typeof userData != "undefined" && typeof userData.userTypeID != "undefined" && userData.userTypeID != 1){
+		//hide all actions!!!
+		$("#actionBtns").hide();
+		$("#regLink").parent().hide();
+	}
+	
+}
 
 function setPupilCardData(pupil){
 			
