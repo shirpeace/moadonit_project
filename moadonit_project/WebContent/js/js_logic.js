@@ -8,7 +8,7 @@ var currentUserId =	 '<%=session.getAttribute("userid")%>';
 //$.jgrid.defaults.responsive = true;
 //$.jgrid.defaults.styleUI = 'Bootstrap';
 var gradeData, currentYearObject;
-var grades, FoodTypes , FamilyRelation, RegSource, Staff , activityGroup;
+var grades, FoodTypes , FamilyRelation, RegSource, Staff , activityGroup, courseType;
 var RegDatesToValid = { startDate:null, lastDateToReg : null , numOfDaysToModify : null};
 // define state for the editable page
 	var state = {

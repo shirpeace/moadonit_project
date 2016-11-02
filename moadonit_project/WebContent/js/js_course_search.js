@@ -1,7 +1,7 @@
 var grades;
 var gridSelectedGrade;
 function loadCourseSearch() {
-	
+	getSelectValuesFromDB("getCourseType", "courseType","ActivityController");
 	loadGrid();
 	$("#resetBtn").click(function() {
 		var grid = $("#list");
@@ -12,6 +12,9 @@ function loadCourseSearch() {
 		grid.trigger("reloadGrid",[{page:1}]);
 		
 	});
+	
+	
+	//setSelectValues($('#'), "courseType");////////////////////////////////////////////////////////////////!!!!!!!
 }
 function loadGrid(){
 	
@@ -118,7 +121,22 @@ function loadGrid(){
              index : 'regularOrPrivate',
              width : 100,
              stype: "select",
-             searchoptions: { value: " : ;רגיל:רגיל;מיוחד:מיוחד"}
+             searchoptions: { value: +courseType},
+             edittype: "select",
+             editable: true,
+	         editoptions: { value:  courseType },
+	        /* formatter: function (cellValue, opts, rwd) {								
+					if (courseType) {
+						 getDateFromValue(cellValue);
+						
+						var d = $.fn.fmatter.call(this, "date",
+								getDateFromValue(cellValue), opts, rwd);
+						return d;
+					} else {
+						return '';
+					}
+				},*/
+	        
          }
          
           ],
