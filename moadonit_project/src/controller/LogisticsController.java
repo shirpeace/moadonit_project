@@ -376,6 +376,14 @@ public class LogisticsController extends HttpServlet implements Serializable {
 			HttpServletResponse resp) throws IOException, SQLException {
 		
 		int result;
+		if(tableName.equals("tbl_activity")){
+			int actNum = Integer.parseInt(req.getParameter("activityNum"));			
+			int rowKey = Integer.parseInt(req.getParameter("ID"));
+			
+			this.logDAO.update_moadonit_group("{ call ms2016.update_moadonit_group( ? ,?)}", new Object[] {actNum,rowKey});
+			return result = 0;
+		}
+		
 		sql = "INSERT INTO " + tableName + "( ";
 		String values = "VALUES ( ";
 		

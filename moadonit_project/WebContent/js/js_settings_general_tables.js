@@ -101,7 +101,12 @@ jQuery(document).ready(function() {
 			    	reCreateTable();
 			    	getGeneralGrid();
 			    	break;
-			    	//tbl_activity
+			    case "tbl_course_type":
+			    	tableName =  "tbl_course_type";
+			    	whereclause = " WHERE (table_name = 'tbl_course_type'); ";
+			    	reCreateTable();
+			    	getGeneralGrid();
+			    	break;
 			}
 			
 			

@@ -192,6 +192,8 @@
 				    <li id="tbl_food_type" class="prosets"><a data-toggle="pill" href="#tblData"><span>סוגי <br>ארוחות</span></a></li>
 				    <li id="tbl_family_relation" class="prosets"><a data-toggle="pill" href="#tblData"><span >סוגי קרבה <br>משפחתית</span></a></li>
 				    <li id="tbl_job_type" class="prosets"><a data-toggle="pill" href=#tblData><span >סוגי <br>תפקידים</span></a></li>
+				  <li id="tbl_course_type" class="prosets"><a data-toggle="pill" href="#tblData"><span >סוגי <br>חוגים</span></a></li>
+				    
 				    <li id="tbl_payment_type" class="prosets"><a data-toggle="pill" href="#tblData"><span>סוגי <br>תשלום</span></a></li>
 				    <li id="tbl_reg_source" class="prosets"><a data-toggle="pill" href="#tblData"><span>מקורות <br>רישום</span></a></li>
 				    <li id="tbl_grade_code" class="prosets"><a data-toggle="pill" href="#tblData"><span >כיתות <br>ביה"ס</span></a></li>

@@ -327,7 +327,7 @@ public class ActivityDAO extends AbstractDAO {
 		c.setCategory(resultSet.getInt("category"));
 		c.setExtraPrice(resultSet.getInt("extraPrice"));
 		c.setPricePerMonth(resultSet.getInt("pricePerMonth"));
-		c.setRegularOrPrivate(resultSet.getString("regularOrPrivate"));
+		c.setRegularOrPrivate(resultSet.getString("courseTypeID"));
 		c.setPupilCapacity(resultSet.getInt("pupilCapacity"));
 		
 		return c;
