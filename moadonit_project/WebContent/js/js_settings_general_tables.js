@@ -2,8 +2,8 @@ var selectedTab;
 var pupilID;
 var tableName, query, whereclause, columnsData;
 var colname = new Array() ; // column array for jqgrid
-var tablePk;
-var  cols, valuesFroCell, gridRowsData; // original column array from server
+var tablePk,isNonEditable = false, lastSelection = -1;
+var  cols, valuesFroCell, gridRowsData, sortname; // original column array from server
 
 jQuery(document).ready(function() {	
 	if(typeof page != 'undefined'  && page === "tbl_staff"){
@@ -30,7 +30,7 @@ jQuery(document).ready(function() {
 			switch (this.parentElement.id) {
 			    case "tbl_reg_types":
 			    	tableName =  "tbl_reg_types";			    	
-			    	whereclause = " WHERE (table_name = 'tbl_reg_types'); ";
+			    	whereclause = " WHERE (table_name = 'tbl_reg_types'); ";			    	
 			    	reCreateTable();
 			    	getGeneralGrid();
 			        break;
@@ -98,6 +98,7 @@ jQuery(document).ready(function() {
 			    case "tbl_activity":
 			    	tableName =  "tbl_activity";
 			    	whereclause = " WHERE (table_name = 'tbl_activity'); ";
+			    	sortname = "activityName";
 			    	reCreateTable();
 			    	getGeneralGrid();
 			    	break;
@@ -220,7 +221,7 @@ function reCreateTable(){
 	return container;
 }
 
-var editSettings = {
+/*var editSettings = {
         //recreateForm: true,
         jqModal: false,
         reloadAfterSubmit: true,
@@ -275,18 +276,11 @@ var editSettings = {
             return true;
         },
         processing: true
-    };
+    };*/
 
 var mydata = {}, existingProperties = {},
 floatTemplate = {formatter: 'number', sorttype: 'int'},
 integerTemplate = {formatter: 'integer', sorttype: 'int'},
-inLineErrorfunc = function (rowID, response) {
-	//alert(rowID);
-	
-    // todo: why this does not allow Enter key to continue ase after error:
-	$.jgrid.info_dialog($.jgrid.errors.errcap,'<div class="ui-state-error">'+
-		    response.responseText +'</div>', $.jgrid.edit.bClose,{buttonalign:'right'});
-},
 colorpickerTemplate = {
 		/*stype: "color",*/
 		/*edittype: "color",*/
@@ -450,7 +444,12 @@ timeTemplate = {
 						            setTimeout(function () {
 					                $self.trigger("reloadGrid");
 					            }, 50);
-					     }  
+					     },
+					    /* oneditfunc  :  function(rowId){
+					    	 if (rowId && rowId !== lastSelection) {					    	        
+					    	        lastSelectedRow = rowId;
+					    	    }
+					     }*/
 				
 			}
 	        
@@ -492,6 +491,15 @@ timeTemplate = {
 		                $self.trigger("reloadGrid");
 		            }, 50);
 						return true; 
+					},
+					/*
+					oneditfunc : function(id){
+						
+					}*/
+					afterrestorefunc : function(response ){
+						/*if(typeof tableName !== "undefined" && tableName === "tbl_grade_code" ){							
+						}*/
+						
 					}
 			   },
 			   del: true,
@@ -549,8 +557,9 @@ function setColModelFormResult(result){
 	$.each(cols, function () {
 	
 	//Check the datatype of the column.
-	if(this.IsKey)
-		tablePk = this.Name;
+	if(this.IsKey){
+		tablePk = this.Name;		
+	}	
 	var cm = {
 			//width : width == null ? "auto" : width,
 	        name: this.Name,
@@ -611,6 +620,7 @@ function setColModelFormResult(result){
 	if (cm)
 	colname.push(cm);
 	});
+	sortname = (selectedTab === "tbl_activity" ? "activityName" : tablePk);
 }
 function getGeneralGrid(){
 	
@@ -650,7 +660,7 @@ function getGeneralGrid(){
 								repeatitems : false,
 							},
 							recreateFilter : true,
-							sortname : tablePk,
+							sortname : sortname,
 							autoencode: true,
 							//pgbuttons : false, // disable page control like next, back
 							// button
@@ -742,7 +752,41 @@ function getGeneralGrid(){
 										if(btnDel.length > 0 &&  btnDel.hasClass("disabledbutton"))
 											btnDel.removeClass("disabledbutton");	
 									}
-								}else{
+								}
+								else if(typeof tableName !== "undefined" && tableName === "tbl_grade_code" ){
+									var selectedID =parseInt(id,0);
+									
+									if (id && !isNaN(id) && id !== lastSelection) {
+										
+										
+										if ($("tr#"+id).attr("editable") !== "1") { // if the row is in edit process
+										    // the row having id=rowid is in editing mode
+											$(this).jqGrid('setColProp', 'shichva', {editable:false}); // disable cell editing
+										}
+										
+										/*if(!isNaN(id) ){ // if the select row is not a new row
+											
+										}*/
+										
+										lastSelection = id;
+									}
+									else{
+										/*if(!isNaN(id))
+										$(this).jqGrid('setColProp', 'shichva', {editable:false}); 
+										else{
+											$(this).jqGrid('setColProp', 'shichva', {editable:true}); 
+										}*/
+										
+									}
+									
+									
+									if(btnEdit.length > 0 &&  btnEdit.hasClass("disabledbutton"))
+										btnEdit.removeClass("disabledbutton");	
+									if(btnDel.length > 0 &&  btnDel.hasClass("disabledbutton"))
+										btnDel.removeClass("disabledbutton");
+								}
+								else{
+									
 									if(btnEdit.length > 0 &&  btnEdit.hasClass("disabledbutton"))
 										btnEdit.removeClass("disabledbutton");	
 									if(btnDel.length > 0 &&  btnDel.hasClass("disabledbutton"))
@@ -764,8 +808,20 @@ function getGeneralGrid(){
 						}).jqGrid("navGrid", "#pager", navParams)
 						.jqGrid("inlineNav","#pager", inlinNavParameters );
 			        
-				$.extend($.jgrid.inlineEdit, { restoreAfterError: false } );					
+				$.extend($.jgrid.inlineEdit, { restoreAfterError: false } );	
+				
+				var origAddRowDataFunc = $.fn.jqGrid.addRowData;
+				$.fn.jqGrid.addRowData = function(rowid,rdata,pos,src) {
+					
+					if(typeof tableName !== "undefined" && tableName === "tbl_grade_code" ){
+						$(this).jqGrid('setColProp', 'shichva', {editable:true}); 
+					}
+					
+					result = origAddRowDataFunc.call(this,rowid,rdata,pos,src);
+					
+				};
 /*				
+ * 
  * 	var allRowsInGrid = $('#list4').jqGrid('getGridParam','data');
  * 				var originalDelFunc = $.fn.jqGrid.delGridRow;
 			    $.fn.jqGrid.delGridRow = function (rowids, oMuligrid) {
@@ -834,247 +890,6 @@ function getGeneralGrid(){
 	});
 	
 }
-/*function OnBntExportClick(type){
-	
-	if(selectedTab){
-		switch (selectedTab) {
-		    case "OnTimeReg":
-		    	exportDataOntime(type, "OneTimeReport");
-		        break;
-		    case "MoadonitReg":
-		    	console.log(selectedTab);
-		    	exportMoadonitPay(type, "MoadonitPay");
-		        break;
-		    case "CourseReg":
-		    	console.log(selectedTab);
-		        break;
-		    case "MoadonitData":
-		    	console.log(selectedTab);
-		    	exportMoadonitData(type, "MoadonitDataReport");
-		        break;
-		    case "CourseData":
-		    	console.log(selectedTab);
-		    	exportCourseData(type, "CourseRegistrationReport");
-		        break;	   
-		}
-	}
-}*/
-
-/*function exportMoadonitPay(type, fileName){
-	
-	var month =  $('#monthPick').val();
-	var monthTime =  getDateFromValue(month).getTime();
-	var params = {  fileType : type, fileName: fileName , action: "export" , pageName : "MoadonitPay", month : monthTime };
-	
-	exportData(type, params);
-	
-}
-
-function exportMoadonitData(type, fileName){
-	var month =  $('#dayPick').val();
-	var monthTime =  getDateFromValue(month).getTime();
-	var params = {  fileType : type, fileName: fileName , action: "export" , pageName : "MoadonitData", month : monthTime };
-	
-	exportData(type, params);
-	
-}
-
-function exportDataOntime(type, fileName){
-
-	var month = $('#monthNum').val(), year =$('#yearNum').val();
-	var params = {  fileType : type, fileName: fileName , action: "export" , pageName : "OneTimeReport", month : month, year : year };
-	
-	exportData(type, params); 
-} 
-
-function exportCourseData(type, fileName){
-
-	var month = $('#monthNum').val(), year =$('#yearNum').val();
-	var arr = getSelectedOptions();
-	var params = {  fileType : type, fileName: fileName , action: "export" , pageName : "CourseData", options : arr, year : year };	
-	exportData(type, params); 
-} 
-
-function exportData(type, params){
-
-	
-    var $preparingFileModal = $("#preparing-file-modal");
-    
-    $preparingFileModal.dialog({ modal: true });
-    
-   $.fileDownload("ReportsController", {
-        successCallback: function(url) {
-
-            $preparingFileModal.dialog('close');
-        },
-        failCallback: function(responseHtml, url) {
-
-            $preparingFileModal.dialog('close');
-            $("#error-modal").dialog({ modal: true });
-        },
-        data : params,
-        httpMethod: "POST",
-        popupWindowTitle: "ייצוא קובץ...",
-    });
-
-    return false; 
-} 
-
-function getSelectedOptions(){
-	var array = [], idx = 0;
-	var val = "";
-    $('#courseList option:selected').each(function() {
-    	var activity = new Object();
-    	activity.activityNum = $(this).val();
-    	activity.activityName = $(this).text();
-    	array[idx++] = activity;
-
-    	val += $(this).val() + ";" + $(this).text() + ",";
-    });
-    
-    return val.substring(val.lastIndexOf(",", 0));
-}
 
 
-function getCourseIds(){
-	
-	$.ajax({
-		async : false,
-		type : 'POST',
-		datatype : 'jsonp',
-		url : "ReportsController",
-		data : { action : "getCourseForReport" },
-		success : function(data) {
-			if (data != undefined) {
-				var values = [];
-				if(data)
-				for (var int = 0; int < data.length; int++) { // iterate the keys of the object that represent the option data and get the key and value
-	          	    var item = {};
-	            	item.activityNum = data[int].activityNum;
-	            	item.activityName = data[int].activityName;
-	            	values.push(item);
-	            	
-		        }  
-				
-				//sort options alphabetically
-				values.sort(function(o1, o2) { return o1.activityName > o2.activityName ? 1 : o1.activityName < o2.activityName ? -1 : 0; });
-				$('#courseList').find('option').remove();
-				for (var i = 0; i < values.length; i++) {
-					$('#courseList').append($("<option></option>")
-		                    .attr("value",values[i].activityNum)
-		                    .text(values[i].activityName)); 
-				}
-				
-				//$('#courseList').selectpicker('val', [ "test1", "test2"]);
-				$('.selectpicker').selectpicker('refresh');
-			} else
-				alert("לא קיימים נתונים");
-		},
-		error : function(e) {
-			alert("שגיאה בשליפת נתונים");
-			console.log("error");
-
-		}
-
-	});
-}
-*/
-/******
- NOT IN USE FROM HERE TO END 
- ******/
-
-$.each(mydata, function () {
-	var p;
-	for (p in this) {
-	    if (this.hasOwnProperty(p) && this[p] !== null && (typeof this[p] === "string" && $.trim(this[p]) !== "")) {
-	        existingProperties[p] = true;
-	    }
-	}
-});
-
-var onclickSubmitLocal = function (options, postdata) {
-var $this = $(this), p = $(this).jqGrid("getGridParam"),// p = this.p,
-    idname = p.prmNames.id,
-    id = this.id,
-    idInPostdata = id + "_id",
-    rowid = postdata[idInPostdata],
-    addMode = rowid === "_empty",
-    oldValueOfSortColumn,
-    newId,
-    idOfTreeParentNode;
-
-// postdata has row id property with another name. we fix it:
-if (addMode) {
-    // generate new id
-    newId = $.jgrid.randId();
-    while ($("#" + newId).length !== 0) {
-        newId = $.jgrid.randId();
-    }
-    postdata[idname] = String(newId);
-} else if (postdata[idname] === undefined) {
-    // set id property only if the property not exist
-    postdata[idname] = rowid;
-}
-delete postdata[idInPostdata];
-
-// prepare postdata for tree grid
-if (p.treeGrid === true) {
-    if (addMode) {
-        idOfTreeParentNode = p.treeGridModel === "adjacency" ? p.treeReader.parent_id_field : "parent_id";
-        postdata[idOfTreeParentNode] = p.selrow;
-    }
-
-    $.each(p.treeReader, function () {
-        if (postdata.hasOwnProperty(this)) {
-            delete postdata[this];
-        }
-    });
-}
-
-// decode data if there encoded with autoencode
-if (p.autoencode) {
-    $.each(postdata, function (n, v) {
-        postdata[n] = $.jgrid.htmlDecode(v); // TODO: some columns could be skipped
-    });
-}
-
-// save old value from the sorted column
-oldValueOfSortColumn = p.sortname === "" ? undefined : $this.jqGrid("getCell", rowid, p.sortname);
-
-// save the data in the grid
-if (p.treeGrid === true) {
-    if (addMode) {
-        $this.jqGrid("addChildNode", newId, p.selrow, postdata);
-    } else {
-        $this.jqGrid("setTreeRow", rowid, postdata);
-    }
-} else {
-    if (addMode) {
-        $this.jqGrid("addRowData", newId, postdata, options.addedrow);
-    } else {
-        $this.jqGrid("setRowData", rowid, postdata);
-    }
-}
-
-if ((addMode && options.closeAfterAdd) || (!addMode && options.closeAfterEdit)) {
-    // close the edit/add dialog
-    $.jgrid.hideModal("#editmod" + $.jgrid.jqID(id), {
-        gb: "#gbox_" + $.jgrid.jqID(id),
-        jqm: options.jqModal,
-        onClose: options.onClose
-    });
-}
-
-if (postdata[p.sortname] !== oldValueOfSortColumn) {
-    // if the data are changed in the column by which are currently sorted
-    // we need resort the grid
-    setTimeout(function () {
-        $this.trigger("reloadGrid", [{current: true}]);
-    }, 100);
-}
-
-// !!! the most important step: skip ajax request to the server
-//options.processing = true;
-return {};
-};
 

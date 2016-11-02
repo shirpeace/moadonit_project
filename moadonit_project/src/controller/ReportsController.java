@@ -900,7 +900,7 @@ Serializable {
 		
 		    for (Entry<Integer, Object> entry : map.entrySet())
 			{
-		    	if(entry.getKey() == 1) continue;
+		    	
 				jsonList = this.repDOA.getPupilsForMoadonitGroup( entry.getKey(), s);
 				if (!jsonList.isEmpty() && arrlist.size() > 0) {
 					html += buildTableForHtml(query,whereClouse,arrlist,jsonList,entry.getValue().toString());							

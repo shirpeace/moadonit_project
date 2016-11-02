@@ -197,11 +197,12 @@
 				    <li id="tbl_payment_type" class="prosets"><a data-toggle="pill" href="#tblData"><span>סוגי <br>תשלום</span></a></li>
 				    <li id="tbl_reg_source" class="prosets"><a data-toggle="pill" href="#tblData"><span>מקורות <br>רישום</span></a></li>
 				    <li id="tbl_grade_code" class="prosets"><a data-toggle="pill" href="#tblData"><span >כיתות <br>ביה"ס</span></a></li>
-				    <li id="tbl_activity" class="prosets"><a data-toggle="pill" href="#tblData"><span >קבוצות <br>מועדונית</span></a></li>
 				    
+				      
 				      <li id="tbl_school_years" class="yearsets"><a data-toggle="pill" href="#tblData"><span >שנות <br>לימוד</span></a></li>
 				   <li id="tbl_grade_in_year" class="yearsets"><a data-toggle="pill" href="#tblData"><span >כיתות <br>בשנה נוכחית</span></a></li>
-				    <li id="tbl_moadonit_groups" class="yearsets"><a data-toggle="pill" href="#tblData"><span >שיוך כיתות <br>לקבוצות מועדונית</span></a></li>
+				   <li id="tbl_activity" class="yearsets"><a data-toggle="pill" href="#tblData"><span >קבוצות מועדונית <br>בשנה נוכחית</span></a></li>
+				   <li id="tbl_moadonit_groups" class="yearsets"><a data-toggle="pill" href="#tblData"><span >שיוך כיתות <br>לקבוצות מועדונית</span></a></li>
 				   
 				  </ul>
 				  
