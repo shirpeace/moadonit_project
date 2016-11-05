@@ -40,7 +40,7 @@ jQuery(document).ready(function() {
 /*************************************************/
 //TODO //*  START  PUPILADD PAGE FUNCTIONS       */
 /*************************************************/
-jQuery.fn.center = function(parent) {
+jQuery.fn.center = function(parent) {debugger;
 	    if (parent) {
 	        parent = this.parent();
 	    } else {
@@ -375,11 +375,16 @@ function setSelectValues(selectObj, valObj){
     var objCopy = window[valObj].value.split(";");
     $.each(objCopy, function(key, value) {  
     	value  = value.split(":");
-    	if(valObj === "grades"){
+    	if(valObj === "grades" ){
     		if(key != 0)
     	    	$select.append('<option style="background-color:'+ value[2]+'" value=' + value[0] + '>' + value[1] + '</option>'); 
     	    	else
     	    		$select.append('<option  value=' + value[0] + '>' + value[1] + '</option>'); 
+    	}
+    	else if(valObj === "courseTypes"){
+    		if(key == 0) return;
+    		
+    		$select.append('<option  value=' + value[0] + '>' + value[1] + '</option>'); 
     	}
     	else if(valObj === "FamilyRelation"){
     		if(key == 0)
@@ -595,7 +600,7 @@ function savePupilCardData(action,forward){
 	 	var parent2  = new Object();
 	 	/*var relation1 = new  Object();
 	 	var relation2 = new  Object();*/
-	 	debugger;
+	 	
 	 	if(typeof pupilData != undefined && pupilData != "" && pupilData != null)
 	 		pupil.pupilNum = pupilData.pupilNum;
 	 	else
@@ -848,7 +853,7 @@ dd = dd.replaceAll(".", "/");*/
  */
 function saveCourseData(action, forward) {
 
-
+	
 	var activity = new Object();
 	activity.activityNum = activityNum;
 	activity.activityName = $('#activityName').val();
@@ -862,9 +867,10 @@ function saveCourseData(action, forward) {
 	activity.tblActivityGroup ={
 			activityGroupNum : groupNum,
 			actGroupName : $('#newActivityGroupHead').val(),
-			tblActivityType : {
+			activityType : 1,
+			/*tblActivityType : {
 				typeID : 1,
-			}
+			}*/
 	};
 
 	activity.weekDay = $('#weekDay').val();
@@ -879,9 +885,12 @@ function saveCourseData(action, forward) {
 		activityNum : activityNum,
 		category : 0,
 		pricePerMonth : $('#pricePerMonth').val(),
-		regularOrPrivate : $('#regularOrPrivate').val(),
+		//regularOrPrivate : $('#regularOrPrivate').val(),
 		extraPrice : $('#extraPrice').val(),
-		pupilCapacity: $('#capacity').val()
+		pupilCapacity: $('#capacity').val(),
+		tblCourseType : {
+			courseTypeID : $('#courseTypeID').val()
+		}
 	};
 
 	var result;
@@ -899,7 +908,7 @@ function saveCourseData(action, forward) {
 					endTime : $('#endTime').val()
 				},
 
-				success : function(data) {
+				success : function(data) {debugger;
 					if (data != undefined) {
 						/* alert(data); */
 						/**

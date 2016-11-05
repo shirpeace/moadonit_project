@@ -480,7 +480,7 @@ Serializable {
 				JSONObject obj = new JSONObject();
 
 				obj.put("activityNum", act.getActivityNum());
-				obj.put("activityType", act.getTblActivityGroup().getTblActivityType().getTypeID());
+				obj.put("activityType", act.getTblActivityGroup().getActivityType());
 				obj.put("activityName", act.getActivityName());
 				obj.put("weekDay", act.getWeekDay());			
 				obj.put("startTime", act.getStartTime().toString().substring(0,5));
@@ -500,7 +500,7 @@ Serializable {
 				
 				obj.put("pricePerMonth", act.getTblCourse().getPricePerMonth());
 				obj.put("extraPrice", act.getTblCourse().getExtraPrice());
-				obj.put("regularOrPrivate", act.getTblCourse().getRegularOrPrivate());
+				obj.put("regularOrPrivate", act.getTblCourse().getTblCourseType().getCourseTypeID());
 				obj.put("category", act.getTblCourse().getCategory());
 				registrationData.add(obj);
 

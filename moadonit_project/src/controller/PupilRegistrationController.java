@@ -570,7 +570,7 @@ public class PupilRegistrationController extends HttpServlet implements
 			
 			today = DAOUtil.getZeroTimeDate(today);
 			
-			if(!today.after(regPupil.getEndDate())){
+			if(today != null && !today.after(regPupil.getEndDate())){
 				user.put("title", "");
 				user.put("type", "סוג רישום");
 				user.put("startDate", regPupil.getId().getStartDate().getTime());

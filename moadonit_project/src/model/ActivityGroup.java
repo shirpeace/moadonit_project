@@ -20,14 +20,11 @@ public class ActivityGroup implements Serializable {
 
 	private String actGroupName;
 
+	private int activityType;
+
 	//bi-directional many-to-one association to Activity
 	@OneToMany(mappedBy="tblActivityGroup")
 	private List<Activity> tblActivities;
-
-	//bi-directional many-to-one association to ActivityType
-	@ManyToOne
-	@JoinColumn(name="activityType")
-	private ActivityType tblActivityType;
 
 	public ActivityGroup() {
 	}
@@ -46,6 +43,14 @@ public class ActivityGroup implements Serializable {
 
 	public void setActGroupName(String actGroupName) {
 		this.actGroupName = actGroupName;
+	}
+
+	public int getActivityType() {
+		return this.activityType;
+	}
+
+	public void setActivityType(int activityType) {
+		this.activityType = activityType;
 	}
 
 	public List<Activity> getTblActivities() {
@@ -68,14 +73,6 @@ public class ActivityGroup implements Serializable {
 		tblActivity.setTblActivityGroup(null);
 
 		return tblActivity;
-	}
-
-	public ActivityType getTblActivityType() {
-		return this.tblActivityType;
-	}
-
-	public void setTblActivityType(ActivityType tblActivityType) {
-		this.tblActivityType = tblActivityType;
 	}
 
 }

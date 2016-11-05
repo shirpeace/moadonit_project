@@ -1,7 +1,7 @@
 var selectedTab;
 var pupilID;
-var tableName, query, whereclause, columnsData;
-var colname = new Array() ; // column array for jqgrid
+var tableName, query, whereclause, columnsData, selectedValue;
+var allValues= new Array(), colname = new Array() ; // column array for jqgrid
 var tablePk,isNonEditable = false, lastSelection = -1;
 var  cols, valuesFroCell, gridRowsData, sortname; // original column array from server
 
@@ -167,10 +167,20 @@ function saveRegDaysParam(){
         	  },
         	
         success: function(data) {
-        	if (data != undefined) {
-				/* alert(data); */
-        		bootbox.alert(data.result, function() {	   	        		 
-	        	});	
+        	if (typeof data != "undefined") {
+        		if(typeof data.status != "undefined"  && data.status == 1){
+        			/* alert(data); */
+        			if(typeof currentYearObject != "undefined"  ){
+        				currentYearObject = data.result;
+        				var yearDiv = $("#yearTag > span");
+        				if(yearDiv.length > 0){
+        						yearDiv.html(currentYearObject.yearName);
+        				}
+                		bootbox.alert(data.msg, function() {	   	        		 
+        	        	});
+        			}        		
+        		}
+					
 			}
         },
         error: function(e) {
@@ -351,9 +361,7 @@ dateTemplate = {
 			    todayHighlight: true,
 			    toggleActive: true ,
 			    onSelect: function (dateText, inst) {
-                    setTimeout(function () {
-                        self.triggerToolbar();
-                    }, 50);
+
                 }
 			});
         }
@@ -439,11 +447,12 @@ timeTemplate = {
 		useFormatter : false,
 		position: "last", 
 		addRowParams: { 
-						  successfunc :  function (){
+						  successfunc :  function (a){
 								 var $self = $(this);
 						            setTimeout(function () {
 					                $self.trigger("reloadGrid");
-					            }, 50);
+					            }, 50);						        						     
+						            
 					     },
 					    /* oneditfunc  :  function(rowId){
 					    	 if (rowId && rowId !== lastSelection) {					    	        
@@ -542,7 +551,50 @@ function formatGradeCell(rowId, val, rawObject, cm, rdata){
 	
 	return cellVal;
 }
+function saveSelectVal(e){
 
+	if(e.target && e.target.value){
+		selectedValue = e.target.value;
+	}
+	
+}
+
+// not in use
+function checkArray(grid){
+	if(allValues && allValues.length > 0 && selectedValue){
+		var newValue = "";
+		for (var int = 0; int < allValues.length; int++) {
+			if(allValues[int][0] == selectedValue ) continue;
+			newValue += allValues[int].join(':') + ";";
+		}
+		newValue = newValue.substring(0,newValue.lastIndexOf(";"));
+		grid.jqGrid('setColProp', 'gradeID', {editoptions: { value:  newValue}});
+	}
+}
+
+function updateSelectOptions(grid, data, cellName){
+	var options = grid.jqGrid('getColProp', cellName).availableOptions;
+	if(options && options.length > 0 && data.rows){
+		var newValue = "";
+		var add;
+		for (var int = 0; int < options.length ; int++) {
+			add = true;
+			for (var i = 0; i < data.rows.length; i++) {
+				if(options[int][1] == data.rows[i][cellName] ){ 
+					add = false;
+					break;
+				}																						
+			}
+			
+			if(add)
+			newValue += options[int].join(':') + ";";
+			
+		}
+		newValue = newValue.substring(0,newValue.lastIndexOf(";"));
+		grid.jqGrid('setColProp', cellName, {editoptions: { value:  newValue}});
+	}
+	
+}
 /**
  * set the client array of cols (colname Object) wich is used in grid 
  * @param result - the array  object from server with the cols data
@@ -551,6 +603,7 @@ function setColModelFormResult(result){
 	 cols = JSON.parse(result);
 	 colname  = new Array();
 	 var width= null;
+	 var search, newstr, tempVal;
 	if(selectedTab === "tbl_reg_types")
 		width = 50;
 	 //Loop into the column values collection and push into the array.
@@ -575,6 +628,12 @@ function setColModelFormResult(result){
 	    case 'int':
 	    	/*$.extend(true, cm, { template: integerTemplate }, { editrules: {integer : true} });*/
 	    	 $.extend(true, cm, { template: integerTemplate } , { editrules: { integer: true } });
+	    	 if(typeof tableName !== "undefined" && tableName === "tbl_grade_in_year" ){
+	    		 if(this.Name == "yearID" &&  currentYearObject != null && typeof currentYearObject === 'object')
+	    		{
+	    			 $.extend(true, cm, { editoptions :  { defaultValue: currentYearObject.yearID }});
+	    		}	    		
+	    	 }
 	    	 break;
 	    case 'float':
 	        $.extend(true, cm, { template: floatTemplate }  , { editrules: { number: true } });
@@ -590,23 +649,49 @@ function setColModelFormResult(result){
 	        break; 
 	    case 'dropdown':
 	        var values = this.ValueList.slice(0, -1);
+	        tempVal = values.split(';');
+	        allValues = new Array();
+	        allValues = new Array();
+        	for (var int = 0; int < tempVal.length; int++) {
+        		//save select option values in array.
+        		allValues.push(tempVal[int].split(':'));
+			}
+        	
 	        $.extend(true, cm, { template: dropdownTemplate,
-	            editoptions: { value:  values, defaultValue: this.DefaultValue },
-	            searchoptions: { value: ":All;" + values }
+	            editoptions: { value:  values, defaultValue: this.DefaultValue },availableOptions : allValues
+	            //searchoptions: { value: ":;" + values }
 	        }
 	        /*,
 	        this.ValueType == "F" ? { label: this.ValueId } : {}
 	        */
 	        );
+	      
 	        break;
 	    case 'custom':
 	        valuesFroCell = this.ValueList.slice(0, -1);
+	        if(typeof tableName !== "undefined" && (tableName === "tbl_grade_in_year" || tableName === "tbl_moadonit_groups") ){
+	             search = /\:#[a-z0-9]{6}/ig;   // regex to find color pattern
+	        	 newstr = valuesFroCell.split(search).join('');  // create select values without color value
+	        	 tempVal = newstr.split(';');
+	        	allValues = new Array();
+	        	for (var int = 0; int < tempVal.length; int++) {
+	        		//save select option values in array.
+	        		allValues.push(tempVal[int].split(':'));
+				}
+	        	//console.log(newstr);
+	        	 $.extend(true, cm,   { template: dropdownTemplate,
+		 	            editoptions: { value:  newstr, defaultValue: this.DefaultValue , 
+		 	            	dataEvents: [ { type: 'change', fn: function(e) { saveSelectVal(e); } } , ]},
+		 	            	cellattr: formatGradeCell, availableOptions : allValues });
+	        	 
+	        }else{
+	        	 $.extend(true, cm,   { template: dropdownTemplate,
+	 	            editoptions: { value:  valuesFroCell, defaultValue: this.DefaultValue },
+	 	           /* searchoptions: { value: ":All;" + values },*/  
+	 	            cellattr: formatGradeCell 
+	 	        });
+	        }
 	       
-	        $.extend(true, cm,   { template: dropdownTemplate,
-	           /* editoptions: { value:  valuesFroCell, defaultValue: this.DefaultValue },*/
-	           /* searchoptions: { value: ":All;" + values },*/  
-	            cellattr: formatGradeCell 
-	        });
 	        break;   
 	    case 'colorpicker':
 	        $.extend(true, cm, { template: colorpickerTemplate , cellattr: formatGradeCell} );
@@ -724,6 +809,13 @@ function getGeneralGrid(){
 								}
 
 							},
+							afterInsertRow: function (rowid, rowdata, rowelem) {
+								//jqg28
+								
+								if(rowid.startsWith('jqg')){
+									rowid = rowid.substring(0,3);
+								}
+							},
 							onSelectRow: function(id) { 
 							
 								var btnSave, btncancel, btnEdit, btnDel;
@@ -731,6 +823,13 @@ function getGeneralGrid(){
 								btncancel = $("#list_ilcancel");
 								btnEdit = $("#list_iledit");
 								btnDel = $("#del_list");
+								/*if(id.startsWith('jqg'))
+									id = id.substring(3,id.length);*/
+								
+								if(btnEdit.length > 0 &&  btnEdit.hasClass("disabledbutton"))
+									btnEdit.removeClass("disabledbutton");	
+								if(btnDel.length > 0 &&  btnDel.hasClass("disabledbutton"))
+									btnDel.removeClass("disabledbutton");
 								
 								if(typeof tableName !== "undefined" && tableName === "tbl_reg_types" ){
 									if (id && (id == 1 || id == 2)) {
@@ -752,6 +851,25 @@ function getGeneralGrid(){
 										if(btnDel.length > 0 &&  btnDel.hasClass("disabledbutton"))
 											btnDel.removeClass("disabledbutton");	
 									}
+								}								
+								else if(typeof tableName !== "undefined" && (tableName === "tbl_grade_in_year" || tableName === "tbl_moadonit_groups" ) ){
+									if (id && !isNaN(id) && id !== lastSelection) {
+										
+										
+										if ($("tr#"+id).attr("editable") !== "1") { // if the row is in edit process
+										    // the row having id=rowid is in editing mode
+											$(this).jqGrid('setColProp', 'gradeID', {editable:false}); // disable cell editing
+										}
+										
+										lastSelection = id;
+									}else if(isNaN(id)){
+										lastSelection = -1;
+									}
+									
+									/*if(btnEdit.length > 0 &&  btnEdit.hasClass("disabledbutton"))
+										btnEdit.removeClass("disabledbutton");	
+									if(btnDel.length > 0 &&  btnDel.hasClass("disabledbutton"))
+										btnDel.removeClass("disabledbutton");*/
 								}
 								else if(typeof tableName !== "undefined" && tableName === "tbl_grade_code" ){
 									var selectedID =parseInt(id,0);
@@ -764,33 +882,21 @@ function getGeneralGrid(){
 											$(this).jqGrid('setColProp', 'shichva', {editable:false}); // disable cell editing
 										}
 										
-										/*if(!isNaN(id) ){ // if the select row is not a new row
-											
-										}*/
-										
 										lastSelection = id;
 									}
-									else{
-										/*if(!isNaN(id))
-										$(this).jqGrid('setColProp', 'shichva', {editable:false}); 
-										else{
-											$(this).jqGrid('setColProp', 'shichva', {editable:true}); 
-										}*/
-										
-									}
 									
 									
-									if(btnEdit.length > 0 &&  btnEdit.hasClass("disabledbutton"))
+								/*	if(btnEdit.length > 0 &&  btnEdit.hasClass("disabledbutton"))
 										btnEdit.removeClass("disabledbutton");	
 									if(btnDel.length > 0 &&  btnDel.hasClass("disabledbutton"))
-										btnDel.removeClass("disabledbutton");
+										btnDel.removeClass("disabledbutton");*/
 								}
 								else{
 									
-									if(btnEdit.length > 0 &&  btnEdit.hasClass("disabledbutton"))
+									/*if(btnEdit.length > 0 &&  btnEdit.hasClass("disabledbutton"))
 										btnEdit.removeClass("disabledbutton");	
 									if(btnDel.length > 0 &&  btnDel.hasClass("disabledbutton"))
-										btnDel.removeClass("disabledbutton");	
+										btnDel.removeClass("disabledbutton");	*/
 								}
 																
 					        },
@@ -801,6 +907,15 @@ function getGeneralGrid(){
 									prepareYearsForm();
 									
 								}
+								if(typeof tableName !== "undefined" && (tableName === "tbl_grade_in_year" || tableName === "tbl_moadonit_groups") ){
+									updateSelectOptions(grid, data, 'gradeID');
+								}
+								else if(typeof tableName !== "undefined" && tableName === "tbl_activity" ){
+									//updateSelectOptions(grid, data, 'responsibleStaff');
+								}
+									
+								
+								
 						    	
 								/*  END hide edit/delete buttons for history records */
 							}
@@ -815,6 +930,9 @@ function getGeneralGrid(){
 					
 					if(typeof tableName !== "undefined" && tableName === "tbl_grade_code" ){
 						$(this).jqGrid('setColProp', 'shichva', {editable:true}); 
+					}
+					else if(typeof tableName !== "undefined" && (tableName === "tbl_grade_in_year" || tableName === "tbl_moadonit_groups" )){
+						$(this).jqGrid('setColProp', 'gradeID', {editable:true});						
 					}
 					
 					result = origAddRowDataFunc.call(this,rowid,rdata,pos,src);

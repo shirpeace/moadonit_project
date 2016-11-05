@@ -279,7 +279,8 @@ public class LogisticsDAO extends AbstractDAO {
 				result.put("yearName", resultSet.getString("yearName"));
 				result.put("startDate", resultSet.getDate("startDate").getTime());
 				result.put("endDate", resultSet.getDate("endDate").getTime());
-				result.put("lastDateToReg", resultSet.getDate("lastDateToReg").getTime());
+				Date lastDateToReg = DAOUtil.getZeroTimeDate(resultSet.getTimestamp("lastDateToReg"));
+				result.put("lastDateToReg", lastDateToReg != null ? lastDateToReg.getTime() : null);
 				
 			}
 		} catch (SQLException e) {

@@ -36,12 +36,14 @@
 		<class>model.Staff</class>
 		<class>model.Teacher</class>
 		<class>model.User</class>
-<!-- 		<class>model.FullPupilCard</class> -->
 		<class>model.MoadonitGroup</class>
 		<class>model.MoadonitGroupPK</class>
 		<class>model.JobType</class>
 		<class>model.PaymentType</class>
 		<class>model.UserType</class>
+		<!-- <class>model.FullPupilCard</class> -->
+		<class>model.CourseType</class>
+		<class>model.Shichva</class>
 		
 
 

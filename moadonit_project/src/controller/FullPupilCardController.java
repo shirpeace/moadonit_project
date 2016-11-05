@@ -628,21 +628,25 @@ public class FullPupilCardController extends HttpServlet implements
 
 		if (parent1.getParentID() > 0 && fam != null) {
 
-			if (fam.getFamilyID() > 0) {
-				// update family
-				fam.setTblParent1(parent1);
-				this.familyDao.update(fam);
-			} else {
-				// insert family
-				fam.setTblParent1(parent1);
-				this.familyDao.insert(fam);
-			}
-
-			// save pupil
-			p.setTblFamily(fam);
-
+			fam.setTblParent1(parent1);
 		}
 
+		if (parent2.getParentID() > 0 && fam != null) {
+			fam.setTblParent2(parent2);
+
+		}
+		
+		if (fam.getFamilyID() > 0) {
+			// update family
+			this.familyDao.update(fam);
+			
+		} else {
+			// insert family			
+			this.familyDao.insert(fam);
+		}
+		
+		p.setTblFamily(fam);
+		
 		if (p.getPupilNum() > 0) {
 			// update pupil
 			this.pupilDao.update(p);

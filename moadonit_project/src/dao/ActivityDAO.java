@@ -8,12 +8,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 
 import model.Activity;
 import model.ActivityGroup;
 import model.ActivityType;
 import model.Course;
+import model.CourseType;
+import model.RegSource;
 import model.RegToMoadonit;
 import model.Staff;
 import util.DAOUtil;
@@ -36,8 +41,9 @@ public class ActivityDAO extends AbstractDAO {
 	private String insertActGroup = "INSERT INTO tbl_activity_group ( actGroupName, activityType)" +
 					"VALUES (?, ?)";
 	private String  insertCourse= "INSERT INTO tbl_course (activityNum, pricePerMonth, extraPrice, " +
-					"regularOrPrivate, category, pupilCapacity) VALUES (?, ?, ?, ?, ?, ?)";
+					"courseTypeID, category, pupilCapacity) VALUES (?, ?, ?, ?, ?, ?)";
 
+	private String getCourseType = "{call ms2016.get_Course_Type ( ?)}";
 	/**
 	 * getCourses
 	 */
@@ -52,7 +58,7 @@ public class ActivityDAO extends AbstractDAO {
 	 * @param _staffName
 	 * @param _pricePerMonth
 	 * @param _extraPrice
-	 * @param _regularOrPrivate
+	 * @param courseTypeID
 	 * @param _category
 	 * @return
 	 * @throws IllegalArgumentException
@@ -60,12 +66,12 @@ public class ActivityDAO extends AbstractDAO {
 	 */
 	public List<Activity> searchCoursesByParam( String _activityName, String _weekDay,String _startTime,
 			String _endTime, String _staffName, float _pricePerMonth, float _extraPrice, 
-			String _regularOrPrivate, int _category, String _actGroupName)
+			int courseTypeID, int _category, String _actGroupName)
 			throws IllegalArgumentException, DAOException {
 		List<Activity> list = new ArrayList<>();
 
 		Object[] values = {    _activityName, _weekDay, 
-				_startTime, _endTime, _staffName, _pricePerMonth, _extraPrice, _regularOrPrivate, _category, _actGroupName};
+				_startTime, _endTime, _staffName, _pricePerMonth, _extraPrice, courseTypeID, _category, _actGroupName};
 		
 		try (PreparedStatement statement = DAOUtil.prepareCallbackStatement(
 				this.con.getConnection(), searchCoursesByParam, values );
@@ -73,7 +79,7 @@ public class ActivityDAO extends AbstractDAO {
 
 			while (resultSet.next()) {
 				Activity act = mapActivity(resultSet);
-				if (act.getTblActivityGroup().getTblActivityType().getTypeID() == 1) {
+				if (act.getTblActivityGroup().getActivityType() == 1) {
 					Course c = mapCourse(resultSet);
 					c.setActivityNum(act.getActivityNum());
 					c.setTblActivity(act);
@@ -109,7 +115,7 @@ public class ActivityDAO extends AbstractDAO {
 
 			while (resultSet.next()) {
 				Activity p = mapActivity(resultSet);
-				if (p.getTblActivityGroup().getTblActivityType().getTypeID() == 1) {
+				if (p.getTblActivityGroup().getActivityType() == 1) {
 					Course c = mapCourse(resultSet);
 					c.setActivityNum(p.getActivityNum());
 					c.setTblActivity(p);
@@ -144,7 +150,7 @@ public class ActivityDAO extends AbstractDAO {
 			Object[] actGroupValues = { 
 				//	act.getTblActivityGroup().getActivityGroupNum(),
 					act.getTblActivityGroup().getActGroupName(),
-					act.getTblActivityGroup().getTblActivityType().getTypeID()
+					act.getTblActivityGroup().getActivityType()
 				};
 			try (PreparedStatement statement3 = DAOUtil.prepareStatement(this.con.getConnection(), insertActGroup, true, actGroupValues);){
 				statement3.executeUpdate();
@@ -175,7 +181,7 @@ public class ActivityDAO extends AbstractDAO {
 						act.getTblStaff().getStaffID(), 
 						act.getTblCourse().getPricePerMonth(),
 						act.getTblCourse().getExtraPrice(), 
-						act.getTblCourse().getRegularOrPrivate(), 
+						act.getTblCourse().getTblCourseType().getCourseTypeID(), 
 						act.getTblCourse().getCategory(), 
 						act.getTblActivityGroup().getActivityGroupNum(), 
 						act.getTblCourse().getPupilCapacity(),
@@ -219,7 +225,7 @@ public class ActivityDAO extends AbstractDAO {
 			Object[] actGroupValues = { 
 				//	act.getTblActivityGroup().getActivityGroupNum(),
 					act.getTblActivityGroup().getActGroupName(),
-					act.getTblActivityGroup().getTblActivityType().getTypeID()
+					act.getTblActivityGroup().getActivityType()
 				};
 			try (PreparedStatement statement3 = DAOUtil.prepareStatement(this.con.getConnection(), insertActGroup, true, actGroupValues);){
 				statement3.executeUpdate();
@@ -279,7 +285,7 @@ public class ActivityDAO extends AbstractDAO {
 							act.getActivityNum(), 
 							act.getTblCourse().getPricePerMonth(),
 							act.getTblCourse().getExtraPrice(), 
-							act.getTblCourse().getRegularOrPrivate(), 
+							act.getTblCourse().getTblCourseType().getCourseTypeID(), 
 							act.getTblCourse().getCategory(), 
 							act.getTblCourse().getPupilCapacity()
 						};
@@ -290,6 +296,7 @@ public class ActivityDAO extends AbstractDAO {
 				
 			
 				this.con.getConnection().commit();
+				//this.con.getConnection().setAutoCommit(true);
 			// * transaction block end *//
 				
 	            return true;
@@ -317,7 +324,31 @@ public class ActivityDAO extends AbstractDAO {
 		return result;
 	}
 
+	@SuppressWarnings("unchecked")
+	public JSONArray getCourseType(int id)
+			throws IllegalArgumentException, DAOException {
 
+		JSONArray list = new JSONArray();
+		
+		try (PreparedStatement statement = DAOUtil.prepareCallbackStatement(
+				this.con.getConnection(), getCourseType,
+				new Object[] { id });
+				ResultSet resultSet = statement.executeQuery();) {
+
+			while (resultSet.next()) {
+				//courseTypeID, courseType
+				JSONObject type = new JSONObject();
+				type.put("courseTypeID", resultSet.getObject("courseTypeID"));
+				type.put("courseType", resultSet.getObject("courseType"));
+				list.add(type);
+			}
+
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+
+		return list;
+	}
 
 	private Course mapCourse(ResultSet resultSet) throws SQLException {
 		//activityNum, pricePerMonth, extraPrice, regularOrPrivate, category
@@ -327,7 +358,11 @@ public class ActivityDAO extends AbstractDAO {
 		c.setCategory(resultSet.getInt("category"));
 		c.setExtraPrice(resultSet.getInt("extraPrice"));
 		c.setPricePerMonth(resultSet.getInt("pricePerMonth"));
-		c.setRegularOrPrivate(resultSet.getString("courseTypeID"));
+		CourseType ct = new CourseType();
+		ct.setCourseTypeID(resultSet.getInt("courseTypeID"));
+		//ct.setCourseType(resultSet.getString("courseType"));
+		
+		c.setTblCourseType(ct);
 		c.setPupilCapacity(resultSet.getInt("pupilCapacity"));
 		
 		return c;
@@ -343,7 +378,7 @@ public class ActivityDAO extends AbstractDAO {
 		ActivityGroup ag = new ActivityGroup();
 		ag.setActivityGroupNum(resultSet.getInt("activityGroup")); 
 		ag.setActGroupName(resultSet.getString("actGroupName"));
-		ag.setTblActivityType(type);
+		ag.setActivityType(type.getTypeID());
 		
 		Staff s = new Staff();
 		s.setStaffID(resultSet.getInt("staffID"));

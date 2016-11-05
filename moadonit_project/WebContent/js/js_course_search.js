@@ -1,7 +1,12 @@
 var grades;
-var gridSelectedGrade;
+var gridSelectedGrade, courseTypes;
+$(function() {
+	
+	getSelectValuesFromDB("getCourseType", "courseTypes","ActivityController");
+		
+});
 function loadCourseSearch() {
-	getSelectValuesFromDB("getCourseType", "courseType","ActivityController");
+	
 	loadGrid();
 	$("#resetBtn").click(function() {
 		var grid = $("#list");
@@ -117,26 +122,39 @@ function loadGrid(){
              width : 100
          }
          , {
-             name : 'regularOrPrivate', 
-             index : 'regularOrPrivate',
+             name : 'courseTypeID', 
+             index : 'courseTypeID',
              width : 100,
              stype: "select",
              searchoptions: { value: +courseType},
              edittype: "select",
              editable: true,
 	         editoptions: { value:  courseType },
-	        /* formatter: function (cellValue, opts, rwd) {								
-					if (courseType) {
-						 getDateFromValue(cellValue);
-						
-						var d = $.fn.fmatter.call(this, "date",
-								getDateFromValue(cellValue), opts, rwd);
-						return d;
-					} else {
-						return '';
-					}
-				},*/
-	        
+	         formatter : function (cellValue, opts, rwd) {								
+					if (cellValue) {
+						var  i, l, code, codes;//, prop;
+		                 if (typeof courseTypes != "undefined" && typeof courseTypes.value != "undefined" ) {
+		                	 codes = courseTypes.value.split(';');
+		                     for (i = 0, l = codes.length; i < l; i++) {
+		                         code = codes[i].split(':');
+	                             if(code[0] == cellValue){
+	                            	 return code[1];
+	                             }
+		                     }
+		                 }		                
+					} 
+					
+					return "";
+				},
+	         searchoptions: {
+	        	 value: function(){   
+	 					if(typeof courseTypes != "undefined"){
+	 						return  courseTypes.value;
+	 					}
+	 					else
+	 					return "";
+	 				}
+		       }
          }
          
           ],

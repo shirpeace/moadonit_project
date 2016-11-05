@@ -22,4 +22,17 @@ public void setTblGradePupils(List<GradePupil> tblGradePupils) {
 	this.tblGradePupils = tblGradePupils;
 }
 
+/*********/
+CHECK NEW CHANGES 03.11.2016
+/*********/
+4. ActivityDAO
+============
+ change all getTblActivityType to getActivityType
   
+ 5. MoadonitGroup
+================
+add @Id to Id field 
+
+6. GradeInYear 
+====================
+remove tblPupils2 references get/set ...

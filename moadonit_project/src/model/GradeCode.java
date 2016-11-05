@@ -22,6 +22,11 @@ public class GradeCode implements Serializable {
 
 	private String gradeName;
 
+	//bi-directional many-to-one association to Shichva
+	@ManyToOne
+	@JoinColumn(name="shichva")
+	private Shichva tblShichva;
+
 	//bi-directional many-to-one association to GradeInYear
 	@OneToMany(mappedBy="tblGradeCode")
 	private List<GradeInYear> tblGradeInYears;
@@ -51,6 +56,14 @@ public class GradeCode implements Serializable {
 
 	public void setGradeName(String gradeName) {
 		this.gradeName = gradeName;
+	}
+
+	public Shichva getTblShichva() {
+		return this.tblShichva;
+	}
+
+	public void setTblShichva(Shichva tblShichva) {
+		this.tblShichva = tblShichva;
 	}
 
 	public List<GradeInYear> getTblGradeInYears() {

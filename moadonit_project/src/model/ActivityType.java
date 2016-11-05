@@ -2,7 +2,6 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.List;
 
 
 /**
@@ -19,10 +18,6 @@ public class ActivityType implements Serializable {
 	private int typeID;
 
 	private String type;
-
-	//bi-directional many-to-one association to ActivityGroup
-	@OneToMany(mappedBy="tblActivityType")
-	private List<ActivityGroup> tblActivityGroups;
 
 	public ActivityType() {
 	}
@@ -41,28 +36,6 @@ public class ActivityType implements Serializable {
 
 	public void setType(String type) {
 		this.type = type;
-	}
-
-	public List<ActivityGroup> getTblActivityGroups() {
-		return this.tblActivityGroups;
-	}
-
-	public void setTblActivityGroups(List<ActivityGroup> tblActivityGroups) {
-		this.tblActivityGroups = tblActivityGroups;
-	}
-
-	public ActivityGroup addTblActivityGroup(ActivityGroup tblActivityGroup) {
-		getTblActivityGroups().add(tblActivityGroup);
-		tblActivityGroup.setTblActivityType(this);
-
-		return tblActivityGroup;
-	}
-
-	public ActivityGroup removeTblActivityGroup(ActivityGroup tblActivityGroup) {
-		getTblActivityGroups().remove(tblActivityGroup);
-		tblActivityGroup.setTblActivityType(null);
-
-		return tblActivityGroup;
 	}
 
 }

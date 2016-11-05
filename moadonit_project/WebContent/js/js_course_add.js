@@ -18,11 +18,14 @@ var selectedIds;
 var courseData;
 // set the state at start to read. (state object from js_logic file)
 var currentPageState = state.READ;
-var popUp, popUPResult;
+var popUp, popUPResult, courseTypes;
 var validator , validator1;
 $(function() {
 
 	moment.locale(); // he
+	
+	getSelectValuesFromDB("getCourseType", "courseTypes","ActivityController");
+	setSelectValues($('#courseTypeID'), "courseTypes");
 	
 	$('#newGroup').click(function() {
 		var isChecked = this.checked;
@@ -290,6 +293,20 @@ $(function() {
 
 }*/
 
+function formDisable(form) {
+
+	$("#ajaxform :input").prop("disabled", true);
+	$("#ajaxform input").prop("disabled", false);
+	$("#ajaxform :input").attr('readonly', 'readonly');
+	$("#ajaxform :checkbox").prop("disabled", true);
+	$("#ajaxform :radio").prop("disabled", true);
+	$("#editModeBtn").hide();
+	$("#viewModeBtn").show();
+	$("#headerDiv").show();
+	$("#headerEditDiv").hide();
+	
+}
+
 function setPageBtns() {
 	bootbox.setDefaults({
 		locale : "he"
@@ -301,7 +318,7 @@ function setPageBtns() {
 				// check for changes before saving data
 				var form = $("#ajaxform");
 				if (form.valid()) {
-					result = saveCourseData("insert", false);
+					result = saveCourseData("insert", true);
 					if (result === true) {
 						formDisable('ajaxform');
 						$('.page-header').html($('#activityGroup').find("option:selected").text() + "  -  " + $('#activityName').val() );
@@ -333,7 +350,7 @@ function setPageBtns() {
 		// validate and process form here
 		 var form = $("#ajaxform");
 		 if (form.valid()) {	
-			result =  saveCourseData("insert", false);
+			result =  saveCourseData("insert", true);
 			 if (result) {
 				 $("#clearBtn").click();
 			}

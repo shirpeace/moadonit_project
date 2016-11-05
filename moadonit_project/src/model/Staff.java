@@ -38,10 +38,6 @@ public class Staff implements Serializable {
 	@OneToMany(mappedBy="tblStaff")
 	private List<Activity> tblActivities;
 
-	//bi-directional one-to-one association to Teacher
-	@OneToOne(mappedBy="tblStaff")
-	private Teacher tblTeacher;
-
 	//bi-directional many-to-one association to JobType
 	@ManyToOne
 	@JoinColumn(name="jobID")
@@ -51,6 +47,10 @@ public class Staff implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="paymentID")
 	private PaymentType tblPaymentType;
+
+	//bi-directional one-to-one association to Teacher
+	@OneToOne(mappedBy="tblStaff")
+	private Teacher tblTeacher;
 
 	public Staff() {
 	}
@@ -141,14 +141,6 @@ public class Staff implements Serializable {
 		return tblActivity;
 	}
 
-	public Teacher getTblTeacher() {
-		return this.tblTeacher;
-	}
-
-	public void setTblTeacher(Teacher tblTeacher) {
-		this.tblTeacher = tblTeacher;
-	}
-
 	public JobType getTblJobType() {
 		return this.tblJobType;
 	}
@@ -163,6 +155,14 @@ public class Staff implements Serializable {
 
 	public void setTblPaymentType(PaymentType tblPaymentType) {
 		this.tblPaymentType = tblPaymentType;
+	}
+
+	public Teacher getTblTeacher() {
+		return this.tblTeacher;
+	}
+
+	public void setTblTeacher(Teacher tblTeacher) {
+		this.tblTeacher = tblTeacher;
 	}
 
 }

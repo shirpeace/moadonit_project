@@ -142,17 +142,25 @@ public final class DAOUtil {
     }
     
     public static java.util.Date getZeroTimeDate(java.util.Date fecha) {
-    	java.util.Date res = fecha;
+    	java.util.Date res = fecha;    
         Calendar calendar = Calendar.getInstance();
-
+        calendar.setLenient(false);
+        try {
         calendar.setTime( fecha );
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
+       
+        	 res = calendar.getTime();
 
-        res = calendar.getTime();
-
+        }
+        catch (Exception e) {
+        	System.out.println("Cant convert value , Invalid date");
+        	return null;
+          
+        }
+       
         return res;
     }
     

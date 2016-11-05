@@ -15,15 +15,18 @@ import java.util.Date;
 public class MoadonitGroup implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@EmbeddedId
-	private MoadonitGroupPK id;
-
 	@Temporal(TemporalType.DATE)
 	private Date endMonth;
+	
+	@Id
+	private int id;
+
+	@Temporal(TemporalType.DATE)
+	private Date startMonth;
 
 	//bi-directional many-to-one association to Activity
 	@ManyToOne
-	@JoinColumn(name="activityNum")
+	@JoinColumn(name="activityNum", referencedColumnName="activityNum")
 	private Activity tblActivity;
 
 	//bi-directional many-to-one association to GradeInYear
@@ -37,20 +40,28 @@ public class MoadonitGroup implements Serializable {
 	public MoadonitGroup() {
 	}
 
-	public MoadonitGroupPK getId() {
-		return this.id;
-	}
-
-	public void setId(MoadonitGroupPK id) {
-		this.id = id;
-	}
-
 	public Date getEndMonth() {
 		return this.endMonth;
 	}
 
 	public void setEndMonth(Date endMonth) {
 		this.endMonth = endMonth;
+	}
+
+	public int getId() {
+		return this.id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public Date getStartMonth() {
+		return this.startMonth;
+	}
+
+	public void setStartMonth(Date startMonth) {
+		this.startMonth = startMonth;
 	}
 
 	public Activity getTblActivity() {

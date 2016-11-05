@@ -233,9 +233,15 @@ public class LogisticsController extends HttpServlet implements Serializable {
 				String jsonResponse;
 				
 				if(tableName.equals("tbl_moadonit_groups")){
-					qry= "select gradeID, yearID, activityNum, startMonth, endMonth, ID "
+					/*qry= "select gradeID, yearID, activityNum, startMonth, endMonth, ID "
 							+ "FROM ms2016.tbl_moadonit_groups t1 where t1.yearID = get_currentYearID() and endMonth = "
 							+ " ( SELECT max(endMonth) FROM ms2016.tbl_moadonit_groups t2 where t1.gradeID = t2.gradeID and t1.yearID=t2.yearID  group by gradeID, yearID) "; 
+					*/
+					qry = "select gradeID, yearID, t1.activityNum, startMonth, endMonth, ID "
+							+ "FROM ms2016.tbl_moadonit_groups t1 left join tbl_activity act on t1.activityNum = act.activityNum"
+							+ " where t1.yearID = get_currentYearID() and act.schoolYear = get_currentYearID() "
+							+ "and endMonth =  "
+							+ "( SELECT max(endMonth) FROM ms2016.tbl_moadonit_groups t2 where t1.gradeID = t2.gradeID and t1.yearID=t2.yearID  group by gradeID, yearID) ";
 				}
 				else if(tableName.equals("tbl_grade_in_year")){
 					qry = "SELECT * FROM ms2016.tbl_grade_in_year where yearID = get_currentYearID() ";
@@ -281,9 +287,10 @@ public class LogisticsController extends HttpServlet implements Serializable {
 				JSONObject r = new JSONObject();
 				if(yearID != -1 && daysToReg != -1){
 					int affectedRows = this.logDAO.saveRegDaysParam(yearID, daysToReg);
-					if(affectedRows >= 0){
-						r.put("msg", 1);
-						r.put("result", "נתונים נשמרו בהצלחה");
+					if(affectedRows >= 0){						
+						r.put("status", 1);
+						r.put("msg", "נתונים נשמרו בהצלחה");
+						r.put("result", this.logDAO.getCurrentYearObject());
 					}
 					else{
 						r.put("msg", 0);
@@ -463,7 +470,7 @@ public class LogisticsController extends HttpServlet implements Serializable {
 				values = values.substring(0, values.length()-1);
 			
 			sql += " )" + values + " )";
-			
+			//if(1==1) return 1;
 			 result = this.logDAO.executeSql(sql, null);
 		}
 
@@ -628,7 +635,7 @@ public class LogisticsController extends HttpServlet implements Serializable {
 					else if (key.getValue().equals("gradeID")){
 						 isRequired = false;
 						 editable = false;
-						 comboQuery =  "SELECT * FROM ms2016.tbl_grade_code";
+						 comboQuery =  "SELECT c.* FROM tbl_grade_code c left join tbl_grade_in_year gc on c.gradeID = gc.gradeID  where gc.yearID = get_currentYearID()";
 						 comboFields = new String[] { "gradeID", "gradeName", "gradeColor"};
 						 type = "custom";
 					}					
@@ -661,12 +668,12 @@ public class LogisticsController extends HttpServlet implements Serializable {
 				else if(key.getKey().equals("tbl_grade_in_year")){
 					if (key.getValue().equals("yearID")){
 						isHidden = true;
-						editable = false;
+						editable = true;						
 					}
 					else if (key.getValue().equals("gradeID")){
 						 isRequired = false;
 						 editable = false;
-						 comboQuery =  "SELECT * FROM ms2016.tbl_grade_code";
+						 comboQuery =  "SELECT c.* FROM tbl_grade_code c";
 						 comboFields = new String[] { "gradeID", "gradeName", "gradeColor"};
 						 type = "custom";
 					}

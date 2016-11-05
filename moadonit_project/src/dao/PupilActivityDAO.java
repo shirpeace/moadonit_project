@@ -114,7 +114,7 @@ public class PupilActivityDAO extends AbstractDAO {
 
 		// type.getTblActivityGroups().add(ag);
 
-		ag.setTblActivityType(type);
+		ag.setActivityType(type.getTypeID());
 
 		act.setTblActivityGroup(ag);
 
@@ -161,7 +161,7 @@ public class PupilActivityDAO extends AbstractDAO {
 		ActivityGroup ag = new ActivityGroup();
 		ag.setActivityGroupNum(resultSet.getInt("activityGroup"));
 
-		ag.setTblActivityType(type);
+		ag.setActivityType(type.getTypeID());
 
 		act.setTblActivityGroup(ag);
 

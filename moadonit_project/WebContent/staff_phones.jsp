@@ -54,7 +54,7 @@
 
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    
+    <link href="css/datepicker.css" rel="stylesheet">
     <!-- jqgrid style -->
     <link rel="stylesheet" href="resources/jquery-ui-1.11.4.custom/jquery-ui.css">
 	<link rel="stylesheet" href="css/ui.jqgrid.css">
@@ -66,6 +66,8 @@
 	<script src="js/i18n/grid.locale-he.js"></script>
   <!--  <script src="js/i18n/grid.locale-en.js"></script>  -->
 	<script src="js/bootbox.js"></script>
+ 	<script src="js/bootstrap-datepicker.js"></script> 
+ 	<script src="js/i18n/bootstrap-datepicker.he.min.js"></script> 
  	
     <script src="js/jquery.jqGrid.min.js"></script> 
     

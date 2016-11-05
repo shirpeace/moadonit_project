@@ -20,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import model.Activity;
 import model.ActivityGroup;
 import model.ActivityType;
+import model.FoodType;
 import model.Pupil;
 import model.PupilActivity;
 import model.PupilActivityPK;
@@ -166,6 +167,24 @@ public class ActivityController extends HttpServlet implements Serializable {
 
 				JSONObject jsonObj = getActGroup(Integer.parseInt(req.getParameter("activityType")));
 				resp.getWriter().print(jsonObj);
+			}
+			else if (action.equals("getCourseType")) {
+				resp.setContentType("application/json");
+				resp.setCharacterEncoding("UTF-8");
+
+				int type = req.getParameter("type") != null ? Integer.parseInt(req.getParameter("type")) : 0;
+				JSONArray list =  this.actDOA.getCourseType(type);
+				
+				String values = " : ;";
+				for (int i = 0; i < list.size(); i++) { // { value: ":;1:בן;2:בת"}
+					JSONObject o = (JSONObject)list.get(i);
+					values += o.get("courseTypeID") + ":" + o.get("courseType")  + ";";
+				}
+				values = values.substring(0, values.length() - 1);
+				JSONObject result = new JSONObject();
+				result.put("value", values);
+				resp.getWriter().print(result.toJSONString());
+				
 			}
 			
 			//getPupilInCourse
@@ -322,10 +341,10 @@ public class ActivityController extends HttpServlet implements Serializable {
 				}
 			}else if (action.equals("insert")) {
 				
-					boolean r = insertCourse(req, resp);
-					if (r) {
+					int r = insertCourse(req, resp);
+					if (r != -1) {
 						resultToClient.put("msg", 1);
-						resultToClient.put("result", null);
+						resultToClient.put("result", r);
 					} else {
 						resultToClient.put("msg", 0);
 						resultToClient
@@ -431,7 +450,7 @@ public class ActivityController extends HttpServlet implements Serializable {
 			pa.setTblUser(u);
 			
 			//check dates before save
-			if(DAOUtil.getZeroTimeDate(pa.getEndDate()).before(DAOUtil.getZeroTimeDate(pa.getId().getStartDate()))){
+			if(pa.getId().getStartDate() != null && pa.getEndDate() != null &&  DAOUtil.getZeroTimeDate(pa.getEndDate()).before(DAOUtil.getZeroTimeDate(pa.getId().getStartDate()))){
 				resultToClient.put("msg", 0);
 				resultToClient.put("result", "תאריך ההתחלה חייב להיות לפני תאריך סיום");
 				
@@ -493,13 +512,17 @@ public class ActivityController extends HttpServlet implements Serializable {
 		
 		return r;
 	}
- 	private Boolean insertCourse(HttpServletRequest req, HttpServletResponse resp) {
+ 	private int insertCourse(HttpServletRequest req, HttpServletResponse resp) {
  		Activity act = getActFromReq(req);
 		actDOA = new ActivityDAO(con);
 		
 			Boolean result = actDOA.insertCourse(act);
-
-		return result;
+			int res;
+			if(result)
+				res = act.getActivityNum();
+			else
+				res = -1;
+		return res;
 	}
 	
 	private int updateCourse(HttpServletRequest req, HttpServletResponse resp) throws ParseException {
@@ -542,10 +565,9 @@ public class ActivityController extends HttpServlet implements Serializable {
 		List<Activity> result = new ArrayList<>();
 		String week = req.getParameter("weekDay");
 		
-		week = (week != null && week.trim().equals("")) ? null : week;
-
-		String isRegular = req.getParameter("regularOrPrivate");
-		isRegular = (isRegular != null && isRegular.trim().equals("")) ? null : isRegular;
+		week = (week != null && week.trim().equals("")) ? null : week;	
+	
+		int courseTypeID = !req.getParameter("courseTypeID").trim().equals("") ? Integer.parseInt(req.getParameter("courseTypeID")) : 0;		
 		
 		String staffName = req.getParameter("staffName");
 		staffName = (staffName != null && staffName.trim().equals("")) ? null : staffName;
@@ -561,7 +583,7 @@ public class ActivityController extends HttpServlet implements Serializable {
 				staffName, 
 				req.getParameter("pricePerMonth") != null ? Float.parseFloat(req.getParameter("pricePerMonth")) : 0,
 				req.getParameter("extraPrice") != null ? Float.parseFloat(req.getParameter("extraPrice")) : 0
-				,isRegular
+				,courseTypeID
 				, 0 //no need for category
 				, req.getParameter("activityGroup")
 				);
@@ -576,7 +598,7 @@ public class ActivityController extends HttpServlet implements Serializable {
 				JSONObject obj = new JSONObject();
 
 				obj.put("activityNum", act.getActivityNum());
-				obj.put("activityType", act.getTblActivityGroup().getTblActivityType().getTypeID());
+				obj.put("activityType", act.getTblActivityGroup().getActivityType());
 				obj.put("activityGroup", act.getTblActivityGroup().getActGroupName());
 				obj.put("activityGNum", act.getTblActivityGroup().getActivityGroupNum());
 				obj.put("activityName", act.getActivityName());
@@ -601,7 +623,7 @@ public class ActivityController extends HttpServlet implements Serializable {
 				
 				obj.put("pricePerMonth", act.getTblCourse().getPricePerMonth());
 				obj.put("extraPrice", act.getTblCourse().getExtraPrice());
-				obj.put("regularOrPrivate", act.getTblCourse().getRegularOrPrivate());
+				obj.put("courseTypeID", act.getTblCourse().getTblCourseType().getCourseTypeID());
 				obj.put("category", act.getTblCourse().getCategory());
 				obj.put("pupilCapacity", act.getTblCourse().getPupilCapacity());
 				registrationData.add(obj);

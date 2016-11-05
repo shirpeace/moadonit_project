@@ -25,7 +25,10 @@ public class Course implements Serializable {
 
 	private int pupilCapacity;
 
-	private String regularOrPrivate;
+	//bi-directional many-to-one association to CourseType
+	@ManyToOne
+	@JoinColumn(name="courseTypeID")
+	private CourseType tblCourseType;
 
 	//bi-directional one-to-one association to Activity
 	@OneToOne
@@ -75,12 +78,12 @@ public class Course implements Serializable {
 		this.pupilCapacity = pupilCapacity;
 	}
 
-	public String getRegularOrPrivate() {
-		return this.regularOrPrivate;
+	public CourseType getTblCourseType() {
+		return this.tblCourseType;
 	}
 
-	public void setRegularOrPrivate(String regularOrPrivate) {
-		this.regularOrPrivate = regularOrPrivate;
+	public void setTblCourseType(CourseType tblCourseType) {
+		this.tblCourseType = tblCourseType;
 	}
 
 	public Activity getTblActivity() {

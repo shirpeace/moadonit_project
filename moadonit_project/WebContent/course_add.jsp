@@ -185,12 +185,7 @@
 									<label for="activityGroupHead">בחר חוג קיים</label> 
 										<select class="form-control input-sm" 
 										id="activityGroupHead" name="activityGroupHead" >
-										<option value=""></option>
-										<option value="1">א</option>
-										<option value="2">ב</option>
-										<option value="3">ג</option>
-										<option value="4">ד</option>
-										<option value="5">ה</option>								
+																
 									</select>
 								</div> 
 							</div>
@@ -226,11 +221,10 @@
 									<input type="text" class="form-control input-sm" name="activityName"  id="activityName" >
 								</div>
 								<div class="form-group">
-									<label for="regularOrPrivate">סוג</label>
+									<label for="courseTypeID">סוג</label>
 										<select class="form-control input-sm" 
-										id="regularOrPrivate" name="regularOrPrivate" >
-										<option value="רגיל">רגיל</option>
-										<option value="פרטי">פרטי</option>
+										id="courseTypeID" name="courseTypeID" >
+									
 									</select>
 									
 								</div> 

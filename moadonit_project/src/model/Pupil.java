@@ -35,12 +35,17 @@ public class Pupil implements Serializable {
 	private List<Attendance> tblAttendances;
 
 	//bi-directional many-to-many association to GradeInYear
-	@ManyToMany(mappedBy="tblPupils1")
+	@ManyToMany(mappedBy="tblPupils")
 	private List<GradeInYear> tblGradeInYears1;
 
 	//bi-directional many-to-one association to OneTimeReg
 	@OneToMany(mappedBy="tblPupil")
 	private List<OneTimeReg> tblOneTimeRegs;
+
+	//bi-directional many-to-one association to PupilState
+	@ManyToOne
+	@JoinColumn(name="isReg")
+	private PupilState tblPupilState;
 
 	//bi-directional many-to-one association to Family
 	@ManyToOne
@@ -51,25 +56,6 @@ public class Pupil implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="gender")
 	private GenderRef tblGenderRef;
-
-	//bi-directional many-to-many association to GradeInYear
-	@ManyToMany
-	@JoinTable(
-		name="tbl_grade_pupil"
-		, joinColumns={
-			@JoinColumn(name="pupilNum")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="gradeID", referencedColumnName="gradeID"),
-			@JoinColumn(name="yearID", referencedColumnName="yearID")
-			}
-		)
-	private List<GradeInYear> tblGradeInYears2;
-
-	//bi-directional many-to-one association to PupilState
-	@ManyToOne
-	@JoinColumn(name="isReg")
-	private PupilState tblPupilState;
 
 	//bi-directional many-to-one association to PupilActivity
 	@OneToMany(mappedBy="tblPupil")
@@ -182,6 +168,14 @@ public class Pupil implements Serializable {
 		return tblOneTimeReg;
 	}
 
+	public PupilState getTblPupilState() {
+		return this.tblPupilState;
+	}
+
+	public void setTblPupilState(PupilState tblPupilState) {
+		this.tblPupilState = tblPupilState;
+	}
+
 	public Family getTblFamily() {
 		return this.tblFamily;
 	}
@@ -196,22 +190,6 @@ public class Pupil implements Serializable {
 
 	public void setTblGenderRef(GenderRef tblGenderRef) {
 		this.tblGenderRef = tblGenderRef;
-	}
-
-	public List<GradeInYear> getTblGradeInYears2() {
-		return this.tblGradeInYears2;
-	}
-
-	public void setTblGradeInYears2(List<GradeInYear> tblGradeInYears2) {
-		this.tblGradeInYears2 = tblGradeInYears2;
-	}
-
-	public PupilState getTblPupilState() {
-		return this.tblPupilState;
-	}
-
-	public void setTblPupilState(PupilState tblPupilState) {
-		this.tblPupilState = tblPupilState;
 	}
 
 	public List<PupilActivity> getTblPupilActivities() {

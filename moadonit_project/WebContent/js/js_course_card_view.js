@@ -7,7 +7,7 @@ var currentUserId = '<%=session.getAttribute("userid")%>';
 var selectedIds;
 /*
  * activityNum, activityType, activityName, , startTime, endTime, schoolYear,
- * responsibleStaff, pricePerMonth, extraPrice, regularOrPrivate, category
+ * responsibleStaff, pricePerMonth, extraPrice, courseTypeID, category
  * 
  */
 
@@ -15,7 +15,7 @@ var selectedIds;
 /** ********************************************** */
 // TODO //* START COURSE PAGE FUNCTIONS */
 /** ********************************************** */
-var courseData, pupilCount;
+var courseData, pupilCount, courseTypes;
 // set the state at start to read. (state object from js_logic file)
 var currentPageState = state.READ;
 var popUp, popUPResult;
@@ -130,6 +130,10 @@ $(function() {
 
 	getSelectValuesFromDB("getSatff", "Staff","ActivityController");
 	setSelectValues($('#responsibleStaff'), "Staff");
+	
+	getSelectValuesFromDB("getCourseType", "courseTypes","ActivityController");
+	setSelectValues($('#courseTypeID'), "courseTypes");
+	//
 	
 	getSelectValuesFromDB("getActGroup", "activityGroup","ActivityController", 1);
 	setSelectValues($('#activityGroupHead'), "activityGroup");
@@ -270,11 +274,15 @@ function setCourseData(courseData) {
 			$("#extraPriceDiv").toggle(false);
 		}
 
-		if (courseData.regularOrPrivate
-				&& courseData.regularOrPrivate == 'רגיל') {
-			$('#regularOrPrivate :nth-child(1)').prop('selected', true);
-		} else
-			$('#regularOrPrivate :nth-child(2)').prop('selected', true);
+		if (courseData.courseTypeID) {
+			if(courseData.courseTypeID == 1){
+				$('#courseTypeID :nth-child(1)').prop('selected', true);
+			}
+			else if(courseData.courseTypeID == 2){
+				$('#courseTypeID :nth-child(2)').prop('selected', true);
+			}
+		}
+			
 
 	}
 }
@@ -314,7 +322,7 @@ function loadCourseData(dataString) {
 	
 }
 
-function deletePupil(id) {
+function deleteCourse(id) {
 
 }
 
@@ -354,14 +362,14 @@ function setPageBtns() {
 	$("#deleteBtn").click(function() {
 		bootbox.confirm("האם אתה רוצה למחוק?", function(result) {
 			if (result === true) {
-				deletePupil(id);
+				deleteCourse(id);
 			}
 		});
 		return false;
 	});
 
 	$("#addCourse").click(function() {
-		window.location.href = "pupil_add.jsp";
+		//window.location.href = "pupil_add.jsp";
 
 		return false;
 	});
@@ -444,7 +452,7 @@ function loadGrid(gridName) {
             			modalClose : false
             		});
             		
-            	   $(popUPResult).center(true);
+            	   $(popUPResult).center(false);
              }
                
 			   /*response = $.parseJSON(response.responseText);
@@ -653,7 +661,7 @@ function loadGrid(gridName) {
 				                    			modalClose : false
 				                    		});
 				                    		
-				                    	   $(popUPResult).center(true);
+				                    	   $(popUPResult).center(false);
 			                           }
 		                     		
 		                    		
@@ -916,7 +924,7 @@ function AddSelectedPupil() {
 				modalClose : false
 			});
 			
-			$(popUPResult).center(true); //center pop up (function from js_logic file)
+			$(popUPResult).center(false); //center pop up (function from js_logic file)
 		 }
 
 		//popUp.close();

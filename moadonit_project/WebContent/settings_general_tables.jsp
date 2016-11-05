@@ -247,7 +247,7 @@
 													<div class="form-group col-lg-2">
 														<label for="currYear"> שנה נוכחית של המערכת</label>
 														<!-- <input  type="text" class="form-control" id="currYear" name="currYear"> -->
-														<select onchange="ondayChange(this)" class="form-control " id="currYear" name="currYear" > </select>
+														<select  class="form-control " id="currYear" name="currYear" > </select>
 													</div>
 												</div>
 												<div class="row">

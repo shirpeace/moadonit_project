@@ -259,11 +259,10 @@
 										class="form-control input-sm" name="activityGroupNew"  id="activityGroupNew" >
 								</div> -->
 								<div class="form-group">
-									<label for="regularOrPrivate">סוג</label>
+									<label for="courseTypeID">סוג</label>
 										<select class="form-control input-sm" 
-										id="regularOrPrivate" name="regularOrPrivate" >
-										<option value="רגיל">רגיל</option>
-										<option value="פרטי">פרטי</option>
+										id="courseTypeID" name="courseTypeID" >
+										
 									</select>
 									
 								</div> 
