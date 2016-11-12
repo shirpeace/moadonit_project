@@ -703,7 +703,7 @@ function loadGrid(gridName) {
 						        }}
 						],
 						pager : '#pager',
-						rowNum : 50,
+						rowNum : 15,
 						rowList : [],
 						
 						/* scroll: true, */
@@ -729,6 +729,13 @@ function loadGrid(gridName) {
 														
 							pupilCount = $('#list').jqGrid('getGridParam','records');
 							$("#pupilCount").text("מספר תלמידים בחוג : " + pupilCount);
+							
+							if(courseData != null && courseData.pupilCapacity != null ){
+								if(courseData.pupilCapacity <= pupilCount)
+								setInfoMsg("מכסת התלמידים לחוג זה מלאה", true, 'alert alert-warning');
+								else
+									setInfoMsg('', false, null);
+							}
 							
 						},
 						loadError : function(xhr, status, error) {
@@ -776,6 +783,19 @@ function loadGrid(gridName) {
 
 }
 
+/***
+ * show info msg
+ * @param msgHtml - msg content (string)
+ * @param msgStatus - dispay status (bolean)
+ * @param msgCss - msg style (string)
+ */
+function setInfoMsg(msgHtml,msgStatus, msgCss){
+	if(msgHtml != null) $('#InfoMsg').html("<strong>שיב לב</strong> " + msgHtml);
+	$('#InfoMsg').removeClass();
+	if(msgCss != null) $('#InfoMsg').addClass( msgCss);
+	$('#InfoMsg').toggle(msgStatus);	
+}
+
 function closeThis(elem){
 	
 	popUPResult.close();
@@ -803,13 +823,24 @@ function onClosing() {
 	
 	if ($(this)[0].id === 'mainPopUP') {
 		
-		var myGrid = jQuery("#list").jqGrid({});
-		myGrid.trigger('reloadGrid');
+		var courseGrid = jQuery("#list").jqGrid({});
+		courseGrid.trigger('reloadGrid');
 		validator1.resetForm();
+		
+		var popUpGrid = jQuery("#listPopUp");
+		clearGridSearch(popUpGrid, false, true);
+		
+		//$.jgrid.gridUnload("listPopUp");
+		
 	}
 	else if($(this)[0].id === 'popUPResult'){
-		var myGrid = jQuery("#listPopUp").jqGrid({});
-		myGrid.trigger('reloadGrid');
+		
+		
+		var popUpGrid = jQuery("#listPopUp");
+		clearGridSearch(popUpGrid, true);
+		
+
+		//myGrid.trigger('reloadGrid');
 		
 	}
 	
@@ -879,14 +910,15 @@ function AddSelectedPupil() {
 				 for (var i = 0, ok = 0, error = 0; i < selectedIds.length; i++) {		    		
 						var PupilActivity = new Object();
 						var tempDate = $( '#startDate' ).datepicker( "getDate" );
-						PupilActivity.id = {pupilNum : selectedIds[i] ,activityNum: activityNum, startDate : tempDate };
+						rowData = jQuery('#listPopUp').jqGrid ('getRowData', selectedIds[i]); // get row data on grid and add it to pop up result
+						PupilActivity.id = {pupilNum : rowData.pupilNum ,activityNum: activityNum, startDate : tempDate };
 						PupilActivity.endDate = $( '#endDate' ).datepicker( "getDate" ); 
 						PupilActivity.regDate = $( '#regDate' ).datepicker( "getDate" );
 						//PupilActivity.startDate = $( '#startDate' ).datepicker( "getDate" );
-						PupilActivity.tblPupil = { pupilNum : selectedIds[i] };
+						PupilActivity.tblPupil = { pupilNum : rowData.pupilNum };
 						PupilActivity.tblUser = null;						
 						var result  = addPupilToCourse(PupilActivity, 'insertPupilActivity'); // fire ajax funw to add row on server
-						rowData = jQuery('#listPopUp').jqGrid ('getRowData', selectedIds[i]); // get row data on grid and add it to pop up result
+						
 						var li = "<li>";
 						if (result) { // if adding was ok
 							$(div1).find('ul').append(li.concat(rowData.firstName + ' ' + rowData.lastName));
@@ -960,12 +992,14 @@ function loadPupilGrid() {
 		$("#listPopUp")
 				.jqGrid(
 						{
+							
+							
 							url : "FullPupilCardController?action=SelectPupilNotInActivity&activityNum="
-								+ activityNum,
+								+ activityNum + "&weekDay=" + courseData.weekDay,
 							datatype : "json",
 							mtype : 'POST',
 							colNames : [ 'מספר', 'שם משפחה', 'שם פרטי', 'מגדר',
-									'כיתה', 'רשום' ],
+									'כיתה', 'רשום','חוגים נוספים באותו יום' ],
 							loadComplete : function(data) {
 								
 								if (parseInt(data.records, 10) == 0) {
@@ -984,28 +1018,28 @@ function loadPupilGrid() {
 							},
 							colModel : [
 									{
-										name : 'id',
-										index : 'id',
+										name : 'pupilNum',
+										index : 'pupilNum',
 										width : 100,
-										hidden : true
+									hidden:true
 									},
 									{
 										name : 'lastName',
 										index : 'lastName',
 										width : 150,
-										editable : true
+										
 									},
 									{
 										name : 'firstName',
 										index : 'firstName',
 										width : 150,
-										editable : true
+										
 									},
 									{
 										name : 'gender',
 										index : 'gender',
 										width : 100,
-										editable : true,
+									
 										stype : "select",
 										searchoptions : {
 											value : ":;1:בן;2:בת"
@@ -1015,7 +1049,7 @@ function loadPupilGrid() {
 										name : 'gradeName',
 										index : 'gradeName',
 										width : 100,
-										editable : true,
+										
 										stype : "select",
 										searchoptions : {
 											dataUrl : "FullPupilCardController?action=getGrades",
@@ -1078,23 +1112,30 @@ function loadPupilGrid() {
 										name : 'isReg',
 										index : 'isReg',
 										width : 100,
-										editable : false,
+									
 										stype : "select",
 										searchoptions : {
-											value : ":;1:רשום;2:לא רשום"
+											value : ":;2:רשום;1:לא רשום"
 										},
 										formatter : "checkbox",
-									} ],
+									} ,
+									{
+										name : 'courses',
+										index : 'courses',
+										width : 150,
+										search:false
+									}],
 							pager : '#pagerPopUp',
-							rowNum : 50,
+							rowNum : 10,
 							rowList : [],
 							/* scroll: true, */
 							multiselect: true,
 							sortname : 'gradeName',
 							direction : "rtl",
 							viewrecords : true,
-							//gridview : true,
 							height : "100%",
+							//gridview : true,
+							
 							/*
 							 * ondblClickRow: function(rowId) { var rowData =
 							 * jQuery(this).getRowData(rowId); var pupilID =

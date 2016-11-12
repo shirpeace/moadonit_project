@@ -107,12 +107,27 @@
     z-index: 9;
 } 
 
-.ui-jqgrid tr.jqgrow td {
+/* .ui-jqgrid tr.jqgrow td {
  white-space: normal !important;
  height:auto;
  vertical-align:text-top;
  padding-top:2px;
+} */
+
+.ui-jqgrid tr.jqgrow td { text-overflow: ellipsis;-o-text-overflow: ellipsis; }
+.ui-jqgrid tr.jqgrow.ui-state-highlight td {
+    word-wrap: break-word; /* IE 5.5+ and CSS3 */
+    white-space: pre-wrap; /* CSS3 */
+    white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+    white-space: -pre-wrap; /* Opera 4-6 */
+    white-space: -o-pre-wrap; /* Opera 7 */
+    overflow: hidden;
+    height: auto;
+    vertical-align: middle;
+    padding-top: 2px;
+    padding-bottom: 2px
 }
+
 </style>
 
 </head>
@@ -186,7 +201,10 @@
     <div class="row"> <!--  pills row -->
                <br>
             	<!-- <div class="col-lg-1 col-md-6"></div> -->
-            	<div class="col-lg-12 col-md-6 text-center">
+            	
+            	<div class="col-lg-12">
+            	<div class="row text-center">
+            	
 				  <ul class="nav nav-pills center-pills" id="ulTabs">
 				    <li id="tbl_reg_types" class="active prosets"><a data-toggle="pill" href="#tblData"><span>סוגי <br>רישום</span></a></li>
 				    <li id="tbl_food_type" class="prosets"><a data-toggle="pill" href="#tblData"><span>סוגי <br>ארוחות</span></a></li>
@@ -205,7 +223,7 @@
 				   <li id="tbl_moadonit_groups" class="yearsets"><a data-toggle="pill" href="#tblData"><span >שיוך כיתות <br>לקבוצות מועדונית</span></a></li>
 				   
 				  </ul>
-				  
+				  </div>
 				  <div class="tab-content">
 
 				    <div id="tblData" class="tab-pane active">
@@ -219,9 +237,18 @@
 									<div class="clearfix"></div>
 								</div>
 								<div class="panel-body">
-		
-								
-									<div class="table-responsive col-lg-12" id="tableContainer">
+									<div class="row text-center">
+												<div class="col-lg-1"></div>
+												<div class="col-lg-10">
+														<div id="InfoMsg" class="alert alert-warning" style="display: none;">
+														
+														</div>
+												</div>
+									</div>
+									<div class="row">
+									
+									<div class="col-lg-1"></div>
+									<div class="table-responsive col-lg-10" id="tableContainer">
 									<!-- 	<table class="table table-bordered table-hover "
 											id="list" >
 		
@@ -235,7 +262,7 @@
 		
 										 -->
 									</div>
-		
+								</div>
 								</div>
 							</div>
 							<div class="panel panel-default" id="yearParamsDiv" style="display: none;">

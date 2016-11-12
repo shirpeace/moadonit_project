@@ -395,19 +395,7 @@ public class LogisticsController extends HttpServlet implements Serializable {
 			HttpServletResponse resp) throws IOException, SQLException {
 		
 		int result;
-		if(tableName.equals("tbl_activity")){
-			int actNum = Integer.parseInt(req.getParameter("activityNum"));			
-			int rowKey = Integer.parseInt(req.getParameter("ID"));
-			
-			this.logDAO.update_moadonit_group("{ call ms2016.update_moadonit_group( ? ,?)}", new Object[] {actNum,rowKey});
-			return result = 0;
-		}
-		
-	/*	sql = "INSERT INTO " + tableName + "( ";
-		String values = "VALUES ( ";
-		int result = -1;*/
-		
-		else if(tableName.equals("tbl_grade_code")){
+		if(tableName.equals("tbl_grade_code")){
 			// call procedure on db
 			String gradeName = req.getParameter("gradeName");
 			String gradeColor = req.getParameter("gradeColor");
@@ -419,6 +407,10 @@ public class LogisticsController extends HttpServlet implements Serializable {
 			// create insert query
 			sql = "INSERT INTO " + tableName + "( ";
 			String values = "VALUES ( ";
+			/*String val  = req.getParameter("activityNum");
+			String val1 = req.getParameter("ID");
+			
+			if((val != null && val.startsWith("jqg")) || (val1 != null  && val1.startsWith("jqg"))) return 0;*/
 			
 			for (Iterator iterator = jsonArry.iterator(); iterator.hasNext();) {
 				JSONObject col = (JSONObject) iterator.next();

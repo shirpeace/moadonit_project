@@ -4,8 +4,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import model.FullPupilCard;
 import model.RegToMoadonit;
@@ -18,7 +22,8 @@ public class FullPupilCardDAO extends AbstractDAO {
 	private String selectAll = "SELECT * FROM fullPupilCard ";
 	private String selectSearch = "SELECT * FROM fullPupilCard where firstName = ?";
 	private String selectFilter = "{ CALL ms2016.getFullPupilByParam_V2 ( ?, ?, ?, ?, ?) }";
-	private String SelectPupilNotInActivity = "SELECT * FROM fullPupilCard  where pupilNum  NOT IN ( select pupilNum from tbl_pupil_activities where activityNum = ? and CURDATE() <= endDate)";
+	private String getPupilNotInActivity = "{ CALL getPupilNotInActivity(?, ?, ?,?, ?,?, ?) }";
+	
 	/**
 	 * 
 	 */
@@ -70,16 +75,27 @@ public class FullPupilCardDAO extends AbstractDAO {
 		return list;
 }
 	
-	public List<FullPupilCard> SelectPupilNotInActivity(String sind, String sord,int ActivityId) throws IllegalArgumentException, DAOException {
-		List<FullPupilCard> list = new ArrayList<>();
-		String stat = SelectPupilNotInActivity +" ORDER BY "+ sind +" "+ sord;
-		Object[] values = {   ActivityId };
+	@SuppressWarnings("unchecked")
+	public JSONArray SelectPupilNotInActivity(String sind, String sord,int ActivityId, int rowOffset, int rowsPerPage, String week) throws IllegalArgumentException, DAOException {
+		JSONArray list = new JSONArray();	
+		Object[] values = {  week,ActivityId,null, rowOffset, rowsPerPage, sind, sord };
 				//(where %s,fName=null?"firstName=fname":" ");
-		try (PreparedStatement statement = DAOUtil.prepareStatement(this.con.getConnection(), stat, false, values); ResultSet resultSet = statement.executeQuery();) {
+		try (PreparedStatement statement = DAOUtil.prepareCallbackStatement(this.con.getConnection(), getPupilNotInActivity ,values);
+				ResultSet resultSet = statement.executeQuery();) {
 
 			while (resultSet.next()) {
-				FullPupilCard p = map(resultSet);
-				list.add(p);
+				JSONObject user = new JSONObject();
+//				/pupilNum,   state, firstName, lastName,  gender, gradeName, courses
+				String val = resultSet.getString("courses");
+				user.put("pupilNum",resultSet.getInt("pupilNum"));
+				user.put("isReg", resultSet.getInt("stateNum") == 2 ? true : false);
+				user.put("firstName",resultSet.getString("firstName"));
+				user.put("lastName",resultSet.getString("lastName"));
+				user.put("gender",resultSet.getInt("gender"));
+				user.put("gradeName",resultSet.getString("gradeName"));
+				user.put("courses",val  == null ? "" : val);
+				
+				list.add(user);
 			}
 
 		} catch (SQLException e) {
@@ -132,62 +148,59 @@ public class FullPupilCardDAO extends AbstractDAO {
 		return p;
 	}
 
-	public List<FullPupilCard> fillterPupilNotInActivity(String sind, String sord,String fName,String lName,String gend,String grade,String isReg, int activityNum) {
-		List<FullPupilCard> list = new ArrayList<>();
-		String stat = SelectPupilNotInActivity;
+	@SuppressWarnings("unchecked")
+	public JSONArray fillterPupilNotInActivity(String sind, String sord,String fName,String lName,String gend,String grade,String isReg, String courses, int ActivityId,int rowOffset,int rowsPerPage, String weekDay) {
+		JSONArray list = new JSONArray();
+		String whereSrt = "";
 		int withRegPupil = 0;
-		if(fName!=null ||lName!=null || gend!=null   || (grade!=null && !grade.equals(" "))  || isReg!=null){
-			stat+=" and ";
+		if(fName!=null ||lName!=null || gend!=null   || (grade!=null && !grade.equals(" "))  || isReg!=null || courses!=null){
+			
 			if(fName!=null){
-				stat+="firstName LIKE '%" +fName +"%' and ";
+				whereSrt +="firstName LIKE '%" +fName +"%' and ";
 			}
 			if(lName!=null){
-				stat+="lastName LIKE '%" +lName +"%' and ";
+				whereSrt+="lastName LIKE '%" +lName +"%' and ";
 			}
 			if(gend!=null){
-				stat+="gender =" +gend +" and ";
+				whereSrt+="gender =" +gend +" and ";
 			}
 			if(grade!=null && !grade.equals(" ")){
-				stat+="gradeID =" +grade +" and ";
+				whereSrt+="gradeID =" +grade +" and ";
 			}
-			if(isReg!=null){
-				if(isReg.equals("1")){
-					//stat+="regPupilNum is not null";
-					withRegPupil = 1; //-- get only registered pupil
-				}
-				else{
-					//stat+="regPupilNum is null";
-					withRegPupil = 2; //-- get only non registered pupil
-				}
+			if(courses!=null){
+				whereSrt +="activityName like '%" + courses + "%' and ";
+			}
+			if(isReg!=null && !isReg.trim().equals("")){
+				whereSrt+="stateNum =" +isReg +" and ";
 			}else{
-				stat = stat.substring(0, stat.length()-4);
+				
 				withRegPupil = 0; //-- get all pupil    
 			}
 			
-			if (stat.endsWith("and ")) {
-				stat = stat.substring(0, stat.length()-4);
-			}
+			if(withRegPupil == 0 && whereSrt.endsWith("and "))
+				whereSrt = whereSrt.substring(0, whereSrt.length()-4);
+			
 		}
-		///
-		/*this.regToMoadonitDAO = new RegToMoadonitDAO(con);
-		List<RegToMoadonit> active = regToMoadonitDAO.getActiveRegForPupil(pupil.getPupilNum());
-		Boolean reg = false;
-		if(!active.isEmpty()){
-			RegToMoadonit r = active.get(0);
-			if(r.getTblRegType1().getTypeNum()==1 && r.getTblRegType2().getTypeNum()==1 && r.getTblRegType3().getTypeNum()==1 && 
-					r.getTblRegType4().getTypeNum()==1 && r.getTblRegType5().getTypeNum()==1 )
-				reg = false;
-			else
-				reg = true;
-		}*/
-		///
-		Object[] values = {   activityNum };
-		try (PreparedStatement statement = DAOUtil.prepareStatement(this.con.getConnection(), stat ,false,values);
-						ResultSet resultSet = statement.executeQuery();) {
+
+		Object[] values = {  weekDay,ActivityId,whereSrt.equals("") ? null : whereSrt, rowOffset, rowsPerPage, sind, sord };
+		
+		try (PreparedStatement statement = DAOUtil.prepareCallbackStatement(this.con.getConnection(), getPupilNotInActivity ,values);
+				ResultSet resultSet = statement.executeQuery();) {
 
 			while (resultSet.next()) {
-				FullPupilCard p = map(resultSet);
-				list.add(p);
+				JSONObject user = new JSONObject();
+//				/pupilNum,   state, firstName, lastName,  gender, gradeName, courses
+				String val = resultSet.getString("courses");
+				user.put("pupilNum",resultSet.getInt("pupilNum"));
+				
+				user.put("firstName",resultSet.getString("firstName"));
+				user.put("lastName",resultSet.getString("lastName"));
+				user.put("isReg", resultSet.getInt("stateNum") == 2 ? true : false);	
+				user.put("gender",resultSet.getInt("gender"));
+				user.put("gradeName",resultSet.getString("gradeName"));
+				user.put("courses",val  == null ? "" : val);
+				
+				list.add(user);
 			}
 
 		} catch (SQLException e) {
@@ -322,14 +335,6 @@ public class FullPupilCardDAO extends AbstractDAO {
 			}
 			if(isReg!=null && !isReg.trim().equals("")){
 				stat+="stateNum =" +isReg +" and ";
-				/*if(isReg.equals("1")){
-					//stat+="regPupilNum is not null";
-					withRegPupil = 1; //-- get only non registered pupil 
-				}
-				else{
-					//stat+="regPupilNum is null";
-					withRegPupil = 2; //-- get only registered pupil
-				}*/
 			}else{
 				
 				withRegPupil = 0; //-- get all pupil    

@@ -3,7 +3,8 @@ var pupilID;
 var tableName, query, whereclause, columnsData, selectedValue;
 var allValues= new Array(), colname = new Array() ; // column array for jqgrid
 var tablePk,isNonEditable = false, lastSelection = -1;
-var  cols, valuesFroCell, gridRowsData, sortname; // original column array from server
+var  cols, valuesFroCell, gridRowsData, sortname, canAdd = true; // original column array from server
+
 
 jQuery(document).ready(function() {	
 	if(typeof page != 'undefined'  && page === "tbl_staff"){
@@ -25,6 +26,7 @@ jQuery(document).ready(function() {
 	$('#ulTabs').on('click', 'a', function(e) {
 	    //e.preventDefault();
 		selectedTab = this.parentElement.id; 
+		setInfoMsg(null, false, null);
 		$("#yearParamsDiv").hide();
 		
 			switch (this.parentElement.id) {
@@ -506,9 +508,7 @@ timeTemplate = {
 						
 					}*/
 					afterrestorefunc : function(response ){
-						/*if(typeof tableName !== "undefined" && tableName === "tbl_grade_code" ){							
-						}*/
-						
+
 					}
 			   },
 			   del: true,
@@ -573,24 +573,46 @@ function checkArray(grid){
 }
 
 function updateSelectOptions(grid, data, cellName){
-	var options = grid.jqGrid('getColProp', cellName).availableOptions;
+	var options = grid.jqGrid('getColProp', cellName).availableOptions, cellValue;
+	canAdd = true;
+	
 	if(options && options.length > 0 && data.rows){
 		var newValue = "";
-		var add;
+		var isNotExisted;
 		for (var int = 0; int < options.length ; int++) {
-			add = true;
+			isNotExisted = true;
 			for (var i = 0; i < data.rows.length; i++) {
 				if(options[int][1] == data.rows[i][cellName] ){ 
-					add = false;
+					isNotExisted = false;
 					break;
 				}																						
 			}
 			
-			if(add)
+			if(isNotExisted)
 			newValue += options[int].join(':') + ";";
 			
 		}
-		newValue = newValue.substring(0,newValue.lastIndexOf(";"));
+		
+		//check if value of select is valid
+		cellValue = newValue = newValue.substring(0,newValue.lastIndexOf(";"));
+		
+		if(cellValue.length == 0 || cellValue.split(':').length == 0) canAdd =  false;
+		
+		cellValue = cellValue.split(':');
+		
+		if(cellValue[0] == null || cellValue[0]  == '') canAdd =  false;
+		
+		// if value of select is valid , we can enable add button
+		if(canAdd){
+			$("#list_iladd").removeClass("ui-state-disabled");
+			$("#list_iladd").prop('title', 'הוסף שורה חדשה');
+			setInfoMsg(null, false, null);
+		}
+		else{
+			$("#list_iladd").addClass("ui-state-disabled");
+			$("#list_iladd").prop('title', 'לא ניתו להוסיף רשומות, כל אפשרויות הבחירה נוספו');
+			setInfoMsg('לא ניתן להוסיף רשומות, כל אפשרויות הבחירה נוספו', true, 'alert alert-warning');
+		}
 		grid.jqGrid('setColProp', cellName, {editoptions: { value:  newValue}});
 	}
 	
@@ -622,13 +644,14 @@ function setColModelFormResult(result){
 	        editrules: { required: this.IsRequired },
 	        label : this.label,
 	        key: this.IsKey,
-	        /*width: "120px"*/
+	       
 	    };
+	//"yearID",  "endMonth" "startMonth" "tbl_school_years"
 	switch (this.Datatype) {
 	    case 'int':
 	    	/*$.extend(true, cm, { template: integerTemplate }, { editrules: {integer : true} });*/
 	    	 $.extend(true, cm, { template: integerTemplate } , { editrules: { integer: true } });
-	    	 if(typeof tableName !== "undefined" && tableName === "tbl_grade_in_year" ){
+	    	 if(typeof tableName !== "undefined" && ( tableName === "tbl_grade_in_year" || tableName === "tbl_moadonit_groups") ){
 	    		 if(this.Name == "yearID" &&  currentYearObject != null && typeof currentYearObject === 'object')
 	    		{
 	    			 $.extend(true, cm, { editoptions :  { defaultValue: currentYearObject.yearID }});
@@ -642,6 +665,17 @@ function setColModelFormResult(result){
 	    case 'Date':
 	        $.extend(true, cm, { template: dateTemplate } , { editrules: { date: true } });
 	        lastFieldName = cm.name;
+	        if(typeof tableName !== "undefined" && tableName === "tbl_moadonit_groups" ){
+	    		 if(this.Name == "endMonth" &&  currentYearObject != null && typeof currentYearObject === 'object')
+	    		{
+	    			 $.extend(true, cm, { editoptions :  { defaultValue: currentYearObject.endDate }});
+	    		}		    		 
+    		    else if(this.Name == "startMonth" &&  currentYearObject != null && typeof currentYearObject === 'object')
+	    		{
+    		    	 var d = new Date();
+	    			 $.extend(true, cm, { editoptions :  { defaultValue: d.getTime() }});
+	    		}	
+	    	 }
 	        break;
 	    case 'time':
 	        $.extend(true, cm, { template: timeTemplate } , { editrules: { time: true } });
@@ -707,6 +741,20 @@ function setColModelFormResult(result){
 	});
 	sortname = (selectedTab === "tbl_activity" ? "activityName" : tablePk);
 }
+
+/***
+ * show info msg
+ * @param msgHtml - msg content (string)
+ * @param msgStatus - dispay status (bolean)
+ * @param msgCss - msg style (string)
+ */
+function setInfoMsg(msgHtml,msgStatus, msgCss){
+	if(msgHtml != null) $('#InfoMsg').html("<strong>שיב לב</strong> " + msgHtml);
+	$('#InfoMsg').removeClass();
+	if(msgCss != null) $('#InfoMsg').addClass( msgCss);
+	$('#InfoMsg').toggle(msgStatus);	
+}
+
 function getGeneralGrid(){
 	
 	$.ajax({
@@ -738,8 +786,8 @@ function getGeneralGrid(){
 							direction : "rtl",
 							viewrecords : true,
 							gridview : true,
-							height : "100%",
-							width : "100%",
+							height : "auto",
+							width : "auto",
 							editurl : "LogisticsController?tableName=" + tableName,
 							jsonReader : {
 								repeatitems : false,
@@ -816,13 +864,7 @@ function getGeneralGrid(){
 									rowid = rowid.substring(0,3);
 								}
 							},
-							onSelectRow: function(id) { 
-							
-								var btnSave, btncancel, btnEdit, btnDel;
-								btnSave = $("#list_ilsave"); 
-								btncancel = $("#list_ilcancel");
-								btnEdit = $("#list_iledit");
-								btnDel = $("#del_list");
+							onSelectRow: function(id) { 														
 								/*if(id.startsWith('jqg'))
 									id = id.substring(3,id.length);*/
 								
@@ -913,11 +955,6 @@ function getGeneralGrid(){
 								else if(typeof tableName !== "undefined" && tableName === "tbl_activity" ){
 									//updateSelectOptions(grid, data, 'responsibleStaff');
 								}
-									
-								
-								
-						    	
-								/*  END hide edit/delete buttons for history records */
 							}
 							
 						}).jqGrid("navGrid", "#pager", navParams)
@@ -925,7 +962,33 @@ function getGeneralGrid(){
 			        
 				$.extend($.jgrid.inlineEdit, { restoreAfterError: false } );	
 				
+				var btnSave, btncancel, btnEdit, btnDel, btnAdd;
+				btnSave = $("#list_ilsave"); 
+				btncancel = $("#list_ilcancel");
+				btnEdit = $("#list_iledit");
+				btnDel = $("#del_list");
+				btnAdd = $("#list_iladd");
+				
 				var origAddRowDataFunc = $.fn.jqGrid.addRowData;
+				var origShowAddEditButtons =  $.fn.jqGrid.showAddEditButtons;
+				$.fn.jqGrid.showAddEditButtons = function(rowid,rdata,pos,src) {
+					
+					
+
+					var res = origShowAddEditButtons.call(this);
+					if(canAdd){
+						$("#list_iladd").removeClass("ui-state-disabled");
+						$("#list_iladd").prop('title', 'הוסף שורה חדשה');
+						setInfoMsg(null, false, null);
+					}
+					else{
+						$("#list_iladd").addClass("ui-state-disabled");
+						$("#list_iladd").prop('title', 'לא ניתו להוסיף רשומות, כל אפשרויות הבחירה נוספו');
+						setInfoMsg('לא ניתו להוסיף רשומות, כל אפשרויות הבחירה נוספו', true, 'alert alert-warning');
+					}
+					
+				};
+
 				$.fn.jqGrid.addRowData = function(rowid,rdata,pos,src) {
 					
 					if(typeof tableName !== "undefined" && tableName === "tbl_grade_code" ){
@@ -934,7 +997,7 @@ function getGeneralGrid(){
 					else if(typeof tableName !== "undefined" && (tableName === "tbl_grade_in_year" || tableName === "tbl_moadonit_groups" )){
 						$(this).jqGrid('setColProp', 'gradeID', {editable:true});						
 					}
-					
+
 					result = origAddRowDataFunc.call(this,rowid,rdata,pos,src);
 					
 				};

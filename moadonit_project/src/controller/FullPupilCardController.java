@@ -98,6 +98,7 @@ public class FullPupilCardController extends HttpServlet implements
 	 */
 	public FullPupilCardController() {
 		super();
+		
 		// TODO Auto-generated constructor stub
 	}
 
@@ -108,6 +109,7 @@ public class FullPupilCardController extends HttpServlet implements
 		// TODO Auto-generated method stub
 
 		// check and set connection to session
+		req.setCharacterEncoding("UTF-8");
 		checkConnection(req, resp);
 		gradeDAO = new GradeCodeDAO(con);
 		generalDAO = new GeneralDAO(con);
@@ -292,17 +294,28 @@ public class FullPupilCardController extends HttpServlet implements
 				String search = req.getParameter("_search");
 				if (search.equals("true")) {
 					// on filtering popup window
-					 List<FullPupilCard> list = fillterPupilNotInActivity(req, resp);
-					JSONArray jsonPupilList = new JSONArray();
-					getPupilList(jsonPupilList, list);
+					JSONArray list = fillterPupilNotInActivity(req, resp,rows
+								* (page - 1), rows);					
 
-					if (!jsonPupilList.isEmpty()) {
+					if (!list.isEmpty()) {
 
-						String jsonResponse = jsonPupilList.toJSONString();
-						jsonResponse = "{\"page\":1,\"total\":\"1\",\"records\":"
-								+ list.size()
-								+ ",\"rows\":"
-								+ jsonResponse + "}";
+						String jsonResponse = list.toJSONString();
+						totalCount = fillterPupilNotInActivity(req, resp, 0,0).size();
+						
+						if (totalCount > 0) {
+							if (totalCount % rows == 0) {
+								totalPages = totalCount / rows;
+							} else {
+								totalPages = (totalCount / rows) + 1;
+							}
+
+						} else {
+							totalPages = 0;
+						}
+
+						jsonResponse = "{\"page\":" + page + ",\"total\":"
+								+ totalPages + ",\"records\":" + totalCount
+								+ ",\"rows\":" + jsonResponse + "}";
 
 						resp.setContentType("application/json");
 						resp.setCharacterEncoding("UTF-8");
@@ -320,17 +333,31 @@ public class FullPupilCardController extends HttpServlet implements
 				}
 
 				else { // on pop up search page load
+					
+					JSONArray list = SelectPupilNotInActivity(req, resp, rows
+							* (page - 1), rows);
+					
+					
+					if (!list.isEmpty()) {
 
-					List<FullPupilCard> list = SelectPupilNotInActivity(req, resp);
-					JSONArray jsonPupilList = new JSONArray();
-					getPupilList(jsonPupilList, list);
-					if (!jsonPupilList.isEmpty()) {
+						String jsonResponse = list.toJSONString();
+						
+						totalCount = SelectPupilNotInActivity(req, resp, 0,0).size();
+								
+						if (totalCount > 0) {
+							if (totalCount % rows == 0) {
+								totalPages = totalCount / rows;
+							} else {
+								totalPages = (totalCount / rows) + 1;
+							}
 
-						String jsonResponse = jsonPupilList.toJSONString();
-						jsonResponse = "{\"page\":1,\"total\":\"1\",\"records\":"
-								+ list.size()
-								+ ",\"rows\":"
-								+ jsonResponse + "}";
+						} else {
+							totalPages = 0;
+						}
+
+						jsonResponse = "{\"page\":" + page + ",\"total\":"
+								+ totalPages + ",\"records\":" + totalCount
+								+ ",\"rows\":" + jsonResponse + "}";
 
 						resp.setContentType("application/json");
 						resp.setCharacterEncoding("UTF-8");
@@ -808,26 +835,31 @@ public class FullPupilCardController extends HttpServlet implements
 		return p;
 	}
 
-	protected List<FullPupilCard> SelectPupilNotInActivity(
-			HttpServletRequest req, HttpServletResponse resp) {
-		List<FullPupilCard> pupils = new ArrayList<>();
+	protected JSONArray SelectPupilNotInActivity(
+			HttpServletRequest req, HttpServletResponse resp, int offset, int rowsPerPage ) throws ServletException, IOException {
+		req.setCharacterEncoding("UTF-8");
+		JSONArray pupils = new JSONArray();
 		int activityNum = Integer.parseInt(req.getParameter("activityNum"));
+		
+		String weekDay = new String(req.getParameter("weekDay").getBytes("ISO-8859-1"), "UTF-8");
 		pupils = this.fullPupilDao
 				.SelectPupilNotInActivity(req.getParameter("sidx"),
-						req.getParameter("sord"), activityNum);
+						req.getParameter("sord"), activityNum, offset, rowsPerPage, weekDay);
 
 		return pupils;
 	}
 
-	public List<FullPupilCard> fillterPupilNotInActivity(
-			HttpServletRequest req, HttpServletResponse resp) {
-		List<FullPupilCard> pupils = new ArrayList<>();
+	public JSONArray fillterPupilNotInActivity(
+			HttpServletRequest req, HttpServletResponse resp,int offset, int rowsPerPage) throws ServletException, IOException {
+		req.setCharacterEncoding("UTF-8");
+		JSONArray pupils = new JSONArray();
 		int activityNum = Integer.parseInt(req.getParameter("activityNum"));
+		String weekDay = new String(req.getParameter("weekDay").getBytes("ISO-8859-1"), "UTF-8");
 		pupils = this.fullPupilDao.fillterPupilNotInActivity(
 				req.getParameter("sidx"), req.getParameter("sord"),
 				req.getParameter("firstName"), req.getParameter("lastName"),
 				req.getParameter("gender"), req.getParameter("gradeName"),
-				req.getParameter("isReg"), activityNum);
+				req.getParameter("isReg"), req.getParameter("courses") , activityNum,offset, rowsPerPage, weekDay);
 
 		return pupils;
 	}

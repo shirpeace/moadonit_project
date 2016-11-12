@@ -54,6 +54,16 @@ jQuery.fn.center = function(parent) {debugger;
 	return this;
 };
 
+function clearGridSearch(grid, reload, clearWwidget){
+	
+	grid.jqGrid('setGridParam',{search:false});
+	var postData = grid.jqGrid('getGridParam','postData');
+	$.extend(postData,{filters:""});
+	if(clearWwidget)
+	$(".ui-widget-content").val("");
+	if(reload)
+	grid.trigger("reloadGrid",[{page:1}]);
+}
 Date.prototype.changeDate = function (n) {
     var time = this.getTime();
     var changedDate  = new Date();
@@ -70,6 +80,14 @@ Date.prototype.ddmmyyyy = function() {
 	  var dd = this.getDate();
 
 	  return [ dd,"/", mm,"/", this.getFullYear() ].join(''); // padding
+	 
+};
+
+Date.prototype.yyyymmdd = function() {
+	  var mm = this.getMonth() + 1; // getMonth() is zero-based
+	  var dd = this.getDate();
+
+	  return [ this.getFullYear(),"-", mm,"-", dd ].join(''); // padding
 	 
 };
 

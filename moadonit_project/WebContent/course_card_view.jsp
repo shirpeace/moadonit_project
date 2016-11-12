@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
-	pageEncoding="windows-1255"%>
+	pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
@@ -12,7 +12,8 @@
 <head>
 
    <!--  <meta charset="utf-8"> -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -36,7 +37,7 @@
 		}
 	%> 
 
-    <title>ξεςγεπιϊ</title>
+    <title>ΧΧ•ΧΆΧ“Χ•Χ Χ™Χª</title>
 	<!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     
@@ -137,6 +138,22 @@
 	.code-comment{color:#7ccd60}::-moz-selection{background-color:#2b91af;color:#fff;text-shadow:none}
 	::selection{background-color:#2b91af;color:#fff;text-shadow:none}
 	#page h1+.buttonPopUp{position:absolute;top:20px;right:25px} 
+	#divPopUp .ui-jqgrid tr.jqgrow td { height: 20px; padding-top: 0px; text-overflow: ellipsis;-o-text-overflow: ellipsis; }
+	#divPopUp .ui-jqgrid tr.jqgrow input { height: 20px; padding-top: 0px;}
+	#divPopUp .ui-jqgrid-labels input { height: 30px;}
+    #divPopUp .ui-jqgrid tr.jqgrow td { text-overflow: ellipsis;-o-text-overflow: ellipsis; }
+    #divPopUp .ui-jqgrid tr.jqgrow.ui-state-highlight td {
+           word-wrap: break-word; /* IE 5.5+ and CSS3 */
+           white-space: pre-wrap; /* CSS3 */
+           white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+           white-space: -pre-wrap; /* Opera 4-6 */
+           white-space: -o-pre-wrap; /* Opera 7 */
+           overflow: hidden;
+           height: auto;
+           vertical-align: middle;
+
+       }
+       
     </style>
 
 </head>
@@ -149,11 +166,11 @@
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="nav navbar-right top-nav" style="padding-top: 15px; ">
             	<a href="login.jsp?action=logout">
-	            	<i class="fa fa-fw fa-power-off"></i>&nbsp;ιφιΰδ</a>
+	            	<i class="fa fa-fw fa-power-off"></i>&nbsp;Χ™Χ¦Χ™ΧΧ”</a>
             </div>
             <div class="navbar-header" >
             	<a class="navbar-brand" href="dashboard.jsp">
-            	<i class="fa fa-home fa-fw"></i>&nbsp;ξεςγεπιϊ</a>
+            	<i class="fa fa-home fa-fw"></i>&nbsp;ΧΧ•ΧΆΧ“Χ•Χ Χ™Χª</a>
                 
             </div>
             
@@ -161,14 +178,14 @@
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li>
-                       <a href="" style="font-size: 120%; pointer-events: none;"> <i class="fa fa-futbol-o"></i> τψθι ηεβ</a>
+                       <a href="" style="font-size: 120%; pointer-events: none;"> <i class="fa fa-futbol-o"></i> Χ¤Χ¨ΧΧ™ Χ—Χ•Χ’</a>
                        <br>
                     </li> 
                     <li class="active">
-                       <a href= "pupil_card_view.jsp" id="detailsLink"><i class="fa fa-fw fa-list-alt"></i> τψθι ηεβ</a>
+                       <a href= "pupil_card_view.jsp" id="detailsLink"><i class="fa fa-fw fa-list-alt"></i> Χ¤Χ¨ΧΧ™ Χ—Χ•Χ’</a>
                     </li> 
                     <li>
-                    	<a href="course_add.jsp"><i class="fa fa-fw fa-edit"></i>δερτϊ ηγω</a>
+                    	<a href="course_add.jsp"><i class="fa fa-fw fa-edit"></i>Χ”Χ•Χ΅Χ¤Χª Χ—Χ“Χ©</a>
                     </li>
                 </ul>
             </div>
@@ -193,28 +210,28 @@
                       <div  id="headerEditDiv" style= "display: none"> 
                       		<div class="col-lg-3">
 						<div class="form-group">
-							<label for="activityGroupHead">ων δηεβ</label> 
+							<label for="activityGroupHead">Χ©Χ Χ”Χ—Χ•Χ’</label> 
 								<select class="form-control input-sm" 
 								id="activityGroupHead" name="activityGroupHead" >
 								<option value=""></option>
-								<option value="1">ΰ</option>
-								<option value="2">α</option>
-								<option value="3">β</option>
-								<option value="4">γ</option>
-								<option value="5">δ</option>								
+								<option value="1">Χ</option>
+								<option value="2">Χ‘</option>
+								<option value="3">Χ’</option>
+								<option value="4">Χ“</option>
+								<option value="5">Χ”</option>								
 							</select>
 						</div> 
 					</div>
 					<div class="col-lg-2">
 						<div class="checkbox">
 						<br>
-							<label for="newGroup">ηεβ ηγω</label> 
+							<label for="newGroup">Χ—Χ•Χ’ Χ—Χ“Χ©</label> 
 							<input type="checkbox" id="newGroup" name="newGroup" >
 						</div>
 					</div> 
 					 <div class="col-lg-3">
 						 <div class="form-group" style="display: none;" id="newActivityGroupDiv">
-						 	<label for="newActivityGroupHead">δλπρ ων ηεβ </label> 
+						 	<label for="newActivityGroupHead">Χ”Χ›Χ Χ΅ Χ©Χ Χ—Χ•Χ’ </label> 
 								<input type="text" class="form-control input-sm" name="newActivityGroupHead"  id="newActivityGroupHead" >
 						</div> 
 					</div>  
@@ -227,16 +244,16 @@
                     <div class="col-lg-12">
                     	<ol class="breadcrumb">
                             <li>
-                                 <a href="dashboard.jsp"><i class="fa fa-home"></i> ψΰωι</a>
+                                 <a href="dashboard.jsp"><i class="fa fa-home"></i> Χ¨ΧΧ©Χ™</a>
                             </li>
                             <li>
-                                 <a href="course_search.jsp"><i class="fa fa-futbol-o"></i> ηεβιν</a>
+                                 <a href="course_search.jsp"><i class="fa fa-futbol-o"></i> Χ—Χ•Χ’Χ™Χ</a>
                             </li>
                          <!--    <li>
-                                 <a href="dashboard.jsp"><i class="fa fa-user"></i> λψθιρ ηεβ</a>
+                                 <a href="dashboard.jsp"><i class="fa fa-user"></i> Χ›Χ¨ΧΧ™Χ΅ Χ—Χ•Χ’</a>
                             </li> -->
                             <li class="active">
-                                <i class="fa fa-list-alt"></i> τψθι ηεβ
+                                <i class="fa fa-list-alt"></i> Χ¤Χ¨ΧΧ™ Χ—Χ•Χ’
                             </li>
                         </ol>
                     </div>
@@ -250,16 +267,16 @@
 						<div class="col-lg-12">
 							<div class="col-lg-2">
 								<div class="form-group">
-									<label for="activityName">ων δχαεφδ</label> <input type="text" 
+									<label for="activityName">Χ©Χ Χ”Χ§Χ‘Χ•Χ¦Χ”</label> <input type="text" 
 										class="form-control input-sm" name="activityName"  id="activityName" >
 								</div>
 								
 							<!-- 	<div class="form-group" >
-									<label for="activityGroupNew"> ηεβ ηγω</label> <input type="text" 
+									<label for="activityGroupNew"> Χ—Χ•Χ’ Χ—Χ“Χ©</label> <input type="text" 
 										class="form-control input-sm" name="activityGroupNew"  id="activityGroupNew" >
 								</div> -->
 								<div class="form-group">
-									<label for="courseTypeID">ρεβ</label>
+									<label for="courseTypeID">Χ΅Χ•Χ’</label>
 										<select class="form-control input-sm" 
 										id="courseTypeID" name="courseTypeID" >
 										
@@ -270,19 +287,19 @@
 		<!-- row 1 col 2 -->
 							<div class="col-lg-2">
 								<div class="form-group">
-									<label for="weekDay">ιεν αωαες</label> 
+									<label for="weekDay">Χ™Χ•Χ Χ‘Χ©Χ‘Χ•ΧΆ</label> 
 										<select class="form-control input-sm" "
 										id="weekDay" name="weekDay" >
-										<option value="ΰ">ΰ</option>
-										<option value="α">α</option>
-										<option value="β">β</option>
-										<option value="γ">γ</option>
-										<option value="δ">δ</option>
-										<!-- <option value="ε">ε</option>		 -->								
+										<option value="Χ">Χ</option>
+										<option value="Χ‘">Χ‘</option>
+										<option value="Χ’">Χ’</option>
+										<option value="Χ“">Χ“</option>
+										<option value="Χ”">Χ”</option>
+										<!-- <option value="Χ•">Χ•</option>		 -->								
 									</select>
 								</div>
 								<div class="form-group">
-									<label for="startTime">ωςϊ δϊημδ</label>
+									<label for="startTime">Χ©ΧΆΧª Χ”ΧªΧ—ΧΧ”</label>
 									<br>	
 									<!-- <input type="text"
 										class="form-control input-sm" id="startTime" name="startTime" style="width: 90px;"  >  -->
@@ -290,7 +307,7 @@
 										id="startTime" name="startTime" >
 								</div>
 								<div class="form-group">
-									<label for="endTime">ωςϊ ριεν</label>									
+									<label for="endTime">Χ©ΧΆΧª Χ΅Χ™Χ•Χ</label>									
 									<br>	
 									<!-- <input type="text"
 										class="form-control input-sm" id="endTime" name="endTime" style="width: 90px;"  > --> 
@@ -302,18 +319,18 @@
 		<!-- row 1 col 3 -->
 							<div class="col-lg-2">
 								<div class="form-group">
-										<label for="responsibleStaff">ων δξεψδ</label> 
+										<label for="responsibleStaff">Χ©Χ Χ”ΧΧ•Χ¨Χ”</label> 
 										<select class="form-control input-sm" id="responsibleStaff" name="responsibleStaff" >
-										<!-- <option value="1">ωεωπδ ξζψηι</option>
-										<option value="2">γπιϊ βαΰι</option>
-										<option value="3">ωξωεο αεζβμε</option>
-										<option value="4">ΰδεαδ ωμεν</option>
-										<option value="5">ΰεψμι ωεεψυ</option> -->
+										<!-- <option value="1">Χ©Χ•Χ©Χ Χ” ΧΧ–Χ¨Χ—Χ™</option>
+										<option value="2">Χ“Χ Χ™Χª Χ’Χ‘ΧΧ™</option>
+										<option value="3">Χ©ΧΧ©Χ•Χ Χ‘Χ•Χ–Χ’ΧΧ•</option>
+										<option value="4">ΧΧ”Χ•Χ‘Χ” Χ©ΧΧ•Χ</option>
+										<option value="5">ΧΧ•Χ¨ΧΧ™ Χ©Χ•Χ•Χ¨Χ¥</option> -->
 									</select>								
 								</div>
 								<div class="form-group">
 									
-									<label for="capacity">ξχριξεν ϊμξιγιν</label>
+									<label for="capacity">ΧΧ§Χ΅Χ™ΧΧ•Χ ΧªΧΧΧ™Χ“Χ™Χ</label>
 									<input type="text"
 										class="form-control input-sm" id="capacity" name="capacity"  > 
 								</div>
@@ -321,18 +338,18 @@
 							<div class="col-lg-2">
 								<div class="form-group">
 									
-									<label for="pricePerMonth">ξηιψ αηεγω</label>
+									<label for="pricePerMonth">ΧΧ—Χ™Χ¨ Χ‘Χ—Χ•Χ“Χ©</label>
 									<input type="text"
 										class="form-control input-sm" id="pricePerMonth" name="pricePerMonth"  > 
 								</div>
 								<div class="checkbox">
-									<label for="extraPriceChk">ϊωμεν ηεξψιν</label> 
+									<label for="extraPriceChk">ΧªΧ©ΧΧ•Χ Χ—Χ•ΧΧ¨Χ™Χ</label> 
 									<input type="checkbox" id="extraPriceChk" name="staff" >
 								</div>
 								<div class="form-group" style="display: none;" id="extraPriceDiv">
-									<label for="extraPrice">ξηιψ ηεξψιν</label> <input type="text"
+									<label for="extraPrice">ΧΧ—Χ™Χ¨ Χ—Χ•ΧΧ¨Χ™Χ</label> <input type="text"
 										name="extraPrice" class="form-control" id="extraPrice"
-										placeholder="ξηιψ">
+										placeholder="ΧΧ—Χ™Χ¨">
 								</div>
 							</div>
 		<!-- row 1 col 4 -->							
@@ -343,22 +360,22 @@
 								
 								<div class="form-group " id="viewModeBtn">
 									<input type="button" id="editBtn" name="editBtn"
-									class="btn btn-primary" value="ςψιλδ">
+									class="btn btn-primary" value="ΧΆΧ¨Χ™Χ›Χ”">
 								
 									<input type="submit" id="deleteBtn" name="deleteBtn"
-									class="btn btn-primary" value="ξηιχδ">
+									class="btn btn-primary" value="ΧΧ—Χ™Χ§Χ”">
 								
 								<!-- 	<input type="submit" id="addCourse" name="addCourse"
-									 class="btn btn-primary" value="δερσ ηγω"> -->
+									 class="btn btn-primary" value="Χ”Χ•Χ΅Χ£ Χ—Χ“Χ©"> -->
 									
 								</div>
 								
 								<div class="form-group " id="editModeBtn" style="display: none">
 									<input type="button" id="saveBtn" name="saveBtn"
-									class="btn btn-primary" value="ωξεψ ωιπειιν">
+									class="btn btn-primary" value="Χ©ΧΧ•Χ¨ Χ©Χ™Χ Χ•Χ™Χ™Χ">
 								
 									<input type="submit" id="cancelBtn" name="deleteBtn"
-									class="btn btn-primary" value="αθμ ωιπειιν">
+									class="btn btn-primary" value="Χ‘ΧΧ Χ©Χ™Χ Χ•Χ™Χ™Χ">
 								</div>
 						</div>
 					</div>									
@@ -369,7 +386,7 @@
                    
                     <div class="col-lg-12" style="">                        
                        <!--  <h3  >  
-                        	ϊμξιγιν αηεβ                   
+                        	ΧªΧΧΧ™Χ“Χ™Χ Χ‘Χ—Χ•Χ’                   
                         </h3> -->
                         <div class="row" style="margin-bottom: 10px;margin-top: 10px; ">
                         
@@ -382,13 +399,15 @@
 	                       </div>
 	                       <div class="col-lg-3">
 	                       <input type="button" id="addPupilToCourse" name="addPupilToCourse" onclick="openPopup()"
-										class="btn btn-primary" value="δερσ ϊμξιγιν">               
+										class="btn btn-primary" value="Χ”Χ•Χ΅Χ£ ΧªΧΧΧ™Χ“Χ™Χ">               
 	                       </div>
                          
                          </div>
-                       
                        <div class="row" >
-                       
+                       <div class="col-lg-7">
+									<div id="InfoMsg" class="alert alert-warning" style="display: none;">									
+									</div>
+							</div>
 	                        <div class="table-responsive col-lg-10">
 	                        <table class="table table-bordered table-hover table-striped"
 										id="list" >
@@ -424,21 +443,21 @@
 		    		 	<form role="form" id="ajaxPoUPform">
 		    		 		<fieldset >	    		 	
 		    		 		<div class="form-group  col-lg-3">
-								<label for="regDate">ϊΰψικ ψιωεν</label>
+								<label for="regDate">ΧªΧΧ¨Χ™Χ Χ¨Χ™Χ©Χ•Χ</label>
 								<input  type="text" class="form-control" id="regDate" name="regDate" >
 							</div>
 		    		 		<div class="form-group  col-lg-3">
-								<label for="startDate">ϊΰψικ δϊημδ</label>
+								<label for="startDate">ΧªΧΧ¨Χ™Χ Χ”ΧªΧ—ΧΧ”</label>
 								<input  type="text" class="form-control" id="startDate" name="startDate" >
 							</div>
 		    		 		<div class="form-group  col-lg-3">
-								<label for="endDate">ϊΰψικ ριεν</label>
+								<label for="endDate">ΧªΧΧ¨Χ™Χ Χ΅Χ™Χ•Χ</label>
 								<input  type="text" class="form-control" id="endDate" name="endDate" >
 							</div>
 		    		 		<div class="form-group  col-lg-3" style="margin-top: 26px">
 		    		 		
 							<input type="button" id="btnAddPupil" name="btnAddPupil" onclick="AddSelectedPupil()"
-										class="btn btn-primary" value="ΰιωεψ"> 
+										class="btn btn-primary" value="ΧΧ™Χ©Χ•Χ¨"> 
 							</div>
 							</fieldset>																							    		 		 
 		    		 	</form>			    	  	
@@ -481,7 +500,7 @@
 			    	 </div>
 			    	 <div class="row">
 			    	 <input type="button" id="btnAddPupil" name="btnAddPupil" onclick="closeThis(this)"
-										class="btn btn-primary" value="ΰιωεψ">  
+										class="btn btn-primary" value="ΧΧ™Χ©Χ•Χ¨">  
 			    	</div>
 			    </div>
 			</div>
