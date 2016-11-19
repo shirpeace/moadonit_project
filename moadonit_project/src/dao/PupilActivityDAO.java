@@ -28,7 +28,7 @@ public class PupilActivityDAO extends AbstractDAO {
 		// TODO Auto-generated constructor stub
 	}
 
-	private String getPupilInCourse = "{ call ms2016.getPupilInCourse( ?, ? , ?) }";
+	private String getPupilInCourse = "{ call ms2016.getPupilInCourse( ?, ? , ?, ?, ?, ?, ?) }";
 	private String insertPupilActivity = "{ call ms2016.insertPupilActivity(?,?,?,?,?,?) }";
 	private String update = "{ call ms2016.updatePupilInCourse(?,? ,? , ?,? , ?) }";
 	private String delete = "DELETE FROM tbl_pupil_activities where pupilNum = ? and activityNum = ? ";
@@ -46,13 +46,13 @@ public class PupilActivityDAO extends AbstractDAO {
 	 * @throws IllegalArgumentException
 	 * @throws DAOException
 	 */
-	public List<PupilActivity> getPupilInCourse(int id, Date date, int year)
+	public List<PupilActivity> getPupilInCourse(int id, Date date, int year,int rowOffset,int rowsPerPage, String sind, String sord)
 			throws IllegalArgumentException, DAOException {
 		List<PupilActivity> list = new ArrayList<>();
 
 		try (PreparedStatement statement = DAOUtil
 				.prepareCallbackStatement(this.con.getConnection(),
-						getPupilInCourse, new Object[] { id, date, year });
+						getPupilInCourse, new Object[] { id, date, year,rowOffset,rowsPerPage,sind,sord });
 				ResultSet resultSet = statement.executeQuery();) {
 
 			while (resultSet.next()) {

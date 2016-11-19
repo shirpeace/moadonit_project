@@ -997,7 +997,7 @@ Serializable {
 
 		this.pupilActDAO = new PupilActivityDAO(con);
 		List<PupilActivity> list = this.pupilActDAO.getPupilInCourse(actID,
-				null,year);
+				null,year,0,0,"gradeID","asc");
 
 		return list;
 	}

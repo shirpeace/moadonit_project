@@ -858,7 +858,7 @@ public class FullPupilCardController extends HttpServlet implements
 		pupils = this.fullPupilDao.fillterPupilNotInActivity(
 				req.getParameter("sidx"), req.getParameter("sord"),
 				req.getParameter("firstName"), req.getParameter("lastName"),
-				req.getParameter("gender"), req.getParameter("gradeName"),
+				req.getParameter("gender"), req.getParameter("gradeID"),
 				req.getParameter("isReg"), req.getParameter("courses") , activityNum,offset, rowsPerPage, weekDay);
 
 		return pupils;

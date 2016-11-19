@@ -9,6 +9,9 @@ import java.util.List;
 
 import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import model.ActivityGroup;
 import model.FamilyRelation;
 import model.FoodType;
@@ -30,8 +33,8 @@ public class GeneralDAO extends AbstractDAO {
 	private String callfamilyRelationProc = "{ call ms2016.get_family_Relation(?) }"; // tbl_family_relation
 	private String callgetRegSourceProc = "{ call ms2016.get_Reg_Source(?) }"; //
 	private String get_Staff = "{ call ms2016.get_Staff(?) }"; // get_Staff
+	private String get_GenderRef = "{ call ms2016.get_gender_ref(?) }"; //
 	private String get_actGroup = "{ call ms2016.get_actGroup(? , ?) }"; // get_actGroup
-
 	private String getRegDatesToValid = "{ call ms2016.getRegDatesToValid() }"; // ;
 	private String updateWhoIsReg = "{ call ms2016.updateWhoIsReg(?) }";
 	
@@ -82,6 +85,30 @@ return list;
 		return list;
 	}
 
+	@SuppressWarnings("unchecked")
+	public JSONArray get_GenderRef(int id) throws IllegalArgumentException,
+	DAOException {
+		//gender, genderName
+		JSONArray list = new JSONArray();
+		try (PreparedStatement statement = DAOUtil
+				.prepareCallbackStatement(this.con.getConnection(),
+						get_GenderRef, new Object[] { id });
+				ResultSet resultSet = statement.executeQuery();) {
+		
+			while (resultSet.next()) {
+				JSONObject o = new JSONObject();
+				o.put("gender",resultSet.getInt("gender"));
+				o.put("genderName",resultSet.getString("genderName"));
+				list.add(o);
+			}
+		
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+		
+		return list;
+	}
+	
 	public List<FoodType> getFoodTypes(int id) throws IllegalArgumentException,
 			DAOException {
 

@@ -54,6 +54,8 @@ public class ActivityController extends HttpServlet implements Serializable {
 	List<Activity> listAct;
 	JSONObject resultToClient = new JSONObject();
 	GeneralDAO generalDAO;
+	int rows;
+	int page;
 	/**
 	 * 
 	 */
@@ -107,19 +109,35 @@ public class ActivityController extends HttpServlet implements Serializable {
 				}
 			}
 			if (action.equals("getPupilInCourse")) {
-
-				listPupilActivity = getPupilInCourse(req, resp);
-
+				rows = req.getParameter("rows") != null ? Integer.parseInt(req
+						.getParameter("rows")) : 0;
+				page = req.getParameter("page") != null ? Integer.parseInt(req
+						.getParameter("page")) : 0;
+				
+				listPupilActivity = getPupilInCourse(req, resp,rows
+						* (page - 1), rows);
+				int totalCount  = 0, totalPages = 0;
 				if (!listPupilActivity.isEmpty()) {
 					jsonArry = getJsonPupilActivities(listPupilActivity);
 					if (!jsonArry.isEmpty()) {
+						jsonResponse  = jsonArry.toJSONString();
+						
+						totalCount = getPupilInCourse(req, resp,0,100).size();
+						
+						if (totalCount > 0) {
+							if (totalCount % rows == 0) {
+								totalPages = totalCount / rows;
+							} else {
+								totalPages = (totalCount / rows) + 1;
+							}
 
-						jsonResponse = jsonArry.toJSONString();
-						jsonResponse = "{\"page\":1,\"total\":\"1\",\"records\":"
-								+ jsonArry.size()
-								+ ",\"rows\":"
-								+ jsonResponse
-								+ "}";
+						} else {
+							totalPages = 0;
+						}
+
+						jsonResponse = "{\"page\":" + page + ",\"total\":"
+								+ totalPages + ",\"records\":" + totalCount
+								+ ",\"rows\":" + jsonResponse + "}";
 
 						resp.setContentType("application/json");
 						resp.setCharacterEncoding("UTF-8");
@@ -166,6 +184,13 @@ public class ActivityController extends HttpServlet implements Serializable {
 				resp.setCharacterEncoding("UTF-8");
 
 				JSONObject jsonObj = getActGroup(Integer.parseInt(req.getParameter("activityType")));
+				resp.getWriter().print(jsonObj);
+			}
+			else if(action.equals("get_GenderRef")){
+				resp.setContentType("application/json");
+				resp.setCharacterEncoding("UTF-8");
+
+				JSONArray jsonObj = this.generalDAO.get_GenderRef(0);
 				resp.getWriter().print(jsonObj);
 			}
 			else if (action.equals("getCourseType")) {
@@ -225,7 +250,7 @@ public class ActivityController extends HttpServlet implements Serializable {
 	}
 
 	private List<PupilActivity> getPupilInCourse(HttpServletRequest req,
-			HttpServletResponse resp) {
+			HttpServletResponse resp,int offset, int rowsPerPage) {
 		// TODO Auto-generated method stub
 		int actID = Integer.parseInt(req.getParameter("activityNum"));
 		java.sql.Date dateToSearch = req.getParameter("dateToSearch") == null ? null
@@ -233,7 +258,7 @@ public class ActivityController extends HttpServlet implements Serializable {
 						"dateToSearch").toString()));
 		this.pupilActDAO = new PupilActivityDAO(con);
 		List<PupilActivity> list = this.pupilActDAO.getPupilInCourse(actID,
-				dateToSearch, 0);
+				dateToSearch, 0,offset, rowsPerPage,req.getParameter("sidx"), req.getParameter("sord"));
 
 		return list;
 	}
@@ -400,6 +425,7 @@ public class ActivityController extends HttpServlet implements Serializable {
 				resp.setCharacterEncoding("UTF-8");
 				resp.getWriter().print(resultToClient);
 			}
+			
 			
 			//
 		} catch (Exception e) {

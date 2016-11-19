@@ -15,7 +15,7 @@ var selectedIds;
 /** ********************************************** */
 // TODO //* START COURSE PAGE FUNCTIONS */
 /** ********************************************** */
-var courseData, pupilCount, courseTypes;
+var courseData, pupilCount, courseTypes, genders;
 // set the state at start to read. (state object from js_logic file)
 var currentPageState = state.READ;
 var popUp, popUPResult;
@@ -137,6 +137,9 @@ $(function() {
 	
 	getSelectValuesFromDB("getActGroup", "activityGroup","ActivityController", 1);
 	setSelectValues($('#activityGroupHead'), "activityGroup");
+	
+	getSelectValuesFromDB("getGrades","grades","FullPupilCardController"); //getGrades
+	getSelectValuesFromDB("get_GenderRef","genders","ActivityController"); //getGrades
 	
 	var dataString = 'activityNum=' + activityNum + '&action=' + "getCourses";
 	loadCourseData(dataString);	
@@ -535,8 +538,9 @@ function loadGrid(gridName) {
 						},
 						 {
 							name : 'gradeName',
-							
+							cellattr : formatGradeCell,
 							width : 50,
+							title:false
 						},{
 							name : 'regDate',
 							index : 'regDate',
@@ -719,12 +723,12 @@ function loadGrid(gridName) {
 																// there are no
 																// rows in this
 																// grid
-									$("#pager div.ui-paging-info").show();
+									//$("#pager div.ui-paging-info").show();
 								} else {
-									$("#pager div.ui-paging-info").hide();
+									//$("#pager div.ui-paging-info").hide();
 								}
 							}else{
-								$("#pager div.ui-paging-info").show();
+								//$("#pager div.ui-paging-info").show();
 							}
 														
 							pupilCount = $('#list').jqGrid('getGridParam','records');
@@ -989,6 +993,8 @@ function loadPupilGrid() {
 		myGrid.trigger('reloadGrid');
 		
 	} else {
+		var grid = $("#listPopUp"),i;
+
 		$("#listPopUp")
 				.jqGrid(
 						{
@@ -998,10 +1004,11 @@ function loadPupilGrid() {
 								+ activityNum + "&weekDay=" + courseData.weekDay,
 							datatype : "json",
 							mtype : 'POST',
-							colNames : [ 'מספר', 'שם משפחה', 'שם פרטי', 'מגדר',
+							colNames : [ 'מספר','מאופשר', 'שם משפחה', 'שם פרטי', 'מגדר',
 									'כיתה', 'רשום','חוגים נוספים באותו יום' ],
 							loadComplete : function(data) {
-								
+								var cbs = $("tr.jqgrow > td > input.cbox",this);
+
 								if (parseInt(data.records, 10) == 0) {
 									currentDate = new Date(); // default date
 																// is today if
@@ -1012,10 +1019,58 @@ function loadPupilGrid() {
 								} else {
 									$("#pager div.ui-paging-info").hide();
 								}
+								
+								for (var int = 0; int < data.rows.length; int++) {
+									if(data.rows[int].isEnabled == 2){
+										var cb = $("tr.jqgrow > td > input.cbox",this).eq(int);
+										cb.attr("disabled", true);
+
+									}
+								}
 							},
 							loadError : function(xhr, status, error) {
 								/* alert("complete loadError"); */
 							},
+							/*rowattr: function (item) {
+			                    if (parseInt(item.isEnabled, 10) === 2) { //disable selection of rows
+			                        //return {"class": "ui-state-disabled ui-jqgrid-disablePointerEvents"};
+			                        return {"class": "ui-jqgrid-disablePointerEvents"};
+			                    }
+			                },*/
+			                beforeSelectRow: function (rowid, e) {
+			                    /*if ($(e.target).closest("tr.jqgrow").hasClass("ui-state-disabled")) {
+			                        return false;   // dont allow selection the of
+			                    }
+			                    return true;    // allow selection of row
+*/			                
+				                var cbsdis = $("tr#"+rowid+".jqgrow > td > input.cbox:disabled", grid[0]);
+			                    if (cbsdis.length === 0) {
+			                        return true;    // allow select the row
+			                    } else {
+			                        return false;   // not allow select the row
+			                    }
+
+			                },
+			                onSelectAll: function(aRowids,status) {
+			                    if (status) {
+			                        // uncheck "protected" rows
+			                    	
+			                    	var cbs = $("tr.jqgrow > td > input.cbox:disabled", grid[0]);
+			                        cbs.removeAttr("checked");
+
+			                        //modify the selarrrow parameter
+			                        this.p.selarrrow = grid.find("tr.jqgrow:has(td > input.cbox:checked)")
+			                            .map(function() { return this.id; }) // convert to set of ids
+			                            .get(); // convert to instance of Array
+			                        /*var trChecked = $("tr.jqgrow:has(td > input.cbox:checked)", grid[0]);
+			                        var newSelArr = [];
+			                        for (i=0; i<trChecked.length; i++) {
+			                            newSelArr.push(trChecked[i].id);
+			                        }
+			                        grid[0].p.selarrrow = newSelArr;*/
+			                    }
+			                },
+
 							colModel : [
 									{
 										name : 'pupilNum',
@@ -1024,16 +1079,21 @@ function loadPupilGrid() {
 									hidden:true
 									},
 									{
+										name : 'isEnabled',
+										index : 'isEnabled',										
+										hidden:true
+									},
+									{
 										name : 'lastName',
 										index : 'lastName',
 										width : 150,
-										
+										title:false
 									},
 									{
 										name : 'firstName',
 										index : 'firstName',
 										width : 150,
-										
+										title:false
 									},
 									{
 										name : 'gender',
@@ -1043,19 +1103,24 @@ function loadPupilGrid() {
 										stype : "select",
 										searchoptions : {
 											value : ":;1:בן;2:בת"
-										}
+										},
+										title:false,
+									    formatter : formattCell
+									    
 									},
 									{
-										name : 'gradeName',
-										index : 'gradeName',
+										name : 'gradeID',
+										index : 'gradeID',
 										width : 100,
-										
+										formatter : formattCell,
 										stype : "select",
+										cellattr : formatGradeCell,
+										title:false,
 										searchoptions : {
 											dataUrl : "FullPupilCardController?action=getGrades",
 											buildSelect : function(data) {
 												var codes, i, l, code, prop;
-
+											
 												var s = '<select id="gradeSelect" >', codes, i, l, code, prop;
 												if (data) {
 													codes = data.value
@@ -1111,8 +1176,8 @@ function loadPupilGrid() {
 									}, {
 										name : 'isReg',
 										index : 'isReg',
-										width : 100,
-									
+										width : 110,
+										title:false,
 										stype : "select",
 										searchoptions : {
 											value : ":;2:רשום;1:לא רשום"
@@ -1123,18 +1188,19 @@ function loadPupilGrid() {
 										name : 'courses',
 										index : 'courses',
 										width : 150,
-										search:false
+										//search:false
+										
 									}],
 							pager : '#pagerPopUp',
 							rowNum : 10,
 							rowList : [],
 							/* scroll: true, */
 							multiselect: true,
-							sortname : 'gradeName',
+							sortname : 'gradeID',
 							direction : "rtl",
 							viewrecords : true,
 							height : "100%",
-							//gridview : true,
+							gridview : true,
 							
 							/*
 							 * ondblClickRow: function(rowId) { var rowData =
@@ -1205,4 +1271,72 @@ function createPostData(activityID, rowData,isEdit){
 	pupilActivity.endDate = getDateFromValue(rowData.endDate);	
 	
 	return pupilActivity;
+}
+
+function formatGradeCell(rowId, val, rawObject, cm, rdata){
+	//"style" : "background:"+colors.future+";","data-isHistory": false
+	var cellVal='';
+	var title = 'title="';
+	if(window["grades"] != null){
+		var gradesCopy = window["grades"].value.split(';'); 
+		
+	    $.each(gradesCopy, function(key, value) {  
+	    	value  = value.split(":");
+	    	if(key != 0){ 
+	    		if(val == value[1]){
+	    			cellVal =  'style="border-color:'+ value[2]+'; border-width: 3px;" ';	 	    			
+	    		//$select.append('<option style="background-color:'+ value[2]+'" value=' + value[0] + '>' + value[1] + '</option>');
+	    		}
+	    	}
+	    });
+	    
+	    if(this.id === "listPopUp" && rdata.isEnabled === 2){
+			
+			title += 'לא ניתן להוסיף';
+			title+= rdata.gender == 1 ? ' תלמיד זה, לתלמיד' : ' תלמידה זו, לתלמידה';
+			title += ' קיים רישום לחוג זה או לחוגים חופפים';
+			
+			cellVal ;
+		}
+	}
+	
+	//title += '"';
+	return cellVal;
+	
+}
+
+function formattCell(cellValue, options, rawData, action){
+	var returnVal = '';
+	 switch (options.colModel.name) {
+	    case "gender":
+	    	if(window["genders"] != null){
+	    		for (var int = 0; int < window["genders"].length; int++) {
+					if(window["genders"][int].gender == cellValue){
+						returnVal = window["genders"][int]["genderName"];
+				        return returnVal;
+					}
+				}
+	    	}
+	    	else{
+	    		  return $.jgrid.htmlEncode(cellValue);
+	    	}
+	    	
+	    case "gradeID":
+	    	//grades
+	    	if(window["grades"] != null){
+	    		var arr = window["grades"].value.split(';');
+	    		for (var int = 0; int < arr.length; int++) {
+	    			var code = arr[int].split(':');
+					if(code[0] == cellValue){
+						returnVal = code[1];
+				        return returnVal;
+					}
+				}
+	    	}
+	    	else{
+	    		  return $.jgrid.htmlEncode(cellValue);
+	    	}
+	    default:
+	        return $.jgrid.htmlEncode(cellValue);
+	 }
 }

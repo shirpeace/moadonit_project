@@ -22,7 +22,7 @@ public class FullPupilCardDAO extends AbstractDAO {
 	private String selectAll = "SELECT * FROM fullPupilCard ";
 	private String selectSearch = "SELECT * FROM fullPupilCard where firstName = ?";
 	private String selectFilter = "{ CALL ms2016.getFullPupilByParam_V2 ( ?, ?, ?, ?, ?) }";
-	private String getPupilNotInActivity = "{ CALL getPupilNotInActivity(?, ?, ?,?, ?,?, ?) }";
+	private String getPupilNotInActivity = "{ CALL getPupilNotInActivity_V2(?, ?, ?,?, ?,?, ?) }";
 	
 	/**
 	 * 
@@ -92,7 +92,8 @@ public class FullPupilCardDAO extends AbstractDAO {
 				user.put("firstName",resultSet.getString("firstName"));
 				user.put("lastName",resultSet.getString("lastName"));
 				user.put("gender",resultSet.getInt("gender"));
-				user.put("gradeName",resultSet.getString("gradeName"));
+				user.put("gradeID",resultSet.getInt("gradeID"));
+				user.put("isEnabled",resultSet.getInt("isEnabled"));
 				user.put("courses",val  == null ? "" : val);
 				
 				list.add(user);
@@ -168,7 +169,7 @@ public class FullPupilCardDAO extends AbstractDAO {
 				whereSrt+="gradeID =" +grade +" and ";
 			}
 			if(courses!=null){
-				whereSrt +="activityName like '%" + courses + "%' and ";
+				whereSrt +="courses like '%" + courses + "%' and ";
 			}
 			if(isReg!=null && !isReg.trim().equals("")){
 				whereSrt+="stateNum =" +isReg +" and ";
@@ -192,12 +193,12 @@ public class FullPupilCardDAO extends AbstractDAO {
 //				/pupilNum,   state, firstName, lastName,  gender, gradeName, courses
 				String val = resultSet.getString("courses");
 				user.put("pupilNum",resultSet.getInt("pupilNum"));
-				
+				user.put("isReg", resultSet.getInt("stateNum") == 2 ? true : false);
 				user.put("firstName",resultSet.getString("firstName"));
 				user.put("lastName",resultSet.getString("lastName"));
-				user.put("isReg", resultSet.getInt("stateNum") == 2 ? true : false);	
 				user.put("gender",resultSet.getInt("gender"));
-				user.put("gradeName",resultSet.getString("gradeName"));
+				user.put("gradeID",resultSet.getInt("gradeID"));
+				user.put("isEnabled",resultSet.getInt("isEnabled"));
 				user.put("courses",val  == null ? "" : val);
 				
 				list.add(user);

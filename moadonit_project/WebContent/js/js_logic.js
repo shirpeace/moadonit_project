@@ -268,7 +268,7 @@ function getRegTypesData(){
         	}
         },
         error: function(e) {
-        	console.log("error loading grades");
+        	console.log("error loading RegTypes");
         	return '';
 			
         }

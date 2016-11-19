@@ -153,6 +153,9 @@
            vertical-align: middle;
 
        }
+        .ui-jqgrid-disablePointerEvents {
+       	    pointer-events: none;
+        }
        
     </style>
 
@@ -205,7 +208,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                     <div class="col-lg-4" id="headerDiv">
-                    	 <h2 class="page-header" id="nameTitle" style="margin: 0px 0 0px; border-bottom: 1px solid #a6b7bd">   </h2>
+                    	 <h2 class="page-header" id="nameTitle" style="margin: 0px 0 0px; border-bottom: 1px solid #FFFFFF">   </h2>
                     </div>
                       <div  id="headerEditDiv" style= "display: none"> 
                       		<div class="col-lg-3">
