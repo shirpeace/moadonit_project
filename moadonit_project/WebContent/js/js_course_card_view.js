@@ -1020,6 +1020,7 @@ function loadPupilGrid() {
 									$("#pager div.ui-paging-info").hide();
 								}
 								
+								if(typeof data.rows !== "undefined")
 								for (var int = 0; int < data.rows.length; int++) {
 									if(data.rows[int].isEnabled == 2){
 										var cb = $("tr.jqgrow > td > input.cbox",this).eq(int);
