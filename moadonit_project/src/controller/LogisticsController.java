@@ -3,16 +3,10 @@ package controller;
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException;
-import java.sql.Time;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.servlet.ServletException;
@@ -21,31 +15,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.swing.text.html.HTMLDocument.HTMLReader.HiddenAction;
 
-import model.Activity;
-import model.ActivityType;
-import model.Pupil;
-import model.PupilActivity;
-import model.PupilActivityPK;
-import model.RegSource;
-import model.RegToMoadonit;
-import model.Staff;
-import model.User;
-
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
-
 import util.DAOUtil;
-import dao.ActivityDAO;
 import dao.GeneralDAO;
 import dao.LogisticsDAO;
-import dao.PupilActivityDAO;
 
 @WebServlet("/LogisticsController")
 public class LogisticsController extends HttpServlet implements Serializable {
