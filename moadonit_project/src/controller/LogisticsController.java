@@ -8,17 +8,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
 import util.DAOUtil;
 import dao.GeneralDAO;
 import dao.LogisticsDAO;
