@@ -486,11 +486,11 @@ timeTemplate = {
 			   cancelicon:"ui-icon-cancel",
 			   addParams : addParams,
 			   editParams : { errorfunc: function (rowID, response) {
-					  
+					  debugger;
 						//alert(response.responseText);
 					    // todo: why this does not allow Enter key to continue ase after error:
 						$.jgrid.info_dialog("שגיאה",'<div class="ui-state-error">'+
-							    response.responseText +'</div>', "סגור",{buttonalign:'right', modal : true});
+							    "שגיאה בשמירת נתונים" +'</div>', "סגור",{buttonalign:'right', modal : true});
 						/*$.jgrid.info_dialog($.jgrid.errors.errcap,'<div class="ui-state-error">'+
 							    response.responseText +'</div>', $.jgrid.edit.bClose,{buttonalign:'right'});*/
 					}, 
@@ -733,7 +733,15 @@ function setColModelFormResult(result){
 	    case 'phone':
 	        $.extend(true, cm, { template: phoneTemplate } );
 	        break;
+	    case "email":
+	    	$.extend(true, cm,   { 
+	    		editrules: { email:true }
+ 	        });
+	    	break;
 	    default:
+	    	$.extend(true, cm,   { 
+	    		editrules: { custom:true, custom_func:validateTextOnly }
+ 	        });
 	        break;
 	}
 	if (cm)
@@ -741,6 +749,15 @@ function setColModelFormResult(result){
 	});
 	sortname = (selectedTab === "tbl_activity" ? "activityName" : tablePk);
 }
+
+
+var validateTextOnly = function (value, colname) {
+    if (/^[א-תa-zA-Z -]+$/i.test(value)) {
+        return [true];
+    } else {
+        return [false, "טקסט לא תקין בשדה '" + colname + "'."]
+    }
+};
 
 /***
  * show info msg
@@ -811,22 +828,26 @@ function getGeneralGrid(){
 							       
 							    
 						    },
-						    
-						    loadError : function(xhr,st,err) {
-						    	
-						    	jQuery("#rsperror").html("Type: "+st+"; Response: "+ xhr.status + " "+xhr.statusText);
-						    },
-						    /*afterSubmit: function (response, postdata) {
+
+						    afterSubmit: function (response, postdata) {
 						    	
 						    	return [false,response.responseText] ;
-								   //debugger;
+								   debugger;
 									//alert(response.responseText);
 								    // todo: why this does not allow Enter key to continue ase after error:
 									$.jgrid.info_dialog("שגיאה",'<div class="ui-state-error">'+
 										    response.responseText +'</div>', "סגור",{buttonalign:'right', modal : true});
 									$.jgrid.info_dialog($.jgrid.errors.errcap,'<div class="ui-state-error">'+
 										    response.responseText +'</div>', $.jgrid.edit.bClose,{buttonalign:'right'});
-							}*/
+							},
+							
+							loadError: function (jqXHR, textStatus, errorThrown) {
+								debugger;
+								alert('HTTP status code: ' + jqXHR.status + '\n' +
+			                          'textStatus: ' + textStatus + '\n' +
+			                          'errorThrown: ' + errorThrown);
+			                    alert('HTTP message body (jqXHR.responseText): ' + '\n' + jqXHR.responseText);
+			                },
 							serializeRowData: function(postdata) { 
 								
 								switch (tableName) {
@@ -1001,6 +1022,8 @@ function getGeneralGrid(){
 					result = origAddRowDataFunc.call(this,rowid,rdata,pos,src);
 					
 				};
+				
+					
 /*				
  * 
  * 	var allRowsInGrid = $('#list4').jqGrid('getGridParam','data');

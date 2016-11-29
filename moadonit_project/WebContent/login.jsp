@@ -89,31 +89,7 @@
 	controller.MyConnection con;
 %>
 
-<%
-	if (request.getParameter("action") != null) {
-		if (request.getParameter("action").equals("logout")) {
 
-			session.setAttribute("userid", null);
-			if (session.getAttribute("connection") != null) {
-
-				//get the connection
-				con = (controller.MyConnection) session
-						.getAttribute("connection");
-				if (con != null) //close the connection on logout
-				{
-					//TODO: change this...
-					con.closeConnection();
-					session.setAttribute("connection", null);
-				}
-
-				request.getSession().invalidate();
-
-			}
-		}
-	}
-
-	
-%>
 
 <script type="text/javascript">
 
@@ -248,7 +224,42 @@
     <!-- /#wrapper -->
 
   
+	<%
+	if (request.getParameter("action") != null) {
+		if (request.getParameter("action").equals("logout")) {
 
+			session.setAttribute("userid", null);
+			if (session.getAttribute("connection") != null) {
+
+				//get the connection
+				con = (controller.MyConnection) session
+						.getAttribute("connection");
+				if (con != null) //close the connection on logout
+				{
+					//TODO: change this...
+					con.closeConnection();
+					session.setAttribute("connection", null);
+					
+					%>
+					
+					<script type="text/javascript">
+					
+					$(function() {						
+						$('#FormError').html("בוצע ניתוק מהמערכת").show();
+					});
+					</script>
+						
+					<%
+				}
+
+				request.getSession().invalidate();
+
+			}
+		}
+	}
+
+	
+%>
 </body>
 
 </html>

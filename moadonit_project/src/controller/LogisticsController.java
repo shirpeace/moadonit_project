@@ -33,6 +33,8 @@ import model.RegToMoadonit;
 import model.Staff;
 import model.User;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -495,7 +497,12 @@ public class LogisticsController extends HttpServlet implements Serializable {
 				else{
 					if(req.getParameter((String)col.get("Name")) != null){
 						String fieldValue = req.getParameter((String)col.get("Name"));
-						if(col.get("Datatype").equals("String") || col.get("Datatype").equals("Time") || col.get("Datatype").equals("phone") || col.get("Datatype").equals("colorpicker")){
+						/*fieldValue = StringEscapeUtils.unescapeHtml4(fieldValue);
+						StringUtils.replace(fieldValue, "'", "\'");*/
+						if(col.get("Datatype").equals("String") || col.get("Datatype").equals("Time")
+								|| col.get("Datatype").equals("phone") 
+								|| col.get("Datatype").equals("colorpicker")
+								|| col.get("Datatype").equals("email")){
 							
 						    sql += " " + (String)col.get("Name") + " = '" + req.getParameter((String)col.get("Name")) + "' ,";
 						}
@@ -611,7 +618,11 @@ public class LogisticsController extends HttpServlet implements Serializable {
 					 else if (key.getValue().equals("cellphone")){
 				
 						 type = "phone";
-					 }
+					 }//
+					 else if (key.getValue().equals("email")){
+							
+						 type = "email";
+					 }//email
 					 
 				}
 				else if (key.getKey().equals("tbl_moadonit_groups")) {

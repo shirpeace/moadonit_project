@@ -159,7 +159,7 @@
 				  <ul class="nav nav-pills center-pills" id="ulTabs">
 				    <li id="OnTimeReg" class="active"><a data-toggle="pill" href="#rep1"><span>דוח גביה <br>רישום חד פעמי</span></a></li>
 				    <li id="MoadonitReg"><a data-toggle="pill" href="#rep1"><span>דוח גביה <br>רישום למועדונית</span></a></li>
-				    <li id="CourseReg" class="disabled"><a data-toggle="pill" href="#"><span >דוח גביה <br>רישום לחוגים</span></a></li>
+				 <!--    <li id="CourseReg" class="disabled"><a data-toggle="pill" href="#"><span >דוח גביה <br>רישום לחוגים</span></a></li> -->
 				    <li id="MoadonitData"><a data-toggle="pill" href="#rep2"><span >נתוני רישום <br>למועדונית</span></a></li>
 				    <li id="CourseData"><a data-toggle="pill" href="#rep3"><span >נתוני רישום <br>לחוגים</span></a></li>
 				  </ul>
